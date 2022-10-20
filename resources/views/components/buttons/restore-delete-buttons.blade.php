@@ -1,0 +1,8 @@
+<td class="row m-0">
+    <a id="btn-restore" title="{{__("global.restore",[],session("lang"))}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#restoreConfirmModal" data-route="@yield("restore_data_route")">
+        <i class="fa fa-undo"></i>
+    </a>
+    <a id="btn-delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal"  data-route="@yield("delete_data_route")">
+        <input class="grid-button grid-delete-button" type="button">
+    </a>
+</td>

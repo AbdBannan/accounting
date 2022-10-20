@@ -1,0 +1,189 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Role;
+use Illuminate\Support\Str;
+use App\functions\globalFunctions;
+
+class roleController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     */
+    public function index()
+    {
+        globalFunctions::registerUserActivityLog("seen_all","roles",null);
+        return view("admin.roles.viewRoles")->with("roles",Role::all());
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function create()
+    {
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request,["name"=>"required"]);
+        $input = $request->all();
+
+        $result = Role::create([
+            "name"=>Str::ucfirst($input["name"]),
+            "slug"=>Str::of(Str::ucfirst($input["name"]))->slug("-")
+        ]);
+//        if ($result!=null) {
+//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
+//        }else{
+//            session()->flash("success",__("messages.not_created_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
+//        }
+
+        globalFunctions::flashMessage("create",$result,"role");
+        globalFunctions::registerUserActivityLog("added","role",$result->id);
+
+        return back();
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     */
+    public function show(Role $role)
+    {
+        globalFunctions::registerUserActivityLog("seen","role",$role->id);
+        return view("admin.roles.rolePermission")->with("role",$role);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, Role $role)
+    {
+        $this->validate($request,["name"=>"required"]);
+        $oldRole = $request->all();
+        $role->name = Str::ucfirst($oldRole["name"]);
+        $role->slug = Str::of(Str::ucfirst($oldRole["name"]))->slug("-");
+
+        $result = null;
+        if ($role->isDirty(["name"])) {
+//            session()->flash("success",__("messages.updated_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
+            $result = $role->save();
+        }
+//        else{
+//            session()->flash("success",__("messages.nothing_to_be_updated",[],session("lang")));
+//        }
+        globalFunctions::flashMessage("update",$result,"role");
+        globalFunctions::registerUserActivityLog("updated","role",$role->id);
+
+        return back();
+    }
+
+    public function viewRecyclebin()
+    {
+        globalFunctions::registerUserActivityLog("seen","roles_recyclebin",null);
+        return view("admin.roles.recyclebin")->with("deletedRoles",Role::onlyTrashed()->get());
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($role_id)
+    {
+        $result = Role::onlyTrashed()->find($role_id)->forceDelete();
+
+//        if ($result!=null) {
+//            session()->flash("success",__("messages.deleted_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
+//        }else{
+//            session()->flash("success",__("messages.not_deleted_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
+//        }
+        globalFunctions::flashMessage("delete",$result,"role");
+        globalFunctions::registerUserActivityLog("deleted","role",$role_id);
+
+        return back();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Role $account
+     * @return \Illuminate\Http\Response
+     */
+    public function softDelete(Role $role)
+    {
+        $result = $role->delete();
+
+//        if ($result!=null) {
+//            session()->flash("success",__("messages.recycled_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
+//        }else{
+//            session()->flash("success",__("messages.not_recycled_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
+//        }
+
+        globalFunctions::flashMessage("softDelete",$result,"role");
+        globalFunctions::registerUserActivityLog("recycled","role",$role->id);
+
+        return back();
+    }
+
+    public function restore($role_id)
+    {
+        $result = Role::onlyTrashed()->where("id",$role_id)->restore();
+
+//        if ($result!=null) {
+//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
+//        }else{
+//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
+//        }
+        globalFunctions::flashMessage("restore",$result,"role");
+        globalFunctions::registerUserActivityLog("restored","role",$role_id);
+
+        return back();
+    }
+
+
+    public function attachPermission(Role $role,int $permission_id){
+        $permission = Role::find($permission_id)->name;
+        globalFunctions::registerUserActivityLog("attached","$permission permission",$role->id);
+        $role->permissions()->attach($permission_id);
+    }
+
+    public function detachPermission(Role $role,int $permission_id){
+        $permission = Role::find($permission_id)->name;
+        globalFunctions::registerUserActivityLog("detached","$permission permission",$role->id);
+        $role->permissions()->detach($permission_id);
+    }
+
+}

@@ -1,0 +1,82 @@
+<x-masterLayout.master>
+    @section("title")
+        {{ __("global.roles_permission",[],session("lang")) }}
+    @endsection
+    @section('content')
+        <div class="row">
+            <div class="col-4">
+                <h3>{{$role->name}}</h3>
+                <hr>
+                <br>
+                <p>{{__("global.created_at",[],session("lang")) . " : " . $role->created_at . " (" . $role->created_at->diffForHumans() . ")"}}</p>
+            </div>
+            <div class="col-8">
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">{{__("global.roles_permission",[],session("lang"))}}</h6>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>{{__("global.id",[],session("lang"))}}</th>
+                                    <th>{{__("global.name",[],session("lang"))}}</th>
+                                    <th>{{__("global.assign_deassign_permission",[],session("lang"))}}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (App\Models\Permission::all() as $permission)
+
+                                        <tr>
+                                            <td>{{$permission->id}}</td>
+                                            <td> {{$permission->name}} </td>
+                                            <td class="text-center">
+                                                @if(count($role->permissions) != 0)
+                                                    @php $found = false; @endphp
+                                                    @foreach($role->permissions as $role_permission)
+                                                        @if($role_permission->slug == $permission->slug)
+                                                            @php $found = true; @endphp
+                                                            @break
+                                                        @endif
+                                                    @endforeach
+
+                                                    @if($found == true)
+                                                        <a id="btn_detach_permission" route-attr="{{route("role.detachPermission",[$role->id,$permission->id])}}" class="btn btn-sm btn-success">detach</a>
+                                                        <a id="btn_attach_permission" route-attr="{{route("role.attachPermission",[$role->id,$permission->id])}}" hidden="true" class="btn btn-sm btn-danger">attach</a>
+                                                    @else
+                                                        <a id="btn_detach_permission" route-attr="{{route("role.detachPermission",[$role->id,$permission->id])}}" hidden="true" class="btn btn-sm btn-success">detach</a>
+                                                        <a id="btn_attach_permission" route-attr="{{route("role.attachPermission",[$role->id,$permission->id])}}" class="btn btn-sm btn-danger">attach</a>
+                                                    @endif
+
+                                                @else
+                                                    <a id="btn_detach_permission" route-attr="{{route("role.detachPermission",[$role->id,$permission->id])}}" hidden="true" class="btn btn-sm btn-success">detach</a>
+                                                    <a id="btn_attach_permission" route-attr="{{route("role.attachPermission",[$role->id,$permission->id])}}" class="btn btn-sm btn-danger">attach</a>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+    @endsection
+    @section("script")
+    <!-- Page level plugins -->
+        <script src={{asset("vendor/datatables/jquery.dataTables.js")}}></script>
+        <script src={{asset("vendor/datatables/dataTables.bootstrap4.js")}}></script>
+
+        <!-- Page level custom scripts -->
+        <script src={{asset("js/demo/datatables-demo.js?var=415".rand(1,100))}}></script>
+    @endsection
+</x-masterLayout.master>

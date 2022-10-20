@@ -1,0 +1,154 @@
+<dev class="col-lg-8 col-sm-12">
+    <div class="card shadow">
+        <div class="card-header py-3">
+
+            <form id="f" class="row" autocomplete="false">
+                <div class="col-md-10 col-sm-12">
+                    <div class="row">
+                        <div class="form-group col-md-3 col-sm-12">
+                            <label class="" style="font-size: large" for="invoice_id" >{{__("global.invoice_id",[],session("lang"))}}</label>
+                            <input form="form" id="invoice_id" name="invoice_id" min="0" type="number" class="form-control" readonly value="@yield("invoice_id",App\Models\Journal::where("detail",0)->whereIn("invoice_type",[1,2,3,4])->selectRaw("max(invoice_id) as mid")->get()[0]["mid"]+1)">
+                        </div>
+                        <div class="form-group col-md-3 col-sm-12">
+                            <label style="font-size: large" for="second_part_name" >{{__("global.second_part",[],session("lang"))}}</label>
+                            <input form="form" id="second_part_name" name="second_part_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("second_part_name")" @yield("auto_focus","autofocus")/>
+                            <div style="max-height:200px;overflow-y: scroll" id="dropdown-menu" class="dropdown-menu" aria-labelledby="second_part_name">
+                                @foreach(App\Models\Account::get() as $account)
+                                    <option class="dropdown-item"  value="{{$account->id}}">{{$account->name}}</option>
+                                 @endforeach
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3 col-sm-12">
+                            <label style="font-size: large" for="pound_type" >{{__("global.pound",[],session("lang"))}}</label>
+                            <input value="{{__("global.".auth()->user()->getConfig("default_pound"),[],session("lang"))}}" form="form" id="pound_type" name="pound_type" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield('pound_type')"/>
+                            <div style="max-height:200px;overflow-y: scroll" id="dropdown-menu" class="dropdown-menu" aria-labelledby="pound_type">
+                                @foreach(App\Models\Pound::all() as $pound)
+                                    <option value="{{$pound->name}}" class="dropdown-item" >{{__("global.$pound->name",[],session("lang"))}}</option>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3 col-sm-12">
+                            @yield("edit_delete")
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row" >
+
+                        <div class="col-md-2 col-sm-12">
+                            <div class="form-group">
+                                <label style="font-size: large" for="total_price" >{{__("global.total_price",[],session("lang"))}}</label>
+                                <input form="f" type="number" min="0" class="form-control" id="total_price" name="total_price" >
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-12">
+                            <div class="form-group">
+                                <label style="font-size: large" for="quantity" >{{__("global.quantity",[],session("lang"))}}</label>
+                                <input form="f" type="number" min="0" class="form-control" id="quantity" name="quantity" >
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-12">
+                            <div class="form-group">
+                                <label style="font-size: large" for="price" >{{__("global.price",[],session("lang"))}}</label>
+                                <input form="f" type="number" min="0" class="form-control" id="price" name="price" >
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-12">
+                            <div class="form-group">
+                                <label style="font-size: large" for="first_part_name" >{{__("global.first_part",[],session("lang"))}}</label>
+                                <input form="f" id="first_part_name" name="first_part_name"  type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <div style="max-height:200px;overflow-y: scroll" id="dropdown-menu" class="dropdown-menu" aria-labelledby="first_part_name">
+                                    @foreach(App\Models\Account::get() as $account)
+                                        <option class="dropdown-item"  value="{{$account->id}}">{{$account->name}}</option>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-sm-12">
+                            <div class="form-group">
+                                <label style="font-size: large" for="product_name" >{{__("global.product",[],session("lang"))}}</label>
+                                <input form="f" id="product_name" name="product_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <div style="max-height:200px;overflow-y: scroll" id="dropdown-menu" class="dropdown-menu" aria-labelledby="product_name">
+                                    @foreach(App\Models\Product::get() as $product)
+                                        <option class="dropdown-item" value="{{$product->id}}">{{$product->name }}</option>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        {{--                        <div class="col-md-2 col-sm-12">--}}
+
+
+                        {{--                            <div class="form-group">--}}
+                        {{--                                <label style="font-size: large" for="posting" >{{__("global.posting",[],session("lang"))}}</label>--}}
+                        {{--                                <input id="posting" name="posting" type="text" placeholder="" class="form-control dropdown-toggle" id="pound_type" name="pound_type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />--}}
+                        {{--                                <div style="max-height:200px;overflow-y: scroll" id="dropdown-menu" class="dropdown-menu" aria-labelledby="posting">--}}
+                        {{--                                    <option class="dropdown-item" value="posted">posted</option>--}}
+                        {{--                                    <option class="dropdown-item" value="not posted">not posted</option>--}}
+                        {{--                                </div>--}}
+                        {{--                            </div>--}}
+                        {{--                        </div>--}}
+
+
+
+                    </div>
+                    <div class="col-md-5 col-sm-12">
+
+                        <div class="form-group">
+                            <label style="font-size: large" for="notes" >{{__("global.notes",[],session("lang"))}}</label>
+                            <input form="f" id="notes" name="notes" type="text" class="form-control">
+                        </div>
+
+                        <div>
+                            <button form="aa" id="btn-add-item-to-invoice" class="btn btn-outline-success">{{__("global.add",[],session("lang"))}}</button>
+                            <input form="f" id="btn-reset" class="btn btn-outline-danger" type="reset" {{__("global.reset",[],session("lang"))}}>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-2 col-sm-12  ">
+                    <img id="image" src="@yield("image_path",asset("images/systemImages/default_invoice_img.png"))" style="width:100%;max-width:200px;margin:10px auto ;border-radius:50%">
+                    <input form="form" type="file" id="invoice_image" name="image" class="form-control-file">
+                </div>
+            </form>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+{{--                        <th>{{__("global.invoice_id",[],session("lang"))}}</th>--}}
+                        <th>{{__("global.id",[],session("lang"))}}</th>
+                        <th>{{__("global.first_part",[],session("lang"))}}</th>
+{{--                        <th>{{__("global.second_part",[],session("lang"))}}</th>--}}
+                        <th>{{__("global.product",[],session("lang"))}}</th>
+                        <th>{{__("global.quantity",[],session("lang"))}}</th>
+                        <th>{{__("global.price",[],session("lang"))}}</th>
+                        <th>{{__("global.total_price",[],session("lang"))}}</th>
+{{--                        <th>{{__("global.posting",[],session("lang"))}}</th>--}}
+{{--                        <th>{{__("global.pound",[],session("lang"))}}</th>--}}
+                        <th>{{__("global.notes",[],session("lang"))}}</th>
+                        <th id="td-delete-restore"@yield("hidden")></th>
+                    </tr>
+                    </thead>
+                    <form id="form" action="@yield("form-route",route("invoice.storeInvoice",$invoiceType))" autocomplete="false" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                        @csrf
+                        @yield("method")
+                        <tbody id="body">
+                            @yield("invoiceLines")
+                        </tbody>
+                    </form>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button id="btn-close-invoice" title="{{__("global.close_invoice",[],session("lang"))}}" class="btn btn-success" data-toggle="modal" data-target="#closingDateModal" @yield("hide")>{{__("global.close_invoice",[],session("lang"))}}</button>
+            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_invoice_price",[],session("lang"))}} : <span id="total-invoice-price" style="font-style: italic; color:darkblue">@yield("total_price",0)</span>  <span id="invoice_pound">@yield("pound_type")</span></label>
+        </div>
+    </div>
+</dev>
