@@ -57,3 +57,9 @@ Auth::routes();
 //    }
 //});
 //
+
+
+
+Route::get("/ttt",function (){
+    return view("modern");
+});

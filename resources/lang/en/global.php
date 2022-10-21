@@ -211,7 +211,7 @@ return [
     'user_activity' => 'user activity',
     'role_name' => 'role name',
     'role' => 'role',
-    '' => '',
+    'accounting' => 'accounting',
     '' => '',
     '' => '',
     '' => '',
