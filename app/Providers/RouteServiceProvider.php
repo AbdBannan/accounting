@@ -92,6 +92,10 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->namespace($this->namespace)
+                ->group(base_path('routes/web/admin/backups.php'));
+
+            Route::middleware('web')
+                ->namespace($this->namespace)
                 ->group(base_path('routes/web/comments.php'));
 
             Route::middleware('web')

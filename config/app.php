@@ -80,8 +80,8 @@ return [
     |
     */
 
-//    'locale' => auth()->user()->getConfig("language"),
     'locale' => "en",
+
 
     /*
     |--------------------------------------------------------------------------
@@ -93,6 +93,7 @@ return [
     | the language folders that are provided through your application.
     |
     */
+
 
     'fallback_locale' => 'en',
 

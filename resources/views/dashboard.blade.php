@@ -1,26 +1,43 @@
 <x-masterLayout.master>
     @if(Auth::user()->hasRole("admin"))
         @section("title")
-            {{ "dashboard : " . auth()->user()->name}}
+            {{__("global.dashboard")}}
+        @endsection
+        @section("style")
+            <!-- Tempusdominus Bootstrap 4 -->
+                <link rel="stylesheet" href="{{asset("css/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css")}}">
+                <!-- iCheck -->
+                <link rel="stylesheet" href="{{asset("css/plugins/icheck-bootstrap/icheck-bootstrap.min.css")}}">
+                <!-- JQVMap -->
+                <link rel="stylesheet" href="{{asset("css/plugins/jqvmap/jqvmap.min.css")}}">
+                <!-- Daterange picker -->
+                <link rel="stylesheet" href="{{asset("css/plugins/daterangepicker/daterangepicker.css")}}">
+                <!-- summernote -->
+                <link rel="stylesheet" href="{{asset("css/plugins/summernote/summernote-bs4.min.css")}}">
         @endsection
         @section("content")
-        @php
-        $ernning = [
-        "EARNINGS (MONTHLY)"=> 40.000,
-        "EARNINGS (ANNUAL)"=>215.000,
-        "TASKS"=>50,
-        "PENDING REQUESTS"=>18
-        ];
-        @endphp
-        <x-masterLayout.content :ernning="$ernning"></x-masterLayout.content>
+        <x-masterLayout.content></x-masterLayout.content>
         @show
         @section("script")
-            <!-- Page level plugins -->
-            <script src={{asset("vendor/chart.js/Chart.js?var=12".rand())}}></script>
+        <!-- ChartJS -->
+            <script src="{{asset("js/plugins/chart.js/Chart.min.js")}}"></script>
+            <!-- Sparkline -->
+            <script src="{{asset("js/plugins/sparklines/sparkline.js")}}"></script>
+            <!-- JQVMap -->
+            <script src="{{asset("js/plugins/jqvmap/jquery.vmap.min.js")}}"></script>
+            <script src="{{asset("js/plugins/jqvmap/maps/jquery.vmap.usa.js")}}"></script>
+            <!-- jQuery Knob Chart -->
+            <script src="{{asset("js/plugins/jquery-knob/jquery.knob.min.js")}}"></script>
+            <!-- daterangepicker -->
+            <script src="{{asset("js/plugins/moment/moment.min.js")}}"></script>
+            <script src="{{asset("js/plugins/daterangepicker/daterangepicker.js")}}"></script>
+            <!-- Tempusdominus Bootstrap 4 -->
+            <script src="{{asset("js/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js")}}"></script>
+            <!-- Summernote -->
+            <script src="{{asset("js/plugins/summernote/summernote-bs4.min.js")}}"></script>
 
-            <!-- Page level custom scripts -->
-            <script id="js" src={{asset("js/demo/chart-area-demo.js?data=[0,10000,5000,15000,10000,20000,15000,25000,20000,30000,25000,40000]&var=".rand())}}></script>
-            <script src={{asset("js/demo/chart-pie-demo.js?var=12".rand())}}></script>
+            <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+            <script src="{{asset("js/dist/js/pages/dashboard.js")}}"></script>
         @endsection
     @endif
 </x-masterLayout.master>

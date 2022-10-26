@@ -1,489 +1,610 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html @section("lang_dir") lang="{{ app()->getLocale() }}" @show>
 <head>
-
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-{{--    <meta name="csrf-token" content="{{ csrf_token() }}">--}}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield("title")</title>
+    @section("header_includes")@show
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{asset("css/plugins/fontawesome-free/css/all.min.css")}}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
-    <!-- Custom fonts for this template-->
-    <link href={{asset("vendor/fontawesome-free/css/all.css")}} rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="{{asset("css/plugins/overlayScrollbars/css/OverlayScrollbars.min.css")}}">
 
-    <!-- Custom styles for this template-->
-    <link href={{asset("css/sb-admin-2.css?var=".rand())}} rel="stylesheet">
-    <!-- Custom styles for this page -->
-    <link href={{asset("vendor/datatables/dataTables.bootstrap4.css")}} rel="stylesheet">
 
+    @if(auth()->user()->getConfig("language") == "arabic")
+        <!-- Bootstrap 4 RTL -->
+        <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
+        <!-- Custom style for RTL -->
+        <link rel="stylesheet" href="{{asset("css/dist/css/ar/custom.css")}}">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="{{asset("css/dist/css/ar/adminlte.css")."?var=".rand()}}">
+    @else
+        <!-- Theme style -->
+        <link rel="stylesheet" href="{{asset("css/dist/css/en/adminlte.css")."?var=".rand()}}">
+    @endif
+
+{{--    <link href={{asset("css/sb-admin-2.css?var=".rand())}} rel="stylesheet">--}}
+{{--    <link href={{asset("vendor/datatables/dataTables.bootstrap4.css")}} rel="stylesheet">--}}
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{asset("css/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css")}}">
+    <link rel="stylesheet" href="{{asset("css/plugins/datatables-responsive/css/responsive.bootstrap4.min.css")}}">
+    <link rel="stylesheet" href="{{asset("css/plugins/datatables-buttons/css/buttons.bootstrap4.min.css")}}">
+    @yield("style")
 </head>
 
-<body id="page-top">
-<!-- Page Wrapper -->
-<div id="wrapper">
+{{--@php--}}
+{{--    $lang = (auth()->user()->getConfig("language") == "english")? "en": "ar" ;--}}
+{{--    app()->setLocale($lang);--}}
+{{--@endphp--}}
+<body class="hold-transition
+    @if(auth()->user()->getConfig("dark_mode") !== null) dark-mode @endif
+    @if(auth()->user()->getConfig("collapsed") !== null) sidebar-collapse @endif
+    @if(auth()->user()->getConfig("fixed_sidebar") !== null) layout-fixed @endif
+    @if(auth()->user()->getConfig("sidebar_mini") !== null) sidebar-mini @endif
+    @if(auth()->user()->getConfig("sidebar_mini_md") !== null) sidebar-mini-md @endif
+    @if(auth()->user()->getConfig("sidebar_mini_xs") !== null) sidebar-mini-xs @endif
+{{--    @if(auth()->user()->getConfig("nav_legacy_style") !== null) nav-legacy @endif--}}
+{{--    @if(auth()->user()->getConfig("nav_compact") !== null) nav-compact @endif--}}
+{{--    @if(auth()->user()->getConfig("nav_child_indent") !== null) nav-child-indent @endif--}}
+{{--    @if(auth()->user()->getConfig("nav_child_hide_on_collapse") !== null) nav-collapse-hide-child @endif--}}
+{{--    @if(auth()->user()->getConfig("disable_hover_or_focus_auto_expand") !== null) sidebar-no-expand @endif--}}
 
-@section("Sidebar")
-        <h2 id="test_size_label"></h2>
-        <!-- Sidebar -->
-        <ul class=" navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    @if(auth()->user()->getConfig("fixed_header") !== null) layout-navbar-fixed @endif
+{{--    @if(auth()->user()->getConfig("drop_down_legacy_offset") !== null) dropdown-legacy @endif--}}
+{{--    @if(auth()->user()->getConfig("no_border") !== null) border-bottom-0 @endif--}}
 
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" >
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3"> @yield("title") </div>
-            </a>
+    @if(auth()->user()->getConfig("fixed_footer") !== null) layout-footer-fixed @endif
 
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
+    @if(auth()->user()->getConfig("body_small_text_options") !== null) text-sm @endif
 
-{{--            <!-- Nav Item - Dashboard -->--}}
-{{--            <li class="nav-item active">--}}
-{{--                <a class="nav-link" href="index.html">--}}
-{{--                    <i class="fas fa-fw fa-tachometer-alt"></i>--}}
-{{--                    <span>Dashboard</span></a>--}}
-{{--            </li>--}}
+{{--    @if(auth()->user()->getConfig("navbar_small_text_options") !== null) text-sm @endif--}}
+{{--    @if(auth()->user()->getConfig("brand_small_text_options") !== null) text-sm @endif--}}
+{{--    @if(auth()->user()->getConfig("footer_small_text_options") !== null) text-sm @endif--}}
+{{--    @if(auth()->user()->getConfig("slide_bar_nav_hover_or_focus_auto_expand") !== null) text-sm @endif--}}
+    @if(auth()->user()->getConfig("accent_color_variants") !== null and auth()->user()->getConfig("accent_color_variants") != "None Selected") accent-{{strtolower(auth()->user()->getConfig("accent_color_variants"))}} @endif
 
-            <!-- Divider -->
-{{--            <hr class="sidebar-divider">--}}
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Management section
-            </div>
+    ">
+    <div class="wrapper">
 
-            @if(auth()->user()->hasRole("admin"))
-                <!-- Nav Item - Admin management Collapse Menu -->
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="{{asset("images/systemImages/AdminLTELogo.png")}}" alt="AdminLTELogo" height="60" width="60">
+        </div>
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand
+        @if(auth()->user()->getConfig("drop_down_legacy_offset") !== null) dropdown-legacy @endif
+        @if(auth()->user()->getConfig("no_border") !== null) border-bottom-0 @endif
+        @if(auth()->user()->getConfig("navbar_small_text_options") !== null) text-sm @endif
+        @if(in_array(strtolower(auth()->user()->getConfig("navbar_variants")),["light","white"]))
+            navbar-light
+       @else
+            navbar-dark
+       @endif
+        navbar-{{strtolower(auth()->user()->getConfig("navbar_variants"))}}">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                       aria-expanded="true" aria-controls="collapseTwo">
-                        <i class="fas fa-fw fa-cog"></i>
-                        <span>Admin management</span>
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="index3.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">Contact</a>
+                </li>
+            </ul>
+
+            <!-- Right navbar links -->
+            <ul @if(auth()->user()->getConfig("language") == "english") class="navbar-nav ml-auto" @else class="navbar-nav mr-auto-navbav" @endif >
+                <!-- Navbar Search -->
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                        <i class="fas fa-search"></i>
                     </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">admin management</h6>
-                            <a class="collapse-item" href={{route("dashboard")}}>dashboard</a>
-                            <a class="collapse-item" href={{route("user.viewUsers")}}>all users</a>
-                            <a class="collapse-item" href={{route("account.viewAccounts")}}>view accounts</a>
-                            <a class="collapse-item" href={{route("role.viewRoles")}}>roles</a>
-                            <a class="collapse-item" href={{route("permission.viewPermissions")}}>permissions</a>
-                            <a class="collapse-item" href={{route("pound.viewPounds")}}>pound</a>
-                            <a class='collapse-item' href='{{backpack_url('backup') }}'><i class='nav-icon la la-hdd-o'></i> Backups</a>
-{{--                            <a class='collapse-item' href='{{route('admin.backup') }}'><i class='nav-icon la la-hdd-o'></i> Backups</a>--}}
-                        </div>
+                    <div class="navbar-search-block">
+                        <form class="form-inline">
+                            <div class="input-group input-group-sm">
+                                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-navbar" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </li>
-            @endif
 
-            <!-- Nav Item -Resources Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                   aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Resources</span>
-                </a>
-
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                     data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">resources:</h6>
-                        <a class="collapse-item" href={{route("product.viewProducts")}}>view products</a>
-                        <a class="collapse-item" href={{route("store.viewStores")}}>view stores</a>
-                        <a class="collapse-item" href={{route("category.viewCategories")}}>view categories</a>
-
-                    </div>
-                </div>
-
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Invoices
-            </div>
-
-            <!-- Nav Item - Add new invoice Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAddNewInvoice"
-                   aria-expanded="true" aria-controls="collapseAddNewInvoice">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Add new Invoice</span>
-                </a>
-                <div id="collapseAddNewInvoice" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Add new Invoice</h6>
-                        <a id="create_invoice" class="collapse-item" href="{{route("invoice.createInvoice","sale")}}">new sale invoice</a>
-                        <a class="collapse-item" href="{{route("invoice.createInvoice","purchase")}}">new purchase invoice</a>
-                        <a class="collapse-item" href="{{route("invoice.createInvoice","sale_return")}}">new sale return invoice</a>
-                        <a class="collapse-item" href="{{route("invoice.createInvoice","purchase_return")}}">new purchase return invoice</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - view invoices Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseViewInvoices"
-                   aria-expanded="true" aria-controls="collapseViewInvoices">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>View invoices</span>
-                </a>
-
-                <div id="collapseViewInvoices" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">View invoices</h6>
-                        <a class="collapse-item" href="{{route("invoice.viewInvoices","sale")}}">view sale invoices</a>
-                        <a class="collapse-item" href="{{route("invoice.viewInvoices","purchase")}}">view purchase invoices</a>
-                        <a class="collapse-item" href="{{route("invoice.viewInvoices","sale_return")}}">view sale return invoices</a>
-                        <a class="collapse-item" href="{{route("invoice.viewInvoices","purchase_return")}}">view purchase return invoices</a>
-
-                    </div>
-                </div>
-
-            </li>
-
-
-            <!-- Nav Item - search an invoice Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSearchInvoice"
-                   aria-expanded="true" aria-controls="collapseSearchInvoice">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Search an invoice</span>
-                </a>
-
-                <div id="collapseSearchInvoice" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Collapse</h6>
-                        <a class="collapse-item" href="{{route("invoice.showSearchInvoice","none")}}">search an invoice</a>
-                    </div>
-                </div>
-
-            </li>
-
-            <!-- Nav Item - edit an invoice Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEditInvoice"
-                   aria-expanded="true" aria-controls="collapseEditInvoice">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Edit an invoice</span>
-                </a>
-                <div id="collapseEditInvoice" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Edit an invoice</h6>
-                        <a class="collapse-item" href="{{route("invoice.showSearchInvoice","none")}}">edit an invoice</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - delete an invoice Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDeleteInvoice"
-                   aria-expanded="true" aria-controls="collapseDeleteInvoice">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Delete an invoice</span>
-                </a>
-
-                <div id="collapseDeleteInvoice" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Delete an invoice</h6>
-                        <a class="collapse-item" href="{{route("invoice.showSearchInvoice","none")}}">delete an invoice</a>
-                        <a class="collapse-item" href="{{route("invoice.viewRecyclebin")}}">recycle bin</a>
-                    </div>
-                </div>
-
-            </li>
-
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Businesses
-            </div>
-
-            <!-- Nav Item - Payment invoices Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePayment"
-                   aria-expanded="true" aria-controls="collapsePayment">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Cash invoices</span>
-                </a>
-                <div id="collapsePayment" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Cash invoices</h6>
-                        <a class="collapse-item" href="{{route("invoice.createCashInvoice")}}">add new cash invoice</a>
-                        <a class="collapse-item" href="{{route("invoice.viewCashInvoices")}}">view all cash invoices</a>
-                        <a class="collapse-item" href="{{route("invoice.showSearchCashInvoice")}}">search a cash invoices</a>
-                        <a class="collapse-item" href="{{route("invoice.showSearchCashInvoice")}}">update a cash invoices</a>
-                        <a class="collapse-item" href="{{route("invoice.showSearchCashInvoice")}}">delete a cash invoices</a>
-                        <a class="collapse-item" href="{{route("invoice.viewCashRecyclebin")}}">recycle bin</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - ProductMovement invoices Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProductMovement"
-                   aria-expanded="true" aria-controls="collapseProductMovement">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Product Movement</span>
-                </a>
-                <div id="collapseProductMovement" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Cash invoices</h6>
-                        <a class="collapse-item" href="{{route("invoice.createProductMovementInvoice")}}">add new Product Movement invoice</a>
-                        <a class="collapse-item" href="{{route("invoice.viewProductMovementInvoices")}}">view all ProductMovement invoices</a>
-                        <a class="collapse-item" href="{{route("invoice.showSearchProductMovementInvoice")}}">search a ProductMovement invoices</a>
-                        <a class="collapse-item" href="{{route("invoice.showSearchProductMovementInvoice")}}">update a ProductMovement invoices</a>
-                        <a class="collapse-item" href="{{route("invoice.showSearchProductMovementInvoice")}}">delete a ProductMovement invoices</a>
-                        <a class="collapse-item" href="{{route("invoice.viewProductMovementRecyclebin")}}">recycle bin</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
-
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-
-        </ul>
-        <!-- End of Sidebar -->
-@show
-
-<!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-        <!-- Main Content -->
-        <div id="content">
-        @section("navbar")
-            <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                   aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
+                <!-- Messages Dropdown Menu -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="far fa-comments"></i>
+                        <span class="badge badge-danger navbar-badge">3</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <a href="#" class="dropdown-item">
+                            <!-- Message Start -->
+                            <div class="media">
+                                <img src="{{asset("images/systemImages/user1-128x128.jpg")}}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                <div class="media-body">
+                                    <h3 class="dropdown-item-title">
+                                        Brad Diesel
+                                        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                                    </h3>
+                                    <p class="text-sm">Call me whenever you can...</p>
+                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                            <!-- Message End -->
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <!-- Message Start -->
+                            <div class="media">
+                                <img src="{{asset("images/systemImages/user8-128x128.jpg")}}" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                <div class="media-body">
+                                    <h3 class="dropdown-item-title">
+                                        John Pierce
+                                        <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                                    </h3>
+                                    <p class="text-sm">I got your message bro</p>
+                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                                </div>
+                            </div>
+                            <!-- Message End -->
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <!-- Message Start -->
+                            <div class="media">
+                                <img src="{{asset("images/systemImages/user3-128x128.jpg")}}" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                <div class="media-body">
+                                    <h3 class="dropdown-item-title">
+                                        Nora Silvester
+                                        <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                                    </h3>
+                                    <p class="text-sm">The subject goes here</p>
+                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                                </div>
+                            </div>
+                            <!-- Message End -->
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                    </div>
+                </li>
+                <!-- Notifications Dropdown Menu -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="far fa-bell"></i>
+                        <span class="badge badge-warning navbar-badge">15</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <span class="dropdown-item dropdown-header">15 Notifications</span>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-envelope mr-2"></i> 4 new messages
+                            <span class="float-right text-muted text-sm">3 mins</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-users mr-2"></i> 8 friend requests
+                            <span class="float-right text-muted text-sm">12 hours</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-file mr-2"></i> 3 new reports
+                            <span class="float-right text-muted text-sm">2 days</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                    </div>
+                </li>
 
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </a>
+                </li>
 
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
+                        <i class="fas fa-th-large"></i>
+                    </a>
+                </li>
+
+                <div class="topbar-divider d-none d-sm-block"></div>
+                <!-- Nav Item - User Information -->
+                <li class="nav-item dropdown no-arrow">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{auth()->user()->first_name}}</span>
+                    </a>
+
+                    <!-- Dropdown - User Information -->
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                         aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="{{route("user.showUser",auth()->user())}}">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Profile
+                        </a>
+                        <a class="dropdown-item" href="{{route("config.viewUserConfig")}}">
+                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Settings
+                        </a>
+                        @if(auth()->user()->hasRole("admin"))
+                            <a class="dropdown-item" href="{{route("activityLog.viewUsersActivityLog")}}">
+                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                {{__("Activity Log")}}
+                            </a>
+                        @endif
+                        @yield("recycle_bin")
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            {{__("Logout")}}
+                        </a>
+                    </div>
+                </li>
+
+                <img class="img-profile rounded-circle" src="{{asset( auth()->user()->profile_image)}}">
+
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar
+            @if(auth()->user()->getConfig("disable_hover_or_focus_auto_expand") !== null and auth()->user()->getConfig("disable_hover_or_focus_auto_expand") != "None Selected") sidebar-no-expand @endif
+            @if(auth()->user()->getConfig("light_sidebar_variants") !== null and auth()->user()->getConfig("light_sidebar_variants") != "None Selected") sidebar-light-{{strtolower(auth()->user()->getConfig("light_sidebar_variants"))}} @endif
+            @if(auth()->user()->getConfig("dark_sidebar_variants") !== null and auth()->user()->getConfig("dark_sidebar_variants") != "None Selected") sidebar-dark-{{strtolower(auth()->user()->getConfig("dark_sidebar_variants"))}} @endif
+            elevation-4">
+            <!-- Brand Logo -->
+            <a href="{{route("dashboard")}}" class="brand-link @if(auth()->user()->getConfig("brand_small_text_options") !== null) text-sm @endif navbar-{{strtolower(auth()->user()->getConfig("brand_logo_variants"))}}">
+                <img src="{{asset("images/systemImages/AdminLTELogo.png")}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">@yield("title","accounting")</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img src="{{asset(auth()->user()->profile_image)}}" class="img-circle elevation-2" alt="User Image">
+                    </div>
+                    <div class="info">
+                        <a href="#" class="d-block">{{auth()->user()->first_name}}</a>
+                    </div>
+                </div>
+
+                <!-- SidebarSearch Form -->
+                <div class="form-inline">
+                    <div class="input-group" data-widget="sidebar-search">
+                        <input class="form-control form-control-sidebar" type="search" placeholder="{{__("global.Search",[],session("lang"))}}" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-sidebar">
                                 <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                 aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                               placeholder="Search for..." aria-label="Search"
-                                               aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-                        <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-                                <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
-                            </a>
-                            <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                 aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">
-                                    Alerts Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                            </div>
-                        </li>
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar
+                        @if(auth()->user()->getConfig("nav_legacy_style") !== null) nav-legacy @endif
+                        @if(auth()->user()->getConfig("nav_compact") !== null) nav-compact @endif
+                        @if(auth()->user()->getConfig("nav_child_indent") !== null) nav-child-indent @endif
+                        @if(auth()->user()->getConfig("nav_child_hide_on_collapse") !== null) nav-collapse-hide-child @endif
+                        @if(auth()->user()->getConfig("slide_bar_nav_hover_or_focus_auto_expand") !== null) text-sm @endif
 
-                        <!-- Nav Item - Messages -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter">7</span>
+                        flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Add icons to the links using the .nav-icon class
+                             with font-awesome or any other icon font library -->
+                        @if(auth()->user()->hasRole("admin"))
+                        {{--admin controle--}}
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    {{__("global.management_section",[],session("lang"))}}
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
                             </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                 aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header">
-                                    Message Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src={{asset("images/systemImages/undraw_profile_1.svg")}}
-                                             alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                                            problem I've been having.
-                                        </div>
-                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src={{asset("images/systemImages/undraw_profile_2.svg")}}
-                                             alt="...">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">I have the photos that you ordered last month, how
-                                            would you like them sent to you?
-                                        </div>
-                                        <div class="small text-gray-500">Jae Chun · 1d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src={{asset("images/systemImages/undraw_profile_3.svg")}}
-                                             alt="...">
-                                        <div class="status-indicator bg-warning"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Last month's report looks great, I am very happy with
-                                            the progress so far, keep up the good work!
-                                        </div>
-                                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                            </div>
-                        </li>
-
-                        <div class="topbar-divider d-none d-sm-block"></div>
-
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{auth()->user()->first_name}}</span>
-                                <img class="img-profile rounded-circle"
-                                     src={{ asset( auth()->user()->profile_image)}}>
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{route("user.showUser",auth()->user())}}">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="{{route("config.viewUserConfig")}}">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                @if(auth()->user()->hasRole("admin"))
-                                    <a class="dropdown-item" href="{{route("activityLog.viewUsersActivityLog")}}">
-                                        <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        {{__("Activity Log")}}
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route("dashboard")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.dashboard",[],session("lang"))}}</p>
                                     </a>
-                                @endif
-                                @yield("recycle_bin")
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    {{__("Logout")}}
-                                </a>
-                            </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route("user.viewUsers")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.users",[],session("lang"))}}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route("account.viewAccounts")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.accounts",[],session("lang"))}}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route("role.viewRoles")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.roles",[],session("lang"))}}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route("permission.viewPermissions")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.permissions",[],session("lang"))}}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route("pound.viewPounds")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.pounds",[],session("lang"))}}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{backpack_url('backup') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.backups",[],session("lang"))}}</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        @endif
+                        {{--resources--}}
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon far fa-envelope"></i>
+                                <p>
+                                    {{__("global.resources",[],session("lang"))}}
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route("product.viewProducts")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.products",[],session("lang"))}}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route("store.viewStores")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.stores",[],session("lang"))}}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route("category.viewCategories")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.categories",[],session("lang"))}}</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-header">{{__("global.invoices",[],session("lang"))}}</li>
+
+                        {{--new invoices--}}
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                    {{__("global.add_new_invoice")}}
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.createInvoice","sale")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.sale")}}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.createInvoice","purchase")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.purchase")}}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.createInvoice","sale_return")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.sale_return")}}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.createInvoice","purchase_return")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.purchase_return")}}</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{--view invoices--}}
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                    {{__("global.view_invoices")}}
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.viewInvoices","sale")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.sale")}}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.viewInvoices","purchase")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.purchase")}}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.viewInvoices","sale_return")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.sale_return")}}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.viewInvoices","purchase_return")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.purchase_return")}}</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{--search edit delete an invoices--}}
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                    {{__("global.search_edit_delete")}}
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.showSearchInvoice","none")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.search_edit_delete")}}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.viewRecyclebin","none")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.recyclebin")}}</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-header">{{__("global.cash_invoices",[],session("lang"))}}</li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                    {{__("global.cash_invoices")}}
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                {{--new cash invoice--}}
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.createCashInvoice")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        {{__("global.add_new_cash_invoice")}}
+                                    </a>
+                                </li>
+                                {{--view cash invoices--}}
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.viewCashInvoices")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        {{__("global.view_cash_invoices")}}
+                                    </a>
+                                </li>
+                                {{--search edit delete cash invoice--}}
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.showSearchCashInvoice")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        {{__("global.search_edit_delete_cash_invoice")}}
+                                    </a>
+                                </li>
+                                {{--recyclebin cash invoices--}}
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.viewCashRecyclebin")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        {{__("global.recyclebin")}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-header">{{__("global.cash_invoices",[],session("lang"))}}</li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                    {{__("global.product_movement_invoices")}}
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                {{--new product movement invoice--}}
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.createProductMovementInvoice")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        {{__("global.add_new_product_movement_invoice")}}
+                                    </a>
+                                </li>
+                                {{--view product movement invoices--}}
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.viewProductMovementInvoices")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        {{__("global.view_product_movement_invoices")}}
+                                    </a>
+                                </li>
+                                {{--search edit delete product movement invoice--}}
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.showSearchProductMovementInvoice")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        {{__("global.search_edit_delete_product_movement_invoice")}}
+                                    </a>
+                                </li>
+                                {{--recyclebin product movement invoices--}}
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.viewProductMovementRecyclebin")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        {{__("global.recyclebin")}}
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
                     </ul>
-
                 </nav>
-                <!-- End of Topbar -->
-        @show
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
 
-        <!-- Begin Page Content -->
-            <div class="container-fluid">
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <div style="padding-top:2%" class="container-fluid">
                 @include("inc.messages")
-
                 <!-- Back Button-->
                     <div >
-{{--                        @if(session("last_method"))--}}
-{{--                            <form action="{{\Illuminate\Support\Facades\URL::previous()}}" method="{{session("last_method")}}">--}}
-{{--                                @foreach(session("last_params") as $name=>$value)--}}
-{{--                                    <input type="hidden" name="{{$name}}" value="{{$value}}">--}}
-{{--                                @endforeach--}}
-{{--                                <i id="back_arrow" class="fas fa-arrow-left">--}}
-{{--                                    <input id="back_submit" hidden type="submit" class="fas fa-arrow-left">--}}
-{{--                                </i>--}}
-{{--                            </form>--}}
-{{--                        @endif--}}
+                        {{--                        @if(session("last_method"))--}}
+                        {{--                            <form action="{{\Illuminate\Support\Facades\URL::previous()}}" method="{{session("last_method")}}">--}}
+                        {{--                                @foreach(session("last_params") as $name=>$value)--}}
+                        {{--                                    <input type="hidden" name="{{$name}}" value="{{$value}}">--}}
+                        {{--                                @endforeach--}}
+                        {{--                                <i id="back_arrow" class="fas fa-arrow-left">--}}
+                        {{--                                    <input id="back_submit" hidden type="submit" class="fas fa-arrow-left">--}}
+                        {{--                                </i>--}}
+                        {{--                            </form>--}}
+                        {{--                        @endif--}}
                         <a id="back_arrow" href="#">
                             <i class="fas fa-arrow-left"></i>
                         </a>
@@ -493,54 +614,130 @@
                 @section("content")
 
                 @show
+{{--                <table id="example1" class="table table-bordered table-striped">--}}
+{{--                    <thead>--}}
+{{--                    <tr>--}}
+{{--                        <th>id</th>--}}
+{{--                        <th>name</th>--}}
+{{--                    </tr>--}}
+{{--                    </thead>--}}
+{{--                    <tbody>--}}
+{{--                    <tr>--}}
+{{--                        <td>1</td>--}}
+{{--                        <td>Abdulmoty</td>--}}
+{{--                    </tr>--}}
+{{--                    </tbody>--}}
+{{--                    <tfoot>--}}
+{{--                    <tr>--}}
+{{--                        <td>id</td>--}}
+{{--                        <td>name</td>--}}
+{{--                    </tr>--}}
+{{--                    </tfoot>--}}
+{{--                </table>--}}
+
             </div>
-            <!-- /.container-fluid -->
-
-
         </div>
-        <!-- End of Main Content -->
+        <!-- /.content-wrapper -->
+{{--        <footer class="main-footer @if(auth()->user()->getConfig("footer_small_text_options") !== null) text-sm @endif">--}}
+{{--            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>--}}
+{{--            All rights reserved.--}}
+{{--            <div class="float-right d-none d-sm-inline-block">--}}
+{{--                <b>Version</b> 3.2.0--}}
+{{--            </div>--}}
+{{--        </footer>--}}
 
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Your Website 2021</span>
-                </div>
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
 
-            </div>
-        </footer>
-        <!-- End of Footer -->
 
     </div>
-    <!-- End of Content Wrapper -->
+<!-- ./wrapper -->
+    <!-- Scroll to Top Button-->
+{{--    <a class="scroll-to-top rounded" href="#page-top">--}}
+{{--        <i class="fas fa-angle-up"></i>--}}
+{{--    </a>--}}
+    <!-- End Scroll to Top Button-->
 
-</div>
-<!-- End of Page Wrapper -->
+    <x-models.logout-model></x-models.logout-model>
 
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
-<!-- End Scroll to Top Button-->
-
-<x-models.logout-model></x-models.logout-model>
 @section("models")
 @show
 
-<!-- Bootstrap core JavaScript-->
-<script src={{asset("vendor/jquery/jquery.min.js")}}></script>
-<script src={{asset("vendor/bootstrap/js/bootstrap.bundle.min.js")}}></script>
 
-<!-- Core plugin JavaScript-->
-<script src={{asset("vendor/jquery-easing/jquery.easing.min.js")}}></script>
+<!-- jQuery -->
+<script src="{{asset("js/plugins/jquery/jquery.min.js")}}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{{asset("js/plugins/jquery-ui/jquery-ui.min.js")}}"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+    $.widget.bridge('uibutton', $.ui.button)
+</script>
+@if(auth()->user()->getConfig("language") == "arabic")
+    <!-- Bootstrap 4 rtl -->
+    <script src="https://cdn.rtlcss.com/bootstrap/v4.2.1/js/bootstrap.min.js"></script>
+@else
+    {{--<!-- Bootstrap 4 -->--}}
+    <script src="{{asset("js/plugins/bootstrap/js/bootstrap.bundle.min.js")}}"></script>
+@endif
+<!-- overlayScrollbars -->
+<script src="{{asset("js/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js")}}"></script>
+<!-- AdminLTE App -->
+<script src="{{asset("js/dist/js/adminlte.js")."?var=".rand()}}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{{asset("js/dist/js/demo.js")}}"></script>
+
+
 
 <!-- Custom scripts for all pages-->
 <script src={{asset("js/sb-admin-2.js?var=".rand())}}></script>
 
-<script src={{asset("vendor/select2/js/select2.js?var=".rand())}}></script>
+{{--<table id="example1" class="table table-bordered table-striped">--}}
+<!-- DataTables  & Plugins -->
+<script src="{{asset("js/plugins/datatables/jquery.dataTables.min.js")}}"></script>
+<script src="{{asset("js/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js")}}"></script>
+<script src="{{asset("js/plugins/datatables-responsive/js/dataTables.responsive.min.js")}}"></script>
+<script src="{{asset("js/plugins/datatables-responsive/js/responsive.bootstrap4.min.js")}}"></script>
+<script src="{{asset("js/plugins/datatables-buttons/js/dataTables.buttons.min.js")}}"></script>
+<script src="{{asset("js/plugins/datatables-buttons/js/buttons.bootstrap4.min.js")}}"></script>
+<script src="{{asset("js/plugins/jszip/jszip.min.js")}}"></script>
+<script src="{{asset("js/plugins/pdfmake/pdfmake.min.js")}}"></script>
+<script src="{{asset("js/plugins/pdfmake/vfs_fonts.js")}}"></script>
+<script src="{{asset("js/plugins/datatables-buttons/js/buttons.html5.min.js")}}"></script>
+<script src="{{asset("js/plugins/datatables-buttons/js/buttons.print.min.js")}}"></script>
+<script src="{{asset("js/plugins/datatables-buttons/js/buttons.colVis.min.js")}}"></script>
 
+<script>
+    $(function () {
+        // $("#example1").DataTable({
+        //     "responsive": true, "lengthChange": true, "autoWidth": true,
+        //     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        // }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        // $('#dataTable').DataTable({
+        //     "paging": true,
+        //     "lengthChange": true,
+        //     "searching": true,
+        //     "ordering": true,
+        //     "info": true,
+        //     "autoWidth": false,
+        //     "responsive": true,
+        // });
+    });
+</script>
 @yield("script")
+    <script>
+        $("li.nav-item a").each(function (){
+            $(this).parent("li").parent("ul").siblings("a").addClass("bg-gradient-secondary");
+        });
+        $("li.nav-item a").each(function (){
+            if (this.href == location.href) {
+                $(this).addClass("active");
+                $(this).parent("li").parent("ul").siblings("a").removeClass("bg-gradient-secondary").addClass("active").parent("li").addClass("menu-open");
+            }
+        });
+    </script>
+
 </body>
-
 </html>
-

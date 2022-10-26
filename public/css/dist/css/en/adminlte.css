@@ -10,6 +10,66 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+
+
+td input { /* this is for inputs inside of td to be as width as its column */
+    width: 100%;
+}
+
+td,th{
+    padding: 7px!important;
+}
+
+tr {
+    transition: background-color 0.2s ease-in-out;
+}
+
+/*tr:hover {*/
+/*    background-color: #b7c7f2;*/
+/*}*/
+
+
+.grid-button {
+    width: 16px;
+    height: 16px;
+    border: none;
+    cursor: pointer;
+    background-image: url(/images/icons/icons.png);
+    background-repeat: no-repeat;
+    background-color: transparent;
+    display:inline;
+}
+
+.grid-delete-button {
+    background-position: 0 -80px;
+    width: 16px;
+    height: 16px;
+}
+
+.grid-edit-button {
+    background-position: 0 -120px;
+    width: 16px;
+    height: 16px;
+}
+
+
+.selected {
+    background-color: #b7c7f2;
+}
+
+
+.img-profile {
+    height: 2rem;
+    width: 2rem;
+}
+
+.topbar-divider {
+    width: 0;
+    border-right: 1px solid #e3e6f0;
+    height: calc(4.375rem - 2rem);
+    margin: auto 1rem;
+}
+
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -53010,3 +53070,4 @@ a.text-muted:hover {
   border-color: #4b545c !important;
 }
 /*# sourceMappingURL=adminlte.css.map */
+

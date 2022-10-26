@@ -10,23 +10,34 @@
     @endsection
 
     @section('content')
+        @section("id"){{\App\Models\Product::withTrashed()->selectRaw("max(id) as id")->first()->id + 1}}@endsection
+
         <div class="container">
-            <div class="row">
+            @if(auth()->user()->getConfig("add_method") != "modal")
 
-                <div class="bg-gray-100 card o-hidden border-0 shadow-lg p-4 col-lg-3 col-sm-12">
-                    <form action="{{route("product.storeProduct")}}" method="POST"  accept-charset="UTF-8" enctype="multipart/form-data">
-                        @csrf
-                        <x-forms.products-form>
-                            @section("id"){{\App\Models\Product::withTrashed()->selectRaw("max(id) as id")->first()->id + 1}}@endsection
-                        </x-forms.products-form>
-                        <input id="btn_add" class="btn btn-primary btn-block" type="submit" value={{__("global.create",[],session("lang"))}}>
-                    </form>
-                </div>
+                <div class="row">
+                    <div class="bg-gray-100 card o-hidden border-0 shadow-lg p-4 col-lg-3 col-sm-12">
+                        <form action="{{route("product.storeProduct")}}" method="POST"  accept-charset="UTF-8" enctype="multipart/form-data">
+                            @csrf
+                            <x-forms.products-form>
+                            </x-forms.products-form>
+                            <input id="btn_add" class="btn btn-primary btn-block" type="submit" value={{__("global.create",[],session("lang"))}}>
+                        </form>
+                    </div>
 
-                <div class="col-sm-0 col-lg-1"></div>
+                    <div class="col-sm-0 col-lg-1"></div>
 
-                <dev class="col-lg-8 col-sm-12">
-
+                    <div class="col-lg-8 col-sm-12">
+        @else
+            <div>
+                <div>
+                    <div class="form-group">
+                        <a id="btn-add" title="{{__("global.add",[],session("lang"))}}" class="btn btn-sm btn-info" href="#" data-toggle="modal" data-target="#addModal" data-route="{{route("product.storeProduct")}}">
+                            <i class="fas fa-plus"></i>
+                            {{__("global.add",[],session("lang"))}}
+                        </a>
+                    </div>
+        @endif
                     <div class="card shadow">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">{{__("global.products",[],session("lang"))}}</h6>
@@ -34,7 +45,7 @@
                         <div class="card-body">
 
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>{{__("global.id",[],session("lang"))}}</th>
@@ -72,15 +83,16 @@
                             </div>
                         </div>
                     </div>
-                </dev>
-
-
+                </div>
             </div>
         </div>
 
     @endsection
     @section("models")
         <x-models.delete-confirm-model></x-models.delete-confirm-model>
+        @if(auth()->user()->getConfig("add_method") == "modal")
+            <x-models.add-model :modelName="$modelName = 'product'"></x-models.add-model>
+        @endif
         <x-models.update-model :modelName="$modelName = 'product'"></x-models.update-model>
 
     @endsection

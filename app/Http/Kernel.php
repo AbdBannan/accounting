@@ -21,6 +21,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+
     ];
 
     /**
@@ -67,6 +68,6 @@ class Kernel extends HttpKernel
         "role" => \App\Http\Middleware\RoleMiddleWare::class,
         "activated" => \App\Http\Middleware\ActivatedMiddleWare::class,
         "saveCurrentRequest" => \App\Http\Middleware\SaveCurrentRequest::class,
-
+        "localizationMiddleWare" => \App\Http\Middleware\localizationMiddleWare::class,
     ];
 }

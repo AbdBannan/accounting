@@ -10,29 +10,36 @@
     @endsection
 
     @section('content')
-    <div class="container">
-        <div class="row">
-{{--            <div class="col-lg-3 col-sm-12"></div>--}}
-            <div class="col-lg-3 col-sm-12 bg-gray-100 card o-hidden border-0 shadow-lg p-4 ">
-                <form action="{{route("account.storeAccount")}}" method="POST">
-                    @csrf
-                    <x-forms.accounts-form>
-                        @section("id"){{\App\Models\Account::withTrashed()->selectRaw("max(id) as id")->first()->id + 1}}@endsection
-                    </x-forms.accounts-form>
-                    <input id="btn_add" class="btn btn-primary btn-block" type="submit" value={{__("global.create",[],session("lang"))}}>
-                </form>
-            </div>
 
-            <div style="height: 40px" class="col-sm-0 col-lg-1"></div>
+        @section("id"){{\App\Models\Account::withTrashed()->selectRaw("max(id) as id")->first()->id + 1}}@endsection
 
-            <div class="col-lg-8 col-sm-12">
+        <div class="container">
+        @if(auth()->user()->getConfig("add_method") != "modal")
+            <div class="row">
+                <div class="col-lg-3 col-sm-12 bg-gray-100 card o-hidden border-0 shadow-lg p-4 ">
+                    <form action="{{route("account.storeAccount")}}" method="POST">
+                        @csrf
+                        <x-forms.accounts-form>
+                        </x-forms.accounts-form>
+                        <input id="btn_add" class="btn btn-primary btn-block" type="submit" value={{__("global.create",[],session("lang"))}}>
+                    </form>
+                </div>
 
-{{--                <div class="form-group">--}}
-{{--                    <a id="btn-add" title="{{__("global.add",[],session("lang"))}}" class="btn btn-sm btn-info" href="#" data-toggle="modal" data-target="#addModal" data-route="{{route("account.storeAccount")}}">--}}
-{{--                        <i class="fas fa-plus"></i>--}}
-{{--                        {{__("global.add",[],session("lang"))}}--}}
-{{--                    </a>--}}
-{{--                </div>--}}
+                <div style="height: 40px" class="col-sm-0 col-lg-1"></div>
+
+                <div class="col-lg-8 col-sm-12">
+
+
+        @else
+            <div>
+                <div>
+                    <div class="form-group">
+                        <a id="btn-add" title="{{__("global.add",[],session("lang"))}}" class="btn btn-sm btn-info" href="#" data-toggle="modal" data-target="#addModal" data-route="{{route("account.storeAccount")}}">
+                            <i class="fas fa-plus"></i>
+                            {{__("global.add",[],session("lang"))}}
+                        </a>
+                    </div>
+        @endif
                 <div class="card shadow">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">{{__("global.accounts",[],session("lang"))}}</h6>
@@ -40,7 +47,7 @@
                     <div class="card-body" >
 
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
                                     <th>{{__("global.id",[],session("lang"))}}</th>
@@ -94,7 +101,9 @@
     @endsection
     @section("models")
         <x-models.delete-confirm-model></x-models.delete-confirm-model>
-{{--        <x-models.add-model :modelName="$modelName = 'account'"></x-models.add-model>--}}
+        @if(auth()->user()->getConfig("add_method") == "modal")
+            <x-models.add-model :modelName="$modelName = 'account'"></x-models.add-model>
+        @endif
         <x-models.update-model :modelName="$modelName = 'account'"></x-models.update-model>
     @endsection
     @section("script")

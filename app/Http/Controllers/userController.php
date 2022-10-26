@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Config;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -165,7 +166,7 @@ class userController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Account $account
+     * @param User $account
      * @return \Illuminate\Http\Response
      */
     public function softDeleteUser(User $user)
@@ -233,13 +234,35 @@ class userController extends Controller
     }
 
     public function trackUserActivity(User $user){
-        $user->config()->detach(Config::where("name","user_activity_log")->first()->id);
-        $user->config()->attach(Config::where("name","user_activity_log")->first()->id,["value"=>"true"]);
+        $name = "user_activity_log";
+        $config_type = "admin_control";
+        if (!isset(Config::where("name",$name)->first()->name)){
+            Config::create(
+                [
+                    "name" => $name,
+                    "controlled_by" => "user",
+                    "type" => $config_type
+                ]
+            );
+        }
+        $user->config()->detach(Config::where("name",$name)->first()->id);
+        $user->config()->attach(Config::where("name",$name)->first()->id,["value"=>"true"]);
     }
 
     public function noTrackUserActivity(User $user){
-        $user->config()->detach(Config::where("name","user_activity_log")->first()->id);
-        $user->config()->attach(Config::where("name","user_activity_log")->first()->id,["value"=>"false"]);
+        $name = "user_activity_log";
+        $config_type = "admin_control";
+        if (!isset(Config::where("name",$name)->first()->name)){
+            Config::create(
+                [
+                    "name" => $name,
+                    "controlled_by" => "user",
+                    "type" => $config_type
+                ]
+            );
+        }
+        $user->config()->detach(Config::where("name",$name)->first()->id);
+        $user->config()->attach(Config::where("name",$name)->first()->id,["value"=>"false"]);
     }
 
 }

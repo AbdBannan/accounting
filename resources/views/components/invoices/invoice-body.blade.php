@@ -119,7 +119,7 @@
         <div class="card-body">
 
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+                <table class="table table-bordered table-striped" id="dataTable1" width="100%" cellspacing="0">
                     <thead>
                     <tr>
 {{--                        <th>{{__("global.invoice_id",[],session("lang"))}}</th>--}}

@@ -22,7 +22,7 @@ use Prologue\Alerts\Facades\Alert;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware(["auth","saveCurrentRequest"])->group(function (){
+Route::middleware(["auth","localizationMiddleWare","saveCurrentRequest"])->group(function (){
     Route::get('/',function () {
         return view('dashboard');
     });

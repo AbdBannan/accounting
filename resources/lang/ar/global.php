@@ -13,6 +13,7 @@ return [
     |
     */
     'category' => 'المجموعة',
-    'myPassword' => 'The provided password is incorrect.'
+    'myPassword' => 'The provided password is incorrect.',
 
+    'fixed' => 'ثابت',
 ];

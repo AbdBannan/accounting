@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class configController extends Controller
 {
     public function index(){
-        $config = auth()->user()->config()->where("type","global")->get();
+        $config = auth()->user()->config()->where("type","!=","admin_controle")->get();
         $conf = [];
         foreach ($config as $cfg) {
             $conf[$cfg->name] = $cfg->pivot->value;
@@ -21,12 +21,26 @@ class configController extends Controller
     }
 
     public function store(Request $request){
-//        dd($request->all());
-        auth()->user()->config()->detach();
+        $config_type = $request->config_type;
+        unset($request["config_type"]);
+        unset($request["_token"]);
         foreach ($request->all() as $name=>$value){
-            if ($name != "_token"){
-                $result1 = auth()->user()->config()->attach(Config::where("name",$name)->first()->id,["value"=>$value]);
+            if (!isset(Config::where("name",$name)->first()->name)){
+                Config::create(
+                    [
+                        "name" => $name,
+                        "controlled_by" => "user",
+                        "type" => $config_type
+                    ]
+                );
             }
+        }
+//        auth()->user()->config()->where("type",$config_type)->detach();
+        foreach (auth()->user()->config->where("type",$config_type) as $config){
+            auth()->user()->config()->detach($config->id);
+        }
+        foreach ($request->all() as $name=>$value){
+            $result1 = auth()->user()->config()->attach(Config::where("name",$name)->first()->id,["value"=>$value]);
         }
         globalFunctions::flashMessage("save",true,"config");
         globalFunctions::registerUserActivityLog("updated","config",auth()->user()->id);
