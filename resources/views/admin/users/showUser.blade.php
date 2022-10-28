@@ -28,7 +28,7 @@
                                     <input type="hidden" name="_method" value="PUT">
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input id="first_name" type="text" class="form-control form-control-user @error('first_name') is-invalid @enderror" placeholder="first name" name="first_name" value="{{ $user->first_name }}" autocomplete="first_name" autofocus>
+                                            <input id="first_name" type="text" class="form-control form-control-user @error('first_name') is-invalid @enderror" placeholder="{{__("global.first_name",[],session("lang"))}}" name="first_name" value="{{ $user->first_name }}" autocomplete="first_name" autofocus>
                                             @error('first_name')
                                             <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -36,7 +36,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-sm-6">
-                                            <input id="last_name" type="text" class="form-control form-control-user @error('last_name') is-invalid @enderror" placeholder="last name" name="last_name" value="{{ $user->last_name }}" autocomplete="last_name" autofocus>
+                                            <input id="last_name" type="text" class="form-control form-control-user @error('last_name') is-invalid @enderror" placeholder="{{__("global.last_name",[],session("lang"))}}" name="last_name" value="{{ $user->last_name }}" autocomplete="last_name" autofocus>
                                             @error('last_name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -46,7 +46,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <input id="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ $user->email }}" placeholder="Enter Email Address..." autocomplete="email">
+                                        <input id="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ $user->email }}" placeholder="{{__("global.enter_email_address",[],session("lang"))}}" autocomplete="email">
                                         @error('email')
                                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -57,7 +57,7 @@
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
                                             <div class="form-group">
-                                                <input id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password" placeholder="password" autocomplete="new-password">
+                                                <input id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password" placeholder="{{__("global.password",[],session("lang"))}}" autocomplete="new-password">
                                                 @error('password')
                                                 <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -66,11 +66,11 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <input id="password-confirm"  name="password_confirmation" type="password" class="form-control form-control-user" placeholder="confirm your password" autocomplete="new-password">
+                                                <input id="password-confirm"  name="password_confirmation" type="password" class="form-control form-control-user" placeholder="{{__("global.confirm_your_password",[],session("lang"))}}" autocomplete="new-password">
                                             </div>
 
                                             <div class="form-group">
-                                                <input id="file" type="file" class=" form-control-file" name="file" placeholder="profile image">
+                                                <input id="file" type="file" class=" form-control-file" name="file" placeholder="{{__("profile_image",[],session("lang"))}}">
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
@@ -95,7 +95,7 @@
 
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">{{__("global.roles",[],session("lang"))}}</h6>
                             </div>
                             <div class="card-body">
 
@@ -127,16 +127,16 @@
                                                             @endforeach
 
                                                             @if($found == true)
-                                                                <a id="btn_detach_role" route-attr="{{route("user.detachRole",[$user->id,$role->id])}}" class="btn btn-success">detach</a>
-                                                                <a id="btn_attach_role" route-attr="{{route("user.attachRole",[$user->id,$role->id])}}" hidden="true" class="btn btn-danger">attach</a>
+                                                                <a id="btn_detach_role" route-attr="{{route("user.detachRole",[$user->id,$role->id])}}" class="btn btn-sm btn-success">{{__("global.detach",[],session("lang"))}}</a>
+                                                                <a id="btn_attach_role" route-attr="{{route("user.attachRole",[$user->id,$role->id])}}" hidden="true" class="btn btn-sm btn-danger">{{__("global.attach",[],session("lang"))}}</a>
                                                             @else
-                                                                <a id="btn_detach_role" route-attr="{{route("user.detachRole",[$user->id,$role->id])}}" hidden="true" class="btn btn-success">detach</a>
-                                                                <a id="btn_attach_role" route-attr="{{route("user.attachRole",[$user->id,$role->id])}}" class="btn btn-danger">attach</a>
+                                                                <a id="btn_detach_role" route-attr="{{route("user.detachRole",[$user->id,$role->id])}}" hidden="true" class="btn btn-sm btn-success">{{__("global.detach",[],session("lang"))}}</a>
+                                                                <a id="btn_attach_role" route-attr="{{route("user.attachRole",[$user->id,$role->id])}}" class="btn btn-sm btn-danger">attach</a>
                                                             @endif
 
                                                         @else
-                                                            <a id="btn_detach_role" route-attr="{{route("user.detachRole",[$user->id,$role->id])}}" hidden="true" class="btn btn-success">detach</a>
-                                                            <a id="btn_attach_role" route-attr="{{route("user.attachRole",[$user->id,$role->id])}}" class="btn btn-danger">attach</a>
+                                                            <a id="btn_detach_role" route-attr="{{route("user.detachRole",[$user->id,$role->id])}}" hidden="true" class="btn btn-sm btn-success">{{__("global.detach",[],session("lang"))}}</a>
+                                                            <a id="btn_attach_role" route-attr="{{route("user.attachRole",[$user->id,$role->id])}}" class="btn btn-sm btn-danger">attach</a>
                                                         @endif
                                                     </td>
                                                 </tr>

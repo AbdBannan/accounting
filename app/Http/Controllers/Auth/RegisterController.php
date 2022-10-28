@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\functions\globalFunctions;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
@@ -78,8 +79,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             "profile_image" => isset($data["file"]) ? request()->file("file")->getClientOriginalName() : "systemImages/default_user_img.png"
         ]);
-        $user->config()->attach(1,["value","arabic"]);
-        $user->config()->attach(5,["value","Syrian"]);
+        globalFunctions::initialUserConfig($user);
         return $user;
     }
 }

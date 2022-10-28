@@ -13,8 +13,11 @@ return [
     |
     */
     //    -------- account section --------    //
-    'created_successfully'=>' تمت إصافة :attribute بنجاح',
+    'created_successfully'=>':attribute has been created successfully',
     'not_created_successfully'=>':attribute has not been created successfully',
+
+    'saved_successfully'=>':attribute has been saved successfully',
+    'not_saved_successfully'=>':attribute has not been saved successfully',
 
 
     'deleted_successfully'=>':attribute has been deleted successfully',

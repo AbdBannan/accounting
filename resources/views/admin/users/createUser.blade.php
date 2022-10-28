@@ -17,7 +17,7 @@
                                     <h1 class="h4 text-gray-900 mb-4">{{__("global.new_user")}}</h1>
                                 </div>
 
-                                <form method="POST" class="user" action="{{ route('user.storeUser',$user) }}" accept-charset="UTF-8" enctype="multipart/form-data">
+                                <form method="POST" class="user" action="{{ route('user.storeUser') }}" accept-charset="UTF-8" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
@@ -84,40 +84,42 @@
                         </div>
 
                     </div>
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-                        </div>
-                        <div class="card-body">
+{{--                    <div class="card shadow mb-4">--}}
+{{--                        <div class="card-header py-3">--}}
+{{--                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>--}}
+{{--                        </div>--}}
+{{--                        <div class="card-body">--}}
 
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>{{__("global.id",[],session("lang"))}}</th>
-                                        <th>{{__("global.role_name",[],session("lang"))}}</th>
-                                        <th>{{__("global.assign_deassign_role",[],session("lang"))}}</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
+{{--                            <div class="table-responsive">--}}
+{{--                                <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">--}}
+{{--                                    <thead>--}}
+{{--                                    <tr>--}}
+{{--                                        <th>{{__("global.id",[],session("lang"))}}</th>--}}
+{{--                                        <th>{{__("global.role_name",[],session("lang"))}}</th>--}}
+{{--                                        <th>{{__("global.assign_deassign_role",[],session("lang"))}}</th>--}}
+{{--                                    </tr>--}}
+{{--                                    </thead>--}}
+{{--                                    <tbody>--}}
 
-                                    @foreach (App\Models\Role::all() as $role)
+{{--                                    @foreach (App\Models\Role::all() as $role)--}}
 
-                                        <tr>
-                                            <td>{{$role->id}}</td>
-                                            <td>{{$role->name}}</td>
-                                            <td class="text-center">
-{{--                                                <a id="btn-detachRole" route-attr="{{route("user.detachRole",[$user->id,$role->id])}}" class="btn btn-success">detach</a>--}}
-{{--                                                <a id="btn-attachRole" route-attr="{{route("user.attachRole",[$user->id,$role->id])}}" hidden="true" class="btn btn-danger">attach</a>--}}
-                                            </td>
-                                        </tr>
-                                    @endforeach
+{{--                                        <tr>--}}
+{{--                                            <td>{{$role->id}}</td>--}}
+{{--                                            <td>{{$role->name}}</td>--}}
+{{--                                            <td class="text-center">--}}
+{{--                                                @if($role->name != "admin")--}}
+{{--    --}}{{--                                                <a id="btn-attachRole" route-attr="{{route("user.attachRole",[$user->id,$role->id])}}" hidden="false" class="btn btn-danger">attach</a>--}}
+{{--                                                    <a id="btn-attachRole" route-attr="" class="btn btn-sm btn-danger">attach</a>--}}
+{{--                                                @endif--}}
+{{--                                            </td>--}}
+{{--                                        </tr>--}}
+{{--                                    @endforeach--}}
 
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+{{--                                    </tbody>--}}
+{{--                                </table>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                 </div>
             </div>
 

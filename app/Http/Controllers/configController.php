@@ -25,15 +25,20 @@ class configController extends Controller
         unset($request["config_type"]);
         unset($request["_token"]);
         foreach ($request->all() as $name=>$value){
-            if (!isset(Config::where("name",$name)->first()->name)){
-                Config::create(
-                    [
-                        "name" => $name,
-                        "controlled_by" => "user",
-                        "type" => $config_type
-                    ]
-                );
-            }
+            globalFunctions::createNewConfigIfNotExist( [
+                "name" => $name,
+                "controlled_by" => "user",
+                "type" => $config_type
+            ]);
+//            if (!isset(Config::where("name",$name)->first()->name)){
+//                Config::create (
+//                    [
+//                        "name" => $name,
+//                        "controlled_by" => "user",
+//                        "type" => $config_type
+//                    ]
+//                );
+//            }
         }
 //        auth()->user()->config()->where("type",$config_type)->detach();
         foreach (auth()->user()->config->where("type",$config_type) as $config){

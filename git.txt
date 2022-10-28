@@ -1,4 +1,4 @@
-git init=> initialize
+git init => initialize
 tauch file_name => create file
 git status
 git add .
@@ -10,7 +10,7 @@ ls -ls => returns all file in this directory that is not hidden
 ls -la => returns all file in this directory that is hidden
 rm -rf file_name => rf delete the direcoties and the file in them
 rm -rf => delete all
-rm file_name => for deleting just files
+rm file_n jame => for deleting just files
 git branch branch_name => add a new branch
 git branch t the current branch
 git checkout branch_name => switch the current branch into the branch_name

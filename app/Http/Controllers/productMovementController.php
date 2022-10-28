@@ -7,6 +7,7 @@ use App\Models\Account;
 use App\Models\Journal;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class productMovementController extends Controller
@@ -81,66 +82,70 @@ class productMovementController extends Controller
         $ctr = 1;
         $data = $request->all();
         $error = "none";
-        while (count($data)>6) {
-            $result1 = $result2 = null;
-            if (isset($data["moved_product_name_".$ctr])){
-                $record1 = new Journal();
-                $record1["invoice_id"] = $data["invoice_id"];
-                $record1["line"] = $ctr;
-                $record1["debit"] = 0;
-                $record1["credit"] = 0;
-                $record1["second_part_id"] = Product::where("name",$data["moved_to_product_name_".$ctr])->first()->id;
-                $record1["second_part_name"] = $data["moved_to_product_name_".$ctr];
-                $record1["product_id"] = Product::where("name",$data["moved_product_name_".$ctr])->first()->id;
-                $record1["product_name"] = $data["moved_product_name_".$ctr];
-                $record1["price"] = $data["price_".$ctr];
-                $record1["quantity"] = $data["quantity_".$ctr];
-                $record1["in_quantity"] = 0;
-                $record1["out_quantity"] = $data["quantity_".$ctr];
-                $record1["pound_type"] = $data["pound_type"];
-                $record1["num_for_pound"] = globalFunctions::getEquivalentPoundValue($data["pound_type"]);
-                $record1["notes"] = $data["notes_".$ctr];
-                $record1["invoice_type"] = "moved";
-                $record1["detail"] = 0;
-                $record1["image"] = $file_name;
-                $record1["closing_date"] = $data["closing_date"];
+        try {
+            DB::beginTransaction();
+            while (count($data)>6) {
+                $result1 = $result2 = null;
+                if (isset($data["moved_product_name_".$ctr])){
+                    $record1 = new Journal();
+                    $record1["invoice_id"] = $data["invoice_id"];
+                    $record1["line"] = $ctr;
+                    $record1["debit"] = 0;
+                    $record1["credit"] = 0;
+                    $record1["second_part_id"] = Product::where("name",$data["moved_to_product_name_".$ctr])->first()->id;
+                    $record1["second_part_name"] = $data["moved_to_product_name_".$ctr];
+                    $record1["product_id"] = Product::where("name",$data["moved_product_name_".$ctr])->first()->id;
+                    $record1["product_name"] = $data["moved_product_name_".$ctr];
+                    $record1["price"] = $data["price_".$ctr];
+                    $record1["quantity"] = $data["quantity_".$ctr];
+                    $record1["in_quantity"] = 0;
+                    $record1["out_quantity"] = $data["quantity_".$ctr];
+                    $record1["pound_type"] = $data["pound_type"];
+                    $record1["num_for_pound"] = globalFunctions::getEquivalentPoundValue($data["pound_type"]);
+                    $record1["notes"] = $data["notes_".$ctr];
+                    $record1["invoice_type"] = "moved";
+                    $record1["detail"] = 0;
+                    $record1["image"] = $file_name;
+                    $record1["closing_date"] = $data["closing_date"];
 //sub of balance
-                $result1 =  $record1->save();
+                    $result1 =  $record1->save();
 
-                $record2 = new Journal();
-                $record2["invoice_id"] = $data["invoice_id"];
-                $record2["line"] = $ctr;
-                $record2["debit"] = 0;
-                $record2["credit"] = 0;
-                $record2["second_part_id"] = Product::where("name",$data["moved_product_name_".$ctr])->first()->id;
-                $record2["second_part_name"] = $data["moved_product_name_".$ctr];
-                $record2["product_id"] = Product::where("name",$data["moved_to_product_name_".$ctr])->first()->id;
-                $record2["product_name"] = $data["moved_to_product_name_".$ctr];
-                $record2["price"] = $data["price_".$ctr];
-                $record2["quantity"] = $data["quantity_".$ctr];
-                $record2["in_quantity"] = $data["quantity_".$ctr];
-                $record2["out_quantity"] = 0;
-                $record2["pound_type"] = $data["pound_type"];
-                $record2["num_for_pound"] = globalFunctions::getEquivalentPoundValue($data["pound_type"]);
-                $record2["notes"] = $data["notes_".$ctr];
-                $record2["invoice_type"] = "moved_to";
-                $record2["detail"] = 0;
-                $record2["image"] = $file_name;
-                $record2["closing_date"] = $data["closing_date"];
-                $result2 = $record2->save();
+                    $record2 = new Journal();
+                    $record2["invoice_id"] = $data["invoice_id"];
+                    $record2["line"] = $ctr;
+                    $record2["debit"] = 0;
+                    $record2["credit"] = 0;
+                    $record2["second_part_id"] = Product::where("name",$data["moved_product_name_".$ctr])->first()->id;
+                    $record2["second_part_name"] = $data["moved_product_name_".$ctr];
+                    $record2["product_id"] = Product::where("name",$data["moved_to_product_name_".$ctr])->first()->id;
+                    $record2["product_name"] = $data["moved_to_product_name_".$ctr];
+                    $record2["price"] = $data["price_".$ctr];
+                    $record2["quantity"] = $data["quantity_".$ctr];
+                    $record2["in_quantity"] = $data["quantity_".$ctr];
+                    $record2["out_quantity"] = 0;
+                    $record2["pound_type"] = $data["pound_type"];
+                    $record2["num_for_pound"] = globalFunctions::getEquivalentPoundValue($data["pound_type"]);
+                    $record2["notes"] = $data["notes_".$ctr];
+                    $record2["invoice_type"] = "moved_to";
+                    $record2["detail"] = 0;
+                    $record2["image"] = $file_name;
+                    $record2["closing_date"] = $data["closing_date"];
+                    $result2 = $record2->save();
 
-
-                if ($result1 == null || $result2 == null) {
-                    $error = "adding_error";
+                    unset($data["moved_product_name_".$ctr]);
+                    unset($data["moved_to_product_name_".$ctr]);
+                    unset($data["quantity_".$ctr]);
+                    unset($data["price_".$ctr]);
+                    unset($data["total_price_".$ctr]);
+                    unset($data["notes_".$ctr]);
                 }
-                unset($data["moved_product_name_".$ctr]);
-                unset($data["moved_to_product_name_".$ctr]);
-                unset($data["quantity_".$ctr]);
-                unset($data["price_".$ctr]);
-                unset($data["total_price_".$ctr]);
-                unset($data["notes_".$ctr]);
+                $ctr+=1;
             }
-            $ctr+=1;
+            DB::commit();
+        }
+        catch (\PDOException $e){
+            DB::rollBack();
+            $error = "adding_error";
         }
         if ($ctr == 1)
             $error = "no_item_error";

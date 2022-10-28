@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html @section("lang_dir") lang="{{ app()->getLocale() }}" @show>
+<html lang="{{ app()->getLocale() }}" @show>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield("title")</title>
-    @section("header_includes")@show
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -15,16 +14,17 @@
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="{{asset("css/plugins/overlayScrollbars/css/OverlayScrollbars.min.css")}}">
 
-
     @if(auth()->user()->getConfig("language") == "arabic")
-        <!-- Bootstrap 4 RTL -->
-        <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
-        <!-- Custom style for RTL -->
-        <link rel="stylesheet" href="{{asset("css/dist/css/ar/custom.css")}}">
-        <!-- Theme style -->
+{{--        <!-- Bootstrap 4 RTL -->--}}
+{{--        <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">--}}
+
+        <!-- Theme style RTL -->
         <link rel="stylesheet" href="{{asset("css/dist/css/ar/adminlte.css")."?var=".rand()}}">
+
+        <!-- Custom style for RTL -->
+        <link rel="stylesheet" href="{{asset("css/dist/css/ar/custom.css")."?var=".rand()}}">
     @else
-        <!-- Theme style -->
+        <!-- Theme style RTL -->
         <link rel="stylesheet" href="{{asset("css/dist/css/en/adminlte.css")."?var=".rand()}}">
     @endif
 
@@ -32,16 +32,24 @@
 {{--    <link href={{asset("vendor/datatables/dataTables.bootstrap4.css")}} rel="stylesheet">--}}
 
     <!-- DataTables -->
-    <link rel="stylesheet" href="{{asset("css/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css")}}">
+    @if(auth()->user()->getConfig("language") == "arabic")
+        <link rel="stylesheet" href="{{asset("css/plugins/datatables-bs4/css/ar/dataTables.bootstrap4.css")}}">
+    @else
+        <link rel="stylesheet" href="{{asset("css/plugins/datatables-bs4/css/en/dataTables.bootstrap4.css")}}">
+    @endif
     <link rel="stylesheet" href="{{asset("css/plugins/datatables-responsive/css/responsive.bootstrap4.min.css")}}">
     <link rel="stylesheet" href="{{asset("css/plugins/datatables-buttons/css/buttons.bootstrap4.min.css")}}">
+
+
     @yield("style")
 </head>
 
-{{--@php--}}
-{{--    $lang = (auth()->user()->getConfig("language") == "english")? "en": "ar" ;--}}
-{{--    app()->setLocale($lang);--}}
-{{--@endphp--}}
+@php
+    $lang = (auth()->user()->getConfig("language") == "english")? "en": "ar" ;
+ //   app()->setLocale($lang);
+
+    session(["lang"=>$lang]);
+@endphp
 <body class="hold-transition
     @if(auth()->user()->getConfig("dark_mode") !== null) dark-mode @endif
     @if(auth()->user()->getConfig("collapsed") !== null) sidebar-collapse @endif
@@ -95,10 +103,10 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">Home</a>
+                    <a href="{{route("dashboard")}}" class="nav-link">{{__("global.home",[],session("lang"))}}</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
+                    <a href="#" class="nav-link">{{__("global.contact",[],session("lang"))}}</a>
                 </li>
             </ul>
 
@@ -237,23 +245,23 @@
                          aria-labelledby="userDropdown">
                         <a class="dropdown-item" href="{{route("user.showUser",auth()->user())}}">
                             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Profile
+                            {{__("global.profile",[],session("lang"))}}
                         </a>
                         <a class="dropdown-item" href="{{route("config.viewUserConfig")}}">
                             <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Settings
+                            {{__("global.settings",[],session("lang"))}}
                         </a>
                         @if(auth()->user()->hasRole("admin"))
                             <a class="dropdown-item" href="{{route("activityLog.viewUsersActivityLog")}}">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                {{__("Activity Log")}}
+                                {{__("global.activity_log",[],session("lang"))}}
                             </a>
                         @endif
                         @yield("recycle_bin")
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                            {{__("Logout")}}
+                            {{__("global.logout",[],session("lang"))}}
                         </a>
                     </div>
                 </li>
@@ -271,7 +279,7 @@
             @if(auth()->user()->getConfig("dark_sidebar_variants") !== null and auth()->user()->getConfig("dark_sidebar_variants") != "None Selected") sidebar-dark-{{strtolower(auth()->user()->getConfig("dark_sidebar_variants"))}} @endif
             elevation-4">
             <!-- Brand Logo -->
-            <a href="{{route("dashboard")}}" class="brand-link @if(auth()->user()->getConfig("brand_small_text_options") !== null) text-sm @endif navbar-{{strtolower(auth()->user()->getConfig("brand_logo_variants"))}}">
+            <a  class="brand-link @if(auth()->user()->getConfig("brand_small_text_options") !== null) text-sm @endif navbar-{{strtolower(auth()->user()->getConfig("brand_logo_variants"))}}">
                 <img src="{{asset("images/systemImages/AdminLTELogo.png")}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">@yield("title","accounting")</span>
             </a>
@@ -360,7 +368,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{backpack_url('backup') }}" class="nav-link">
+                                    <a href="{{route("backup.view")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>{{__("global.backups",[],session("lang"))}}</p>
                                     </a>
@@ -371,7 +379,7 @@
                         {{--resources--}}
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon far fa-envelope"></i>
+                                <i class="nav-icon fas fa-file-invoice"></i>
                                 <p>
                                     {{__("global.resources",[],session("lang"))}}
                                     <i class="fas fa-angle-left right"></i>
@@ -404,9 +412,9 @@
                         {{--new invoices--}}
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-book"></i>
+                                <i class="nav-icon fas fa-file-invoice"></i></i>
                                 <p>
-                                    {{__("global.add_new_invoice")}}
+                                    {{__("global.add_new_invoice",[],session("lang"))}}
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
@@ -414,25 +422,25 @@
                                 <li class="nav-item">
                                     <a href="{{route("invoice.createInvoice","sale")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.sale")}}</p>
+                                        <p>{{__("global.sale",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("invoice.createInvoice","purchase")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.purchase")}}</p>
+                                        <p>{{__("global.purchase",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("invoice.createInvoice","sale_return")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.sale_return")}}</p>
+                                        <p>{{__("global.sale_return",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("invoice.createInvoice","purchase_return")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.purchase_return")}}</p>
+                                        <p>{{__("global.purchase_return",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                             </ul>
@@ -440,9 +448,9 @@
                         {{--view invoices--}}
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-book"></i>
+                                <i class="nav-icon fas fa-file-invoice"></i></i>
                                 <p>
-                                    {{__("global.view_invoices")}}
+                                    {{__("global.view_invoices",[],session("lang"))}}
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
@@ -450,25 +458,25 @@
                                 <li class="nav-item">
                                     <a href="{{route("invoice.viewInvoices","sale")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.sale")}}</p>
+                                        <p>{{__("global.sale",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("invoice.viewInvoices","purchase")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.purchase")}}</p>
+                                        <p>{{__("global.purchase",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("invoice.viewInvoices","sale_return")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.sale_return")}}</p>
+                                        <p>{{__("global.sale_return",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("invoice.viewInvoices","purchase_return")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.purchase_return")}}</p>
+                                        <p>{{__("global.purchase_return",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                             </ul>
@@ -476,9 +484,9 @@
                         {{--search edit delete an invoices--}}
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-book"></i>
+                                <i class="nav-icon fas fa-file-invoice"></i>
                                 <p>
-                                    {{__("global.search_edit_delete")}}
+                                    {{__("global.search_edit_delete",[],session("lang"))}}
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
@@ -486,13 +494,13 @@
                                 <li class="nav-item">
                                     <a href="{{route("invoice.showSearchInvoice","none")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.search_edit_delete")}}</p>
+                                        <p>{{__("global.search_edit_delete",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("invoice.viewRecyclebin","none")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.recyclebin")}}</p>
+                                        <p>{{__("global.recyclebin",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                             </ul>
@@ -502,9 +510,9 @@
 
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-book"></i>
+                                <i class="nav-icon fas fa-cash-register"></i>
                                 <p>
-                                    {{__("global.cash_invoices")}}
+                                    {{__("global.cash_invoices",[],session("lang"))}}
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
@@ -513,40 +521,40 @@
                                 <li class="nav-item">
                                     <a href="{{route("invoice.createCashInvoice")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        {{__("global.add_new_cash_invoice")}}
+                                        <p>{{__("global.add_new_cash_invoice",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                                 {{--view cash invoices--}}
                                 <li class="nav-item">
                                     <a href="{{route("invoice.viewCashInvoices")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        {{__("global.view_cash_invoices")}}
+                                        <p>{{__("global.view_cash_invoices",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                                 {{--search edit delete cash invoice--}}
                                 <li class="nav-item">
                                     <a href="{{route("invoice.showSearchCashInvoice")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        {{__("global.search_edit_delete_cash_invoice")}}
+                                        <p>{{__("global.search_edit_delete_cash_invoice",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                                 {{--recyclebin cash invoices--}}
                                 <li class="nav-item">
                                     <a href="{{route("invoice.viewCashRecyclebin")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        {{__("global.recyclebin")}}
+                                        <p>{{__("global.recyclebin",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
 
-                        <li class="nav-header">{{__("global.cash_invoices",[],session("lang"))}}</li>
+                        <li class="nav-header">{{__("global.product_movement_invoices",[],session("lang"))}}</li>
 
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-book"></i>
                                 <p>
-                                    {{__("global.product_movement_invoices")}}
+                                    {{__("global.product_movement_invoices",[],session("lang"))}}
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
@@ -555,28 +563,28 @@
                                 <li class="nav-item">
                                     <a href="{{route("invoice.createProductMovementInvoice")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        {{__("global.add_new_product_movement_invoice")}}
+                                        <p>{{__("global.add_new_product_movement_invoice",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                                 {{--view product movement invoices--}}
                                 <li class="nav-item">
                                     <a href="{{route("invoice.viewProductMovementInvoices")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        {{__("global.view_product_movement_invoices")}}
+                                        <p>{{__("global.view_product_movement_invoices",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                                 {{--search edit delete product movement invoice--}}
                                 <li class="nav-item">
                                     <a href="{{route("invoice.showSearchProductMovementInvoice")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        {{__("global.search_edit_delete_product_movement_invoice")}}
+                                        <p>{{__("global.search_edit_delete_product_movement_invoice",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                                 {{--recyclebin product movement invoices--}}
                                 <li class="nav-item">
                                     <a href="{{route("invoice.viewProductMovementRecyclebin")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        {{__("global.recyclebin")}}
+                                        <p>{{__("global.recyclebin",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                             </ul>
@@ -606,7 +614,11 @@
                         {{--                            </form>--}}
                         {{--                        @endif--}}
                         <a id="back_arrow" href="#">
-                            <i class="fas fa-arrow-left"></i>
+                            @if(auth()->user()->getConfig("language") == "arabic")
+                                <i class="fas fa-arrow-right"></i>
+                            @else
+                                <i class="fas fa-arrow-left"></i>
+                            @endif
                         </a>
                     </div>
                     <!-- End Back Button-->
@@ -677,11 +689,10 @@
 </script>
 @if(auth()->user()->getConfig("language") == "arabic")
     <!-- Bootstrap 4 rtl -->
-    <script src="https://cdn.rtlcss.com/bootstrap/v4.2.1/js/bootstrap.min.js"></script>
-@else
-    {{--<!-- Bootstrap 4 -->--}}
-    <script src="{{asset("js/plugins/bootstrap/js/bootstrap.bundle.min.js")}}"></script>
+{{--    <script src="https://cdn.rtlcss.com/bootstrap/v4.2.1/js/bootstrap.min.js"></script>--}}
 @endif
+<!-- Bootstrap 4 -->
+<script src="{{asset("js/plugins/bootstrap/js/bootstrap.bundle.min.js")}}"></script>
 <!-- overlayScrollbars -->
 <script src="{{asset("js/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js")}}"></script>
 <!-- AdminLTE App -->
@@ -696,38 +707,38 @@
 
 {{--<table id="example1" class="table table-bordered table-striped">--}}
 <!-- DataTables  & Plugins -->
-<script src="{{asset("js/plugins/datatables/jquery.dataTables.min.js")}}"></script>
-<script src="{{asset("js/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js")}}"></script>
-<script src="{{asset("js/plugins/datatables-responsive/js/dataTables.responsive.min.js")}}"></script>
-<script src="{{asset("js/plugins/datatables-responsive/js/responsive.bootstrap4.min.js")}}"></script>
-<script src="{{asset("js/plugins/datatables-buttons/js/dataTables.buttons.min.js")}}"></script>
-<script src="{{asset("js/plugins/datatables-buttons/js/buttons.bootstrap4.min.js")}}"></script>
-<script src="{{asset("js/plugins/jszip/jszip.min.js")}}"></script>
-<script src="{{asset("js/plugins/pdfmake/pdfmake.min.js")}}"></script>
-<script src="{{asset("js/plugins/pdfmake/vfs_fonts.js")}}"></script>
-<script src="{{asset("js/plugins/datatables-buttons/js/buttons.html5.min.js")}}"></script>
-<script src="{{asset("js/plugins/datatables-buttons/js/buttons.print.min.js")}}"></script>
-<script src="{{asset("js/plugins/datatables-buttons/js/buttons.colVis.min.js")}}"></script>
-
-<script>
-    $(function () {
-        // $("#example1").DataTable({
-        //     "responsive": true, "lengthChange": true, "autoWidth": true,
-        //     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        // }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        // $('#dataTable').DataTable({
-        //     "paging": true,
-        //     "lengthChange": true,
-        //     "searching": true,
-        //     "ordering": true,
-        //     "info": true,
-        //     "autoWidth": false,
-        //     "responsive": true,
-        // });
-    });
-</script>
+{{--<script src="{{asset("js/plugins/datatables/jquery.dataTables.min.js")}}"></script>--}}
+{{--<script src="{{asset("js/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js")}}"></script>--}}
+{{--<script src="{{asset("js/plugins/datatables-responsive/js/dataTables.responsive.min.js")}}"></script>--}}
+{{--<script src="{{asset("js/plugins/datatables-responsive/js/responsive.bootstrap4.min.js")}}"></script>--}}
+{{--<script src="{{asset("js/plugins/datatables-buttons/js/dataTables.buttons.min.js")}}"></script>--}}
+{{--<script src="{{asset("js/plugins/datatables-buttons/js/buttons.bootstrap4.min.js")}}"></script>--}}
+{{--<script src="{{asset("js/plugins/jszip/jszip.min.js")}}"></script>--}}
+{{--<script src="{{asset("js/plugins/pdfmake/pdfmake.min.js")}}"></script>--}}
+{{--<script src="{{asset("js/plugins/pdfmake/vfs_fonts.js")}}"></script>--}}
+{{--<script src="{{asset("js/plugins/datatables-buttons/js/buttons.html5.min.js")}}"></script>--}}
+{{--<script src="{{asset("js/plugins/datatables-buttons/js/buttons.print.min.js")}}"></script>--}}
+{{--<script src="{{asset("js/plugins/datatables-buttons/js/buttons.colVis.min.js")}}"></script>--}}
 @yield("script")
     <script>
+        $(function () {
+            // $("#example1").DataTable({
+            //     "responsive": true, "lengthChange": true, "autoWidth": true,
+            //     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            // }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            // $('#dataTable').DataTable({
+            //     "paging": true,
+            //     "lengthChange": true,
+            //     "searching": true,
+            //     "ordering": true,
+            //     "info": true,
+            //     "autoWidth": false,
+            //     "responsive": true,
+            // });
+        });
+
+
+
         $("li.nav-item a").each(function (){
             $(this).parent("li").parent("ul").siblings("a").addClass("bg-gradient-secondary");
         });

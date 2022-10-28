@@ -10,7 +10,7 @@
     @endsection
     @section('content')
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <a class="btn btn-info m-3" href="{{route("user.createUser")}}">{{__("global.add_new_user",[],session("lang"))}}</a>
+            <a class="btn btn-info m-3" href="{{route("user.createUser")}}"><i class="fas fa-plus"></i> {{__("global.add_new_user",[],session("lang"))}}</a>
 
 {{--            <div>--}}
 {{--                <button id="btn-multi-delete" title="{{__("global.delete",[],session("lang"))}}" class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("user.softDeleteUser")}}" disabled>--}}

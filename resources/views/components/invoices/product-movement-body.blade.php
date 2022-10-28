@@ -77,7 +77,7 @@
 
                         <div>
                             <button form="aa" id="btn-add-item-to-invoice" class="btn btn-outline-success">{{__("global.add",[],session("lang"))}}</button>
-                            <input form="f" id="btn-reset" class="btn btn-outline-danger" type="reset" {{__("global.reset",[],session("lang"))}}>
+                            <input form="f" id="btn-reset" class="btn btn-outline-danger" type="reset" value="{{__("global.reset",[],session("lang"))}}" >
                         </div>
                     </div>
                 </div>

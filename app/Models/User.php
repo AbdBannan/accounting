@@ -76,7 +76,7 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         foreach ($this->roles as $role){
-            if ($role->name ==  "admin"){
+            if (strtolower($role->name) ==  "admin"){
                 return true;
             }
         }
@@ -84,7 +84,7 @@ class User extends Authenticatable
     }
     public function hasRole($role_name){
         foreach ($this->roles as $role){
-            if ($role->name ==  $role_name){
+            if (strtolower($role->name) == strtolower($role_name)){
                 return true;
             }
         }

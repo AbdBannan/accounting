@@ -48,7 +48,7 @@
                         </div>
                         <div class="col-md-3 col-sm-12">
                             <div class="form-group">
-                                <label style="font-size: large" for="second_part_name" >{{__("global.first_part",[],session("lang"))}}</label>
+                                <label style="font-size: large" for="second_part_name" >{{__("global.second_part",[],session("lang"))}}</label>
                                 <input form="f" id="second_part_name" name="second_part_name"  type="text" placeholder="" class="form-control dropdown-toggle" form="form" id="second_part_name" name="second_part_name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown-menu" class="dropdown-menu" aria-labelledby="second_part_name">
                                     @foreach(App\Models\Account::get() as $account)
@@ -71,7 +71,7 @@
                         <div>
                             <button form="aa" id="btn-add-item-to-invoice" class="btn btn-outline-success">{{__("global.add",[],session("lang"))}}</button>
                             {{--                                <button id="btn-add-new-item-to-edited-invoice" class="btn btn-outline-primary">{{__("global.new",[],session("lang"))}}</button>--}}
-                            <input form="f" id="btn-reset" class="btn btn-outline-danger" type="reset" {{__("global.reset",[],session("lang"))}}>
+                            <input form="f" id="btn-reset" class="btn btn-outline-danger" type="reset" value="{{__("global.reset",[],session("lang"))}}">
                         </div>
                     </div>
                 </div>

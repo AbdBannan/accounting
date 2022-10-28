@@ -36,9 +36,7 @@ class userController extends Controller
             'password' => Hash::make($request['password']),
             "profile_image" => isset($request["file"]) ? request()->file("file")->getClientOriginalName() : "systemImages/default_user_img.png"
         ]);
-
-        $result->config()->attach(1,["value","arabic"]);
-        $result->config()->attach(5,["value","Syrian"]);
+        globalFunctions::initialUserConfig($result);
 //        if ($result != null) {
 //            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.user",[],session("lang"))],session("lang")));
 //        } else {
@@ -88,7 +86,7 @@ class userController extends Controller
         $user->email = $request['email'];
 
         $result = null;
-        if ($user->isDirty(["firs_name","last_name","profile_image","email","password"])) {
+        if ($user->isDirty(["first_name","last_name","profile_image","email","password"])) {
             $result = $user->save();
 //            session()->flash("success",__("messages.updated_successfully",["attribute"=>__("global.user",[],session("lang"))],session("lang")));
         }
@@ -235,32 +233,32 @@ class userController extends Controller
 
     public function trackUserActivity(User $user){
         $name = "user_activity_log";
-        $config_type = "admin_control";
-        if (!isset(Config::where("name",$name)->first()->name)){
-            Config::create(
-                [
-                    "name" => $name,
-                    "controlled_by" => "user",
-                    "type" => $config_type
-                ]
-            );
-        }
+//        $config_type = "admin_control";
+////        if (!isset(Config::where("name",$name)->first()->name)){
+////            Config::create(
+////                [
+////                    "name" => $name,
+////                    "controlled_by" => "user",
+////                    "type" => $config_type
+////                ]
+////            );
+////        }
         $user->config()->detach(Config::where("name",$name)->first()->id);
         $user->config()->attach(Config::where("name",$name)->first()->id,["value"=>"true"]);
     }
 
     public function noTrackUserActivity(User $user){
         $name = "user_activity_log";
-        $config_type = "admin_control";
-        if (!isset(Config::where("name",$name)->first()->name)){
-            Config::create(
-                [
-                    "name" => $name,
-                    "controlled_by" => "user",
-                    "type" => $config_type
-                ]
-            );
-        }
+//        $config_type = "admin_control";
+//        if (!isset(Config::where("name",$name)->first()->name)){
+//            Config::create(
+//                [
+//                    "name" => $name,
+//                    "controlled_by" => "user",
+//                    "type" => $config_type
+//                ]
+//            );
+//        }
         $user->config()->detach(Config::where("name",$name)->first()->id);
         $user->config()->attach(Config::where("name",$name)->first()->id,["value"=>"false"]);
     }

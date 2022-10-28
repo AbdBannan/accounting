@@ -56,14 +56,13 @@ class backupController extends Controller
         // reverse the backups, so the newest one would be on top
         $this->data['backups'] = array_reverse($this->data['backups']);
         $this->data['title'] = 'Backups';
-
+        globalFunctions::registerUserActivityLog("seen_all","backups",null);
         return view('admin.backups.backups', $this->data);
     }
 
     public function create()
     {
 
-//        dd("asdfas");
         $message = 'success';
 
         try {
@@ -89,6 +88,7 @@ class backupController extends Controller
 
             return Response::make($e->getMessage(), 500);
         }
+        globalFunctions::registerUserActivityLog("create","backup",null);
 
         return back();
     }
@@ -106,6 +106,7 @@ class backupController extends Controller
         $can_download = config("filesystems.disks.$disk_name.driver") == 'local';
         if ($can_download) {
             if ($disk->exists($file_name)) {
+                globalFunctions::registerUserActivityLog("downloaded","backup",null);
                 if (method_exists($disk->getAdapter(), 'getPathPrefix')) {
                     $storage_path = $disk->getAdapter()->getPathPrefix();
                     return response()->download($storage_path . $file_name);
@@ -136,8 +137,7 @@ class backupController extends Controller
 
         if ($disk->exists($file_name)) {
             $disk->delete($file_name);
-
-
+            globalFunctions::registerUserActivityLog("deleted","backup",null);
             globalFunctions::flashMessage("delete",true,"backup");
         } else {
 //            abort(404, trans('backpack::backup.backup_doesnt_exist'));

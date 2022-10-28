@@ -14,7 +14,15 @@ return [
     */
 
     //    -------- account section --------    //
-
+    'home' => 'dashboard',
+    'contact' => 'contact',
+    'delete_date' => 'delete date',
+    'password' => 'password',
+    'confirm_your_password' => 'confirm your password',
+    'profile_image' => 'profile image',
+    'attach' =>'attach',
+    'detach' =>'detach',
+    'enter_email_address' => 'Enter Email Address...',
     'accounts' => 'accounts',
     'account' => 'account',
     'id' => 'id',
@@ -261,8 +269,8 @@ return [
     'add_method' => 'add method',
     'modal' => 'modal',
     'backup' => 'backup',
-    '' => '',
-    '' => '',
+    'settings' => 'settings',
+    'logout' => 'logout',
     '' => '',
     '' => '',
     '' => '',
