@@ -17,7 +17,7 @@ class configController extends Controller
         }
 
         globalFunctions::registerUserActivityLog("seen","config",auth()->user()->id);
-        return view("admin.config.config")->with("config",$conf);
+        return view("config.config")->with("config",$conf);
     }
 
     public function store(Request $request){

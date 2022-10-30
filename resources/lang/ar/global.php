@@ -14,6 +14,18 @@ return [
     */
 
     //    -------- account section --------    //
+
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    'select_logout_if_ready_to_end_session' => 'إضغط على زر تسجيل الخروج أدناه لإنهاء الجلسة الحالية.',
+    'ready_to_leave' => 'تأكيد تسجيل الخروج',
+    'version' => 'الإصدار',
+    'all_rights_reserved' => 'حقوق النشر محفوظة.',
+    'go' => 'إنطلق',
+    'first name' => 'الإسم',
+    'last name' => 'الكنية',
     'home' => 'الصفحة الرئيسية',
     'contact' => 'للتواصل',
     'delete_date' => 'تاريخ الحذف',
@@ -140,7 +152,7 @@ return [
     'product_discover' => 'كشوفات المواد',
     'roled' => 'مدورة',
     'hide_all' => 'إخفاء الكل',
-    'invoice_type' => 'نوف الفاتورة',
+    'invoice_type' => 'نوع الفاتورة',
     'store_has' => 'يوجد في المخزن',
     'store_not_has_product' => 'المخزن لا يحتوي على هذا المنتج',
     'store_is_down_by' => 'المخزن مكسور(مدين) بقيمة',
@@ -200,8 +212,8 @@ return [
     'language' => 'اللغة',
     'track_activity' => 'مراقبة حركة المستخدم',
     'config' => 'الإعدادات',
-    'track' => 'رصد',
-    'no_track' => 'عدم رصد',
+    'track' => 'مراقبة',
+    'no_track' => 'عدم المراقبة',
 //    'delete_selected' => '',
     'check_all' => 'إختيار الكل',
     'check_none' => 'إلغاء الكل',

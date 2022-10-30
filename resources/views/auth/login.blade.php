@@ -20,7 +20,7 @@
 
     {{--                                @error('email')--}}
     {{--                                    <span class="invalid-feedback" role="alert">--}}
-    {{--                                        <strong>{{ $message }}</strong>--}}
+    {{--                                        <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>--}}
     {{--                                    </span>--}}
     {{--                                @enderror--}}
     {{--                            </div>--}}
@@ -34,7 +34,7 @@
 
     {{--                                @error('password')--}}
     {{--                                    <span class="invalid-feedback" role="alert">--}}
-    {{--                                        <strong>{{ $message }}</strong>--}}
+    {{--                                        <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>--}}
     {{--                                    </span>--}}
     {{--                                @enderror--}}
     {{--                            </div>--}}
@@ -99,7 +99,7 @@
                                             <input id="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Enter Email Address..." autocomplete="email" autofocus>
                                             @error('email')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
                                                 </span>
                                             @enderror
                                         </div>
@@ -109,7 +109,7 @@
 
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
                                                 </span>
                                             @enderror
                                         </div>
@@ -190,7 +190,7 @@
 {{--                                        {!! Form::email("email","",["class"=>"form-control form-control-user","placeholder"=>"Enter Email Address..."]) !!}--}}
 {{--                                        @error('email')--}}
 {{--                                            <span class="invalid-feedback" role="alert">--}}
-{{--                                                <strong>{{ $message }}</strong>--}}
+{{--                                                <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>--}}
 {{--                                            </span>--}}
 {{--                                        @enderror--}}
 {{--                                    </div>--}}
@@ -198,7 +198,7 @@
 {{--                                        {!! Form::password("password",["class"=>"form-control form-control-user","placeholder"=>"Password"]) !!}--}}
 {{--                                        @error('password')--}}
 {{--                                            <span class="invalid-feedback" role="alert">--}}
-{{--                                                <strong>{{ $message }}</strong>--}}
+{{--                                                <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>--}}
 {{--                                            </span>--}}
 {{--                                        @enderror--}}
 {{--                                    </div>--}}

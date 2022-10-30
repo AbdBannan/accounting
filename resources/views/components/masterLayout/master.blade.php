@@ -46,7 +46,7 @@
 
 @php
     $lang = (auth()->user()->getConfig("language") == "english")? "en": "ar" ;
- //   app()->setLocale($lang);
+    app()->setLocale($lang);
 
     session(["lang"=>$lang]);
 @endphp
@@ -82,10 +82,16 @@
     <div class="wrapper">
 
         <!-- Preloader -->
+{{--        {{dd(session("is_first_load"))}}--}}
+        @if(!session("is_first_load"))
         <div class="preloader flex-column justify-content-center align-items-center">
             <img class="animation__shake" src="{{asset("images/systemImages/AdminLTELogo.png")}}" alt="AdminLTELogo" height="60" width="60">
         </div>
+        @endif
 
+        @php
+        session(["is_first_load"=>true])
+        @endphp
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand
         @if(auth()->user()->getConfig("drop_down_legacy_offset") !== null) dropdown-legacy @endif
@@ -279,10 +285,12 @@
             @if(auth()->user()->getConfig("dark_sidebar_variants") !== null and auth()->user()->getConfig("dark_sidebar_variants") != "None Selected") sidebar-dark-{{strtolower(auth()->user()->getConfig("dark_sidebar_variants"))}} @endif
             elevation-4">
             <!-- Brand Logo -->
-            <a  class="brand-link @if(auth()->user()->getConfig("brand_small_text_options") !== null) text-sm @endif navbar-{{strtolower(auth()->user()->getConfig("brand_logo_variants"))}}">
+
+            <a class="brand-link @if(auth()->user()->getConfig("brand_small_text_options") !== null) text-sm @endif navbar-{{strtolower(auth()->user()->getConfig("brand_logo_variants"))}}">
                 <img src="{{asset("images/systemImages/AdminLTELogo.png")}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">@yield("title","accounting")</span>
             </a>
+
 
             <!-- Sidebar -->
             <div class="sidebar">
@@ -365,6 +373,12 @@
                                     <a href="{{route("pound.viewPounds")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>{{__("global.pounds",[],session("lang"))}}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route("discover.showDiscoverDashboard")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.discovers",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -650,20 +664,19 @@
             </div>
         </div>
         <!-- /.content-wrapper -->
-{{--        <footer class="main-footer @if(auth()->user()->getConfig("footer_small_text_options") !== null) text-sm @endif">--}}
-{{--            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>--}}
-{{--            All rights reserved.--}}
-{{--            <div class="float-right d-none d-sm-inline-block">--}}
-{{--                <b>Version</b> 3.2.0--}}
-{{--            </div>--}}
-{{--        </footer>--}}
+        <footer style="text-align: center" class="main-footer @if(auth()->user()->getConfig("footer_small_text_options") !== null) text-sm @endif">
+            {{__("global.all_rights_reserved",[],session("lang"))}}
+            <div class="float-right d-none d-sm-inline-block">
+                <b>{{__("global.version",[],session("lang"))}} 1.0.0</b>
+            </div>
+            <strong>Copyright &copy; 2022-2023 <a href="https://adminlte.io">Abdulmoty Bannan</a>.</strong>
+        </footer>
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
             <!-- Control sidebar content goes here -->
         </aside>
         <!-- /.control-sidebar -->
-
 
     </div>
 <!-- ./wrapper -->

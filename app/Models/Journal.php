@@ -85,7 +85,6 @@ class Journal extends Model
             {
                 return "";
             }
-//            dd($value);
             $invoice_id = $this->attributes["invoice_id"];
             $line = $this->attributes["line"];
             $detail = $this->attributes["detail"];

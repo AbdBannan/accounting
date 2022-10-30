@@ -1,4 +1,4 @@
-<div id="errors" style="max-width: 200px; position: fixed;bottom: 10px; @if(auth()->user()->getConfig("language")) left: 2px; @else right: 2px; @endif z-index: 100">
+<div id="errors" style="max-width: 200px; position: fixed;bottom: 10px; @if(auth()->user()->getConfig("language") == "arabic") left: 2px; @else right: 2px; @endif z-index: 100">
     @if(count($errors)>0 || session("success") || session("error"))
         <button onclick="$('#errors').slideToggle();" class="btn btn-info btn-sm btn-block mb-2" >
             {{__("global.hide_all",[],session("lang"))}}
@@ -10,7 +10,7 @@
                 <button class="close" data-dismiss="alert" type="button">
                     <span>×</span>
                 </button>
-                {{$error}}
+                {{\App\functions\globalFunctions::fixTranslation($error)}}
             </div>
         @endforeach
     @endif

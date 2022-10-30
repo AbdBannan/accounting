@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\functions\globalFunctions;
 use App\Models\Account;
 use App\Models\Journal;
 use App\Models\OldJournal;
@@ -15,9 +16,12 @@ use function Sodium\add;
 
 class discoverActionsController extends Controller
 {
+    public function showDiscoverDashboard(){
+        return view("admin.discoverActions.discoverDashboard");
+    }
 
     public function chooseListGlobalDiscover(){
-        return view("discoverActions.globalDiscover")->with("actions",null);
+        return view("admin.discoverActions.globalDiscover")->with("actions",null);
     }
 
     public function globalDiscoverUntilNow(Request $request){
@@ -35,8 +39,8 @@ class discoverActionsController extends Controller
             $total_credit +=$action->credit;
             $total_debit +=$action->debit;
         }
-
-        return view("discoverActions.globalDiscover")->with(["actions"=>$actions,"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"]]);
+        globalFunctions::registerUserActivityLog("discovered","global_discover_until_now",Account::where("name",$request["account"])->first()->id);
+        return view("admin.discoverActions.globalDiscover")->with(["actions"=>$actions,"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"]]);
     }
 
     public function globalDiscoverBetweenTowDates(Request $request){
@@ -66,7 +70,8 @@ class discoverActionsController extends Controller
             $total_debit +=$action->debit;
         }
 //        dd($total_debit,$total_credit);
-        return view("discoverActions.globalDiscover")->with(["actions"=>$actions,"start_date"=>$request["from"],"end_date"=>$request["to"],"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"]]);
+        globalFunctions::registerUserActivityLog("discovered","global_discover_between_tow_dates",Account::where("name",$request["account"])->first()->id);
+        return view("admin.discoverActions.globalDiscover")->with(["actions"=>$actions,"start_date"=>$request["from"],"end_date"=>$request["to"],"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"]]);
     }
 
     public function globalDiscoverAfterLastCheckedPoint(Request $request)
@@ -125,7 +130,8 @@ class discoverActionsController extends Controller
             $total_credit +=$action->credit;
             $total_debit +=$action->debit;
         }
-        return view("discoverActions.globalDiscover")->with(["actions"=>$actions,"start_date"=>$request["from"],"end_date"=>$request["to"],"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"]]);
+        globalFunctions::registerUserActivityLog("discovered","global_discover_after_last_checked_point",Account::where("name",$request["account"])->first()->id);
+        return view("admin.discoverActions.globalDiscover")->with(["actions"=>$actions,"start_date"=>$request["from"],"end_date"=>$request["to"],"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"]]);
     }
 
     public function globalDiscoverUntilLastBalance(Request $request)
@@ -158,8 +164,8 @@ class discoverActionsController extends Controller
                 }
             }
         }
-//        dd($index_of_last_balanced_debit_with_credit,$actions);
-        return view("discoverActions.globalDiscover")->with(["actions"=>$actions,"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"]]);
+        globalFunctions::registerUserActivityLog("discovered","global_discover_until_last_balance",Account::where("name",$request["account"])->first()->id);
+        return view("admin.discoverActions.globalDiscover")->with(["actions"=>$actions,"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"]]);
     }
 
 //
@@ -206,7 +212,7 @@ class discoverActionsController extends Controller
 ////                "percentage"=>round(100*$value->credit/$value->debit),
 ////            ];
 ////        }
-//        return view("discoverActions.specifiedAccountsDiscover")->with(["info"=>$info,"total_debit"=>$total_debit_credit[0]["debit"],"total_credit"=>$total_debit_credit[0]  ["credit"]]);
+//        return view("admin.discoverActions.specifiedAccountsDiscover")->with(["info"=>$info,"total_debit"=>$total_debit_credit[0]["debit"],"total_credit"=>$total_debit_credit[0]  ["credit"]]);
 //    }
 
     public function globalDiscoverByAccount(Request $request)
@@ -248,7 +254,8 @@ class discoverActionsController extends Controller
                 "percentage"=>round(100*$value->credit/$value->debit),
             ];
         }
-        return view("discoverActions.specifiedAccountsDiscover")->with(["info"=>$info,"total_debit"=>$total_debit_credit[0]["debit"],"total_credit"=>$total_debit_credit[0]  ["credit"]]);
+        globalFunctions::registerUserActivityLog("discovered","global_discover_by_account",Account::where("name",$request["account"])->first()->id);
+        return view("admin.discoverActions.specifiedAccountsDiscover")->with(["info"=>$info,"total_debit"=>$total_debit_credit[0]["debit"],"total_credit"=>$total_debit_credit[0]  ["credit"]]);
     }
 
     public function makeCheckPoint(Request $request){
@@ -258,13 +265,13 @@ class discoverActionsController extends Controller
         }else{
             session()->flash("error",__("messages.not_created_successfully",["attribute"=>__("global.check_point",[],session("lang"))],session("lang")));
         }
-//        return $this->globalDiscoverAfterLastCheckedPoint($request);
+        globalFunctions::registerUserActivityLog("made","check_point",$request["check_point_row_id"]);
         return back(307);
     }
 
 
     public function chooseListCashDiscover(){
-        return view("discoverActions.cashDiscover")->with("actions",null);
+        return view("admin.discoverActions.cashDiscover")->with("actions",null);
     }
 
     public function cashDiscoverUntilNow(Request $request){
@@ -282,8 +289,8 @@ class discoverActionsController extends Controller
                 $total_debit +=$action->debit / $action->num_for_pound;
             }
         }
-
-        return view("discoverActions.cashDiscover")->with(["actions"=>$actions,"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"]]);
+        globalFunctions::registerUserActivityLog("discovered","cash_discover_until_now",Account::where("name",$request["account"])->first()->id);
+        return view("admin.discoverActions.cashDiscover")->with(["actions"=>$actions,"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"]]);
     }
 
     public function cashDiscoverBetweenTowDates(Request $request){
@@ -315,8 +322,8 @@ class discoverActionsController extends Controller
                 $total_debit +=$action->debit / $action->num_for_pound;
             }
         }
-//        dd($total_debit,$total_credit);
-        return view("discoverActions.cashDiscover")->with(["actions"=>$actions,"start_date"=>$request["from"],"end_date"=>$request["to"],"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"]]);
+        globalFunctions::registerUserActivityLog("discovered","cash_discover_between_tow_dates",Account::where("name",$request["account"])->first()->id);
+        return view("admin.discoverActions.cashDiscover")->with(["actions"=>$actions,"start_date"=>$request["from"],"end_date"=>$request["to"],"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"]]);
     }
 
     public function cashDiscoverAfterLastCheckedPoint(Request $request)
@@ -372,14 +379,15 @@ class discoverActionsController extends Controller
                 $total_debit += $action->debit / $action->num_for_pound;
             }
         }
-        return view("discoverActions.cashDiscover")->with(["actions"=>$actions,"start_date"=>$request["from"],"end_date"=>$request["to"],"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"]]);
+        globalFunctions::registerUserActivityLog("discovered","cash_discover_after_last_checked_point",Account::where("name",$request["account"])->first()->id);
+        return view("admin.discoverActions.cashDiscover")->with(["actions"=>$actions,"start_date"=>$request["from"],"end_date"=>$request["to"],"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"]]);
     }
 
 
 
 
     public function chooseListProductDiscover(){
-        return view("discoverActions.productDiscover")->with("actions",null);
+        return view("admin.discoverActions.productDiscover")->with("actions",null);
     }
 
     public function productDiscoverUntilNow(Request $request){
@@ -403,7 +411,8 @@ class discoverActionsController extends Controller
                 $total_price -= $action->price * $action->quantity;
 
         }
-        return view("discoverActions.productDiscover")->with(["actions"=>$actions,"in_quantity"=>$in_quantity,"out_quantity"=>$out_quantity,"product_name"=>$request["product"],"total_price"=>$total_price]);
+        globalFunctions::registerUserActivityLog("discovered","product_discover_until_now",Account::where("name",$request["account"])->first()->id);
+        return view("admin.discoverActions.productDiscover")->with(["actions"=>$actions,"in_quantity"=>$in_quantity,"out_quantity"=>$out_quantity,"product_name"=>$request["product"],"total_price"=>$total_price]);
     }
 
     public function productDiscoverBetweenTowDates(Request $request){
@@ -438,7 +447,8 @@ class discoverActionsController extends Controller
             else// so it is store out
                 $total_price -= $action->price * $action->quantity;
         }
-        return view("discoverActions.productDiscover")->with(["actions"=>$actions,"start_date"=>$request["from"],"end_date"=>$request["to"],"in_quantity"=>$in_quantity,"out_quantity"=>$out_quantity,"product_name"=>$request["product"],"total_price"=>$total_price]);
+        globalFunctions::registerUserActivityLog("discovered","product_discover_between_tow_dates",Account::where("name",$request["account"])->first()->id);
+        return view("admin.discoverActions.productDiscover")->with(["actions"=>$actions,"start_date"=>$request["from"],"end_date"=>$request["to"],"in_quantity"=>$in_quantity,"out_quantity"=>$out_quantity,"product_name"=>$request["product"],"total_price"=>$total_price]);
     }
 
     public function productDiscoverWithAccount(Request $request)
@@ -463,7 +473,8 @@ class discoverActionsController extends Controller
                 $total_price -= $action->price * $action->quantity;
 
         }
-        return view("discoverActions.productDiscover")->with(["actions"=>$actions,"in_quantity"=>$in_quantity,"out_quantity"=>$out_quantity,"product_name"=>$request["product"],"account_name"=>$request["account"],"total_price"=>$total_price]);
+        globalFunctions::registerUserActivityLog("discovered","product_discover_with_account",Account::where("name",$request["account"])->first()->id);
+        return view("admin.discoverActions.productDiscover")->with(["actions"=>$actions,"in_quantity"=>$in_quantity,"out_quantity"=>$out_quantity,"product_name"=>$request["product"],"account_name"=>$request["account"],"total_price"=>$total_price]);
     }
 
     public function productDiscoverUntilLastBalance(Request $request)
@@ -509,7 +520,8 @@ class discoverActionsController extends Controller
                 }
             }
         }
-        return view("discoverActions.productDiscover")->with(["actions"=>$actions,"in_quantity"=>$in_quantity,"out_quantity"=>$out_quantity,"product_name"=>$request["product"],"total_price"=>$total_price]);
+        globalFunctions::registerUserActivityLog("discovered","product_discover_until_last_balance",Account::where("name",$request["account"])->first()->id);
+        return view("admin.discoverActions.productDiscover")->with(["actions"=>$actions,"in_quantity"=>$in_quantity,"out_quantity"=>$out_quantity,"product_name"=>$request["product"],"total_price"=>$total_price]);
     }
 
     public function productDiscoverByStore(Request $request)
@@ -548,8 +560,8 @@ class discoverActionsController extends Controller
             }
             $accumulated_total_price+=$actions[$key]["price"] * $actions[$key]["balance"];
         }
-//        return view("discoverActions.productsDiscoverByStore")->with("actions",$actions);
-        return view("discoverActions.productsDiscoverByStore")->with(["actions"=>$actions,"total_in_quantity"=>$totals->total_in_quantity,"total_out_quantity"=>$totals->total_out_quantity,"total_balance"=>$totals->total_in_quantity-$totals->total_out_quantity,"accumulated_total_price"=>$accumulated_total_price]);
+        globalFunctions::registerUserActivityLog("discovered","product_discover_by_store",Account::where("name",$request["account"])->first()->id);
+        return view("admin.discoverActions.productsDiscoverByStore")->with(["actions"=>$actions,"total_in_quantity"=>$totals->total_in_quantity,"total_out_quantity"=>$totals->total_out_quantity,"total_balance"=>$totals->total_in_quantity-$totals->total_out_quantity,"accumulated_total_price"=>$accumulated_total_price]);
     }
 
 
@@ -570,7 +582,8 @@ class discoverActionsController extends Controller
         }
         $total_debit = abs($total_debit);
         $total_credit = abs($total_credit);
-        return view("discoverActions.allAccountsDiscover")->with(["actions"=>$actions,"total_debit"=>$total_debit,"total_credit"=>$total_credit]);
+        globalFunctions::registerUserActivityLog("seen_all","accounts_balances",null);
+        return view("admin.discoverActions.allAccountsDiscover")->with(["actions"=>$actions,"total_debit"=>$total_debit,"total_credit"=>$total_credit]);
     }
 
     public function allProductsDiscover()
@@ -579,16 +592,16 @@ class discoverActionsController extends Controller
         $actions = Product::selectRaw("products.id ,products.name ,sum(journal.in_quantity) as in_quantity,sum(journal.out_quantity) as out_quantity,sum(journal.in_quantity) - sum(journal.out_quantity) as balance")->leftJoin("journal","products.id","=","journal.product_id")->groupBy(["products.id","products.name"])->get();
 
         $totals = Journal::where("product_id",">",0)->selectRaw("sum(in_quantity) as total_in_quantity,sum(out_quantity) as total_out_quantity")->first();
-
-        return view("discoverActions.allProductsDiscover")->with(["actions"=>$actions,"total_in_quantity"=>$totals->total_in_quantity,"total_out_quantity"=>$totals->total_out_quantity,"total_balance"=>$totals->total_in_quantity-$totals->total_out_quantity]);
+        globalFunctions::registerUserActivityLog("seen_all","products_balances",null);
+        return view("admin.discoverActions.allProductsDiscover")->with(["actions"=>$actions,"total_in_quantity"=>$totals->total_in_quantity,"total_out_quantity"=>$totals->total_out_quantity,"total_balance"=>$totals->total_in_quantity-$totals->total_out_quantity]);
     }
 
     public function dailyDiscover()
     {
         $actions = Journal::where("created_at",Carbon::now()->format("Y-m-d"))->whereIn("invoice_type",[0,1,2,3,4,5,6,7,11,12])->get();
         $totals = Journal::where("created_at",Carbon::now()->format("Y-m-d"))->whereIn("invoice_type",[1,2,3,4,5,11])->selectRaw("sum(debit) as total_debit , sum(credit) as total_credit")->first();
-
-        return view("discoverActions.dailyDiscover")->with(["actions"=>$actions,"total_debit"=>$totals->total_debit,"total_credit"=>$totals->total_credit,"total_balance"=>$totals->total_credit-$totals->total_debit]);
+        globalFunctions::registerUserActivityLog("seen_all","daily_actions",null);
+        return view("admin.discoverActions.dailyDiscover")->with(["actions"=>$actions,"total_debit"=>$totals->total_debit,"total_credit"=>$totals->total_credit,"total_balance"=>$totals->total_credit-$totals->total_debit]);
     }
 
 
@@ -606,8 +619,8 @@ class discoverActionsController extends Controller
             $total_credit +=$action->credit;
             $total_debit +=$action->debit;
         }
-
-        return view("discoverActions.globalDiscover")->with(["actions"=>$actions,"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"],"is_last_year"=>true]);
+        globalFunctions::registerUserActivityLog("discovered","account_lase_year",Account::where("name",$request["account"])->first()->id);
+        return view("admin.discoverActions.globalDiscover")->with(["actions"=>$actions,"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"],"is_last_year"=>true]);
     }
 
 
@@ -626,8 +639,8 @@ class discoverActionsController extends Controller
                 $total_debit +=$action->debit / $action->num_for_pound;
             }
         }
-
-        return view("discoverActions.cashDiscover")->with(["actions"=>$actions,"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"],"is_last_year"=>true]);
+        globalFunctions::registerUserActivityLog("discovered","product_lase_year",Account::where("name",$request["account"])->first()->id);
+        return view("admin.discoverActions.cashDiscover")->with(["actions"=>$actions,"total_credit"=>$total_credit,"total_debit"=>$total_debit,"account_name"=>$request["account"],"is_last_year"=>true]);
     }
 
 }

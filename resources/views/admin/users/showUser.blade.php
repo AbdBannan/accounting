@@ -31,7 +31,7 @@
                                             <input id="first_name" type="text" class="form-control form-control-user @error('first_name') is-invalid @enderror" placeholder="{{__("global.first_name",[],session("lang"))}}" name="first_name" value="{{ $user->first_name }}" autocomplete="first_name" autofocus>
                                             @error('first_name')
                                             <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
+                                            <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
                                         </span>
                                             @enderror
                                         </div>
@@ -39,7 +39,7 @@
                                             <input id="last_name" type="text" class="form-control form-control-user @error('last_name') is-invalid @enderror" placeholder="{{__("global.last_name",[],session("lang"))}}" name="last_name" value="{{ $user->last_name }}" autocomplete="last_name" autofocus>
                                             @error('last_name')
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
+                                                <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
                                             </span>
                                             @enderror
                                         </div>
@@ -49,7 +49,7 @@
                                         <input id="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ $user->email }}" placeholder="{{__("global.enter_email_address",[],session("lang"))}}" autocomplete="email">
                                         @error('email')
                                         <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
                                     </span>
                                         @enderror
                                     </div>
@@ -60,7 +60,7 @@
                                                 <input id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password" placeholder="{{__("global.password",[],session("lang"))}}" autocomplete="new-password">
                                                 @error('password')
                                                 <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
+                                                <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
                                             </span>
                                                 @enderror
                                             </div>

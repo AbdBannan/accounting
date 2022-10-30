@@ -82,12 +82,11 @@ class OldJournal extends Model
             {
                 return "";
             }
-//            dd($value);
             $invoice_id = $this->attributes["invoice_id"];
             $line = $this->attributes["line"];
             $detail = $this->attributes["detail"];
 
-            $result = DB::select("select sum(invoice_type) as type from journal where invoice_id = $invoice_id and line = $line and detail = $detail");
+            $result = DB::select("select sum(invoice_type) as type from oldjournal where invoice_id = $invoice_id and line = $line and detail = $detail");
             if ($result[0]->type == 11)
                 $value = "payment";
             elseif ($result[0]->type == 12)

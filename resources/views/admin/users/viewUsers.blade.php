@@ -73,8 +73,8 @@
                                         <td></td>
                                     @endif
                                     <td class="text-center">
-                                        @if(!$user->getConfig("user_activity_log") == false)
-                                            <a id="btn_track_user_activity" route-attr="{{route("user.trackUserActivity",$user)}}" class="btn btn-sm btn-blo btn-danger">{{__("global.track",[],session("lang"))}}</a>
+                                        @if($user->getConfig("user_activity_log") == "false")
+                                            <a id="btn_track_user_activity" route-attr="{{route("user.trackUserActivity",$user)}}" class="btn btn-sm btn-danger">{{__("global.track",[],session("lang"))}}</a>
                                             <a id="btn_no_track_user_activity"  route-attr="{{route("user.noTrackUserActivity",$user)}}" hidden="true" disabled class="btn btn-sm btn-success">{{__("global.no_track",[],session("lang"))}}</a>
                                         @else
                                             <a id="btn_track_user_activity" route-attr="{{route("user.trackUserActivity",$user)}}" hidden="true" disabled class="btn btn-sm btn-danger">{{__("global.track",[],session("lang"))}}</a>

@@ -70,12 +70,12 @@
             @else
                 <div class="container">
                     <div class="row bg-gradient-light shadow" style="width: 50%;margin: auto;">
-                        <form id="search-form" style="margin: auto" action="{{route("invoice.searchProductMovementInvoice")}}" method="POST">
+                        <form id="search_form" style="margin: auto" action="{{route("invoice.searchProductMovementInvoice")}}" method="POST">
                             @csrf
                             <div class="form-group text-center">
                                 <label style="font-size: x-large" for="invoice_id" >{{__("global.enter_invoice_id",[],session("lang"))}}</label>
                                 <input type="number" name="invoice_id" id="invoice_id" class="form-control" autofocus>
-                                <input id="btn-search" type="submit" class="btn btn-outline-primary form-control">
+                                <input id="btn_search" type="submit" class="btn btn-outline-primary form-control">
                             </div>
                         </form>
                     </div>

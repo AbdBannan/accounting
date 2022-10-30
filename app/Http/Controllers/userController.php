@@ -233,16 +233,7 @@ class userController extends Controller
 
     public function trackUserActivity(User $user){
         $name = "user_activity_log";
-//        $config_type = "admin_control";
-////        if (!isset(Config::where("name",$name)->first()->name)){
-////            Config::create(
-////                [
-////                    "name" => $name,
-////                    "controlled_by" => "user",
-////                    "type" => $config_type
-////                ]
-////            );
-////        }
+
         $user->config()->detach(Config::where("name",$name)->first()->id);
         $user->config()->attach(Config::where("name",$name)->first()->id,["value"=>"true"]);
     }

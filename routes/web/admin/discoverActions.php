@@ -3,6 +3,8 @@ use Mailgun\Mailgun;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(["auth"])->group(function (){
+    Route::get("/discover/showDiscoverDashboard","discoverActionsController@showDiscoverDashboard")->name("discover.showDiscoverDashboard");
+
     Route::get("/discover/chooseListGlobalDiscover","discoverActionsController@chooseListGlobalDiscover")->name("discover.chooseListGlobalDiscover");
     Route::any("/discover/globalDiscoverUntilNow","discoverActionsController@globalDiscoverUntilNow")->name("discover.globalDiscoverUntilNow");
     Route::post("/discover/globalDiscoverBetweenTowDates","discoverActionsController@globalDiscoverBetweenTowDates")->name("discover.globalDiscoverBetweenTowDates");

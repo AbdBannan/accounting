@@ -113,7 +113,7 @@
                         <button data-target="#productDiscoverByStoreCollapse" class="btn btn-primary btn-block">{{__("global.discover_by_store",[],session("lang"))}}</button>
                     </div>
                     <div id="productDiscoverUntilNowCollapse" class="collapse">
-                        <a id="back"><i class="fas fa-arrow-left" title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
                         <form  style="margin: auto" action="{{route("discover.productDiscoverUntilNow")}}" method="POST">
                             @csrf
                             <div class="position-relative form-group text-center">
@@ -126,11 +126,11 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_product_until_now" type="submit" class="btn btn-outline-primary form-control">
+                            <input id="btn_product_until_now" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
                         </form>
                     </div>
                     <div id="productDiscoverUntilLastBalanceCollapse" class="collapse">
-                        <a id="back"><i class="fas fa-arrow-left" title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
                         <form  style="margin: auto" action="{{route("discover.productDiscoverUntilLastBalance")}}" method="POST">
                             @csrf
                             <div class="position-relative form-group text-center">
@@ -143,11 +143,11 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_product_after_last_checked_point" type="submit" class="btn btn-outline-primary form-control">
+                            <input id="btn_product_after_last_checked_point" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
                         </form>
                     </div>
                     <div id="productDiscoverWithAccountCollapse" class="collapse">
-                        <a id="back"><i class="fas fa-arrow-left" title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
                         <form style="margin: auto" action="{{route("discover.productDiscoverWithAccount")}}" method="POST">
                             @csrf
                             <div class="position-relative form-group text-center">
@@ -169,11 +169,11 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_product_with_account" type="submit" class="btn btn-outline-primary form-control">
+                            <input id="btn_product_with_account" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
                         </form>
                     </div>
                     <div id="productDiscoverBetweenTowDatesCollapse" class="collapse" >
-                        <a id="back"><i class="fas fa-arrow-left" title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
                         <form  style="margin: auto" action="{{route("discover.productDiscoverBetweenTowDates")}}" method="POST">
                             @csrf
                             <div class="position-relative form-group text-center">
@@ -195,11 +195,11 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_product_between_tow_dates" type="submit" class="btn btn-outline-primary form-control">
+                            <input id="btn_product_between_tow_dates" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
                         </form>
                     </div>
                     <div id="productDiscoverByStoreCollapse" class="collapse" >
-                        <a id="back"><i class="fas fa-arrow-left" title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
                         <form  style="margin: auto" action="{{route("discover.productDiscoverByStore")}}" method="POST">
                             @csrf
                             <div class="position-relative form-group text-center">
@@ -227,7 +227,7 @@
                                     </label>
                                 </div>
                             </fieldset>
-                            <input id="btn_product_by_store" type="submit" class="btn btn-outline-primary form-control">
+                            <input id="btn_product_by_store" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
                         </form>
                     </div>
                 </div>
@@ -289,7 +289,7 @@
 
 
             $("tr#discover_rows").on("dblclick",function (){
-                if ($(this).children("td").children("a#btn_show_owner_invoice")[0]==undefined){
+                if ($(this).children("td").children("a#btn_show_owner_invoice")[0]==undefined || @if(isset($is_last_year)) true @else false @endif ){
                     return;
                 }
                 $(this).children("td").children("a#btn_show_owner_invoice")[0].click();

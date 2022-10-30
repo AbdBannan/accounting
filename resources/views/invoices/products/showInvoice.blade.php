@@ -3,21 +3,9 @@
         @section("title")
             {{ __("global.search",[],session("lang")) }}
         @endsection
-    @elseif($invoice_type == "sale")
+    @else
         @section("title")
-            {{ __("global.sale",[],session("lang")) }}
-        @endsection
-    @elseif($invoice_type == "purchase")
-        @section("title")
-            {{ __("global.purchase",[],session("lang")) }}
-        @endsection
-    @elseif($invoice_type == "sale_return")
-        @section("title")
-            {{ __("global.sale_return",[],session("lang")) }}
-        @endsection
-    @elseif($invoice_type == "purchase_return")
-        @section("title")
-            {{ __("global.purchase_return",[],session("lang")) }}
+            {{ __("global.".$invoiceLines[0]->invoice_type,[],session("lang")) }}
         @endsection
     @endif
 
@@ -29,30 +17,9 @@
     @endsection
 
     @section('content')
-{{--        @section("header")--}}
-{{--            <div class="form-group row">--}}
-{{--                <label class="col-md-2 col-sm-12" style="font-size: large" for="invoice_id" >{{__("global.invoice_id",[],session("lang"))}}</label>--}}
-{{--                <input form="form" id="invoice_id" name="invoice_id" min="0" type="number" class="form-control col-md-2 col-sm-12" value="{{$invoiceLines[0]->invoice_id}}">--}}
-
-{{--                <div class="col-md-5 col-sm-12 row">--}}
-{{--                    <a id="btn-update-invoice" title="{{__("global.update",[],session("lang"))}}" class="nav-link col-4 collapsed" href="#" data-toggle="collapse" data-target="#collapseInvoice"--}}
-{{--                       aria-expanded="true" aria-controls="collapseInvoice">--}}
-{{--                        <input class="grid-button grid-edit-button" type="button" title="Update">--}}
-{{--                    </a>--}}
-{{--                    <a id="btn-delete" title="{{__("global.delete",[],session("lang"))}}" class="nav-link col-4" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route={{route("invoice.softDeleteInvoice",$invoiceLines[0]->invoice_id)}}>--}}
-{{--                        <input class="grid-button grid-delete-button" type="button" title="Delete">--}}
-{{--                    </a>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        @endsection--}}
         <div class="container">
-
-
-{{--            <div style="width: 100px;border: 2px red solid">--}}
-{{--                <input type="text" style="width: 100%">--}}
-{{--            </div>--}}
             @if(count($invoiceLines)>0)
-                <x-invoices.invoice-body :invoiceType="$invoice_type">
+                <x-invoices.invoice-body :invoiceType="$invoiceLines[0]->invoice_type">
                     @section("edit_delete")
 
                           <div class="row">
@@ -69,15 +36,12 @@
                     @section("auto_focus")@endsection
                     @section("hidden") hidden="true" @endsection
                     @section("image_path"){{asset($invoiceLines[0]->image)}}@endsection
-                    @section("form-route"){{route("invoice.updateInvoice",[$invoice_type,$invoiceLines[0]->invoice_id])}}@endsection
+                    @section("form-route"){{route("invoice.updateInvoice",[$invoiceLines[0]->invoice_type,$invoiceLines[0]->invoice_id])}}@endsection
                     @section("method")
                         @method("put")
                     @endsection
                     @section("invoiceLines")
                         @foreach($invoiceLines as $line)
-{{--                                <label class="input-sizer">--}}
-{{--                                    <input id="new" type="text" oninput="this.parentNode.dataset.value = this.value" size="4" value="asdfasfaasdfassfasfaqqqqsfas">--}}
-{{--                                </label>--}}
                             <tr>
                                 <td ondblclick="putLineInEdit(this)" name="line_id" id="td">{{$line->line}}</td>
                                 <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="first_part_name_{{$line->line}}" type="text" value="{{$line->first_part_name}}" style="outline: none; border: none;background-color: transparent" readonly></td>
@@ -105,12 +69,11 @@
             @else
                 <div class="container">
                     <div class="row bg-gradient-light shadow" style="width: 50%;margin: auto;">
-                        <form id="search-form" style="margin: auto" action="{{route("invoice.searchInvoice",$invoice_type)}}" method="POST">
-                            @csrf
+                        <form id="search_form" style="margin: auto" action="{{route("invoice.searchInvoice")}}">
                             <div class="form-group text-center">
                                 <label style="font-size: x-large" for="invoice_id" >{{__("global.enter_invoice_id",[],session("lang"))}}</label>
                                 <input type="number" name="invoice_id" id="invoice_id" class="form-control" autofocus>
-                                <input id="btn-search" type="submit" class="btn btn-outline-primary form-control">
+                                <input id="btn_search" type="submit" class="btn btn-outline-primary form-control">
                             </div>
                         </form>
                     </div>

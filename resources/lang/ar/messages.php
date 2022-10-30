@@ -13,39 +13,39 @@ return [
     |
     */
     //    -------- account section --------    //
-    'created_successfully'=>':attribute has been created successfully',
-    'not_created_successfully'=>':attribute has not been created successfully',
+    'created_successfully'=>'تم إنشاء :attribute بنجاح',
+    'not_created_successfully'=>'لم يتم إنشاء :attribute بنجاح',
 
-    'saved_successfully'=>':attribute has been saved successfully',
-    'not_saved_successfully'=>':attribute has not been saved successfully',
-
-
-    'deleted_successfully'=>':attribute has been deleted successfully',
-    'not_deleted_successfully'=>':attribute has not been deleted successfully',
-
-    'recycled_successfully'=>':attribute has been moved to recycle bin',
-    'not_recycled_successfully'=>':attribute has not been moved to recycle bin',
-
-    'restored_successfully'=>':attribute has been restored successfully',
-    'not_restored_successfully'=>':attribute has not been restored successfull',
+    'saved_successfully'=>'تم حفظ :attribute بنجاح',
+    'not_saved_successfully'=>'لم يتم حفظ :attribute بنجاح',
 
 
-    'updated_successfully'=>':attribute has been updated successfully',
-    'not_updated_successfully'=>':attribute has not been updated successfully',
-    'nothing_to_be_updated'=>'nothing to be updated',
+    'deleted_successfully'=>'تم حذف :attribute بنجاح',
+    'not_deleted_successfully'=>'لم يتم حذف :attribute بنجاح',
 
-    'nothing_exist'=>'no :attribute exist',
+    'recycled_successfully'=>'تم نقل :attribute إلى سلة المحذوفات بنجاح',
+    'not_recycled_successfully'=>'لم يتم نقل :attribute إلى سلة المحذوفات بنجاح',
 
-    'restore_confirm' => 'are you sure you want to restore this item ?',
-    'delete_confirm' => 'are you sure you want to delete this item ?',
+    'restored_successfully'=>'تم إسترجاع :attribute بنجاح',
+    'not_restored_successfully'=>'لم يتم إسترجاع :attribute بنجاح',
 
 
-    'not_found' => ':attribute not found',
-    'no_item' => 'invoice has no item',
-    'date_not_correct' => 'start date is greater than finish date',
-    'not_found_error' => 'not found error',
-    'second_greater_than_first' => 'second greater than first',
-    'invalid_reference' => 'invalid reference',
+    'updated_successfully'=>'تم تعديل :attribute بنجاح',
+    'not_updated_successfully'=>'لم يتم تعديل :attribute بنجاح',
+    'nothing_to_be_updated'=>'لا يوجد شيء لتعديله',
+
+    'nothing_exist'=>'لا يوجد :attribute',
+
+    'restore_confirm' => 'هل أنت متأكد من الاسترجاع ؟',
+    'delete_confirm' => 'هل أنت متأكد من الحذف ؟',
+
+
+    'not_found' => ':attribute غير موجود',
+    'no_item' => 'الفاتورة لا تحوي أي عناصر',
+    'date_not_correct' => 'تاريخ البداية أكبر من تاريخ النهاية',
+    'not_found_error' => 'غير موجود',
+    'second_greater_than_first' => 'تاريخ البداية أكبر من تاريخ النهاية',
+    'invalid_reference' => 'حساب مرجعي خاطئ',
     //   -------- end account section --------    //
 
 ];

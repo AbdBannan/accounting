@@ -5,8 +5,10 @@ use App\Models\ActivityLog;
 use App\Models\Config;
 use App\Models\Pound;
 use Carbon\Carbon;
+use http\Exception\UnexpectedValueException;
 use Illuminate\Support\Str;
 use App\Models\User;
+use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\Types\This;
 
 class globalFunctions
@@ -83,9 +85,11 @@ class globalFunctions
 //        if (in_array($action_type,["seen all","archived"]) or Str::contains($action_name,"recyclebin")) {
         if ($id == null) {
             $content = "the user : $user has $action_type $action_name at " . Carbon::now();
-        } elseif (in_array($action_type,["attached","detached"] )and explode(" ",$action_name)[1] == "role" ) {
-            $content = "the user : $user has $action_type $action_name for user whose id is " . $id . " at " . Carbon::now();
-        } elseif (in_array($action_type,["attached","detached"] )and explode(" ",$action_name)[1] == "permission" ) {
+        } elseif (in_array($action_type,["discovered"])) {
+            $content = "the user : $user has $action_type account '$action_name' whose id is " . $id . " at " . Carbon::now();
+        } elseif (in_array($action_type,["made"])) {
+            $content = "the user : $user has $action_type '$action_name' with row id " . $id . " at " . Carbon::now();
+        } elseif (in_array($action_type,["attached","detached"] ) and explode(" ",$action_name)[1] == "permission" ) {
             $content = "the user : $user has $action_type $action_name for permission whose id is " . $id . " at " . Carbon::now();
         } else {
             $content = "the user : $user has $action_type a/an $action_name whose id is " . $id . " at " . Carbon::now();
@@ -163,5 +167,14 @@ class globalFunctions
             return $new_config->id;
         }
         return $config->id;
+    }
+
+    public static function fixTranslation($message){
+        $splited = explode("#",$message);
+        if (count($splited)>1){
+            return $splited[0] . __("global.".$splited[1],[],session("lang")) . $splited[2];
+        }
+        else
+            return $message;
     }
 }

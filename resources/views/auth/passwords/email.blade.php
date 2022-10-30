@@ -25,7 +25,7 @@
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
                                     </span>
                                 @enderror
                             </div>

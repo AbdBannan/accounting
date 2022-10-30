@@ -70,6 +70,7 @@
                                             <td>{{$action->second_part_name}}</td>
                                             <td>{{$action->product_name}}</td>
                                             <td>{{$action->notes}}</td>
+
                                             <td>{{__("global.$action->invoice_type",[],session("lang"))}}</td>
                                         </tr>
                                     @endforeach
@@ -120,7 +121,7 @@
                         <button data-target="#globalDiscoverByAccountCollapse" class="btn btn-primary btn-block">{{__("global.discover_by_balance",[],session("lang"))}}</button>
                     </div>
                     <div id="globalDiscoverUntilNowCollapse" class="collapse">
-                        <a id="back"><i class="fas fa-arrow-left" title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
                         <form  style="margin: auto" action="{{route("discover.globalDiscoverUntilNow")}}" method="POST">
                             @csrf
                             <div class="position-relative form-group text-center">
@@ -133,11 +134,11 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_submit_global_discover_until_now" type="submit" class="btn btn-outline-primary form-control">
+                            <input id="btn_submit_global_discover_until_now" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
                         </form>
                     </div>
                     <div id="globalDiscoverAfterLastCheckedPointCollapse" class="collapse">
-                        <a id="back"><i class="fas fa-arrow-left" title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
                         <form  style="margin: auto" action="{{route("discover.globalDiscoverAfterLastCheckedPoint")}}" method="POST">
                             @csrf
                             <div class="position-relative form-group text-center">
@@ -150,11 +151,11 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_submit_global_after_last_checked_point" type="submit" class="btn btn-outline-primary form-control">
+                            <input id="btn_submit_global_after_last_checked_point" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
                         </form>
                     </div>
                     <div id="globalDiscoverUntilLastBalanceCollapse" class="collapse">
-                        <a id="back"><i class="fas fa-arrow-left" title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
                         <form  style="margin: auto" action="{{route("discover.globalDiscoverUntilLastBalance")}}" method="POST">
                             @csrf
                             <div class="position-relative form-group text-center">
@@ -167,11 +168,11 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_submit_global_until_last_balance" type="submit" class="btn btn-outline-primary form-control">
+                            <input id="btn_submit_global_until_last_balance" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
                         </form>
                     </div>
                     <div id="globalDiscoverBetweenTowDatesCollapse" class="collapse" >
-                        <a id="back"><i class="fas fa-arrow-left" title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
                         <form  style="margin: auto" action="{{route("discover.globalDiscoverBetweenTowDates")}}" method="POST">
                             @csrf
                             <div class="position-relative form-group text-center">
@@ -193,11 +194,11 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_submit_global_between_tow_dates" type="submit" class="btn btn-outline-primary form-control">
+                            <input id="btn_submit_global_between_tow_dates" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
                         </form>
                     </div>
                     <div id="globalDiscoverByAccountCollapse" class="collapse" >
-                        <a id="back"><i class="fas fa-arrow-left" title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
                         <form id="accounts_form" style="margin: auto" action="{{route("discover.globalDiscoverByAccount")}}" method="POST">
                             @csrf
                             <div class="position-relative form-group text-center">
@@ -219,7 +220,7 @@
                                 </div>
                             </div>
                             <hr>
-                            <input id="btn_submit_global_by_account" form="accounts_form" type="submit" class="btn btn-outline-primary form-control">
+                            <input id="btn_submit_global_by_account" form="accounts_form" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
                         </form>
 
                     </div>
@@ -283,7 +284,7 @@
                 }
 
                 $("tr#discover_rows").on("dblclick",function (){
-                    if ($(this).children("td").children("a#btn_show_owner_invoice")[0]==undefined){
+                    if ($(this).children("td").children("a#btn_show_owner_invoice")[0]==undefined || @if(isset($is_last_year)) true @else false @endif ){
                         return;
                     }
                     $(this).children("td").children("a#btn_show_owner_invoice")[0].click();

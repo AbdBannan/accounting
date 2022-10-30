@@ -439,14 +439,14 @@
     //
     //     }
     // });
-    $("th").each(function () {
-        if ($(this).children("input").val() == undefined) {
-            $("#test_size_label").text($(this).text());
-            let width = $("#test_size_label").css("width");
-            $("#test_size_label").text("");
-            $(this).css("min-width", width);
-        }
-    });
+    // $("th").each(function () {
+    //     if ($(this).children("input").val() == undefined) {
+    //         $("#test_size_label").text($(this).text());
+    //         let width = $("#test_size_label").css("width");
+    //         $("#test_size_label").text("");
+    //         $(this).css("min-width", width);
+    //     }
+    // });
 
     // window.addEventListener("pageshow",function (){
     //     alert(performance.navigation.type);

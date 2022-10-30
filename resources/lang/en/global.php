@@ -14,6 +14,18 @@ return [
     */
 
     //    -------- account section --------    //
+
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    'select_logout_if_ready_to_end_session' => 'select "Logout" below if you are ready to end your current session',
+    'ready_to_leave' => 'ready to leave?',
+    'version' => 'version',
+    'all_rights_reserved' => 'All rights reserved.',
+    'go' => 'go',
+    'first name' => 'first name',
+    'last name' => 'last name',
     'home' => 'dashboard',
     'contact' => 'contact',
     'delete_date' => 'delete date',
