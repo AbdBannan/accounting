@@ -68,7 +68,7 @@
                         </a>
                     @endcan
                     @can("delete",$comment)
-                        <a id="btn-delete" class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route={{route("comment.deleteComment",$comment->id)}}>
+                        <a id="btn_delete" class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route={{route("comment.deleteComment",$comment->id)}}>
                             <input class="grid-button grid-delete-button" type="button" title="Delete">
                         </a>
                     @endcan

@@ -32,7 +32,7 @@
                 <div>
                     <div>
                         <div class="form-group">
-                            <a id="btn-add" title="{{__("global.add",[],session("lang"))}}" class="btn btn-sm btn-info" href="#" data-toggle="modal" data-target="#addModal" data-route="{{route("store.storeStore")}}">
+                            <a id="btn_add" title="{{__("global.add",[],session("lang"))}}" class="btn btn-sm btn-info" href="#" data-toggle="modal" data-target="#addModal" data-route="{{route("store.storeStore")}}">
                                 <i class="fas fa-plus"></i>
                                 {{__("global.add",[],session("lang"))}}
                             </a>
@@ -66,10 +66,10 @@
 
 
                                                 <td class="row m-0">
-                                                    <a id="btn-update" title="{{__("global.update",[],session("lang"))}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$store}}" data-route="{{route("store.updateStore",$store->id)}}">
+                                                    <a id="btn_update" title="{{__("global.update",[],session("lang"))}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$store}}" data-route="{{route("store.updateStore",$store->id)}}">
                                                         <input class="grid-button grid-edit-button" type="button" title="Update">
                                                     </a>
-                                                    <a id="btn-delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("store.softDeleteStore",$store->id)}}">
+                                                    <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("store.softDeleteStore",$store->id)}}">
                                                         <input class="grid-button grid-delete-button" type="button" title="Delete">
                                                     </a>
                                                 </td>
@@ -97,12 +97,7 @@
 
     @endsection
     @section("script")
-    <!-- Page level plugins -->
-        <script src={{asset("vendor/datatables/jquery.dataTables.js")}}></script>
-        <script src={{asset("vendor/datatables/dataTables.bootstrap4.js")}}></script>
-
-        <!-- Page level custom scripts -->
-        <script src={{asset("js/demo/datatables-demo.js?var=415".rand(1,100))}}></script>
+  
     @endsection
 </x-masterLayout.master>
 

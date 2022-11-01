@@ -382,6 +382,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Exists;
+use function PHPUnit\Framework\stringContains;
 
 class invoiceController extends Controller
 {
@@ -392,6 +393,7 @@ class invoiceController extends Controller
      */
     public function index($invoice_type)
     {
+        session(["previouse_url"=>"view_all"]);
         globalFunctions::registerUserActivityLog("seen_all", $invoice_type . "_invoices", null);
         $temp = $invoice_type;
         $invoice_type = ($invoice_type == "sale") ? 1 : (($invoice_type == "purchase") ? 2 : (($invoice_type == "sale_return") ? 3 : 4));
@@ -636,6 +638,7 @@ class invoiceController extends Controller
 
     public function showSearchInvoice($invoice_type)
     {
+        session(["previouse_url"=>"show_search"]);
         return view("invoices.products.showInvoice")->with(["invoiceLines" => [], "invoice_type" => $invoice_type]);
     }
 
@@ -696,8 +699,11 @@ class invoiceController extends Controller
 
         globalFunctions::flashMessage("softDelete", $result, "invoice");
         globalFunctions::registerUserActivityLog("recycled", "invoice", $invoice_id);
-
-        return back();
+        if (session("previouse_url") == "show_search") {
+            return redirect(route("invoice.showInvoice"));
+        } else {
+            return redirect(route("invoice.viewInvoices"));
+        }
     }
 
     /**

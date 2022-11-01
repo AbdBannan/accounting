@@ -58,7 +58,7 @@
                                             </a>
                                         @endcan
                                         @can("delete",$post)
-                                            <a id="btn-delete" class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route={{route("posts.destroy",$post->id)}}>
+                                            <a id="btn_delete" class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route={{route("posts.destroy",$post->id)}}>
                                                 <input class="grid-button grid-delete-button" type="button" title="Delete">
                                             </a>
                                         @endcan
@@ -83,11 +83,11 @@
         <x-models.update-post-model></x-models.update-post-model>
     @endsection
     @section("script")
-        <!-- Page level plugins -->
-            <script src={{asset("vendor/datatables/jquery.dataTables.js")}}></script>
-            <script src={{asset("vendor/datatables/dataTables.bootstrap4.js")}}></script>
+{{--        <!-- Page level plugins -->--}}
+{{--            <script src={{asset("vendor/datatables/jquery.dataTables.js")}}></script>--}}
+{{--            <script src={{asset("vendor/datatables/dataTables.bootstrap4.js")}}></script>--}}
 
-            <!-- Page level custom scripts -->
-            <script src={{asset("js/demo/datatables-demo.js?var=415".rand(1,100))}}></script>
+{{--            <!-- Page level custom scripts -->--}}
+{{--            <script src={{asset("js/demo/datatables-demo.js?var=415".rand(1,100))}}></script>--}}
     @endsection
 </x-masterLayout.master>

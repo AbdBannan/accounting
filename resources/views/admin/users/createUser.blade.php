@@ -21,7 +21,7 @@
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input id="first_name" type="text" class="form-control form-control-user @error('first_name') is-invalid @enderror" placeholder="first name" name="first_name"  autocomplete="first_name" autofocus>
+                                            <input id="first_name" type="text" class="form-control form-control-user @error('first_name') is-invalid @enderror" placeholder="{{__("global.first_name",[],session("lang"))}}" name="first_name"  autocomplete="first_name" autofocus>
                                             @error('first_name')
                                             <span class="invalid-feedback" role="alert">
                                             <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
@@ -29,7 +29,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-sm-6">
-                                            <input id="last_name" type="text" class="form-control form-control-user @error('last_name') is-invalid @enderror" placeholder="last name" name="last_name" autocomplete="last_name" autofocus>
+                                            <input id="last_name" type="text" class="form-control form-control-user @error('last_name') is-invalid @enderror" placeholder="{{__("global.last_name",[],session("lang"))}}" name="last_name" autocomplete="last_name" autofocus>
                                             @error('last_name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
@@ -39,7 +39,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <input id="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email"  placeholder="Enter Email Address..." autocomplete="email">
+                                        <input id="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email"  placeholder="{{__("global.enter_email_address",[],session("lang"))}}" autocomplete="email">
                                         @error('email')
                                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
@@ -50,7 +50,7 @@
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
                                             <div class="form-group">
-                                                <input id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password" placeholder="password" autocomplete="new-password">
+                                                <input id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password" placeholder="{{__("global.password",[],session("lang"))}}" autocomplete="new-password">
                                                 @error('password')
                                                 <span class="invalid-feedback" role="alert">
                                                 <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
@@ -59,7 +59,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <input id="password-confirm"  name="password_confirmation" type="password" class="form-control form-control-user" placeholder="confirm your password" autocomplete="new-password">
+                                                <input id="password-confirm"  name="password_confirmation" type="password" class="form-control form-control-user" placeholder="{{__("global.confirm_your_password",[],session("lang"))}}" autocomplete="new-password">
                                             </div>
 
                                             <div class="form-group">
@@ -69,7 +69,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group text-center" >
                                                 <div id="disp_tmp_path"></div>
-                                                <img id="profile-image" src="{{asset("images/systemImages/default_user_img.png")}}" style="width:100%;max-width:170px;margin:10px auto;border-radius:50%">
+                                                <img id="profile_image" src="{{asset("images/systemImages/default_user_img.png")}}" style="width:100%;max-width:170px;margin:10px auto;border-radius:50%">
                                             </div>
                                         </div>
                                     </div>
@@ -77,49 +77,11 @@
                                     <hr>
                                 </form>
 
-
-
                             </div>
 
                         </div>
 
                     </div>
-{{--                    <div class="card shadow mb-4">--}}
-{{--                        <div class="card-header py-3">--}}
-{{--                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>--}}
-{{--                        </div>--}}
-{{--                        <div class="card-body">--}}
-
-{{--                            <div class="table-responsive">--}}
-{{--                                <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">--}}
-{{--                                    <thead>--}}
-{{--                                    <tr>--}}
-{{--                                        <th>{{__("global.id",[],session("lang"))}}</th>--}}
-{{--                                        <th>{{__("global.role_name",[],session("lang"))}}</th>--}}
-{{--                                        <th>{{__("global.assign_deassign_role",[],session("lang"))}}</th>--}}
-{{--                                    </tr>--}}
-{{--                                    </thead>--}}
-{{--                                    <tbody>--}}
-
-{{--                                    @foreach (App\Models\Role::all() as $role)--}}
-
-{{--                                        <tr>--}}
-{{--                                            <td>{{$role->id}}</td>--}}
-{{--                                            <td>{{$role->name}}</td>--}}
-{{--                                            <td class="text-center">--}}
-{{--                                                @if($role->name != "admin")--}}
-{{--    --}}{{--                                                <a id="btn-attachRole" route-attr="{{route("user.attachRole",[$user->id,$role->id])}}" hidden="false" class="btn btn-danger">attach</a>--}}
-{{--                                                    <a id="btn-attachRole" route-attr="" class="btn btn-sm btn-danger">attach</a>--}}
-{{--                                                @endif--}}
-{{--                                            </td>--}}
-{{--                                        </tr>--}}
-{{--                                    @endforeach--}}
-
-{{--                                    </tbody>--}}
-{{--                                </table>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
                 </div>
             </div>
 
@@ -127,11 +89,6 @@
     @endsection
 
     @section("script")
-    <!-- Page level plugins -->
-        <script src={{asset("vendor/datatables/jquery.dataTables.js")}}></script>
-        <script src={{asset("vendor/datatables/dataTables.bootstrap4.js")}}></script>
-
-        <!-- Page level custom scripts -->
-        <script src={{asset("js/demo/datatables-demo.js?var=415".rand(1,100))}}></script>
+  
     @endsection
 </x-masterLayout.master>

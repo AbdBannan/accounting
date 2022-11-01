@@ -86,7 +86,7 @@ class globalFunctions
         if ($id == null) {
             $content = "the user : $user has $action_type $action_name at " . Carbon::now();
         } elseif (in_array($action_type,["discovered"])) {
-            $content = "the user : $user has $action_type account '$action_name' whose id is " . $id . " at " . Carbon::now();
+            $content = "the user : $user has $action_type '$action_name' whose id is " . $id . " at " . Carbon::now();
         } elseif (in_array($action_type,["made"])) {
             $content = "the user : $user has $action_type '$action_name' with row id " . $id . " at " . Carbon::now();
         } elseif (in_array($action_type,["attached","detached"] ) and explode(" ",$action_name)[1] == "permission" ) {
@@ -172,6 +172,7 @@ class globalFunctions
     public static function fixTranslation($message){
         $splited = explode("#",$message);
         if (count($splited)>1){
+            $splited[1] = str_replace(" ","_",$splited[1]);
             return $splited[0] . __("global.".$splited[1],[],session("lang")) . $splited[2];
         }
         else

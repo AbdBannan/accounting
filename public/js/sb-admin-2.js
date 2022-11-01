@@ -58,7 +58,7 @@
     //this is to fill the image from file input
     $("input#file").on("change",function(event){
         let url = URL.createObjectURL(event.target.files[0])
-        $("img#profile-image").attr("src",url);
+        $("img#profile_image").attr("src",url);
 
     });
 
@@ -69,29 +69,29 @@
     });
 
     // this is to populate delete confirm model
-    $("a#btn-delete").on("click",function(){
+    $("a#btn_delete").on("click",function(){
         let route = $(this).data("route");
         $(this).siblings("div").children("input[type='checkbox']").attr("checked",true);
         $("#form_delete").attr("action",route);
     });
-    $("#btn-multi-delete").on("click",function(){
-        let route = $(this).data("route");
-        $("#form_delete").attr("action",route);
-    });
+    // $("#btn_multi_delete").on("click",function(){
+    //     let route = $(this).data("route");
+    //     $("#form_delete").attr("action",route);
+    // });
 
     // this is to populate restore confirm model
-    $("a#btn-restore").on("click",function(){
+    $("a#btn_restore").on("click",function(){
         let route = $(this).data("route");
         $(this).siblings("div").children("input[type='checkbox']").attr("checked",true);
         $("#form_restore").attr("action",route);
     });
 
-    $("#btn-multi-restore").on("click",function(){
-        let route = $(this).data("route");
-        $("#form_delete").attr("action",route);
-    });
+    // $("#btn_multi_restore").on("click",function(){
+    //     let route = $(this).data("route");
+    //     $("#form_delete").attr("action",route);
+    // });
 
-    $("a#btn-update").on("click",function(){
+    $("a#btn_update").on("click",function(){
         let route = $(this).data("route");
         let fields = $(this).data("fields");
         for (let field in fields){
@@ -110,7 +110,7 @@
         $("#form_update").attr("action",route);
     });
 
-    $("a#btn-add").on("click",function(){
+    $("a#btn_add").on("click",function(){
         let route = $(this).data("route");
         $("#form_add").attr("action",route);
     });
@@ -160,7 +160,7 @@
     $("input[class~='dropdown-toggle']").on("keyup", function(e) {// to filter the menu and copy its value when enter key is pressed
         e.preventDefault();
         isNewElem = true;
-        $(this).siblings().filter("div#dropdown-menu.dropdown-menu").addClass("show");
+        $(this).siblings().filter("div#dropdown_menu.dropdown-menu").addClass("show");
 
         let value = $(this).val().toLowerCase();
         let options = $(this).siblings().children().filter("option");
@@ -179,16 +179,16 @@
 
         // }
         // isNewElem=false;
-        $(this).parent().filter("div#dropdown-menu.dropdown-menu").removeClass("show")
+        $(this).parent().filter("div#dropdown_menu.dropdown-menu").removeClass("show")
     });
 
     $("input[class~='dropdown-toggle").on("focus", function(e) {
-        $(this).siblings().filter("div#dropdown-menu.dropdown-menu").addClass("show")// to add the class show into the menu when focus
+        $(this).siblings().filter("div#dropdown_menu.dropdown-menu").addClass("show")// to add the class show into the menu when focus
     });
     $("input[class~='dropdown-toggle").on("blur", function(e) {// to remove the class show from the menu when blur
         let thisItem = $(this);
         setTimeout(function (){
-            thisItem.siblings().filter("div#dropdown-menu.dropdown-menu").removeClass("show")
+            thisItem.siblings().filter("div#dropdown_menu.dropdown-menu").removeClass("show")
         },140);
     });
     function intersection(str1,str2){
@@ -203,7 +203,7 @@
             return false;
     }
 
-    // $("input[type='number'],input[type='date'],input[type='text'],input[type='dadio'],button#btn-add-item-to-invoice").on("keypress",function (e){//to prevent submitting and focus on next input
+    // $("input[type='number'],input[type='date'],input[type='text'],input[type='dadio'],button#btn_add_item_to_invoice").on("keypress",function (e){//to prevent submitting and focus on next input
     //     if (e.keyCode == 13) {
     //         // $(this).trigger("keydown", [9]);
     //         e.preventDefault();
@@ -218,7 +218,7 @@
     //                         if ($(inputs[item]).attr("type") == "submit") {
     //                             $(inputs[item]).click();
     //                         }
-    //                         else if ($(inputs[parseInt(item)+1]).attr("id") == "btn-reset" || $(inputs[parseInt(item)+1]).attr("id") == "total_price" || ($(inputs[item]).attr("id") == "payed" && Number($(inputs[item]).val()) )) {
+    //                         else if ($(inputs[parseInt(item)+1]).attr("id") == "btn_reset" || $(inputs[parseInt(item)+1]).attr("id") == "total_price" || ($(inputs[item]).attr("id") == "payed" && Number($(inputs[item]).val()) )) {
     //                             $(inputs[parseInt(item) + 2]).focus();
     //                         }
     //                         else if ($(inputs[parseInt(item)+1]).attr("id") == "pound_type" && $(inputs[parseInt(item)+2]).attr("id") =="total_price") {
@@ -228,7 +228,7 @@
     //                             $(inputs[parseInt(item) + 2]).focus();
     //                         }
     //                         else if ($(inputs[item]).attr("id") == "notes") {
-    //                             $("#btn-add-item-to-invoice").click();
+    //                             $("#btn_add_item_to_invoice").click();
     //                         }
     //                         else{
     //                             $(inputs[parseInt(item)+1]).focus();
@@ -242,7 +242,7 @@
 
 
 
-    $("input,select,textarea,button#btn-add-item-to-invoice").on("keypress",function (e){//to prevent submitting and focus on next input
+    $("input,select,textarea,button#btn_add_item_to_invoice").on("keypress",function (e){//to prevent submitting and focus on next input
         if (e.keyCode == 13) {
             // $(this).trigger("keydown", [9]);
             e.preventDefault();
@@ -256,23 +256,29 @@
                     setTimeout(
                         function (){
                             if ($(inputs[item]).attr("id") == "notes" && $(inputs[item]).attr("type") != undefined) {
-                                $("#btn-add-item-to-invoice").click();
+                                $("#btn_add_item_to_invoice").click();
                                 return;
                             }
                             else if ($(inputs[item]).attr("type") == "submit") {
                                 $(inputs[item]).click();
                                 return;
                             }
-                            else if ($(inputs[parseInt(item)+1]).attr("id") == "btn-reset" || $(inputs[parseInt(item)+1]).attr("id") == "total_price" || ($(inputs[item]).attr("id") == "payed" && Number($(inputs[item]).val()) )) {
+                            else if ($(inputs[parseInt(item)+1]).attr("id") == "btn_reset" || $(inputs[parseInt(item)+1]).attr("id") == "total_price" || ($(inputs[item]).attr("id") == "payed" && Number($(inputs[item]).val()) )) {
                                 $(inputs[parseInt(item) + 2]).focus();
                                 return;
                             }
                             else if ($(inputs[parseInt(item)+1]).attr("id") == "pound_type" && $(inputs[parseInt(item)+2]).attr("id") =="total_price") {
                                 $(inputs[parseInt(item) + 3]).focus();
                                 return;
+                            } else if ($(inputs[parseInt(item)+1]).attr("id") == "pound_type" && $(inputs[parseInt(item)+4]).attr("id") =="total_price") {
+                                $(inputs[parseInt(item) + 5]).focus();
+                                return;
                             }
                             else if ($(inputs[parseInt(item)+1]).attr("id") == "pound_type" && $(inputs[parseInt(item)+2]).attr("id") =="payed") {
                                 $(inputs[parseInt(item) + 2]).focus();
+                                return;
+                            } else if ($(inputs[parseInt(item)+1]).attr("id") == "pound_type" && $(inputs[parseInt(item)+4]).attr("id") =="payed") {
+                                $(inputs[parseInt(item) + 4]).focus();
                                 return;
                             }
                             else{
@@ -317,7 +323,7 @@
         }
     });
 
-    $("#btn-close-invoice").on("click",function (){//this is for focus on closing date for invoice
+    $("#btn_close_invoice").on("click",function (){//this is for focus on closing date for invoice
         setTimeout(function (){
             $("#closing_date").get(0).focus();
         },500);
@@ -327,22 +333,37 @@
         $("#invoice_pound").text($(this).val());
     });
 
+    // function validateDropDownBox(dropDownBox){
+    //     let error="";
+    //
+    //     let options = $(dropDownBox).siblings("div").children("option");
+    //     console.log(options);
+    //     let isThisInputCorrect = false;
+    //     for (let opt in options){
+    //         if (Number(options[opt]))
+    //             break;
+    //         if ($(dropDownBox).val().trim() == $(options[opt]).text().trim()){
+    //             isThisInputCorrect=true;
+    //             break;
+    //         }
+    //     }
+    //     if (!isThisInputCorrect){
+    //         error=$(dropDownBox).attr("id")+ " : is not correct";
+    //     }
+    //     return error;
+    // }
     function validateDropDownBox(dropDownBox){
         let error="";
-
         let options = $(dropDownBox).siblings("div").children("option");
-        console.log(options);
         let isThisInputCorrect = false;
-        for (let opt in options){
-            if (Number(options[opt]))
-                break;
-            if ($(dropDownBox).val().trim() == $(options[opt]).text().trim()){
+        options.each(function (){
+            if ($(dropDownBox).val().trim() == $(this).text().trim()){
                 isThisInputCorrect=true;
-                break;
+                return;
             }
-        }
+        });
         if (!isThisInputCorrect){
-            error=$(dropDownBox).attr("id")+ " : is not correct";
+            error=$(dropDownBox).attr("id");
         }
         return error;
     }
@@ -372,7 +393,7 @@
     });
 
 
-    $("#btn-add,#btn-update").on("click",function (){ // to set the route for the closing invoice model
+    $("#btn_add,#btn_update").on("click",function (){ // to set the route for the closing invoice model
         let model_id = $(this).data("target");
         setTimeout(function (){
             if (model_id == "#updateModal") {
@@ -395,14 +416,14 @@
     //         });
     //         $(this).siblings("#label_check_none").attr("hidden",false);
     //         $(this).siblings("#label_check_all").attr("hidden",true);
-    //         $("#btn-multi-delete").attr("disabled",false);
+    //         $("#btn_multi_delete").attr("disabled",false);
     //     } else {
     //         $("td div input[type='checkbox']").filter(function (){
     //             this.checked = false;
     //         });
     //         $(this).siblings("#label_check_none").attr("hidden",true);
     //         $(this).siblings("#label_check_all").attr("hidden",false);
-    //         $("#btn-multi-delete").attr("disabled",true);
+    //         $("#btn_multi_delete").attr("disabled",true);
     //     }
     // });
 
@@ -420,7 +441,7 @@
     //                 this.checked = true;
     //             });
     //         }
-    //         $("#btn-multi-delete").attr("disabled",false);
+    //         $("#btn_multi_delete").attr("disabled",false);
     //
     //     } else {
     //
@@ -431,7 +452,7 @@
     //             }
     //         });
     //         if (all_not_checked){
-    //             $("#btn-multi-delete").attr("disabled",true);
+    //             $("#btn_multi_delete").attr("disabled",true);
     //         }
     //         $("input#check_all").each(function (){
     //             this.checked = false;
@@ -457,21 +478,4 @@
     //     }
     // });
 
-
-//     function resize(){
-//         // let i = document.querySelector("td input");
-//         $("td input").each(function (){
-//             alert(this.value);
-//             this.parentNode.dataset.value = this.value;
-//         });
-//     }
-// setTimeout(resize,100);
-//     Array.from( document.querySelectorAll('[data-expand]'), (input)=>{
-//     let parent = input.parentNode;
-//     function updateSize(){
-//         parent.dataset.value = input.value
-//     }
-//     input.addEventListener('input', updateSize);
-//         updateSize();
-//     });
 })(jQuery); // End of use strict

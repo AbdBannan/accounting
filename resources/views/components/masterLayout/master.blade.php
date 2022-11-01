@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" @show>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield("title")</title>
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -24,7 +26,7 @@
         <!-- Custom style for RTL -->
         <link rel="stylesheet" href="{{asset("css/dist/css/ar/custom.css")."?var=".rand()}}">
     @else
-        <!-- Theme style RTL -->
+        <!-- Theme style LTR -->
         <link rel="stylesheet" href="{{asset("css/dist/css/en/adminlte.css")."?var=".rand()}}">
     @endif
 
@@ -47,7 +49,6 @@
 @php
     $lang = (auth()->user()->getConfig("language") == "english")? "en": "ar" ;
     app()->setLocale($lang);
-
     session(["lang"=>$lang]);
 @endphp
 <body class="hold-transition
@@ -700,10 +701,10 @@
 <script>
     $.widget.bridge('uibutton', $.ui.button)
 </script>
-@if(auth()->user()->getConfig("language") == "arabic")
+{{--@if(auth()->user()->getConfig("language") == "arabic")--}}
     <!-- Bootstrap 4 rtl -->
 {{--    <script src="https://cdn.rtlcss.com/bootstrap/v4.2.1/js/bootstrap.min.js"></script>--}}
-@endif
+{{--@endif--}}
 <!-- Bootstrap 4 -->
 <script src="{{asset("js/plugins/bootstrap/js/bootstrap.bundle.min.js")}}"></script>
 <!-- overlayScrollbars -->
@@ -732,9 +733,72 @@
 {{--<script src="{{asset("js/plugins/datatables-buttons/js/buttons.html5.min.js")}}"></script>--}}
 {{--<script src="{{asset("js/plugins/datatables-buttons/js/buttons.print.min.js")}}"></script>--}}
 {{--<script src="{{asset("js/plugins/datatables-buttons/js/buttons.colVis.min.js")}}"></script>--}}
+    <!-- Page level plugins -->
+    <script src={{asset("vendor/datatables/jquery.dataTables.js")}}></script>
+    <script src={{asset("vendor/datatables/dataTables.bootstrap4.js")}}></script>
+
+{{--    <!-- Page level custom scripts -->--}}
+{{--    <script src={{asset("js/demo/datatables-demo.js?var=415".rand(1,100))}}></script>--}}
 @yield("script")
     <script>
         $(function () {
+            {{--$("a.page-link").each(function (){--}}
+            {{--   if($(this).text() == "Next" ){--}}
+            {{--       $(this).text("{{__("global.Next",[],session("lang"))}}");--}}
+            {{--   } else if ($(this).text() == "Previous"){--}}
+            {{--       $(this).text("{{__("global.Previous",[],session("lang"))}}");--}}
+            {{--   }--}}
+            {{--});--}}
+            {{--$("#dataTable_filter").children("label").each(function (){--}}
+            {{--    let value = this.innerHTML;--}}
+            {{--    value = value.replace("Search","{{__("global.Search",[],session("lang"))}}");--}}
+            {{--    this.innerHTML = value;--}}
+            {{--});--}}
+            {{--$("#dataTable_length").children("label").each(function (){--}}
+            {{--    let value = this.innerHTML;--}}
+            {{--    value = value.replace("Show","{{__("global.Show",[],session("lang"))}}");--}}
+            {{--    value = value.replace("entries","{{__("global.entries",[],session("lang"))}}");--}}
+            {{--    this.innerHTML = value;--}}
+            {{--});--}}
+            {{--$("#dataTable_info").each(function (){--}}
+            {{--    let value = this.innerHTML;--}}
+            {{--    value = value.replace("Showing","{{__("global.Showing",[],session("lang"))}}");--}}
+            {{--    value = value.replace("to","{{__("global.to",[],session("lang"))}}");--}}
+            {{--    value = value.replace("of","{{__("global.of",[],session("lang"))}}");--}}
+            {{--    value = value.replace("entries","{{__("global.entries",[],session("lang"))}}");--}}
+            {{--    this.innerHTML = value;--}}
+            {{--});--}}
+
+
+            // Call the dataTables jQuery plugin
+
+                let info = "{{__("global.Showing",[],session("lang"))}} _START_ {{__("global.to",[],session("lang"))}} _END_ {{__("global.of",[],session("lang"))}} _TOTAL_ {{__("global.entries",[],session("lang"))}}";
+                let emptyTable = "{{__("global.no_data_available_in_table",[],session("lang"))}}";
+                let infoEmpty = "{{__("global.Showing",[],session("lang"))}} 0 {{__("global.to",[],session("lang"))}} 0 {{__("global.of",[],session("lang"))}} 0 {{__("global.entries",[],session("lang"))}}";
+                let lengthMenu = "{{__("global.Show",[],session("lang"))}} _MENU_ {{__("global.entries",[],session("lang"))}}";let loadingRecords = "Please wait - loading...";
+                let search = "{{__("global.Search",[],session("lang"))}}:";
+                let next = "{{__("global.Next",[],session("lang"))}}";
+                let previous = "{{__("global.Previous",[],session("lang"))}}";
+                $('#dataTable').DataTable(
+                {
+                    "ordering":true,
+                    "autoWidth": false,
+                    "language": {
+                        // "info": "Showing page _PAGE_ of _PAGES_",
+                        "info": info,
+                        "infoEmpty": infoEmpty,
+                        "emptyTable": emptyTable,
+                        "lengthMenu": lengthMenu,
+                        "loadingRecords": loadingRecords,
+                        "search": search,
+                        "paginate": {
+                            "next": next,
+                            "previous": previous,
+                        }
+                    }
+                });
+
+
             // $("#example1").DataTable({
             //     "responsive": true, "lengthChange": true, "autoWidth": true,
             //     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
@@ -761,6 +825,7 @@
                 $(this).parent("li").parent("ul").siblings("a").removeClass("bg-gradient-secondary").addClass("active").parent("li").addClass("menu-open");
             }
         });
+
     </script>
 
 </body>

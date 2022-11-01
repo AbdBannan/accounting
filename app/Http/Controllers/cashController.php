@@ -20,6 +20,7 @@ class cashController extends Controller
      */
     public function index()
     {
+        session(["previouse_url"=>"view_all"]);
         globalFunctions::registerUserActivityLog("seen_all", "cash_invoices",null);
         $invoices = Journal::where("detail",1)->where("invoice_type",5)->selectRaw("invoice_id,first_part_name,sum(debit) / num_for_pound as deb, sum(credit) / num_for_pound as cred , pound_type")->groupBy(["invoice_id","first_part_name","num_for_pound","pound_type"])->orderBy("invoice_id")->get();
         return view("invoices.cashes.viewInvoices")->with("invoices",$invoices);
@@ -227,18 +228,20 @@ class cashController extends Controller
     public function search(Request $request)
     {
         $this->validate($request,["invoice_id"=>"required"]);
-        $invoiceLines = Journal::where("detail",1)->where("invoice_id",$request["invoice_id"])->where("invoice_type",5)->get();
-
+//        $invoiceLines = Journal::where("detail",1)->where("invoice_id",$request["invoice_id"])->where("invoice_type",5)->get();
         globalFunctions::registerUserActivityLog("searched","cash_invoice",$request["invoice_id"]);
-        if (count($invoiceLines)>0) {
-            return view("invoices.cashes.showInvoice")->with("invoiceLines",$invoiceLines);
-        }else{
-            globalFunctions::flashMessage("search","not_found","cash_invoice");
-            return back();
-        }
+        return redirect(route("invoice.showCashInvoice",$request["invoice_id"]));
+
+//        if (count($invoiceLines)>0) {
+//            return view("invoices.cashes.showInvoice")->with("invoiceLines",$invoiceLines);
+//        }else{
+//            globalFunctions::flashMessage("search","not_found","cash_invoice");
+//            return back();
+//        }
     }
 
     public function showSearchInvoice(){
+        session(["previouse_url"=>"show_search"]);
         return view("invoices.cashes.showInvoice")->with("invoiceLines",[]);
     }
     /**
@@ -300,7 +303,11 @@ class cashController extends Controller
         globalFunctions::flashMessage("softDelete",$result,"cash_invoice");
         globalFunctions::registerUserActivityLog("recycled","cas_invoice",$invoice_id);
 
-        return back();
+        if (session("previouse_url") == "show_search") {
+            return redirect(route("invoice.showSearchCashInvoice"));
+        } else {
+            return redirect(route("invoice.viewCashInvoices"));
+        }
     }
 
     /**

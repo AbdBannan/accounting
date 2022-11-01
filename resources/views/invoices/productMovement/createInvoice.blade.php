@@ -30,71 +30,78 @@
                     let error="";
                     let options = $(dropDownBox).siblings("div").children("option");
                     let isThisInputCorrect = false;
-                    for (let opt in options){
-                        if (Number(options[opt]))
-                            break;
-                        if ($(dropDownBox).val().trim() == $(options[opt]).text().trim()){
+                    options.each(function (){
+                        if ($(dropDownBox).val().trim() == $(this).text().trim()){
                             isThisInputCorrect=true;
-                            break;
+                            return;
                         }
-                    }
+                    });
                     if (!isThisInputCorrect){
-                        error=$(dropDownBox).attr("id")+ " : is not correct";
+                        error=$(dropDownBox).attr("id");
                     }
                     return error;
                 }
-                $("#btn-add-item-to-invoice").on("click",function (e){
+
+                $("#btn_add_item_to_invoice").on("click",function (e){
                     e.preventDefault();
-                    let errors = [];
-                    let inputs = $("input[class~='dropdown-toggle");
-                    for (let item in inputs) {
-                        if(Number(inputs[item]))
-                            break;
-                        let error = validateDropDownBox(inputs[item]);
+                    $(".is-invalid").each(function () {
+                        $(this).removeClass("is-invalid");
+                    });
+                    let error_found = false;
+                    $("input[class~='dropdown-toggle").each(function () {
+                        let error = validateDropDownBox(this);
                         if (error !== "") {
-                            errors.push(error);
+                            error_found = true;
+                            $("#" + error).addClass("is-invalid");
                         }
-                    }
-                    if(errors.length>0){
-                        alert(errors);
-                        return;;
-                    }
+                    });
 
+                    let moved_product_name = $("#moved_product_name").val();
+                    let moved_to_product_name = $("#moved_to_product_name").val();
+                    let quantity = $("#quantity").val();
+                    let price = $("#price").val();
+                    let total_price = $("#total_price").val();
+                    let notes = $("#notes").val();
+                    if (moved_product_name == "") {
+                        $("#moved_product_name").addClass("is-invalid");
+                        error_found = true;
+                    }
+                    if (moved_to_product_name == "") {
+                        $("#moved_to_product_name").addClass("is-invalid");
+                        error_found = true;
+                    }
+                    if (quantity == "") {
+                        $("#quantity").addClass("is-invalid");
+                        error_found = true;
+                    }
+                    if (price == "") {
+                        $("#price").addClass("is-invalid");
+                        error_found = true;
+                    }
+                    if (error_found) {
+                        return;
+                    }
                     if (!isLineInEditing) {
-
-                        let moved_product_name = $("#moved_product_name").val();
-                        let moved_to_product_name = $("#moved_to_product_name").val();
-                        let quantity = $("#quantity").val();
-                        let price = $("#price").val();
-                        let total_price = $("#total_price").val();
-                        let notes = $("#notes").val();
-
                         let ctr = $("#body").children().filter("tr").length + 1;
-                        if (moved_product_name == "" || moved_to_product_name == "" || quantity == "" || price == "" || total_price == "" ){
-                            alert("should not be empty");
-                            return;
-                        }
                         let entries =
-                            `<tr>
-                                 <td ondblclick="putLineInEdit(this)" id="td">`+ctr+`</td>
-                                 <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="moved_product_name_`+ctr+`" type="text" value="`+moved_product_name+`" style="outline: none; border: none;background-color: transparent" readonly></td>
-                                 <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="moved_to_product_name_`+ctr+`" type="text" value="`+moved_to_product_name+`" style="outline: none;border: none;background-color: transparent" readonly></td>
-                                 <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="quantity_`+ctr+`" type="text" value="`+quantity+`" style="outline: none;border: none;background-color: transparent" readonly></td>
-                                 <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="price_`+ctr+`" type="text" value="`+price+`" style="outline: none;border: none;background-color: transparent" readonly></td>
-                                 <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="total_price_`+ctr+`" type="text" value="`+total_price+`" style="outline: none;border: none;background-color: transparent" readonly></td>
-                                 <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="notes_`+ctr+`" type="text" value="`+notes+`" style="outline: none;border: none;background-color: transparent" readonly></td>
-                                 <td id="td-delete-restore">
-                                    <div class="d-flex">
-                                        <a onclick="restoreLine(this)" id="btn-restore-invoice-line" class="fas fa-undo col-5"></a>
-                                        <br>
-                                        <a onclick="deleteLine(this)" id="btn-delete-invoice-line" class="fas fa-trash col-5"></a>
-                                    </div>
-                                 </td>
-                            </tr>
-                            `;
+                        `<tr>
+                            <td ondblclick="putLineInEdit(this)" id="td">`+ctr+`</td>
+                            <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="moved_product_name_`+ctr+`" type="text" value="`+moved_product_name+`" style="outline: none; border: none;background-color: transparent" readonly></td>
+                            <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="moved_to_product_name_`+ctr+`" type="text" value="`+moved_to_product_name+`" style="outline: none;border: none;background-color: transparent" readonly></td>
+                            <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="quantity_`+ctr+`" type="text" value="`+quantity+`" style="outline: none;border: none;background-color: transparent" readonly></td>
+                            <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="price_`+ctr+`" type="text" value="`+price+`" style="outline: none;border: none;background-color: transparent" readonly></td>
+                            <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="total_price_`+ctr+`" type="text" value="`+total_price+`" style="outline: none;border: none;background-color: transparent" readonly></td>
+                            <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="notes_`+ctr+`" type="text" value="`+notes+`" style="outline: none;border: none;background-color: transparent" readonly></td>
+                            <td id="td_delete_restore">
+                                <div class="d-flex">
+                                    <a onclick="restoreLine(this)" id="btn_restore_invoice_line" class="fas fa-undo col-5"></a>
+                                    <br>
+                                    <a onclick="deleteLine(this)" id="btn_delete_invoice_line" class="fas fa-trash col-5"></a>
+                                </div>
+                            </td>
+                        </tr>
+                        `;
                         $("#body").append(entries);
-                        resize();
-                        // isNewLineMode = false;
                     }
                     else if(isLineInEditing){
                         for (let item in ids) {
@@ -103,13 +110,17 @@
                         ids = [];
                         isLineInEditing = false;
                     }
-                    $("#btn-reset").click();
+                    $("#btn_reset").click();
+                    resize();
                     reCalcInvoiceTotalPrice();
                 });
 
                 function putLineInEdit(e) {
                     if (isLineInEditing)
                         return;
+                    $(".is-invalid").each(function () {
+                        $(this).removeClass("is-invalid");
+                    });
                     ids = [];
                     isLineInEditing = true;
 
@@ -121,7 +132,10 @@
                     $("#moved_product_name").focus();
                 }
 
-                $("#btn-reset").on("click",function (){
+                $("#btn_reset").on("click",function (){
+                    $(".is-invalid").each(function () {
+                        $(this).removeClass("is-invalid");
+                    });
                     $("#moved_product_name").focus();
                     isLineInEditing = false;
                     isNewLineMode = false;
@@ -146,7 +160,7 @@
                             total_price+= parseFloat($(this).val());
                         }
                     });
-                    $("#total-invoice-price").text(total_price);
+                    $("#total_invoice_price").text(total_price);
                 }
 
 
@@ -160,13 +174,6 @@
                 }
 
             </script>
-
-    <!-- Page level plugins -->
-        <script src={{asset("vendor/datatables/jquery.dataTables.js")}}></script>
-        <script src={{asset("vendor/datatables/dataTables.bootstrap4.js")}}></script>
-
-        <!-- Page level custom scripts -->
-        <script src={{asset("js/demo/datatables-demo.js?var=4215".rand(1,100))}}></script>
     @endsection
 </x-masterLayout.master>
 

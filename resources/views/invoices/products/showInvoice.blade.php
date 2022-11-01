@@ -23,10 +23,10 @@
                     @section("edit_delete")
 
                           <div class="row">
-                              <a id="btn-update-invoice" title="{{__("global.update",[],session("lang"))}}" class="col-4">
+                              <a id="btn_update_invoice" title="{{__("global.update",[],session("lang"))}}" class="col-4">
                                   <input class="grid-button grid-edit-button" type="button" title="Update">
                               </a>
-                              <a id="btn-delete" title="{{__("global.delete",[],session("lang"))}}" class="col-4" data-toggle="modal" data-target="#deleteConfirmModal" data-route={{route("invoice.softDeleteInvoice",$invoiceLines[0]->invoice_id)}}>
+                              <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="col-4" data-toggle="modal" data-target="#deleteConfirmModal" data-route={{route("invoice.softDeleteInvoice",$invoiceLines[0]->invoice_id)}}>
                                   <input class="grid-button grid-delete-button" type="button" title="Delete">
                               </a>
                           </div>
@@ -36,7 +36,7 @@
                     @section("auto_focus")@endsection
                     @section("hidden") hidden="true" @endsection
                     @section("image_path"){{asset($invoiceLines[0]->image)}}@endsection
-                    @section("form-route"){{route("invoice.updateInvoice",[$invoiceLines[0]->invoice_type,$invoiceLines[0]->invoice_id])}}@endsection
+                    @section("form_route"){{route("invoice.updateInvoice",[$invoiceLines[0]->invoice_type,$invoiceLines[0]->invoice_id])}}@endsection
                     @section("method")
                         @method("put")
                     @endsection
@@ -50,11 +50,11 @@
                                 <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="price_{{$line->line}}" type="text" value="{{$line->price}}" style="outline: none;border: none;background-color: transparent" readonly></td>
                                 <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="total_price_{{$line->line}}" type="text" value="{{$line->quantity * $line->price}}" style="outline: none;border: none;background-color: transparent" readonly></td>
                                 <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="notes_{{$line->line}}" type="text" value="{{$line->notes}}"style="outline: none;border: none;background-color: transparent" readonly></td>
-                                <td id="td-delete-restore" hidden="true">
+                                <td id="td_delete_restore" hidden="true">
                                     <div class="d-flex">
-                                        <a onclick="restoreLine(this)" id="btn-restore-invoice-line" class="fas fa-undo col-5"></a>
+                                        <a onclick="restoreLine(this)" id="btn_restore_invoice_line" class="fas fa-undo col-5"></a>
                                         <br>
-                                        <a onclick="deleteLine(this)" id="btn-delete-invoice-line" class="fas fa-trash col-5"></a>
+                                        <a onclick="deleteLine(this)" id="btn_delete_invoice_line" class="fas fa-trash col-5"></a>
                                     </div>
                                 </td>
                             </tr>
@@ -100,84 +100,86 @@
                 let error="";
                 let options = $(dropDownBox).siblings("div").children("option");
                 let isThisInputCorrect = false;
-                for (let opt in options){
-                    if (Number(options[opt]))
-                        break;
-                    if ($(dropDownBox).val().trim() == $(options[opt]).text().trim()){
+                options.each(function (){
+                    if ($(dropDownBox).val().trim() == $(this).text().trim()){
                         isThisInputCorrect=true;
-                        break;
+                        return;
                     }
-                }
+                });
                 if (!isThisInputCorrect){
-                    error=$(dropDownBox).attr("id")+ " : is not correct";
+                    error=$(dropDownBox).attr("id");
                 }
                 return error;
             }
-            $("#btn-add-item-to-invoice").on("click",function (e){
+
+            $("#btn_add_item_to_invoice").on("click",function (e){
                 e.preventDefault();
                 if (!editingMode )
                     return
-
-                let errors = [];
-                let inputs = $("input[class~='dropdown-toggle");
-                for (let item in inputs) {
-                    if(Number(inputs[item]))
-                        break;
-                    let error = validateDropDownBox(inputs[item]);
+                $(".is-invalid").each(function () {
+                    $(this).removeClass("is-invalid");
+                });
+                let error_found = false;
+                $("input[class~='dropdown-toggle").each(function () {
+                    let error = validateDropDownBox(this);
                     if (error !== "") {
-                        errors.push(error);
+                        error_found = true;
+                        $("#" + error).addClass("is-invalid");
                     }
-                }
-                if(errors.length>0){
-                    alert(errors);
-                    return;;
-                }
+                });
 
+                let first_part_name = $("#first_part_name").val();
+                let product_name = $("#product_name").val();
+                let quantity = $("#quantity").val();
+                let price = $("#price").val();
+                let total_price = $("#total_price").val();
+                let notes = $("#notes").val();
+                if (first_part_name == "") {
+                    $("#first_part_name").addClass("is-invalid");
+                    error_found = true;
+                }
+                if (product_name == "") {
+                    $("#product_name").addClass("is-invalid");
+                    error_found = true;
+                }
+                if (quantity == "") {
+                    $("#quantity").addClass("is-invalid");
+                    error_found = true;
+                }
+                if (price == "") {
+                    $("#price").addClass("is-invalid");
+                    error_found = true;
+                }
+                if (error_found) {
+                    return;
+                }
                 if (!isLineInEditing){
-
-                    // let invoice_id = $("#invoice_id").val();
-                    let first_part_name = $("#first_part_name").val();
-                    // let second_part_name = $("#second_part_name").val();
-                    let product_name = $("#product_name").val();
-                    let quantity = $("#quantity").val();
-                    let price = $("#price").val();
-                    let total_price = $("#total_price").val();
-                    // let posting = $("#posting").val();
-                    // let pound_type = $("#pound_type").val();
-                    let notes = $("#notes").val();
-                    // let initialCtr = 1;
                     let ctr=1;
                     $("#body tr td[name='line_id']").filter(function (){
-                        if (parseInt($(this).text())>ctr)
+                        if (parseInt($(this).text())>ctr) {
                             ctr = parseInt($(this).text());
-                        // alert($(this).text());
+                        }
                     });
                     ctr++;
-                    // let ctr = $("#body").children().filter("tr").length + 1;
-                    if (first_part_name == "" || product_name == "" || quantity == "" || price == "" || total_price == "" ){
-                        alert("should not be empty");
-                        return;
-                    }
                     let entries =
-                        `<tr>
-                             <td ondblclick="putLineInEdit(this)" id="td">`+(ctr)+`</td>
-                             <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="first_part_name_`+ctr+`" type="text" value="`+first_part_name+`" style="outline: none; border: none;background-color: transparent" readonly></td>
-                             <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="product_name_`+ctr+`" type="text" value="`+product_name+`" style="outline: none;border: none;background-color: transparent" readonly></td>
-                             <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="quantity_`+ctr+`" type="text" value="`+quantity+`" style="outline: none;border: none;background-color: transparent" readonly></td>
-                             <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="price_`+ctr+`" type="text" value="`+price+`" style="outline: none;border: none;background-color: transparent" readonly></td>
-                             <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="total_price_`+ctr+`" type="text" value="`+total_price+`" style="outline: none;border: none;background-color: transparent" readonly></td>
-                             <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="notes_`+ctr+`" type="text" value="`+notes+`" style="outline: none;border: none;background-color: transparent" readonly></td>
-                             <td id="td-delete-restore">
-                                <div class="d-flex">
-                                    <a onclick="restoreLine(this)" id="btn-restore-invoice-line" class="fas fa-undo col-5"></a>
-                                    <br>
-                                    <a onclick="deleteLine(this)" id="btn-delete-invoice-line" class="fas fa-trash col-5"></a>
-                                </div>
-                             </td>
-                        </tr>
-                        `;
+                    `<tr>
+                        <td ondblclick="putLineInEdit(this)" id="td">`+(ctr)+`</td>
+                        <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="first_part_name_`+ctr+`" type="text" value="`+first_part_name+`" style="outline: none; border: none;background-color: transparent" readonly></td>
+                        <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="product_name_`+ctr+`" type="text" value="`+product_name+`" style="outline: none;border: none;background-color: transparent" readonly></td>
+                        <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="quantity_`+ctr+`" type="text" value="`+quantity+`" style="outline: none;border: none;background-color: transparent" readonly></td>
+                        <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="price_`+ctr+`" type="text" value="`+price+`" style="outline: none;border: none;background-color: transparent" readonly></td>
+                        <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="total_price_`+ctr+`" type="text" value="`+total_price+`" style="outline: none;border: none;background-color: transparent" readonly></td>
+                        <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="notes_`+ctr+`" type="text" value="`+notes+`" style="outline: none;border: none;background-color: transparent" readonly></td>
+                        <td id="td_delete_restore">
+                            <div class="d-flex">
+                                <a onclick="restoreLine(this)" id="btn_restore_invoice_line" class="fas fa-undo col-5"></a>
+                                <br>
+                                <a onclick="deleteLine(this)" id="btn_delete_invoice_line" class="fas fa-trash col-5"></a>
+                            </div>
+                        </td>
+                    </tr>
+                    `;
                     $("#body").append(entries);
-                    resize();
                 }
                 else if(isLineInEditing){
                     for (let item in ids) {
@@ -189,14 +191,17 @@
                     ids = [];
                     isLineInEditing = false;
                 }
-                $("#btn-reset").click();
+                $("#btn_reset").click();
+                resize();
                 reCalcInvoiceTotalPrice();
             });
 
             function putLineInEdit(e){
                 if (!editingMode || isLineInEditing)
                     return;
-
+                $(".is-invalid").each(function () {
+                    $(this).removeClass("is-invalid");
+                });
                 ids = [];
                 isLineInEditing = true;
 
@@ -210,16 +215,22 @@
                 $("#quantity").focus();
             }
 
-            $("#btn-update-invoice").on("click",function (){
-                $("td[id='td-delete-restore']").attr("hidden",false);
-                $("th[id='td-delete-restore']").attr("hidden",false);
-                $("#btn-close-invoice").attr("hidden",false);
+            $("#btn_update_invoice").on("click",function (){
+                $("td[id='td_delete_restore']").attr("hidden",false);
+                $("th[id='td_delete_restore']").attr("hidden",false);
+                $("#btn_close_invoice").attr("hidden",false);
                 $(".row input[type='text'],.row input[type='number'],.row select,.row input[type='file']").prop("disabled",false);
+                $("#total_price").prop("disabled",true);
                 $("input#second_part_name").focus();
                 editingMode = true;
             });
 
-            $("#btn-reset").on("click",function (){
+            $("#btn_reset").on("click",function (){
+                if (!editingMode )
+                    return
+                $(".is-invalid").each(function () {
+                    $(this).removeClass("is-invalid");
+                });
                 $("input#quantity").focus();
                 isLineInEditing = false;
                 tr = null;
@@ -242,7 +253,7 @@
             }
 
 
-            // $("#btn-add-new-item-to-edited-invoice").on("click",function (e){
+            // $("#btn_add-new-item-to-edited-invoice").on("click",function (e){
             //     e.preventDefault();
             //     if (!editingMode || isLineInEditing)
             //         return
@@ -256,9 +267,9 @@
                         total_price+= parseFloat($(this).val());
                     }
                 });
-                $("#total-invoice-price").text(total_price);
+                $("#total_invoice_price").text(total_price);
             }
-            $("#btn-close-invoice").on("click",function (){
+            $("#btn_close_invoice").on("click",function (){
                 setTimeout(function (){
                     $("#closing_date").get(0).focus();
                 },40);
@@ -276,13 +287,6 @@
 
             resize();
         </script>
-
-        <!-- Page level plugins -->
-        <script src={{asset("vendor/datatables/jquery.dataTables.js")}}></script>
-        <script src={{asset("vendor/datatables/dataTables.bootstrap4.js")}}></script>
-
-        <!-- Page level custom scripts -->
-        <script src={{asset("js/demo/datatables-demo.js?var=415".rand(1,11220))}}></script>
     @endsection
 </x-masterLayout.master>
 

@@ -36,7 +36,9 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @if (count($actions)>0)
+                                    @php
+                                        $sum_of_quantity = 0;
+                                    @endphp
                                     @foreach ($actions as $action)
                                         <tr id="discover_rows">
                                             <td hidden>
@@ -51,7 +53,10 @@
                                                 @endif
                                             </td>
                                             <td id="row_id" hidden>{{$action->row_id}}</td>
-                                            <td>{{$action->sum_of_balance}}</td>
+                                            @php
+                                                $sum_of_quantity += $action->in_quantity - $action->out_quantity
+                                            @endphp
+                                            <td>{{$sum_of_quantity}}</td>
                                             <td>{{$action->in_quantity}}</td>
                                             <td>{{$action->out_quantity}}</td>
                                             <td>{{$action->price}}</td>
@@ -66,11 +71,9 @@
                                             <td>{{__("global.$action->invoice_type",[],session("lang"))}}</td>
                                         </tr>
                                     @endforeach
-                                @endif
                                 </tbody>
                             </table>
 
-                            {{--        {{$actions->render()}}--}}
                         </div>
                     </div>
                     <div class="card-footer">
@@ -114,12 +117,11 @@
                     </div>
                     <div id="productDiscoverUntilNowCollapse" class="collapse">
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form  style="margin: auto" action="{{route("discover.productDiscoverUntilNow")}}" method="POST">
-                            @csrf
+                        <form  style="margin: auto" action="{{route("discover.productDiscoverUntilNow")}}" >
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="product" >{{__("global.account",[],session("lang"))}}</label>
                                 <input id="product" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-                                <div style="max-height:200px;overflow-y: scroll" id="dropdown-menu" class="dropdown-menu" aria-labelledby="product">
+                                <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="product">
                                     @foreach(App\Models\Product::get() as $product)
                                         <option class="dropdown-item" value="{{$product->id}}">{{$product->name }}</option>
                                     @endforeach
@@ -131,12 +133,11 @@
                     </div>
                     <div id="productDiscoverUntilLastBalanceCollapse" class="collapse">
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form  style="margin: auto" action="{{route("discover.productDiscoverUntilLastBalance")}}" method="POST">
-                            @csrf
+                        <form  style="margin: auto" action="{{route("discover.productDiscoverUntilLastBalance")}}" >
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="product" >{{__("global.account",[],session("lang"))}}</label>
                                 <input id="product" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-                                <div style="max-height:200px;overflow-y: scroll" id="dropdown-menu" class="dropdown-menu" aria-labelledby="product">
+                                <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="product">
                                     @foreach(App\Models\Product::get() as $product)
                                         <option class="dropdown-item" value="{{$product->id}}">{{$product->name }}</option>
                                     @endforeach
@@ -148,12 +149,11 @@
                     </div>
                     <div id="productDiscoverWithAccountCollapse" class="collapse">
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form style="margin: auto" action="{{route("discover.productDiscoverWithAccount")}}" method="POST">
-                            @csrf
+                        <form style="margin: auto" action="{{route("discover.productDiscoverWithAccount")}}" >
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="product" >{{__("global.product",[],session("lang"))}}</label>
                                 <input id="product" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-                                <div style="max-height:200px;overflow-y: scroll" id="dropdown-menu" class="dropdown-menu" aria-labelledby="product">
+                                <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="product">
                                     @foreach(App\Models\Product::get() as $product)
                                         <option class="dropdown-item" value="{{$product->id}}">{{$product->name }}</option>
                                     @endforeach
@@ -162,7 +162,7 @@
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
                                 <input id="account" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-                                <div style="max-height:200px;overflow-y: scroll" id="dropdown-menu" class="dropdown-menu" aria-labelledby="account">
+                                <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account">
                                     @foreach(App\Models\Account::get() as $account)
                                         <option class="dropdown-item" value="{{$account->id}}">{{$account->name }}</option>
                                     @endforeach
@@ -174,12 +174,11 @@
                     </div>
                     <div id="productDiscoverBetweenTowDatesCollapse" class="collapse" >
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form  style="margin: auto" action="{{route("discover.productDiscoverBetweenTowDates")}}" method="POST">
-                            @csrf
+                        <form  style="margin: auto" action="{{route("discover.productDiscoverBetweenTowDates")}}" >
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="product" >{{__("global.account",[],session("lang"))}}</label>
                                 <input id="product" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-                                <div style="max-height:200px;overflow-y: scroll" id="dropdown-menu" class="dropdown-menu" aria-labelledby="product">
+                                <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="product">
                                     @foreach(App\Models\Product::get() as $product)
                                         <option class="dropdown-item" value="{{$product->id}}">{{$product->name }}</option>
                                     @endforeach
@@ -200,12 +199,11 @@
                     </div>
                     <div id="productDiscoverByStoreCollapse" class="collapse" >
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form  style="margin: auto" action="{{route("discover.productDiscoverByStore")}}" method="POST">
-                            @csrf
+                        <form  style="margin: auto" action="{{route("discover.productDiscoverByStore")}}" >
                             <div class="position-relative form-group text-center">
-                                <label style="font-size: x-large" for="store" >{{__("global.product",[],session("lang"))}}</label>
+                                <label style="font-size: x-large" for="store" >{{__("global.store",[],session("lang"))}}</label>
                                 <input id="store" name="store" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-                                <div style="max-height:200px;overflow-y: scroll" id="dropdown-menu" class="dropdown-menu" aria-labelledby="store">
+                                <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="store">
                                     @foreach(App\Models\Store::get() as $store)
                                         <option class="dropdown-item" value="{{$store->id}}">{{$store->name }}</option>
                                     @endforeach
@@ -295,11 +293,6 @@
                 $(this).children("td").children("a#btn_show_owner_invoice")[0].click();
             });
         </script>
-        <!-- Page level plugins -->
-        <script src={{asset("vendor/datatables/jquery.dataTables.js")}}></script>
-        <script src={{asset("vendor/datatables/dataTables.bootstrap4.js")}}></script>
-
-        <!-- Page level custom scripts -->
-        <script src={{asset("js/demo/datatables-demo.js?var=415".rand(1,100))}}></script>
+      
     @endsection
 </x-masterLayout.master>

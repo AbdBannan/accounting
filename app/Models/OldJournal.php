@@ -134,6 +134,10 @@ class OldJournal extends Model
         $this->attributes['invoice_type'] = $value;
     }
 
+    public function getPoundTypeAttribute($value){
+        return __("global.$value",[],session("lang"));
+    }
+
 //    public function getDebitAttribute($value){
 //        return $value * $this->attributes["num_for_pound"];
 //    }

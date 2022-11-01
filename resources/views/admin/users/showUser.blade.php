@@ -76,7 +76,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group text-center" >
                                                 <div id="disp_tmp_path"></div>
-                                                <img id="profile-image" src="{{asset($user->profile_image)}}" style="width:100%;max-width:170px;margin:10px auto;border-radius:50%">
+                                                <img id="profile_image" src="{{asset($user->profile_image)}}" style="width:100%;max-width:170px;margin:10px auto;border-radius:50%">
                                             </div>
                                         </div>
                                     </div>
@@ -97,7 +97,7 @@
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">{{__("global.roles",[],session("lang"))}}</h6>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" >
 
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
@@ -156,11 +156,6 @@
     @endsection
 
     @section("script")
-    <!-- Page level plugins -->
-        <script src={{asset("vendor/datatables/jquery.dataTables.js")}}></script>
-        <script src={{asset("vendor/datatables/dataTables.bootstrap4.js")}}></script>
-
-        <!-- Page level custom scripts -->
-        <script src={{asset("js/demo/datatables-demo.js?var=415".rand(1,100))}}></script>
+  
     @endsection
 </x-masterLayout.master>

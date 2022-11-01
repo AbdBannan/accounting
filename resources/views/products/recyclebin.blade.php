@@ -35,10 +35,10 @@
                                         <td>{{$product->store->name}}</td>
 
                                         <td class="row m-0">
-                                            <a id="btn-restore" title="{{__("global.restore",[],session("lang"))}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#restoreConfirmModal" data-route="{{route("product.restoreProduct",$product->id)}}">
+                                            <a id="btn_restore" title="{{__("global.restore",[],session("lang"))}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#restoreConfirmModal" data-route="{{route("product.restoreProduct",$product->id)}}">
                                                 <i class="fa fa-undo"></i>
                                             </a>
-                                            <a id="btn-delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal"  data-route="{{route("product.deleteProduct",$product->id)}}">
+                                            <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal"  data-route="{{route("product.deleteProduct",$product->id)}}">
                                                 <input class="grid-button grid-delete-button" type="button">
                                             </a>
                                         </td>
@@ -57,12 +57,7 @@
         <x-models.restore-confirm-model></x-models.restore-confirm-model>
     @endsection
     @section("script")
-    <!-- Page level plugins -->
-        <script src={{asset("vendor/datatables/jquery.dataTables.js")}}></script>
-        <script src={{asset("vendor/datatables/dataTables.bootstrap4.js")}}></script>
-
-        <!-- Page level custom scripts -->
-        <script src={{asset("js/demo/datatables-demo.js?var=415".rand(1,100))}}></script>
+  
     @endsection
 </x-masterLayout.master>
 

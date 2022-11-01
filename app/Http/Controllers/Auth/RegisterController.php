@@ -80,6 +80,9 @@ class RegisterController extends Controller
             "profile_image" => isset($data["file"]) ? request()->file("file")->getClientOriginalName() : "systemImages/default_user_img.png"
         ]);
         globalFunctions::initialUserConfig($user);
+        $user->config()->detach(1);
+        $user->config()->attach(1,["value"=>$data["language"]]);
+
         return $user;
     }
 }

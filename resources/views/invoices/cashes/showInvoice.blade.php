@@ -16,10 +16,10 @@
                 <x-invoices.cash-body>
                     @section("edit_delete")
                         <div class="row">
-                            <a id="btn-update-invoice" title="{{__("global.update",[],session("lang"))}}" class="col-4">
+                            <a id="btn_update_invoice" title="{{__("global.update",[],session("lang"))}}" class="col-4">
                                 <input class="grid-button grid-edit-button" type="button" title="Update">
                             </a>
-                            <a id="btn-delete" title="{{__("global.delete",[],session("lang"))}}" class="col-4" data-toggle="modal" data-target="#deleteConfirmModal" data-route={{route("invoice.softDeleteCashInvoice",$invoiceLines[0]->invoice_id)}}>
+                            <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="col-4" data-toggle="modal" data-target="#deleteConfirmModal" data-route={{route("invoice.softDeleteCashInvoice",$invoiceLines[0]->invoice_id)}}>
                                 <input class="grid-button grid-delete-button" type="button" title="Delete">
                             </a>
                         </div>
@@ -30,7 +30,7 @@
                     @section("hidden") hidden="true" @endsection
 
                     @section("image_path"){{asset($invoiceLines[0]->image)}}@endsection
-                    @section("form-route"){{route("invoice.updateCashInvoice",$invoiceLines[0]->invoice_id)}}@endsection
+                    @section("form_route"){{route("invoice.updateCashInvoice",$invoiceLines[0]->invoice_id)}}@endsection
                     @section("method")
                         @method("put")
                     @endsection
@@ -42,11 +42,11 @@
                                 <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="received_{{$line->line}}" type="text" value="{{$line->debit/$line->num_for_pound}}" style="outline: none;border: none;background-color: transparent" readonly></td>
                                 <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="payed_{{$line->line}}" type="text" value="{{$line->credit/$line->num_for_pound}}" style="outline: none;border: none;background-color: transparent" readonly></td>
                                 <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="notes_{{$line->line}}" type="text" value="{{$line->notes}}"style="outline: none;border: none;background-color: transparent" readonly></td>
-                                <td id="td-delete-restore" hidden="true">
+                                <td id="td_delete_restore" hidden="true">
                                     <div class="d-flex">
-                                        <a onclick="restoreLine(this)" id="btn-restore-invoice-line" class="fas fa-undo col-5"></a>
+                                        <a onclick="restoreLine(this)" id="btn_restore_invoice_line" class="fas fa-undo col-5"></a>
                                         <br>
-                                        <a onclick="deleteLine(this)" id="btn-delete-invoice-line" class="fas fa-trash col-5"></a>
+                                        <a onclick="deleteLine(this)" id="btn_delete_invoice_line" class="fas fa-trash col-5"></a>
                                     </div>
                                 </td>
                             </tr>
@@ -62,8 +62,7 @@
             @else
                 <div class="container">
                     <div class="row bg-gradient-light shadow" style="width: 50%;margin: auto;">
-                        <form id="search_form" style="margin: auto" action="{{route("invoice.searchCashInvoice")}}" method="POST">
-                            @csrf
+                        <form id="search_form" style="margin: auto" action="{{route("invoice.searchCashInvoice")}}">
                             <div class="form-group text-center">
                                 <label style="font-size: x-large" for="invoice_id" >{{__("global.enter_invoice_id",[],session("lang"))}}</label>
                                 <input type="number" name="invoice_id" id="invoice_id" class="form-control" autofocus>
@@ -95,79 +94,77 @@
                 let error="";
                 let options = $(dropDownBox).siblings("div").children("option");
                 let isThisInputCorrect = false;
-                for (let opt in options){
-                    if (Number(options[opt]))
-                        break;
-                    if ($(dropDownBox).val().trim() == $(options[opt]).text().trim()){
+                options.each(function (){
+                    if ($(dropDownBox).val().trim() == $(this).text().trim()){
                         isThisInputCorrect=true;
-                        break;
+                        return;
                     }
-                }
+                });
                 if (!isThisInputCorrect){
-                    error=$(dropDownBox).attr("id")+ " : is not correct";
+                    error=$(dropDownBox).attr("id");
                 }
                 return error;
             }
-            $("#btn-add-item-to-invoice").on("click",function (e){
+
+            $("#btn_add_item_to_invoice").on("click",function (e){
                 e.preventDefault();
                 if (!editingMode )
                     return
-                let errors = [];
-                let inputs = $("input[class~='dropdown-toggle");
-                for (let item in inputs) {
-                    if(Number(inputs[item]))
-                        break;
-                    let error = validateDropDownBox(inputs[item]);
+                $(".is-invalid").each(function () {
+                    $(this).removeClass("is-invalid");
+                });
+                let error_found = false;
+                $("input[class~='dropdown-toggle").each(function () {
+                    let error = validateDropDownBox(this);
                     if (error !== "") {
-                        errors.push(error);
+                        error_found = true;
+                        $("#" + error).addClass("is-invalid");
                     }
+                });
+                let second_part_name = $("#second_part_name").val();
+                let payed = $("#payed").val();
+                let received = $("#received").val();
+                let notes = $("#notes").val();
+                if (second_part_name == "") {
+                    $("#second_part_name").addClass("is-invalid");
+                    error_found = true;
                 }
-                if(errors.length>0){
-                    alert(errors);
-                    return;;
+                if (payed == "" && received == "") {
+                    $("#payed").addClass("is-invalid");
+                    $("#received").addClass("is-invalid");
+                    error_found = true;
+                }
+                if (error_found) {
+                    return;
                 }
                 if (!isLineInEditing){
-
-
-                    let second_part_name = $("#second_part_name").val();
-                    let payed = $("#payed").val();
-                    let received = $("#received").val();
-                    let notes = $("#notes").val();
-
                     let ctr=1;
                     $("#body tr td[name='line_id']").filter(function (){
                         if (parseInt($(this).text())>ctr)
                             ctr = parseInt($(this).text());
-                        // alert($(this).text());
                     });
                     ctr++;
-                    // let ctr = $("#body").children().filter("tr").length + 1;
-                    if (second_part_name == "" || (payed == "" && received == "")){
-                        alert("should not be empty");
-                        return;
-                    }
                     if (Number(received))
                         payed = 0;
                     else
                         received = 0;
                     let entries =
-                        `<tr>
-                             <td ondblclick="putLineInEdit(this)" id="td">`+ctr+`</td>
-                             <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="second_part_name_`+ctr+`" type="text" value="`+second_part_name+`" style="outline: none; border: none;background-color: transparent" readonly></td>
-                             <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="received_`+ctr+`" type="text" value="`+received+`" style="outline: none;border: none;background-color: transparent" readonly></td>
-                             <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="payed_`+ctr+`" type="text" value="`+payed+`" style="outline: none;border: none;background-color: transparent" readonly></td>
-                             <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="notes_`+ctr+`" type="text" value="`+notes+`" style="outline: none;border: none;background-color: transparent" readonly></td>
-                             <td id="td-delete-restore">
-                                <div class="d-flex">
-                                    <a onclick="restoreLine(this)" id="btn-restore-invoice-line" class="fas fa-undo col-5"></a>
-                                    <br>
-                                    <a onclick="deleteLine(this)" id="btn-delete-invoice-line" class="fas fa-trash col-5"></a>
-                                </div>
-                             </td>
-                        </tr>
-                        `;
+                    `<tr>
+                        <td ondblclick="putLineInEdit(this)" id="td">`+ctr+`</td>
+                        <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="second_part_name_`+ctr+`" type="text" value="`+second_part_name+`" style="outline: none; border: none;background-color: transparent" readonly></td>
+                        <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="received_`+ctr+`" type="text" value="`+received+`" style="outline: none;border: none;background-color: transparent" readonly></td>
+                        <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="payed_`+ctr+`" type="text" value="`+payed+`" style="outline: none;border: none;background-color: transparent" readonly></td>
+                        <td ondblclick="putLineInEdit(this)" id="td"><input form="form" name="notes_`+ctr+`" type="text" value="`+notes+`" style="outline: none;border: none;background-color: transparent" readonly></td>
+                        <td id="td_delete_restore">
+                            <div class="d-flex">
+                                <a onclick="restoreLine(this)" id="btn_restore_invoice_line" class="fas fa-undo col-5"></a>
+                                <br>
+                                <a onclick="deleteLine(this)" id="btn_delete_invoice_line" class="fas fa-trash col-5"></a>
+                            </div>
+                        </td>
+                    </tr>
+                    `;
                     $("#body").append(entries);
-                    resize();
                 }
                 else if(isLineInEditing){
                     for (let item in ids) {
@@ -179,14 +176,17 @@
                     ids = [];
                     isLineInEditing = false;
                 }
-                $("#btn-reset").click();
+                $("#btn_reset").click();
+                resize();
                 reCalcInvoiceTotalPrice();
             });
 
             function putLineInEdit(e){
                 if (!editingMode || isLineInEditing)
                     return;
-
+                $(".is-invalid").each(function () {
+                    $(this).removeClass("is-invalid");
+                });
                 ids = [];
                 isLineInEditing = true;
 
@@ -199,29 +199,34 @@
 
                 if ($("input#payed").val()==0) {
                     $("input#payed").attr("disabled", true);
+                    $("input#received").attr("disabled", false);
                 }
                 else if ($("input#received").val()==0) {
                     $("input#received").attr("disabled", true);
+                    $("input#payed").attr("disabled", false);
                 }
 
                 $("#quantity").focus();
             }
 
-            $("#btn-update-invoice").on("click",function (){
-                $("td[id='td-delete-restore']").attr("hidden",false);
-                $("th[id='td-delete-restore']").attr("hidden",false);
-                $("#btn-close-invoice").attr("hidden",false);
+            $("#btn_update_invoice").on("click",function (){
+                $("td[id='td_delete_restore']").attr("hidden",false);
+                $("th[id='td_delete_restore']").attr("hidden",false);
+                $("#btn_close_invoice").attr("hidden",false);
                 $(".row input[type='text'],.row input[type='number'],.row select,.row input[type='file']").prop("disabled",false);
                 $("input#first_part_name").focus();
                 editingMode = true;
             });
 
-            $("#btn-reset").on("click",function (){
+            $("#btn_reset").on("click",function (){
                 if (!editingMode )
                     return
+                $(".is-invalid").each(function () {
+                    $(this).removeClass("is-invalid");
+                });
                 isLineInEditing = false;
                 tr = null;
-                $("input#quantity").focus();
+                $("input#payed").focus();
                 $("input#payed,input#received").attr("disabled",false);
             });
 
@@ -285,12 +290,7 @@
             resize();
         </script>
 
-        <!-- Page level plugins -->
-        <script src={{asset("vendor/datatables/jquery.dataTables.js")}}></script>
-        <script src={{asset("vendor/datatables/dataTables.bootstrap4.js")}}></script>
 
-        <!-- Page level custom scripts -->
-        <script src={{asset("js/demo/datatables-demo.js?var=415".rand(1,100))}}></script>
     @endsection
 </x-masterLayout.master>
 

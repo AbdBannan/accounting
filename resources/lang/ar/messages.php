@@ -13,6 +13,10 @@ return [
     |
     */
     //    -------- account section --------    //
+
+    'value_not_found'=>'القيمة المدخلة غير موجودة',
+    'should_not_be_empty'=>'يجب أن لا يكون الحقل فارغ',
+
     'created_successfully'=>'تم إنشاء :attribute بنجاح',
     'not_created_successfully'=>'لم يتم إنشاء :attribute بنجاح',
 

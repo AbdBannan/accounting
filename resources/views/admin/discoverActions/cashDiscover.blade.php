@@ -7,8 +7,7 @@
 
             @if($actions != null)
                 @if(!isset($is_last_year))
-                    <form action="{{route("discover.cashDiscoverLastYear")}}" method="post">
-                        @csrf
+                    <form action="{{route("discover.cashDiscoverLastYear")}}" >
                         <div class="form-group">
                             <input name="account" type="hidden" value="{{$account_name}}">
                             <input type="submit" class="btn btn-outline-primary" value="{{__("global.last_year",[],session("lang"))}}">
@@ -25,7 +24,7 @@
                     <div class="card-body">
 
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered table-striped" id="dataTable1" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
                                     <th hidden></th>
@@ -43,7 +42,9 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @if (count($actions)>0)
+                                    @php
+                                        $sum_of_balance = 0;
+                                    @endphp
                                     @foreach ($actions as $action)
                                         <tr id="discover_rows">
                                             <td hidden>
@@ -57,7 +58,10 @@
                                             </td>
                                             <td id="row_id" hidden>{{$action->row_id}}</td>
                                             @if(!in_array($action->num_for_pound,[0,1]) or $action->invoice_type == -1)
-                                                <td>{{$action->sum_of_balance/$action->num_for_pound}}</td>
+                                                @php
+                                                    $sum_of_balance += $action->credit/$action->num_for_pound - $action->debit/$action->num_for_pound
+                                                @endphp
+                                                <td>{{$sum_of_balance}}</td>
                                                 <td>{{$action->debit/$action->num_for_pound}}</td>
                                                 <td>{{$action->credit/$action->num_for_pound}}</td>
                                             @else
@@ -78,7 +82,6 @@
                                             <td>{{__("global.$action->invoice_type",[],session("lang"))}}</td>
                                         </tr>
                                     @endforeach
-                                @endif
                                 </tbody>
                             </table>
                         </div>
@@ -124,12 +127,11 @@
                     </div>
                     <div id="cashDiscoverUntilNowCollapse" class="collapse">
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form  style="margin: auto" action="{{route("discover.cashDiscoverUntilNow")}}" method="POST">
-                            @csrf
+                        <form  style="margin: auto" action="{{route("discover.cashDiscoverUntilNow")}}">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
                                 <input id="account" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-                                <div style="max-height:200px;overflow-y: scroll" id="dropdown-menu" class="dropdown-menu" aria-labelledby="account">
+                                <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account">
                                     @foreach(App\Models\Account::get() as $account)
                                         <option class="dropdown-item" value="{{$account->id}}">{{$account->name }}</option>
                                     @endforeach
@@ -141,12 +143,11 @@
                     </div>
                     <div id="cashDiscoverAfterLastCheckedPointCollapse" class="collapse">
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form  style="margin: auto" action="{{route("discover.cashDiscoverAfterLastCheckedPoint")}}" method="POST">
-                            @csrf
+                        <form  style="margin: auto" action="{{route("discover.cashDiscoverAfterLastCheckedPoint")}}" >
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
                                 <input id="account" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-                                <div style="max-height:200px;overflow-y: scroll" id="dropdown-menu" class="dropdown-menu" aria-labelledby="account">
+                                <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account">
                                     @foreach(App\Models\Account::get() as $account)
                                         <option class="dropdown-item" value="{{$account->id}}">{{$account->name }}</option>
                                     @endforeach
@@ -158,12 +159,11 @@
                     </div>
                     <div id="cashDiscoverBetweenTowDatesCollapse" class="collapse" >
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form  style="margin: auto" action="{{route("discover.cashDiscoverBetweenTowDates")}}" method="POST">
-                            @csrf
+                        <form  style="margin: auto" action="{{route("discover.cashDiscoverBetweenTowDates")}}" >
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
                                 <input id="account" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-                                <div style="max-height:200px;overflow-y: scroll" id="dropdown-menu" class="dropdown-menu" aria-labelledby="account">
+                                <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account">
                                     @foreach(App\Models\Account::get() as $account)
                                         <option class="dropdown-item" value="{{$account->id}}">{{$account->name }}</option>
                                     @endforeach
@@ -246,12 +246,36 @@
                 });
                 $("#buttons").slideDown();
             });
-        </script>
-        <!-- Page level plugins -->
-        <script src={{asset("vendor/datatables/jquery.dataTables.js")}}></script>
-        <script src={{asset("vendor/datatables/dataTables.bootstrap4.js")}}></script>
 
-        <!-- Page level custom scripts -->
-        <script src={{asset("js/demo/datatables-demo.js?var=415".rand(1,100))}}></script>
+
+
+
+            let info = "{{__("global.Showing",[],session("lang"))}} _START_ {{__("global.to",[],session("lang"))}} _END_ {{__("global.of",[],session("lang"))}} _TOTAL_ {{__("global.entries",[],session("lang"))}}";
+            let emptyTable = "{{__("global.no_data_available_in_table",[],session("lang"))}}";
+            let infoEmpty = "{{__("global.Showing",[],session("lang"))}} 0 {{__("global.to",[],session("lang"))}} 0 {{__("global.of",[],session("lang"))}} 0 {{__("global.entries",[],session("lang"))}}";
+            let lengthMenu = "{{__("global.Show",[],session("lang"))}} _MENU_ {{__("global.entries",[],session("lang"))}}";let loadingRecords = "Please wait - loading...";
+            let search = "{{__("global.Search",[],session("lang"))}}:";
+            let next = "{{__("global.Next",[],session("lang"))}}";
+            let previous = "{{__("global.Previous",[],session("lang"))}}";
+            $('#dataTable1').DataTable(
+                {
+                    "ordering":false,
+                    "autoWidth": false,
+                    "language": {
+                        // "info": "Showing page _PAGE_ of _PAGES_",
+                        "info": info,
+                        "infoEmpty": infoEmpty,
+                        "emptyTable": emptyTable,
+                        "lengthMenu": lengthMenu,
+                        "loadingRecords": loadingRecords,
+                        "search": search,
+                        "paginate": {
+                            "next": next,
+                            "previous": previous,
+                        }
+                    }
+                });
+        </script>
+
     @endsection
 </x-masterLayout.master>
