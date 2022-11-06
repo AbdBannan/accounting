@@ -101,6 +101,8 @@ class OldJournal extends Model
             $value = "product_movement";
         elseif ($value == 12)
             $value = "product_movement";
+        elseif ($value == -1)
+            $value = "checked";
 
 //        return ($value == 1)? "sale" : (($value == 2)? "purchase" : ( ($value == 3)? "sale_return" : ( ($value == 4)? "purchase_return" : ( ($value == 5)? "payment" : "receive"))));
         return $value;
@@ -133,6 +135,18 @@ class OldJournal extends Model
 //        $this->attributes['invoice_type'] = $value == "sale"? 1 : ($value == "purchase"? 2 : ( $value == "sale_return"? 3 : ( $value == "purchase_return"? 4 : ( $value == "payment"? 5 : 6))));
         $this->attributes['invoice_type'] = $value;
     }
+
+    public function setPoundTypeAttribute($value){
+        $translate = [
+            'ل.س'=>'syrian',
+            'دولار'=>'dollar',
+            'syrian'=>'syrian',
+            'dollar'=>'dollar'
+        ];
+        $this->attributes["pound_type"] = $translate[$value];
+//        return __("global.$value",[],session("lang"));
+    }
+
 
     public function getPoundTypeAttribute($value){
         return __("global.$value",[],session("lang"));

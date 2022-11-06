@@ -9,7 +9,9 @@ use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class cashController extends Controller
 {
@@ -20,7 +22,6 @@ class cashController extends Controller
      */
     public function index()
     {
-        session(["previouse_url"=>"view_all"]);
         globalFunctions::registerUserActivityLog("seen_all", "cash_invoices",null);
         $invoices = Journal::where("detail",1)->where("invoice_type",5)->selectRaw("invoice_id,first_part_name,sum(debit) / num_for_pound as deb, sum(credit) / num_for_pound as cred , pound_type")->groupBy(["invoice_id","first_part_name","num_for_pound","pound_type"])->orderBy("invoice_id")->get();
         return view("invoices.cashes.viewInvoices")->with("invoices",$invoices);
@@ -48,6 +49,7 @@ class cashController extends Controller
             "invoice_id" => "required",
             "pound_type" => "required",
             "first_part_name" => "required",
+            'file' => ['image','mimes:jpg,png,jpeg,gif,svg']
         ]);
         $file_name = null;
         $path = null;
@@ -92,8 +94,8 @@ class cashController extends Controller
                     $record1 = new Journal();
                     $record1["invoice_id"] = $data["invoice_id"];
                     $record1["line"] = $ctr;
-                    $record1["debit"] = $data["payed_".$ctr];
-                    $record1["credit"] = $data["received_".$ctr];
+                    $record1["debit"] = $data["received_".$ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]);
+                    $record1["credit"] = $data["payed_".$ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]);
                     $record1["first_part_id"] = Account::where("name",$data["first_part_name"])->first()->id;
                     $record1["first_part_name"] = $data["first_part_name"];
                     $record1["second_part_id"] = Account::where("name",$data["second_part_name_".$ctr])->first()->id;
@@ -111,8 +113,8 @@ class cashController extends Controller
                     $record2 = new Journal();
                     $record2["invoice_id"] = $data["invoice_id"];
                     $record2["line"] = $ctr;
-                    $record2["debit"] = $data["received_".$ctr];
-                    $record2["credit"] = $data["payed_".$ctr];
+                    $record2["debit"] = $data["payed_".$ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]);
+                    $record2["credit"] = $data["received_".$ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]);
                     $record2["first_part_id"] = Account::where("name",$data["second_part_name_".$ctr])->first()->id;
                     $record2["first_part_name"] = $data["second_part_name_".$ctr];
                     $record2["second_part_id"] = Account::where("name",$data["first_part_name"])->first()->id;
@@ -153,6 +155,7 @@ class cashController extends Controller
      */
     public function show($invoice_id)
     {
+        session(["previous_previous_url"=>URL::previous()]);
         globalFunctions::registerUserActivityLog("seen","cash_invoice",$invoice_id);
         return view("invoices.cashes.showInvoice")->with("invoiceLines",Journal::where("detail",1)->where("invoice_id",$invoice_id)->where("invoice_type",5)->orderBy("line")->get());
     }
@@ -181,6 +184,7 @@ class cashController extends Controller
             "invoice_id" => "required",
             "pound_type" => "required",
             "first_part_name" => "required",
+            'file' => ['image','mimes:jpg,png,jpeg,gif,svg']
         ]);
 
         if (count($request->all())<=7) {
@@ -227,7 +231,11 @@ class cashController extends Controller
 
     public function search(Request $request)
     {
-        $this->validate($request,["invoice_id"=>"required"]);
+        $this->validate($request,
+            [
+                "invoice_id"=>["required",Rule::exists('journal','invoice_id')->whereIn("invoice_type", [5])]
+            ]
+        );
 //        $invoiceLines = Journal::where("detail",1)->where("invoice_id",$request["invoice_id"])->where("invoice_type",5)->get();
         globalFunctions::registerUserActivityLog("searched","cash_invoice",$request["invoice_id"]);
         return redirect(route("invoice.showCashInvoice",$request["invoice_id"]));
@@ -241,7 +249,6 @@ class cashController extends Controller
     }
 
     public function showSearchInvoice(){
-        session(["previouse_url"=>"show_search"]);
         return view("invoices.cashes.showInvoice")->with("invoiceLines",[]);
     }
     /**
@@ -303,11 +310,7 @@ class cashController extends Controller
         globalFunctions::flashMessage("softDelete",$result,"cash_invoice");
         globalFunctions::registerUserActivityLog("recycled","cas_invoice",$invoice_id);
 
-        if (session("previouse_url") == "show_search") {
-            return redirect(route("invoice.showSearchCashInvoice"));
-        } else {
-            return redirect(route("invoice.viewCashInvoices"));
-        }
+        return redirect(session("previous_previous_url"));
     }
 
     /**

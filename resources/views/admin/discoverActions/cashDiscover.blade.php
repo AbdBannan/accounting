@@ -78,7 +78,11 @@
                                             @endif
                                             <td>{{$action->second_part_name}}</td>
                                             <td>{{$action->product_name}}</td>
-                                            <td>{{$action->notes}}</td>
+                                            @if($action->equivalent === 1)
+                                                <td>{{$action->notes . " (" . __("global.check_point",[],session("lang")) . ")"}}</td>
+                                            @else
+                                                <td>{{$action->notes }}</td>
+                                            @endif
                                             <td>{{__("global.$action->invoice_type",[],session("lang"))}}</td>
                                         </tr>
                                     @endforeach
@@ -130,7 +134,10 @@
                         <form  style="margin: auto" action="{{route("discover.cashDiscoverUntilNow")}}">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
-                                <input id="account" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input id="account_1" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account">
                                     @foreach(App\Models\Account::get() as $account)
                                         <option class="dropdown-item" value="{{$account->id}}">{{$account->name }}</option>
@@ -146,7 +153,10 @@
                         <form  style="margin: auto" action="{{route("discover.cashDiscoverAfterLastCheckedPoint")}}" >
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
-                                <input id="account" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input id="account_2" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account">
                                     @foreach(App\Models\Account::get() as $account)
                                         <option class="dropdown-item" value="{{$account->id}}">{{$account->name }}</option>
@@ -162,23 +172,25 @@
                         <form  style="margin: auto" action="{{route("discover.cashDiscoverBetweenTowDates")}}" >
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
-                                <input id="account" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input id="account_3" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account">
                                     @foreach(App\Models\Account::get() as $account)
                                         <option class="dropdown-item" value="{{$account->id}}">{{$account->name }}</option>
                                     @endforeach
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <label class="col-md-4 col-sm-12" style="font-size: x-large" for="account" >{{__("global.from",[],session("lang"))}}</label>
-                                    <input id="from" name="from" class="col-md-8 col-sm-12 form-control" type="date">
-                                </div>
-                                <div class="row">
-                                    <label class="col-md-4 col-sm-12" style="font-size: x-large" for="account" >{{__("global.to",[],session("lang"))}}</label>
-                                    <input id="to" name="to" class="col-md-8 col-sm-12 form-control" type="date">
-                                </div>
-                                <hr>
                             </div>
+                            <div class="row">
+                                <label class="col-md-4 col-sm-12" style="font-size: x-large" for="account" >{{__("global.from",[],session("lang"))}}</label>
+                                <input id="from" name="from" class="col-md-8 col-sm-12 form-control" type="date">
+                            </div>
+                            <div class="row">
+                                <label class="col-md-4 col-sm-12" style="font-size: x-large" for="account" >{{__("global.to",[],session("lang"))}}</label>
+                                <input id="to" name="to" class="col-md-8 col-sm-12 form-control" type="date">
+                            </div>
+                            <hr>
                             <input id="btn_cash_between_tow_dates" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
                         </form>
                     </div>
@@ -201,6 +213,21 @@
                     $(v).get(0).focus();
                 },300);
             });
+            function validateDropDownBox(dropDownBox){
+                let error="";
+                let options = $(dropDownBox).siblings("div").children("option");
+                let isThisInputCorrect = false;
+                options.each(function (){
+                    if ($(dropDownBox).val().trim() == $(this).text().trim()){
+                        isThisInputCorrect=true;
+                        return;
+                    }
+                });
+                if (!isThisInputCorrect){
+                    error=$(dropDownBox).attr("id");
+                }
+                return error;
+            }
 
 
             $("tr#discover_rows").on("dblclick",function (){
@@ -211,34 +238,6 @@
             });
 
 
-            function validateDropDownBox(dropDownBox){
-                let error="";
-
-                let options = $(dropDownBox).siblings("div").children("option");
-                console.log(options);
-                let isThisInputCorrect = false;
-                for (let opt in options){
-                    if (Number(options[opt]))
-                        break;
-                    if ($(dropDownBox).val().trim() == $(options[opt]).text().trim()){
-                        isThisInputCorrect=true;
-                        break;
-                    }
-                }
-                if (!isThisInputCorrect){
-                    error=$(dropDownBox).attr("id")+ " : is not correct";
-                }
-                return error;
-            }
-
-
-            $("input[type='submit']").on("click",function (e){
-                let error = validateDropDownBox($(this).parent("form").children("div").children("input"))
-                if(error !== ""){
-                    e.preventDefault();
-                    alert(error);
-                }
-            });
 
             $("a#back").on("click",function (){
                 $("#accordion").children().filter(function (){
@@ -248,6 +247,24 @@
             });
 
 
+
+
+            $("input[type='submit']").on("click",function (e){ // for input select validation
+                // let errors = "";
+                $(this).parent("form").children("div").children("input[type='text']").each(function (){
+                    let error=validateDropDownBox($(this));
+                    if (error !== "") {
+                        e.preventDefault();
+                        $("#" + error).addClass("is-invalid");
+                    }
+                });
+            });
+
+            $("input[type='text']").on("keyup",function (){
+                $(".is-invalid").each(function () {
+                    $(this).removeClass("is-invalid");
+                });
+            });
 
 
             let info = "{{__("global.Showing",[],session("lang"))}} _START_ {{__("global.to",[],session("lang"))}} _END_ {{__("global.of",[],session("lang"))}} _TOTAL_ {{__("global.entries",[],session("lang"))}}";

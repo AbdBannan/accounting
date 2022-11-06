@@ -62,7 +62,8 @@
 
                                             <tr>
                                                 <td>{{$category->id}}</td>
-                                                <td><a href={{route("category.showCategory",$category)}}>{{$category->name}}</a></td>
+{{--                                                <td><a href={{route("category.showCategory",$category)}}>{{$category->name}}</a></td>--}}
+                                                <td>{{$category->name}}</td>
 
                                                 <td class="row m-0">
                                                     <a id="btn_update" title="{{__("global.update",[],session("lang"))}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$category}}" data-route="{{route("category.updateCategory",$category->id)}}">
@@ -96,7 +97,7 @@
 
     @endsection
     @section("script")
-  
+
     @endsection
 </x-masterLayout.master>
 

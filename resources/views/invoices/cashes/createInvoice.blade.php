@@ -129,9 +129,9 @@
                 $(".is-invalid").each(function () {
                     $(this).removeClass("is-invalid");
                 });
-                $("#payed").focus();
                 $("#payed").attr("disabled",false);
                 $("#received").attr("disabled",false);
+                $("#payed").focus();
                 isLineInEditing = false;
                 isNewLineMode = false;
             });

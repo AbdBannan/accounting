@@ -32,6 +32,7 @@
                           </div>
                     @endsection
                     @section("invoice_id"){{$invoiceLines[0]->invoice_id}}@endsection
+                    @section("pound_type"){{$invoiceLines[0]->pound_type}}@endsection
                     @section("auto_focus")@endsection
                     @section("hidden") hidden="true" @endsection
 

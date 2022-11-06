@@ -40,10 +40,10 @@ class Journal extends Model
         return $prefixFolder . Str::replace("#","/",$value);
     }
 
-    public function getPostingAttribute($value)
-    {
-        return ($value == 1)? "posted":"not posted";
-    }
+//    public function getPostingAttribute($value)
+//    {
+//        return ($value == 1)? "posted":"not posted";
+//    }
 
     public function setPostingAttribute($value)
     {
@@ -88,7 +88,6 @@ class Journal extends Model
             $invoice_id = $this->attributes["invoice_id"];
             $line = $this->attributes["line"];
             $detail = $this->attributes["detail"];
-
             $result = DB::select("select sum(invoice_type) as type from journal where invoice_id = $invoice_id and line = $line and detail = $detail");
             if ($result[0]->type == 11)
                 $value = "payment";
@@ -104,6 +103,8 @@ class Journal extends Model
             $value = "product_movement";
         elseif ($value == 12)
             $value = "product_movement";
+        elseif ($value == -1)
+            $value = "checked";
 
 //        return ($value == 1)? "sale" : (($value == 2)? "purchase" : ( ($value == 3)? "sale_return" : ( ($value == 4)? "purchase_return" : ( ($value == 5)? "payment" : "receive"))));
         return $value;
@@ -137,7 +138,27 @@ class Journal extends Model
         $this->attributes['invoice_type'] = $value;
     }
 
+    public function setPoundTypeAttribute($value){
+        $translate = [
+            'ل.س'=>'syrian',
+            'دولار'=>'dollar',
+            'syrian'=>'syrian',
+            'dollar'=>'dollar'
+        ];
+        $this->attributes["pound_type"] = $translate[$value];
+//        return __("global.$value",[],session("lang"));
+    }
+
     public function getPoundTypeAttribute($value){
+        $translate = [
+            'ل.س'=>'syrian',
+            'دولار'=>'dollar',
+            'syrian'=>'syrian',
+            'dollar'=>'dollar',
+            ''=>'',
+            ' '=>''
+        ];
+        $value = $translate[$value];
         return __("global.$value",[],session("lang"));
     }
 

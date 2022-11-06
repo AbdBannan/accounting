@@ -46,7 +46,7 @@ return [
     'email' => '#:attribute# يجب أن يكون بصيغة إيميل صحيح.',
     'ends_with' => 'The :attribute must end with one of the following: :values.',
     'enum' => 'The selected :attribute is invalid.',
-    'exists' => 'The selected :attribute is invalid.',
+    'exists' => '#:attribute# غير موجود.',
     'file' => 'The :attribute must be a file.',
     'filled' => 'The :attribute field must have a value.',
     'gt' => [
@@ -88,7 +88,7 @@ return [
         'string' => 'The :attribute must not be greater than :max characters.',
         'array' => 'The :attribute must not have more than :max items.',
     ],
-    'mimes' => 'The :attribute must be a file of type: :values.',
+    'mimes' => '#:attribute# يجل أن يكون من الأنواع اللآتبة :values.',
     'mimetypes' => 'The :attribute must be a file of type: :values.',
     'min' => [
         'numeric' => 'The :attribute must be at least :min.',
@@ -126,7 +126,7 @@ return [
     'string' => 'The :attribute must be a string.',
     'timezone' => 'The :attribute must be a valid timezone.',
     'unique' => '#:attribute# تم إستخدامه مسبقاً',
-    'uploaded' => 'فشلت عملية الرفع. #:attribute#',
+    'uploaded' => 'فشلت عملية الرفع ل :  #:attribute#',
     'url' => 'The :attribute must be a valid URL.',
     'uuid' => 'The :attribute must be a valid UUID.',
 

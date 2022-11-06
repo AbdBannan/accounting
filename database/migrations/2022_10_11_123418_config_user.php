@@ -19,7 +19,9 @@ class ConfigUser extends Migration
             $table->foreignId("user_id");
             $table->string("value");
             $table->timestamps();
+            $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade");
         });
+//        CREATE table uuu (id int PRIMARY KEY,u_id int REFERENCES u.id ON DELETE CASCADE,CONSTRAINT F_K_1 FOREIGN KEY u_id  REFERENCES u(id))
 
     }
 

@@ -24,6 +24,9 @@ tr {
     transition: background-color 0.2s ease-in-out;
 }
 
+.selected {
+    background-color: #b7c7f2!important;
+}
 /*tr:hover {*/
 /*    background-color: #b7c7f2;*/
 /*}*/
@@ -50,11 +53,6 @@ tr {
     background-position: 0 -120px;
     width: 16px;
     height: 16px;
-}
-
-
-.selected {
-    background-color: #b7c7f2;
 }
 
 

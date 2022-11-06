@@ -8,7 +8,9 @@ use App\Models\Journal;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use phpDocumentor\Reflection\Types\This;
 
 class productMovementController extends Controller
@@ -22,7 +24,6 @@ class productMovementController extends Controller
 
     public function index()
     {
-        session(["previouse_url"=>"view_all"]);
         globalFunctions::registerUserActivityLog("seen_all", "product_movement_invoices",null);
         $invoices = Journal::where("detail",0)->whereIn("invoice_type",[11])->selectRaw("invoice_id,(sum(in_quantity) + sum(out_quantity)) as value , closing_date")->groupBy(["invoice_id","closing_date"])->orderBy("invoice_id")->get();
         return view("invoices.productMovement.viewInvoices")->with("invoices",$invoices);
@@ -49,6 +50,7 @@ class productMovementController extends Controller
         $this->validate($request,[
             "invoice_id" => "required",
             "pound_type" => "required",
+            'file' => ['image','mimes:jpg,png,jpeg,gif,svg']
         ]);
         $file_name = null;
         $path = null;
@@ -164,6 +166,7 @@ class productMovementController extends Controller
      */
     public function show($invoice_id)
     {
+        session(["previous_previous_url"=>URL::previous()]);
         globalFunctions::registerUserActivityLog("seen","product_movement_invoice",$invoice_id);
         return view("invoices.productMovement.showInvoice")->with(["invoiceLines"=>Journal::where("detail",0)->where("invoice_id",$invoice_id)->whereIn("invoice_type",[11])->get()]);
     }
@@ -192,6 +195,7 @@ class productMovementController extends Controller
         $this->validate($request,[
             "invoice_id" => "required",
             "pound_type" => "required",
+            'file' => ['image','mimes:jpg,png,jpeg,gif,svg']
         ]);
         if (count($request->all())<=6) {
             globalFunctions::flashMessage("update","no_item_error","product_menement_invoice");
@@ -236,8 +240,11 @@ class productMovementController extends Controller
 
     public function search(Request $request)
     {
-        $this->validate($request,["invoice_id"=>"required"]);
-//        $invoiceLines = Journal::where("detail",0)->where("invoice_id",$request["invoice_id"])->whereIn("invoice_type",[11])->get();
+        $this->validate($request,
+            [
+                "invoice_id"=>["required",Rule::exists('journal','invoice_id')->whereIn("invoice_type", [11])]
+            ]
+        );
         globalFunctions::registerUserActivityLog("searched","product_movement_invoice",$request["invoice_id"]);
         return redirect(route("invoice.showProductMovementInvoice",$request["invoice_id"]));
 //        if (count($invoiceLines)>0) {
@@ -249,7 +256,6 @@ class productMovementController extends Controller
     }
 
     public function showSearchInvoice(){
-        session(["previouse_url"=>"show_search"]);
         return view("invoices.productMovement.showInvoice")->with("invoiceLines",[]);
     }
     /**
@@ -310,11 +316,7 @@ class productMovementController extends Controller
         globalFunctions::flashMessage("softDelete",$result,"product_movement_invoice");
         globalFunctions::registerUserActivityLog("recycled","product_movement_invoice",$invoice_id);
 
-        if (session("previouse_url") == "show_search") {
-            return redirect(route("invoice.showSearchProductMovementInvoice"));
-        } else {
-            return redirect(route("invoice.viewProductMovementInvoices"));
-        }
+        return redirect(session("previous_previous_url"));
     }
 
     /**

@@ -109,6 +109,7 @@ class discoverActionsController extends Controller
             $roled_line->credit = $roled_credit;
             $roled_line->notes = __("global.checked",[],session("lang"));
             $roled_line->closing_date = new DateTime("01-01-0001");
+            $roled_line->invoice_type = -1; // means checked point
 
 
             $actions->add($roled_line);
@@ -227,26 +228,26 @@ class discoverActionsController extends Controller
                 "account_2"=>"required"
             ]
         );
-
         $account_1_id = Account::where("name",$request["account_1"])->first()->id;
-        $accounts_2_id = Account::where("name",$request["account_2"])->first()->id+1;
-        if ($account_1_id >$accounts_2_id){
+        $account_2_id = Account::where("name",$request["account_2"])->first()->id;
+        if ($account_1_id > $account_2_id){
             session()->flash("error",__("messages.second_greater_than_first",[],session("lang")));
             return back();
         }
-        $balances = Journal::whereBetween("first_part_id",[$account_1_id,$accounts_2_id])->selectRaw("first_part_name,sum(debit) as debit,sum(credit) as credit")->groupBy(["first_part_name"])->orderBy("first_part_name")->get();
+//        dd($request->all());
+        $balances = Journal::whereBetween("first_part_id",[$account_1_id,$account_2_id])->selectRaw("first_part_name,sum(debit) as debit,sum(credit) as credit")->groupBy(["first_part_name"])->orderBy("first_part_name")->get();
 //        $associative_balances = [];
 //        foreach ($balances as $value){
 //            $associative_balances[$value->first_part_id] = [$value->credit,$value->debit];
 //        }
 //        dd($associative_balances);
-        $max_closing_date = Journal::whereBetween("first_part_id",[$account_1_id,$accounts_2_id])->selectRaw("first_part_id,max(closing_date) max_closing_date")->groupBy(["first_part_id"])->get();
+        $max_closing_date = Journal::whereBetween("first_part_id",[$account_1_id,$account_2_id])->selectRaw("first_part_id,max(closing_date) max_closing_date")->groupBy(["first_part_id"])->get();
         $max_row_id = [];
         foreach ($max_closing_date as $m_c_d){
             $max_row_id[] = Journal::where("first_part_id",$m_c_d->first_part_id)->selectRaw("first_part_name,max(row_id) max_row_id")->groupBy(["first_part_name"])->where("closing_date",$m_c_d->max_closing_date)->first()->max_row_id;
         }
-        $information = Journal::selectRaw("first_part_name,closing_date,credit+debit last_action")->whereBetween("first_part_id",[$account_1_id,$accounts_2_id])->whereIn("row_id",$max_row_id)->orderBy("first_part_name")->get();
-        $total_debit_credit = Journal::whereBetween("first_part_id",[$account_1_id,$accounts_2_id])->selectRaw("sum(debit) as debit,sum(credit) as credit")->get()->all();
+        $information = Journal::selectRaw("first_part_name,closing_date,credit+debit last_action")->whereBetween("first_part_id",[$account_1_id,$account_2_id])->whereIn("row_id",$max_row_id)->orderBy("first_part_name")->get();
+        $total_debit_credit = Journal::whereBetween("first_part_id",[$account_1_id,$account_2_id])->selectRaw("sum(debit) as debit,sum(credit) as credit")->get()->all();
         $info = [];
 //        dd($information,$balances);
         foreach ($balances as $key=>$value){
@@ -258,8 +259,8 @@ class discoverActionsController extends Controller
                 "percentage"=>round(100*$value->credit/$value->debit),
             ];
         }
-        globalFunctions::registerUserActivityLog("discovered","global_discover_by_account",Account::where("name",$request["account"])->first()->id);
-        return view("admin.discoverActions.specifiedAccountsDiscover")->with(["info"=>$info,"total_debit"=>$total_debit_credit[0]["debit"],"total_credit"=>$total_debit_credit[0]  ["credit"]]);
+        globalFunctions::registerUserActivityLog("discovered","global_discover_by_account",$account_1_id . " -> " . $account_2_id);
+        return view("admin.discoverActions.specifiedAccountsDiscover")->with(["info"=>$info,"total_debit"=>$total_debit_credit[0]["debit"],"total_credit"=>$total_debit_credit[0]["credit"]]);
     }
 
     public function makeCheckPoint(Request $request){
@@ -371,9 +372,9 @@ class discoverActionsController extends Controller
             $roled_line->debit = $roled_debit;
             $roled_line->credit = $roled_credit;
             $roled_line->num_for_pound = 1;
-            $roled_line->notes = __("global.roled",[],session("lang"));
+            $roled_line->notes = __("global.checked",[],session("lang"));
             $roled_line->closing_date = new DateTime("01-01-0001");
-
+            $roled_line->invoice_type = -1; // means checked point
 
             $actions->add($roled_line);
         }
@@ -581,7 +582,6 @@ class discoverActionsController extends Controller
     {
 //        $actions = Journal::where("first_part_id",">",0)->selectRaw("first_part_id,first_part_name,sum(debit) as debit,sum(credit) as credit")->groupBy(["first_part_name","first_part_id"])->get();
         $actions = Account::selectRaw("accounts.id ,accounts.name ,sum(journal.debit) as debit,sum(journal.credit) as credit")->leftJoin("journal","accounts.id","=","journal.first_part_id")->groupBy(["accounts.id","accounts.name"])->get();
-//        dd($actions);
 
         $total_debit = 0;
         $total_credit = 0;
@@ -610,8 +610,8 @@ class discoverActionsController extends Controller
 
     public function dailyDiscover()
     {
-        $actions = Journal::where("created_at",Carbon::now()->format("Y-m-d"))->whereIn("invoice_type",[0,1,2,3,4,5,6,7,11,12])->get();
-        $totals = Journal::where("created_at",Carbon::now()->format("Y-m-d"))->whereIn("invoice_type",[1,2,3,4,5,11])->selectRaw("sum(debit) as total_debit , sum(credit) as total_credit")->first();
+        $actions = Journal::where("created_at",Carbon::now()->format("Y-m-d"))->whereIn("invoice_type",[0,1,2,3,4,5,6,7])->get();
+        $totals = Journal::where("created_at",Carbon::now()->format("Y-m-d"))->whereIn("invoice_type",[1,2,3,4,5])->selectRaw("sum(debit) as total_debit , sum(credit) as total_credit")->first();
         globalFunctions::registerUserActivityLog("seen_all","daily_actions",null);
         return view("admin.discoverActions.dailyDiscover")->with(["actions"=>$actions,"total_debit"=>$totals->total_debit,"total_credit"=>$totals->total_credit,"total_balance"=>$totals->total_credit-$totals->total_debit]);
     }

@@ -2,7 +2,7 @@
 use Mailgun\Mailgun;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(["auth"])->group(function (){
+Route::middleware(["role:admin","auth"])->group(function (){
     Route::get("/discover/showDiscoverDashboard","discoverActionsController@showDiscoverDashboard")->name("discover.showDiscoverDashboard");
 
     Route::get("/discover/chooseListGlobalDiscover","discoverActionsController@chooseListGlobalDiscover")->name("discover.chooseListGlobalDiscover");

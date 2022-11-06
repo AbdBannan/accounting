@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Config;
 use App\Models\Role;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -22,11 +23,12 @@ class userController extends Controller
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'file' => ['image','mimes:jpg,png,jpeg,gif,svg']
         ]);
 
 
         if($file = request()->file("file")){
-            $fileName =  $file->getClientOriginalName();
+            $fileName = Carbon::now()->format("d_m_Y_h_i_s") . "_" . $request["first_name"] . " " . $request['last_name'];
             $file->move("images/usersImages",$fileName);
         }
         $result = User::create([
@@ -42,6 +44,7 @@ class userController extends Controller
 //        } else {
 //            session()->flash("error", __("messages.not_created_successfully",["attribute"=>__("global.user",[],session("lang"))], session("lang")));
 //        }
+//        }
         globalFunctions::flashMessage("create",$result,"user");
         globalFunctions::registerUserActivityLog("added","user",$result->id);
 
@@ -54,9 +57,11 @@ class userController extends Controller
     }
 
     public function updateUser(User $user,Request $request){
+
         $this->validate($request,[
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
+            'file' => ['image','mimes:jpg,png,jpeg,gif,svg']
         ]);
         if ($user->email != $request["email"]){
             $this->validate($request,[
@@ -72,7 +77,7 @@ class userController extends Controller
 
         $oldProfileImage = $user->profile_image;
         if($file = $request->file("file")){
-            $fileName =  $file->getClientOriginalName();
+            $fileName = Carbon::now()->format("d_m_Y_h_i_s") . "_" . $request["first_name"] . " " . $request['last_name'];
             if ($oldProfileImage != "images/systemImages/default_user_img.png" and file_exists(public_path($oldProfileImage))){
                 unlink(public_path($oldProfileImage));
             }

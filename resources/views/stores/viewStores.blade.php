@@ -61,7 +61,8 @@
 
                                             <tr>
                                                 <td>{{$store->id}}</td>
-                                                <td><a href={{route("store.showStore",$store)}}>{{$store->name}}</a></td>
+{{--                                                <td><a href={{route("store.showStore",$store)}}>{{$store->name}}</a></td>--}}
+                                                <td>{{$store->name}}</td>
                                                 <td>{{$store->location}}</td>
 
 
@@ -97,7 +98,7 @@
 
     @endsection
     @section("script")
-  
+
     @endsection
 </x-masterLayout.master>
 

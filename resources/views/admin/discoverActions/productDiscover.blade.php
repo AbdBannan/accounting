@@ -120,7 +120,10 @@
                         <form  style="margin: auto" action="{{route("discover.productDiscoverUntilNow")}}" >
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="product" >{{__("global.account",[],session("lang"))}}</label>
-                                <input id="product" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input id="product_1" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="product">
                                     @foreach(App\Models\Product::get() as $product)
                                         <option class="dropdown-item" value="{{$product->id}}">{{$product->name }}</option>
@@ -136,7 +139,10 @@
                         <form  style="margin: auto" action="{{route("discover.productDiscoverUntilLastBalance")}}" >
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="product" >{{__("global.account",[],session("lang"))}}</label>
-                                <input id="product" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input id="product_2" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="product">
                                     @foreach(App\Models\Product::get() as $product)
                                         <option class="dropdown-item" value="{{$product->id}}">{{$product->name }}</option>
@@ -152,7 +158,10 @@
                         <form style="margin: auto" action="{{route("discover.productDiscoverWithAccount")}}" >
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="product" >{{__("global.product",[],session("lang"))}}</label>
-                                <input id="product" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input id="product_3" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="product">
                                     @foreach(App\Models\Product::get() as $product)
                                         <option class="dropdown-item" value="{{$product->id}}">{{$product->name }}</option>
@@ -162,6 +171,9 @@
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
                                 <input id="account" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account">
                                     @foreach(App\Models\Account::get() as $account)
                                         <option class="dropdown-item" value="{{$account->id}}">{{$account->name }}</option>
@@ -177,23 +189,25 @@
                         <form  style="margin: auto" action="{{route("discover.productDiscoverBetweenTowDates")}}" >
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="product" >{{__("global.account",[],session("lang"))}}</label>
-                                <input id="product" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input id="product_4" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="product">
                                     @foreach(App\Models\Product::get() as $product)
                                         <option class="dropdown-item" value="{{$product->id}}">{{$product->name }}</option>
                                     @endforeach
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <label class="col-md-4 col-sm-12" style="font-size: x-large" for="product" >{{__("global.from",[],session("lang"))}}</label>
-                                    <input id="from" name="from" class="col-md-8 col-sm-12 form-control" type="date">
-                                </div>
-                                <div class="row">
-                                    <label class="col-md-4 col-sm-12" style="font-size: x-large" for="product" >{{__("global.to",[],session("lang"))}}</label>
-                                    <input id="to" name="to" class="col-md-8 col-sm-12 form-control" type="date">
-                                </div>
-                                <hr>
                             </div>
+                            <div class="row">
+                                <label class="col-md-4 col-sm-12" style="font-size: x-large" for="product" >{{__("global.from",[],session("lang"))}}</label>
+                                <input id="from" name="from" class="col-md-8 col-sm-12 form-control" type="date">
+                            </div>
+                            <div class="row">
+                                <label class="col-md-4 col-sm-12" style="font-size: x-large" for="product" >{{__("global.to",[],session("lang"))}}</label>
+                                <input id="to" name="to" class="col-md-8 col-sm-12 form-control" type="date">
+                            </div>
+                            <hr>
                             <input id="btn_product_between_tow_dates" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
                         </form>
                     </div>
@@ -203,6 +217,9 @@
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="store" >{{__("global.store",[],session("lang"))}}</label>
                                 <input id="store" name="store" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="store">
                                     @foreach(App\Models\Store::get() as $store)
                                         <option class="dropdown-item" value="{{$store->id}}">{{$store->name }}</option>
@@ -214,13 +231,13 @@
 {{--                                <legend>What are you using this service for?</legend>--}}
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input name="store_discover_type"  type="radio" class="form-check-input" value="last" >
+                                        <input id="radio_by_last_purchase_price" name="store_discover_type"  type="radio" class="form-check-input" value="last" >
                                         {{__("global.by_last_purchase_price",[],session("lang"))}}
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input name="store_discover_type" type="radio" class="form-check-input" value="mean" >
+                                        <input id="radio_by_mean_of_purchase_prices" name="store_discover_type" type="radio" class="form-check-input" value="mean" >
                                         {{__("global.by_mean_of_purchase_prices",[],session("lang"))}}
                                     </label>
                                 </div>
@@ -248,14 +265,22 @@
                 },300);
             });
 
-
-            $("input[type='submit']").on("click",function (e){
-                let error = validateDropDownBox($(this).parent("form").children("div").children("input"))
-                if(error !== ""){
-                    e.preventDefault();
-                    alert(error);
+            function validateDropDownBox(dropDownBox){
+                let error="";
+                let options = $(dropDownBox).siblings("div").children("option");
+                let isThisInputCorrect = false;
+                options.each(function (){
+                    if ($(dropDownBox).val().trim() == $(this).text().trim()){
+                        isThisInputCorrect=true;
+                        return;
+                    }
+                });
+                if (!isThisInputCorrect){
+                    error=$(dropDownBox).attr("id");
                 }
-            });
+                return error;
+            }
+
 
             $("a#back").on("click",function (){
                 $("#accordion").children().filter(function (){
@@ -265,25 +290,23 @@
             });
 
 
-            function validateDropDownBox(dropDownBox){
-                let error="";
 
-                let options = $(dropDownBox).siblings("div").children("option");
-                console.log(options);
-                let isThisInputCorrect = false;
-                for (let opt in options){
-                    if (Number(options[opt]))
-                        break;
-                    if ($(dropDownBox).val().trim() == $(options[opt]).text().trim()){
-                        isThisInputCorrect=true;
-                        break;
+            $("input[type='submit']").on("click",function (e){ // for input select validation
+                // let errors = "";
+                $(this).parent("form").children("div").children("input[type='text']").each(function (){
+                    let error=validateDropDownBox($(this));
+                    if (error !== "") {
+                        e.preventDefault();
+                        $("#" + error).addClass("is-invalid");
                     }
-                }
-                if (!isThisInputCorrect){
-                    error=$(dropDownBox).attr("id") + " : is not correct";
-                }
-                return error;
-            }
+                });
+            });
+
+            $("input[type='text']").on("keyup",function (){
+                $(".is-invalid").each(function () {
+                    $(this).removeClass("is-invalid");
+                });
+            });
 
 
             $("tr#discover_rows").on("dblclick",function (){
@@ -293,6 +316,6 @@
                 $(this).children("td").children("a#btn_show_owner_invoice")[0].click();
             });
         </script>
-      
+
     @endsection
 </x-masterLayout.master>

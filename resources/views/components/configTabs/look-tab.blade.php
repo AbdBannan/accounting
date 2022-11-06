@@ -42,8 +42,8 @@
                     <span>{{__("global.brand",[],session("lang"))}}</span>
                 </div>
                 <div class="mb-1">
-                    <input name="slide_bar_nav_small_text_options" type="checkbox" value="1" @if(isset($config["slide_bar_nav_small_text_options"]) and $config["slide_bar_nav_small_text_options"]) checked @endif class="mr-1">
-                    <span>{{__("global.slide_bar_nav",[],session("lang"))}}</span>
+                    <input name="side_bar_nav_small_text_options" type="checkbox" value="1" @if(isset($config["side_bar_nav_small_text_options"]) and $config["side_bar_nav_small_text_options"]) checked @endif class="mr-1">
+                    <span>{{__("global.side_bar_nav",[],session("lang"))}}</span>
                 </div>
                 <div class="mb-1">
                     <input name="footer_small_text_options" type="checkbox" value="1" @if(isset($config["footer_small_text_options"]) and $config["footer_small_text_options"]) checked @endif class="mr-1">

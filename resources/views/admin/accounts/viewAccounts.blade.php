@@ -55,7 +55,6 @@
                                     <th>{{__("global.type",[],session("lang"))}}</th>
                                     <th>{{__("global.reference",[],session("lang"))}}</th>
                                     <th>{{__("global.group",[],session("lang"))}}</th>
-{{--                                    <th>{{__("global.notes",[],session("lang"))}}</th>--}}
                                     <th>{{__("global.delete",[],session("lang"))}}</th>
                                 </tr>
                                 </thead>
@@ -64,7 +63,8 @@
                                     @foreach ($accounts as $key=>$account)
                                         <tr>
                                             <td>{{$account->id}}</td>
-                                            <td><a href={{route("account.showAccount",$account->id)}}>{{$account->name}}</a></td>
+{{--                                            <td><a href={{route("account.showAccount",$account->id)}}>{{$account->name}}</a></td>--}}
+                                            <td>{{$account->name}}</td>
                                             <td>{{$account->account_type}}</td>
                                             <td>{{$account->reference}}</td>
                                             <td>{{$account->group}}</td>
@@ -107,7 +107,7 @@
         <x-models.update-model :modelName="$modelName = 'account'"></x-models.update-model>
     @endsection
     @section("script")
-  
+
     @endsection
 </x-masterLayout.master>
 

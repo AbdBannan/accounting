@@ -54,16 +54,16 @@
                         <input type="submit" hidden>
                     </form>
                     <div class="card-footer">
-                        @if($actions!=null)
-                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received",[],session("lang"))}} :
-                                <span id="total_received" style="font-style: italic; color:darkblue"></span>
-                                {{--                                <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}
-                            </label>
-                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed",[],session("lang"))}} :
-                                <span id="total_payed" style="font-style: italic; color:darkblue"></span>
-                                {{--                                 <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}{{--should be syrian pound--}}
-                            </label>
-                        @endif
+{{--                        @if($actions!=null)--}}
+{{--                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received",[],session("lang"))}} :--}}
+{{--                                <span id="total_received" style="font-style: italic; color:darkblue"></span>--}}
+{{--                                --}}{{--                                <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}
+{{--                            </label>--}}
+{{--                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed",[],session("lang"))}} :--}}
+{{--                                <span id="total_payed" style="font-style: italic; color:darkblue"></span>--}}
+{{--                                --}}{{--                                 <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}{{----}}{{--should be syrian pound--}}
+{{--                            </label>--}}
+{{--                        @endif--}}
                     </div>
                 </div>
             @endif
@@ -89,18 +89,41 @@
             });
             setTimeout(columnShowHide,200);
             function columnShowHide(){// this is to assign function to pagination
-                $("ul.pagination li").on("click",function (){
+                pagenationChangingShowHide();
+                $(".custom-select").on("change",function (){
                     if ($("#show_debit_credit").text() == "") {
                         $(".fade1").show();
                     }
                     else{
                         $(".fade1").hide();
                     }
-                    columnShowHide();//when pagination anchor is clicked it will be replaced so reassign the function again
+                    pagenationChangingShowHide();//when pagination anchor is clicked it will be replaced so reassign the function again
+                });
+                $("#dataTable_filter label input").on("keyup",function (){
+                    if ($("#show_debit_credit").text() == "") {
+                        $(".fade1").show();
+                    }
+                    else{
+                        $(".fade1").hide();
+                    }
+                    pagenationChangingShowHide();//when pagination anchor is clicked it will be replaced so reassign the function again
+                });
+            }
+
+            function pagenationChangingShowHide(){
+
+                $("ul.pagination li,.sorting").on("click",function (){
+                    if ($("#show_debit_credit").text() == "") {
+                        $(".fade1").show();
+                    }
+                    else {
+                        $(".fade1").hide();
+                    }
+                    pagenationChangingShowHide();//when pagination anchor is clicked it will be replaced so reassign the function again
                 });
             }
 
         </script>
-      
+
     @endsection
 </x-masterLayout.master>

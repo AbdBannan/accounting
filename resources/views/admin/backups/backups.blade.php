@@ -20,7 +20,7 @@
 {{--            <a id="create-new-backup-button" href="{{ url(config('backpack.base.route_prefix', 'admin').'/backup/create') }}" class="btn btn-primary ladda-button mb-2" data-style="zoom-in"><span class="ladda-label"><i class="la la-plus"></i> {{ trans('backpack::backup.create_a_new_backup') }}</span></a>--}}
             <div class="card">
                 <div class="card-body p-0">
-                    <table class="table table-hover pb-0 mb-0" id="dataTable">
+                    <table class="table table-hover pb-0 mb-0" id="dataTable2">
                         <thead>
                         <tr>
                             <th>#</th>

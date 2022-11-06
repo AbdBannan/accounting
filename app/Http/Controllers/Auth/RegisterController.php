@@ -6,6 +6,7 @@ use App\functions\globalFunctions;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -68,7 +69,7 @@ class RegisterController extends Controller
     {
 
         if($file = request()->file("file")){
-            $fileName =  $file->getClientOriginalName();
+            $fileName = Carbon::now() . "_" . $data["first_name"] . " " . $data['last_name'];
             $file->move(public_path("images/usersImages"),$fileName);
         }
 

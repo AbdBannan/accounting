@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield("title")</title>
     <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{csrf_token()}}">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -42,8 +42,39 @@
     <link rel="stylesheet" href="{{asset("css/plugins/datatables-responsive/css/responsive.bootstrap4.min.css")}}">
     <link rel="stylesheet" href="{{asset("css/plugins/datatables-buttons/css/buttons.bootstrap4.min.css")}}">
 
+<style>
+    /*input[type="date"]::-webkit-datetime-edit, input[type="date"]::-webkit-inner-spin-button, input[type="date"]::-webkit-clear-button {*/
+    /*!*    color: #fff;*!*/
+    /*    position: relative;*/
+    /*}*/
 
+    /*input[type="date"]::-webkit-datetime-edit-year-field{*/
+    /*    position: absolute !important;*/
+    /*    border-left:1px solid #8c8c8c;*/
+    /*    padding: 2px;*/
+    /*!*    color:#000;*!*/
+    /*    left: 56px;*/
+    /*}*/
+
+    /*input[type="date"]::-webkit-datetime-edit-month-field{*/
+    /*    position: absolute !important;*/
+    /*    border-left:1px solid #8c8c8c;*/
+    /*    padding: 2px;*/
+    /*!*    color:#000;*!*/
+    /*    left: 26px;*/
+    /*}*/
+
+
+    /*input[type="date"]::-webkit-datetime-edit-day-field{*/
+    /*    position: absolute !important;*/
+    /*!*    color:#000;*!*/
+    /*    padding: 2px;*/
+    /*    left: 4px;*/
+
+    /*}*/
     @yield("style")
+</style>
+
 </head>
 
 @php
@@ -75,7 +106,7 @@
 {{--    @if(auth()->user()->getConfig("navbar_small_text_options") !== null) text-sm @endif--}}
 {{--    @if(auth()->user()->getConfig("brand_small_text_options") !== null) text-sm @endif--}}
 {{--    @if(auth()->user()->getConfig("footer_small_text_options") !== null) text-sm @endif--}}
-{{--    @if(auth()->user()->getConfig("slide_bar_nav_hover_or_focus_auto_expand") !== null) text-sm @endif--}}
+{{--    @if(auth()->user()->getConfig("side_bar_nav_hover_or_focus_auto_expand") !== null) text-sm @endif--}}
     @if(auth()->user()->getConfig("accent_color_variants") !== null and auth()->user()->getConfig("accent_color_variants") != "None Selected") accent-{{strtolower(auth()->user()->getConfig("accent_color_variants"))}} @endif
 
 
@@ -110,7 +141,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{{route("dashboard")}}" class="nav-link">{{__("global.home",[],session("lang"))}}</a>
+                    <a href="{{route("welcomePage")}}" class="nav-link">{{__("global.home",[],session("lang"))}}</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="#" class="nav-link">{{__("global.contact",[],session("lang"))}}</a>
@@ -127,7 +158,7 @@
                     <div class="navbar-search-block">
                         <form class="form-inline">
                             <div class="input-group input-group-sm">
-                                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                                <input id="search" class="form-control form-control-navbar" type="search" placeholder="{{__("global.Search",[],session("lang"))}}" aria-label="Search">
                                 <div class="input-group-append">
                                     <button class="btn btn-navbar" type="submit">
                                         <i class="fas fa-search"></i>
@@ -308,7 +339,7 @@
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
                     <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="{{__("global.Search",[],session("lang"))}}" aria-label="Search">
+                        <input id="search" class="form-control form-control-sidebar" type="search" placeholder="{{__("global.Search",[],session("lang"))}}" aria-label="Search">
                         <div class="input-group-append">
                             <button class="btn btn-sidebar">
                                 <i class="fas fa-search fa-fw"></i>
@@ -324,7 +355,7 @@
                         @if(auth()->user()->getConfig("nav_compact") !== null) nav-compact @endif
                         @if(auth()->user()->getConfig("nav_child_indent") !== null) nav-child-indent @endif
                         @if(auth()->user()->getConfig("nav_child_hide_on_collapse") !== null) nav-collapse-hide-child @endif
-                        @if(auth()->user()->getConfig("slide_bar_nav_hover_or_focus_auto_expand") !== null) text-sm @endif
+                        @if(auth()->user()->getConfig("side_bar_nav_hover_or_focus_auto_expand") !== null) text-sm @endif
 
                         flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
@@ -413,12 +444,12 @@
                                         <p>{{__("global.stores",[],session("lang"))}}</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{route("category.viewCategories")}}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.categories",[],session("lang"))}}</p>
-                                    </a>
-                                </li>
+{{--                                <li class="nav-item">--}}
+{{--                                    <a href="{{route("category.viewCategories")}}" class="nav-link">--}}
+{{--                                        <i class="far fa-circle nav-icon"></i>--}}
+{{--                                        <p>{{__("global.categories",[],session("lang"))}}</p>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
                             </ul>
                         </li>
 
@@ -435,7 +466,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{route("invoice.createInvoice","sale")}}" class="nav-link">
+                                    <a id="create_invoice" href="{{route("invoice.createInvoice","sale")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>{{__("global.sale",[],session("lang"))}}</p>
                                     </a>
@@ -628,7 +659,7 @@
                         {{--                                </i>--}}
                         {{--                            </form>--}}
                         {{--                        @endif--}}
-                        <a id="back_arrow" href="#">
+                        <a id="back_arrow" class="m-5" href="#">
                             @if(auth()->user()->getConfig("language") == "arabic")
                                 <i class="fas fa-arrow-right"></i>
                             @else
@@ -638,6 +669,21 @@
                     </div>
                     <!-- End Back Button-->
 
+{{--                        <div class="sidebar-search-results">--}}
+{{--                            <div class="list-group">--}}
+{{--                                <a href="#" class="list-group-item">--}}
+{{--                                    <div class="search-title">--}}
+{{--                                        <strong class="text-light"></strong>N<strong class="text-light"></strong>o<strong class="text-light"></strong> <strong class="text-light"></strong>e<strong class="text-light"></strong>l<strong class="text-light"></strong>e<strong class="text-light"></strong>m<strong class="text-light"></strong>e<strong class="text-light"></strong>n<strong class="text-light"></strong>t<strong class="text-light"></strong> <strong class="text-light"></strong>f<strong class="text-light"></strong>o<strong class="text-light"></strong>u<strong class="text-light"></strong>n<strong class="text-light"></strong>d<strong class="text-light"></strong>!<strong class="text-light"></strong>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="search-path">--}}
+{{--                                        <script>haay</script>--}}
+{{--                                        <script>haay</script>--}}
+{{--                                        <script>haay</script>--}}
+{{--                                    </div>--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+                    </div>
                 @section("content")
 
                 @show
@@ -736,6 +782,7 @@
     <!-- Page level plugins -->
     <script src={{asset("vendor/datatables/jquery.dataTables.js")}}></script>
     <script src={{asset("vendor/datatables/dataTables.bootstrap4.js")}}></script>
+    <script src={{asset("js/moment.js")}}></script>
 
 {{--    <!-- Page level custom scripts -->--}}
 {{--    <script src={{asset("js/demo/datatables-demo.js?var=415".rand(1,100))}}></script>--}}
@@ -775,10 +822,13 @@
                 let info = "{{__("global.Showing",[],session("lang"))}} _START_ {{__("global.to",[],session("lang"))}} _END_ {{__("global.of",[],session("lang"))}} _TOTAL_ {{__("global.entries",[],session("lang"))}}";
                 let emptyTable = "{{__("global.no_data_available_in_table",[],session("lang"))}}";
                 let infoEmpty = "{{__("global.Showing",[],session("lang"))}} 0 {{__("global.to",[],session("lang"))}} 0 {{__("global.of",[],session("lang"))}} 0 {{__("global.entries",[],session("lang"))}}";
-                let lengthMenu = "{{__("global.Show",[],session("lang"))}} _MENU_ {{__("global.entries",[],session("lang"))}}";let loadingRecords = "Please wait - loading...";
+                let lengthMenu = "{{__("global.Show",[],session("lang"))}} _MENU_ {{__("global.entries",[],session("lang"))}}";
+                let loadingRecords = "{{__("global.please_wait_loading",[],session("lang"))}}";
                 let search = "{{__("global.Search",[],session("lang"))}}:";
                 let next = "{{__("global.Next",[],session("lang"))}}";
                 let previous = "{{__("global.Previous",[],session("lang"))}}";
+                let infoFiltered = " - {{__("global.filtered_from",[],session("lang"))}} _MAX_ {{__("global.entries",[],session("lang"))}}";
+
                 $('#dataTable').DataTable(
                 {
                     "ordering":true,
@@ -794,7 +844,8 @@
                         "paginate": {
                             "next": next,
                             "previous": previous,
-                        }
+                        },
+                        "infoFiltered": infoFiltered,
                     }
                 });
 
@@ -825,7 +876,9 @@
                 $(this).parent("li").parent("ul").siblings("a").removeClass("bg-gradient-secondary").addClass("active").parent("li").addClass("menu-open");
             }
         });
-
+        // var moment = require('moment'); // require
+        // moment().format();
+        // alert(moment().format(''));
     </script>
 
 </body>

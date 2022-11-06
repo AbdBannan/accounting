@@ -39,7 +39,7 @@ permissionController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,["name"=>"required"]);
+        $this->validate($request,["name"=>["required","unique:roles"]]);
         $input = $request->all();
 
         $result = Permission::create([
@@ -89,6 +89,9 @@ permissionController extends Controller
     public function update(Request $request, Permission $permission)
     {
         $this->validate($request,["name"=>"required"]);
+        if ($permission->name != $request["name"]){
+            $this->validate($request,["name"=>"unique:roles"]);
+        }
         $oldPermission = $request->all();
         $permission->name = Str::ucfirst($oldPermission["name"]);
         $permission->slug = Str::of(Str::ucfirst($oldPermission["name"]))->slug("-");

@@ -52,16 +52,16 @@
                         <input type="submit" hidden>
                     </form>
                     <div class="card-footer">
-                        @if($actions!=null)
-                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received",[],session("lang"))}} :
-                                <span id="total_received" style="font-style: italic; color:darkblue"></span>
-                                {{--                                <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}
-                            </label>
-                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed",[],session("lang"))}} :
-                                <span id="total_payed" style="font-style: italic; color:darkblue"></span>
-                                {{--                                 <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}{{--should be syrian pound--}}
-                            </label>
-                        @endif
+{{--                        @if($actions!=null)--}}
+{{--                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received",[],session("lang"))}} :--}}
+{{--                                <span id="total_received" style="font-style: italic; color:darkblue"></span>--}}
+{{--                                --}}{{--                                <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}
+{{--                            </label>--}}
+{{--                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed",[],session("lang"))}} :--}}
+{{--                                <span id="total_payed" style="font-style: italic; color:darkblue"></span>--}}
+{{--                                --}}{{--                                 <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}{{----}}{{--should be syrian pound--}}
+{{--                            </label>--}}
+{{--                        @endif--}}
                     </div>
                 </div>
             @endif
@@ -77,6 +77,6 @@
             });
 
         </script>
-      
+
     @endsection
 </x-masterLayout.master>

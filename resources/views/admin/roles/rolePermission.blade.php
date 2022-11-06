@@ -3,31 +3,36 @@
         {{ __("global.roles_permission",[],session("lang")) }}
     @endsection
     @section('content')
-        <div class="row">
-            <div class="col-4">
-                <h3>{{$role->name}}</h3>
-                <hr>
-                <br>
-                <p>{{__("global.created_at",[],session("lang")) . " : " . $role->created_at . " (" . $role->created_at->diffForHumans() . ")"}}</p>
-            </div>
-            <div class="col-8">
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    @if(strtolower($role->name) != "admin" )
+                        <td>{{$role->name}}</td>
+                    @else
+                        <td>{{__("global.".$role->name,[],session("lang"))}}</td>
+                    @endif
+                    <hr>
+                    <br>
+                    <p>{{__("global.created_at",[],session("lang")) . " : " . $role->created_at . " (" . $role->created_at->diffForHumans() . ")"}}</p>
+                </div>
+                <div class="col-8">
 
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">{{__("global.roles_permission",[],session("lang"))}}</h6>
-                    </div>
-                    <div class="card-body">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">{{__("global.roles_permission",[],session("lang"))}}</h6>
+                        </div>
+                        <div class="card-body">
 
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th>{{__("global.id",[],session("lang"))}}</th>
-                                    <th>{{__("global.name",[],session("lang"))}}</th>
-                                    <th>{{__("global.assign_deassign_permission",[],session("lang"))}}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>{{__("global.id",[],session("lang"))}}</th>
+                                        <th>{{__("global.name",[],session("lang"))}}</th>
+                                        <th>{{__("global.assign_deassign_permission",[],session("lang"))}}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
 
                                     @foreach (App\Models\Permission::all() as $permission)
 
@@ -59,19 +64,17 @@
                                             </td>
                                         </tr>
                                     @endforeach
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
-
-
-
     @endsection
     @section("script")
-  
+
     @endsection
 </x-masterLayout.master>

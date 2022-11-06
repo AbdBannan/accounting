@@ -7,7 +7,7 @@
                     <div class="row">
                         <div class="form-group col-md-3 col-sm-12">
                             <label class="" style="font-size: large" for="invoice_id" >{{__("global.invoice_id",[],session("lang"))}}</label>
-                            <input form="form" id="invoice_id" name="invoice_id" min="0" type="number" class="form-control" readonly value="@yield("invoice_id",App\Models\Journal::where("detail",0)->whereIn("invoice_type",[1,2,3,4])->selectRaw("max(invoice_id) as mid")->get()[0]["mid"]+1)">
+                            <input form="form" id="invoice_id" name="invoice_id" min="0" type="number" class="form-control" readonly value="@yield("invoice_id",App\Models\Journal::withTrashed()->where("detail",0)->whereIn("invoice_type",[1,2,3,4])->selectRaw("max(invoice_id) as mid")->get()[0]["mid"]+1)">
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="second_part_name" >{{__("global.second_part",[],session("lang"))}}</label>
@@ -23,7 +23,7 @@
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="pound_type" >{{__("global.pound",[],session("lang"))}}</label>
-                            <input value="{{__("global.".auth()->user()->getConfig("default_pound"),[],session("lang"))}}" form="form" id="pound_type" name="pound_type" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield('pound_type')"/>
+                            <input value="@yield('pound_type',__("global.".auth()->user()->getConfig("default_pound"),[],session("lang")))" form="form" id="pound_type" name="pound_type" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"/>
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
                             </span>

@@ -36,6 +36,9 @@
                                                         <a id="btn_show_owner_invoice" href="{{route("invoice.showInvoice",[$action->invoice_id,$action->invoice_type])}}" hidden></a>
                                                     @elseif(in_array($action->invoice_type,["payment","receive"]))
                                                         <a id="btn_show_owner_invoice" href="{{route("invoice.showCashInvoice",$action->invoice_id)}}" hidden></a>
+{{--                                                    @elseif(in_array($action->invoice_type,["product_movement"]))--}}
+{{--                                                            @elseif(in_array($action->invoice_type,["product_movement"]))--}}
+{{--                                                        <a id="btn_show_owner_invoice" href="{{route("invoice.showProductMovementInvoice",$action->invoice_id)}}" hidden></a>--}}
                                                     @endif
                                                 @endif
                                             </td>
@@ -43,7 +46,7 @@
                                             <td>{{$action->credit}}</td>
                                             <td>{{$action->quantity}}</td>
                                             <td>{{$action->price}}</td>
-                                            <td>{{$action->second_part_name}}</td>
+                                            <td>{{$action->first_part_name}}</td>
                                             <td>{{$action->product_name}}</td>
                                             <td>{{$action->notes}}</td>
                                             <td>{{__("global.$action->invoice_type",[],session("lang"))}}</td>
@@ -83,6 +86,6 @@
             });
 
         </script>
-      
+
     @endsection
 </x-masterLayout.master>

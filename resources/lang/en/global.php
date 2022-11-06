@@ -15,6 +15,11 @@ return [
 
     //    -------- account section --------    //
 
+
+    'Welcome' => 'Welcome',
+    'Admin' => 'Admin',
+    'filtered_from' => 'filtered from',
+    'please_wait_loading' => 'Please wait - loading...',
     'plural_deleted_' => 'deleted :attribute',
     'no_data_available_in_table' => 'No data available in table',
     'Previous' => 'Previous',
@@ -144,6 +149,8 @@ return [
     'credit' => 'credit',
     'Syrian' => 'Syrian',
     'Dollar' => 'Dollar',
+    'syrian' => 'Syrian',
+    'dollar' => 'Dollar',
     'total_payed' => 'total payed',
     'total_received' => 'total received',
     'product_name' => 'product name',
@@ -272,13 +279,13 @@ return [
     'drop_down_legacy_offset' => 'drop down legacy offset',
     'sidebar_options' => 'sidebar options',
     'nav_child_hide_on_collapse' => 'nav child hide on collapse',
-    'disable_hover/focus_auto-expand' => 'disable hover/focus auto-expand',
+    'disable_hover/focus_auto-expand' => 'disable auto-expand when hover/focus',
     'footer_options' => 'footer options',
     'small_text_options' => 'small text options',
     'body' => 'body',
     'navbar' => 'navbar',
     'brand' => 'brand',
-    'slide_bar_nav' => 'slide bar nav',
+    'side_bar_nav' => 'slide bar nav',
     'accent_color_variants' => 'accent color variants',
     'dark_sidebar_variants' => 'dark sidebar variants',
     'light_sidebar_variants' => 'light sidebar variants',

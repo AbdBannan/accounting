@@ -137,7 +137,7 @@ class globalFunctions
             ["name"=>"body_small_text_options","controlled_by"=>"user", "type" => "look", "default_value" => "0"],
             ["name"=>"navbar_small_text_options","controlled_by"=>"user", "type" => "look", "default_value" => "0"],
             ["name"=>"brand_small_text_options","controlled_by"=>"user", "type" => "look", "default_value" => "0"],
-            ["name"=>"slide_bar_nav_small_text_options","controlled_by"=>"user", "type" => "look", "default_value" => "0"],
+            ["name"=>"side_bar_nav_small_text_options","controlled_by"=>"user", "type" => "look", "default_value" => "0"],
             ["name"=>"footer_small_text_options","controlled_by"=>"user", "type" => "look", "default_value" => "0"],
             ["name"=>"navbar_variants","controlled_by"=>"user", "type" => "look", "default_value" => "Light"],
             ["name"=>"accent_color_variants","controlled_by"=>"user", "type" => "look", "default_value" => "Purple"],

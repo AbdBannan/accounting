@@ -7,7 +7,7 @@
                     <div class="row">
                         <div class="form-group col-md-3 col-sm-12">
                             <label class="" style="font-size: large" for="invoice_id" >{{__("global.invoice_id",[],session("lang"))}}</label>
-                            <input form="form" id="invoice_id" name="invoice_id" min="0" type="number" class="form-control" readonly value="@yield("invoice_id",App\Models\Journal::where("detail",1)->whereIn("invoice_type",[5])->selectRaw("max(invoice_id) as mid")->get()[0]["mid"]+1)">
+                            <input form="form" id="invoice_id" name="invoice_id" min="0" type="number" class="form-control" readonly value="@yield("invoice_id",App\Models\Journal::withTrashed()->where("detail",1)->whereIn("invoice_type",[5])->selectRaw("max(invoice_id) as mid")->get()[0]["mid"]+1)">
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="first_part_name" >{{__("global.first_part",[],session("lang"))}}</label>

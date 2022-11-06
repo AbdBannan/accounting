@@ -2,7 +2,7 @@
 use Mailgun\Mailgun;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(["auth"])->group(function (){
+Route::middleware(["role:admin","auth"])->group(function (){
     Route::get("/account/viewAccounts","accountController@index")->name("account.viewAccounts");
     Route::get("/account/showAccount/{account}","accountController@show")->name("account.showAccount");
     Route::post("/account/storeAccount","accountController@store")->name("account.storeAccount");

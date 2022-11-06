@@ -13,6 +13,11 @@ return [
     |
     */
     //    -------- account section --------    //
+
+
+    'value_not_found'=>'value not found',
+    'should_not_be_empty'=>'should not be empty',
+
     'created_successfully'=>':attribute has been created successfully',
     'not_created_successfully'=>':attribute has not been created successfully',
 

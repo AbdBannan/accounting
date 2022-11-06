@@ -22,39 +22,20 @@ use Prologue\Alerts\Facades\Alert;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware(["auth","localizationMiddleWare","saveCurrentRequest"])->group(function (){
-    Route::get('/',function () {
-        return view('dashboard');
+Route::middleware(["auth","saveCurrentRequest"])->group(function (){
+    Route::get('/',function (){
+       return redirect("/welcome");
     });
-
+    Route::get('/welcome',function () {
+        return view('welcomePage');
+    })->name("welcomePage");
+//    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+});
+Route::middleware(["auth","role:admin","saveCurrentRequest"])->group(function (){
     Route::get("/dashboard",function(){
-        return view("dashboard");
+        return view("admin.dashboard");
     })->name("dashboard");
-
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });
 
+
 Auth::routes();
-
-//Route::get("/admin/backup","BackupController@index")->name("admin.backup");
-
-//
-//
-//Route::get("t",function (){
-//
-//    try {
-//        // start the backup process
-//        Artisan::call('backup:run');
-////        $output = Artisan::output();
-//        // log the results
-////        Log::info("Backpack\BackupManager -- new backup started from admin interface \r\n" . $output);
-//        // return the results as a response to the ajax call
-////        Alert::success('New backup created');
-//        return redirect()->back();
-//    } catch (Exception $e) {
-//        dd($e->getMessage());
-//        return redirect()->back();
-//    }
-//});
-//
-

@@ -1,6 +1,6 @@
 <x-masterLayout.master>
     @section("title")
-        {{ __("global.cash_invoices",[],session("lang")) }}
+        {{ __("global.cash_invoice",[],session("lang")) }}
     @endsection
 
     @section("recycle_bin")
@@ -226,8 +226,8 @@
                 });
                 isLineInEditing = false;
                 tr = null;
-                $("input#payed").focus();
                 $("input#payed,input#received").attr("disabled",false);
+                $("input#payed").focus();
             });
 
             function deleteLine(e){

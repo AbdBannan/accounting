@@ -56,17 +56,20 @@
 
                                     <tr>
                                         <td>{{$role->id}}</td>
-                                        <td><a id="btn_show_element" href={{route("role.showRolePermission",$role)}}>{{$role->name}}</a></td>
-
-                                        <td class="row m-0">
-                                            <a id="btn_update" title="{{__("global.update",[],session("lang"))}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$role}}" data-route="{{route("role.updateRole",$role->id)}}">
-                                                <input class="grid-button grid-edit-button" type="button" title="Update">
-                                            </a>
-                                            <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("role.softDeleteRole",$role->id)}}">
-                                                <input class="grid-button grid-delete-button" type="button" title="Delete">
-                                            </a>
-                                        </td>
-
+                                        @if(strtolower($role->name) != "admin" )
+                                            <td><a id="btn_show_element" href={{route("role.showRolePermission",$role)}}>{{$role->name}}</a></td>
+                                            <td class="row m-0">
+                                                <a id="btn_update" title="{{__("global.update",[],session("lang"))}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$role}}" data-route="{{route("role.updateRole",$role->id)}}">
+                                                    <input class="grid-button grid-edit-button" type="button" title="Update">
+                                                </a>
+                                                <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("role.softDeleteRole",$role->id)}}">
+                                                    <input class="grid-button grid-delete-button" type="button" title="Delete">
+                                                </a>
+                                            </td>
+                                        @else
+                                            <td><a id="btn_show_element" href={{route("role.showRolePermission",$role)}}>{{__("global.".$role->name,[],session("lang"))}}</a></td>
+                                            <td></td>
+                                        @endif
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -86,6 +89,6 @@
         <x-models.update-model :modelName="$modelName = 'role'"></x-models.update-model>
         @endsection
     @section("script")
-  
+
     @endsection
 </x-masterLayout.master>

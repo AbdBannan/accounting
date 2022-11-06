@@ -114,7 +114,11 @@
 
                                                 <tr>
                                                     <td>{{$role->id}}</td>
-                                                    <td>{{$role->name}}</td>
+                                                    @if(strtolower($role->name) != "admin" )
+                                                        <td>{{$role->name}}</td>
+                                                    @else
+                                                        <td>{{__("global.".$role->name,[],session("lang"))}}</td>
+                                                    @endif
                                                     <td class="text-center">
                                                         @if($role->slug == "admin")
                                                         @elseif(count($user->roles) != 0)
@@ -156,6 +160,6 @@
     @endsection
 
     @section("script")
-  
+
     @endsection
 </x-masterLayout.master>

@@ -38,7 +38,7 @@ class roleController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,["name"=>"required"]);
+        $this->validate($request,["name"=>["required","unique:roles"]]);
         $input = $request->all();
 
         $result = Role::create([
@@ -89,7 +89,12 @@ class roleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        if (strtolower($role->name) == "admin")
+            abort(304,"not permitted to delete this role");
         $this->validate($request,["name"=>"required"]);
+        if ($role->name != $request["name"]){
+            $this->validate($request,["name"=>"unique:roles"]);
+        }
         $oldRole = $request->all();
         $role->name = Str::ucfirst($oldRole["name"]);
         $role->slug = Str::of(Str::ucfirst($oldRole["name"]))->slug("-");
@@ -123,6 +128,8 @@ class roleController extends Controller
      */
     public function destroy($role_id)
     {
+        if (strtolower(Role::find($role_id)->name) == "admin")
+            abort(304,"not permitted to delete this role");
         $result = Role::onlyTrashed()->find($role_id)->forceDelete();
 
 //        if ($result!=null) {
@@ -144,6 +151,8 @@ class roleController extends Controller
      */
     public function softDelete(Role $role)
     {
+        if (strtolower($role->name) == "admin")
+            abort(304,"not permitted to delete this role");
         $result = $role->delete();
 
 //        if ($result!=null) {

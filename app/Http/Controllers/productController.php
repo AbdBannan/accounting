@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use function PHPUnit\Framework\fileExists;
 use App\functions\globalFunctions;
@@ -42,6 +43,7 @@ class productController extends Controller
                 "id"=>['required','unique:products'],
                 "name"=>"required",
                 "account_type"=>"required",
+                'product_image' => ['image','mimes:jpg,png,jpeg,gif,svg']
             ]);
 //        if ($request["account_type"] == 0){
 //            $this->validate($request,
@@ -58,7 +60,7 @@ class productController extends Controller
             }
         }
         if ($file = $request->file("product_image")) {
-            $fileName = $file->getClientOriginalName();
+            $fileName = Carbon::now()->format("d_m_Y_h_i_s") . "_" . $request["id"] . "_" . $request['name'];
             $request["image"] =  $fileName;
             $file->move("images/productsImages", $fileName);
         }
@@ -114,6 +116,7 @@ class productController extends Controller
             [
                 "name"=>"required",
                 "account_type"=>"required",
+                'product_image' => ['image','mimes:jpg,png,jpeg,gif,svg']
             ]);
         if ($request["id"] != $product->id){
             $this->validate($request,
@@ -141,7 +144,7 @@ class productController extends Controller
             if ($oldProductImage != "images/systemImages/default_product_img.png" and file_exists(public_path($oldProductImage))){
                 unlink(public_path($oldProductImage));
             }
-            $fileName = $file->getClientOriginalName();
+            $fileName =  Carbon::now()->format("d_m_Y_h_i_s") . "_" . $request["id"] . "_" . $request['name'];
             $product["image"] = $fileName;
             $file->move("images/productsImages",$fileName);
         }

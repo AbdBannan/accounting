@@ -379,6 +379,7 @@ use App\Models\Journal;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Exists;
@@ -393,7 +394,6 @@ class invoiceController extends Controller
      */
     public function index($invoice_type)
     {
-        session(["previouse_url"=>"view_all"]);
         globalFunctions::registerUserActivityLog("seen_all", $invoice_type . "_invoices", null);
         $temp = $invoice_type;
         $invoice_type = ($invoice_type == "sale") ? 1 : (($invoice_type == "purchase") ? 2 : (($invoice_type == "sale_return") ? 3 : 4));
@@ -423,6 +423,7 @@ class invoiceController extends Controller
             "invoice_id" => "required",
             "pound_type" => "required",
             "second_part_name" => "required",
+            'file' => ['image','mimes:jpg,png,jpeg,gif,svg']
         ]);
         $file_name = null;
         $path = null;
@@ -456,6 +457,7 @@ class invoiceController extends Controller
 
     private function saveJournal(Request $request, $invoice_type, $file_name)
     {
+
         $ctr = 1;
         $data = $request->all();
         $error = "none";
@@ -467,8 +469,8 @@ class invoiceController extends Controller
                     $record1 = new Journal();
                     $record1["invoice_id"] = $data["invoice_id"];
                     $record1["line"] = $ctr;
-                    $record1["debit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? 0 : $data["total_price_" . $ctr];
-                    $record1["credit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? $data["total_price_" . $ctr] : 0;
+                    $record1["debit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? 0 : $data["total_price_" . $ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]);
+                    $record1["credit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? $data["total_price_" . $ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]) : 0;
                     $record1["first_part_id"] = Account::where("name", $data["first_part_name_" . $ctr])->first()->id;
                     $record1["first_part_name"] = $data["first_part_name_" . $ctr];
                     $record1["second_part_id"] = Account::where("name", $data["second_part_name"])->first()->id;
@@ -492,8 +494,8 @@ class invoiceController extends Controller
                     $record2 = new Journal();
                     $record2["invoice_id"] = $data["invoice_id"];
                     $record2["line"] = $ctr;
-                    $record2["debit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? $data["total_price_" . $ctr] : 0;
-                    $record2["credit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? 0 : $data["total_price_" . $ctr];
+                    $record2["debit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? $data["total_price_" . $ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]): 0;
+                    $record2["credit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? 0 : $data["total_price_" . $ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]);
                     $record2["first_part_id"] = Account::where("name", $data["second_part_name"])->first()->id;
                     $record2["first_part_name"] = $data["second_part_name"];
                     $record2["second_part_id"] = Account::where("name", $data["first_part_name_" . $ctr])->first()->id;
@@ -553,6 +555,7 @@ class invoiceController extends Controller
      */
     public function show($invoice_id)
     {
+        session(["previous_previous_url"=>URL::previous()]);
 //        globalFunctions::registerUserActivityLog("seen", $invoice_type . "_invoice", $invoice_id);
         globalFunctions::registerUserActivityLog("seen", "invoice", $invoice_id);
         return view("invoices.products.showInvoice")->with("invoiceLines",Journal::where("detail", 0)->where("invoice_id", $invoice_id)->whereIn("invoice_type", [1, 2, 3, 4])->orderBy("line")->get());
@@ -578,10 +581,12 @@ class invoiceController extends Controller
      */
     public function update(Request $request, $invoice_type, $invoice_id)
     {
+
         $this->validate($request, [
             "invoice_id" => "required",
             "pound_type" => "required",
             "second_part_name" => "required",
+            'file' => ['image','mimes:jpg,png,jpeg,gif,svg'],
         ]);
 
         if (count($request->all()) <= 7) {
@@ -626,9 +631,13 @@ class invoiceController extends Controller
     }
 
 
-    public function search(Request $request, Journal $journal)
+    public function search(Request $request)
     {
-        $this->validate($request,["invoice_id"=>"required",Rule::exists('journal','invoice_id')]);
+        $this->validate($request,
+            [
+                "invoice_id"=>["required",Rule::exists('journal','invoice_id')->whereIn("invoice_type", [1, 2, 3, 4])]
+            ]
+        );
 //        $invoiceLines = Journal::where("detail", 0)->where("invoice_id", $request["invoice_id"])->whereIn("invoice_type", [1, 2, 3, 4])->get();
 //        dd($invoiceLines);
         globalFunctions::registerUserActivityLog("searched", "invoice", $request["invoice_id"]);
@@ -638,7 +647,6 @@ class invoiceController extends Controller
 
     public function showSearchInvoice($invoice_type)
     {
-        session(["previouse_url"=>"show_search"]);
         return view("invoices.products.showInvoice")->with(["invoiceLines" => [], "invoice_type" => $invoice_type]);
     }
 
@@ -684,11 +692,12 @@ class invoiceController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Account $account
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
     public function softDelete($invoice_id)
     {
 //        dd($invoice_id);
+//        $invoice_type = Journal::where("invoice_id", $invoice_id)->where("detail", 0)->whereIn("invoice_type", [0, 1, 2, 3, 4])->first()->invoice_type;
         $result = Journal::where("invoice_id", $invoice_id)->where("detail", 0)->whereIn("invoice_type", [0, 1, 2, 3, 4])->delete();
 
 //        if ($result!=null) {
@@ -699,11 +708,7 @@ class invoiceController extends Controller
 
         globalFunctions::flashMessage("softDelete", $result, "invoice");
         globalFunctions::registerUserActivityLog("recycled", "invoice", $invoice_id);
-        if (session("previouse_url") == "show_search") {
-            return redirect(route("invoice.showInvoice"));
-        } else {
-            return redirect(route("invoice.viewInvoices"));
-        }
+        return redirect(session("previous_previous_url"));
     }
 
     /**

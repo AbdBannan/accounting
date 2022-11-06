@@ -3,15 +3,13 @@ use Mailgun\Mailgun;
 use Illuminate\Support\Facades\Route;
 
 
-
-
 Route::middleware(["role:admin", "auth"])->group(function (){
     Route::get("role/viewRoles","roleController@index")->name("role.viewRoles");
     Route::post("role/storeRole","roleController@store")->name("role.storeRole");
+    Route::put("role/updateRole/{role}","roleController@update")->name("role.updateRole");
     Route::delete("role/deleteRole/{role_id}","roleController@destroy")->name("role.deleteRole");
     Route::delete("role/softDeleteRole/{role}","roleController@softDelete")->name("role.softDeleteRole");
     Route::get("role/restoreRole/{role_id}","roleController@restore")->name("role.restoreRole");
-    Route::put("role/updateRole/{role}","roleController@update")->name("role.updateRole");
     Route::get("role/showRolePermission/{role}","roleController@show")->name("role.showRolePermission");
     Route::get("role/viewRecyclebin/","roleController@viewRecyclebin")->name("role.viewRecyclebin");
 

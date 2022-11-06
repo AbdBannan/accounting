@@ -131,7 +131,10 @@
                         <form  style="margin: auto" action="{{route("discover.globalDiscoverUntilNow")}}">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
-                                <input id="account" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input id="account_1" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account">
                                     @foreach(App\Models\Account::get() as $account)
                                         <option class="dropdown-item" value="{{$account->id}}">{{$account->name }}</option>
@@ -147,7 +150,10 @@
                         <form  style="margin: auto" action="{{route("discover.globalDiscoverAfterLastCheckedPoint")}}" >
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
-                                <input id="account" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input id="account_2" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account">
                                     @foreach(App\Models\Account::get() as $account)
                                         <option class="dropdown-item" value="{{$account->id}}">{{$account->name }}</option>
@@ -163,7 +169,10 @@
                         <form  style="margin: auto" action="{{route("discover.globalDiscoverUntilLastBalance")}}" >
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
-                                <input id="account" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input id="account_3" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account">
                                     @foreach(App\Models\Account::get() as $account)
                                         <option class="dropdown-item" value="{{$account->id}}">{{$account->name }}</option>
@@ -179,23 +188,25 @@
                         <form  style="margin: auto" action="{{route("discover.globalDiscoverBetweenTowDates")}}" >
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
-                                <input id="account" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input id="account_4" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account">
                                     @foreach(App\Models\Account::get() as $account)
                                         <option class="dropdown-item" value="{{$account->id}}">{{$account->name }}</option>
                                     @endforeach
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <label class="col-md-4 col-sm-12" style="font-size: x-large" for="account" >{{__("global.from",[],session("lang"))}}</label>
-                                    <input id="from" name="from" class="col-md-8 col-sm-12 form-control" type="date">
-                                </div>
-                                <div class="row">
-                                    <label class="col-md-4 col-sm-12" style="font-size: x-large" for="account" >{{__("global.to",[],session("lang"))}}</label>
-                                    <input id="to" name="to" class="col-md-8 col-sm-12 form-control" type="date">
-                                </div>
-                                <hr>
                             </div>
+                            <div class="row">
+                                <label class="col-md-4 col-sm-12" style="font-size: x-large" for="account" >{{__("global.from",[],session("lang"))}}</label>
+                                <input id="from" name="from" class="col-md-8 col-sm-12 form-control" type="date">
+                            </div>
+                            <div class="row">
+                                <label class="col-md-4 col-sm-12" style="font-size: x-large" for="account" >{{__("global.to",[],session("lang"))}}</label>
+                                <input id="to" name="to" class="col-md-8 col-sm-12 form-control" type="date">
+                            </div>
+                            <hr>
                             <input id="btn_submit_global_between_tow_dates" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
                         </form>
                     </div>
@@ -204,7 +215,10 @@
                         <form id="accounts_form" style="margin: auto" action="{{route("discover.globalDiscoverByAccount")}}" >
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account_1" >{{__("global.account",[],session("lang"))}}</label>
-                                <input id="account_1" name="account_1" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input id="account_5" name="account_1" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account_1">
                                     @foreach(App\Models\Account::get() as $account)
                                         <option class="dropdown-item" value="{{$account->id}}">{{$account->name }}</option>
@@ -213,7 +227,10 @@
                             </div>
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account_2" >{{__("global.account",[],session("lang"))}}</label>
-                                <input id="account_2" name="account_2" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input id="account_6" name="account_2" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account_2">
                                     @foreach(App\Models\Account::get() as $account)
                                         <option class="dropdown-item" value="{{$account->id}}">{{$account->name }}</option>
@@ -246,15 +263,21 @@
                 });
 
 
-                $("input[type='submit']").on("click",function (e){
-                    let errors = "";
-                    $(this).parent("form").children("div").filter(function (){
-                        errors+=validateDropDownBox($(this).children("input"))+"\n";
+                $("input[type='submit']").on("click",function (e){ // for input select validation
+                    // let errors = "";
+                    $(this).parent("form").children("div").children("input[type='text']").each(function (){
+                        let error=validateDropDownBox($(this));
+                        if (error !== "") {
+                            e.preventDefault();
+                            $("#" + error).addClass("is-invalid");
+                        }
                     });
-                    if(errors.trim()!==""){
-                        e.preventDefault();
-                        alert(errors);
-                    }
+                });
+
+                $("input[type='text']").on("keyup",function (){
+                    $(".is-invalid").each(function () {
+                        $(this).removeClass("is-invalid");
+                    });
                 });
 
                 $("a#back").on("click",function (){
@@ -267,22 +290,20 @@
 
                 function validateDropDownBox(dropDownBox){
                     let error="";
-
                     let options = $(dropDownBox).siblings("div").children("option");
                     let isThisInputCorrect = false;
-                    for (let opt in options){
-                        if (Number(options[opt]))
-                            break;
-                        if ($(dropDownBox).val().trim() == $(options[opt]).text().trim()){
+                    options.each(function (){
+                        if ($(dropDownBox).val().trim() == $(this).text().trim()){
                             isThisInputCorrect=true;
-                            break;
+                            return;
                         }
-                    }
+                    });
                     if (!isThisInputCorrect){
-                        error=$(dropDownBox).attr("id")+ " : is not correct";
+                        error=$(dropDownBox).attr("id");
                     }
                     return error;
                 }
+
 
                 $("tr#discover_rows").on("dblclick",function (){
                     if ($(this).children("td").children("a#btn_show_owner_invoice")[0]==undefined || @if(isset($is_last_year)) true @else false @endif ){
