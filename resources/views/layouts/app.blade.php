@@ -46,6 +46,8 @@
     @endif
 </head>
 <body>
+    <input form="form_auth" type="hidden" name="language" value="{{session("lang")}}">
+
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">

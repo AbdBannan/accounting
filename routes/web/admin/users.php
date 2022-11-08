@@ -13,19 +13,19 @@ Route::middleware(["role:admin", "auth"])->group(function (){
 //    Route::get("user/restoreUser","userController@restoreUser")->name("user.restoreUser");
     Route::get("user/viewRecyclebin","userController@viewRecyclebin")->name("user.viewRecyclebin");
 
-    Route::get("user/activateUser/{user}","userController@activateUser")->name("user.activateUser");
-    Route::get("user/deactivateUser/{user}","userController@deactivateUser")->name("user.deactivateUser");
+    Route::post("user/activateUser/{user}","userController@activateUser")->name("user.activateUser");
+    Route::post("user/deactivateUser/{user}","userController@deactivateUser")->name("user.deactivateUser");
 
-    Route::get("user/{user}/attachRole/{role_id}","userController@attachRole")->name("user.attachRole");
-    Route::get("user/{user}/detachRole/{role_id}","userController@detachRole")->name("user.detachRole");
+    Route::post("user/{user}/attachRole/{role_id}","userController@attachRole")->name("user.attachRole");
+    Route::post("user/{user}/detachRole/{role_id}","userController@detachRole")->name("user.detachRole");
 
 
 //    Route::delete("user/softDelete","userController@softDelete")->name("user.softDelete");
 
 
 
-    Route::get("/user/trackUserActivity/{user}","userController@trackUserActivity")->name("user.trackUserActivity");
-    Route::get("/user/noTrackUserActivity/{user}","userController@noTrackUserActivity")->name("user.noTrackUserActivity");
+    Route::post("/user/trackUserActivity/{user}","userController@trackUserActivity")->name("user.trackUserActivity");
+    Route::post("/user/noTrackUserActivity/{user}","userController@noTrackUserActivity")->name("user.noTrackUserActivity");
 
 });
 

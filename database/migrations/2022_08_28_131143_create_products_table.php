@@ -15,13 +15,24 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
+            $table->string("name")->default("");
             $table->boolean("is_active")->default(true);
-            $table->integer("category_id")->default(0);
+            $table->integer("account_type")->default(0);
+            $table->foreignId("category_id")->default(0);
             $table->string("image")->default("systemImages/default_product_img.png");
-            $table->integer("store_id")->default(0);
+            $table->foreignId("store_id")->default(0);
+            $table->integer("group")->default(0);
+            $table->integer("up")->default(0);
+            $table->integer("larg")->default(0);
+            $table->string("notes")->default("");
+            $table->integer("debit")->default(0);
+            $table->integer("credit")->default(0);
+            $table->integer("st")->default(0);
+            $table->string("nu1")->default(0);
+            $table->float("price")->default(0);
             $table->softDeletes();
             $table->timestamps();
+
         });
     }
 

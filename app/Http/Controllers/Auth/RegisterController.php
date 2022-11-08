@@ -51,11 +51,13 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+
         return Validator::make($data, [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'file' => ['image','mimes:jpg,png,jpeg,gif,svg']
         ]);
     }
 
@@ -67,9 +69,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-
         if($file = request()->file("file")){
-            $fileName = Carbon::now() . "_" . $data["first_name"] . " " . $data['last_name'];
+            $fileName = Carbon::now()->format("d_m_Y_h_i_s") . "_" . $data["first_name"] . " " . $data['last_name'];
             $file->move(public_path("images/usersImages"),$fileName);
         }
 
@@ -82,8 +83,8 @@ class RegisterController extends Controller
         ]);
         globalFunctions::initialUserConfig($user);
         $user->config()->detach(1);
-        $user->config()->attach(1,["value"=>$data["language"]]);
-
+        $lang = ($data["language"] == "en")? "english" :"arabic";
+        $user->config()->attach(1,["value"=>$lang]);
         return $user;
     }
 }

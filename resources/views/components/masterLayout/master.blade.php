@@ -72,8 +72,8 @@
     /*    left: 4px;*/
 
     /*}*/
-    @yield("style")
 </style>
+    @yield("style")
 
 </head>
 

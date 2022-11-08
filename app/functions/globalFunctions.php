@@ -131,7 +131,7 @@ class globalFunctions
             ["name"=>"nav_legacy_style","controlled_by"=>"user", "type" => "look", "default_value" => "0"],
             ["name"=>"nav_compact","controlled_by"=>"user", "type" => "look", "default_value" => "0"],
             ["name"=>"nav_child_indent","controlled_by"=>"user", "type" => "look", "default_value" => "1"],
-            ["name"=>"nav_child_hide_on_collapse","controlled_by"=>"user", "type" => "look", "default_value" => "0"],
+            ["name"=>"nav_child_hide_on_collapse","controlled_by"=>"user", "type" => "look", "default_value" => "1"],
             ["name"=>"disable_hover_or_focus_auto_expand","controlled_by"=>"user", "type" => "look", "default_value" => "0"],
             ["name"=>"fixed_footer","controlled_by"=>"user", "type" => "look", "default_value" => "0"],
             ["name"=>"body_small_text_options","controlled_by"=>"user", "type" => "look", "default_value" => "0"],
@@ -145,7 +145,6 @@ class globalFunctions
             ["name"=>"light_sidebar_variants","controlled_by"=>"user", "type" => "look", "default_value" => "None Selected"],
             ["name"=>"brand_logo_variants","controlled_by"=>"user", "type" => "look", "default_value" => "Gray"],
         ];
-        $id = [];
         foreach ($config as $cfg) {
             $id = globalFunctions::createNewConfigIfNotExist($cfg);
             if ($cfg["default_value"] != "0") {

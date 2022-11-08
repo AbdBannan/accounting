@@ -6,7 +6,7 @@
     // alert(location.pathname);
 
     if (document.referrer == location.href ){
-        alert("yes");
+        // alert("yes");
         // location = document.referrer;
     }
     //this is to fill the image from file input
@@ -77,13 +77,18 @@
         siblingElement = $(this).siblings()[0];
         $.ajax({
                 url:route,
-                method:"GET",
-                // data: { CSRF: sessionStorage["csrf"]},
+                method:"POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success:function (){
                     element.attr("hidden",true);
                     element.attr("disabled",true);
                     $(siblingElement).attr("hidden",false);
                     $(siblingElement).attr("disabled",false);
+                },
+                error:function (e){
+                    alert("e");
                 }
             }
         );
@@ -96,8 +101,10 @@
         siblingElement = $(this).siblings()[0];
         $.ajax({
                 url:route,
-                method:"GET",
-                // data: { CSRF: sessionStorage("csrf")},
+                method:"POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success:function (){
                     $(siblingElement).attr("hidden",false);
                     $(siblingElement).attr("disabled",false);
@@ -105,7 +112,6 @@
                     element.attr("disabled",true);
                 },
                 error:function (e){
-                    // console.log(e.getResponseHeader() );
                     alert("error!!");
                 }
             }

@@ -58,7 +58,8 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
-            'engine' => null,
+            'engine' => 'InnoDB',
+
 //            'dump_command_path' => env('DB_DUMP_COMMAND_PATH', 'C:\wamp\bin\mysql\mysql5.6.17\bin')
 //            'dump' => [
 //                'dump_command_path' => 'C:\wamp64\bin\mysql\mysql8.0.27\bin', // only the path, so without `mysqldump` or `pg_dump`; this is a working example from MAMP on Mac OS

@@ -15,9 +15,10 @@ class CreatePoundsTable extends Migration
     {
         Schema::create('pounds', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->string("slug");
-            $table->integer("value");
+            $table->string("name")->default("");
+            $table->string("slug")->default("");
+            $table->integer("value")->default(1);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

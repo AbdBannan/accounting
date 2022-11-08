@@ -17,7 +17,7 @@ class ConfigUser extends Migration
             $table->primary(["config_id","user_id"]);
             $table->foreignId("config_id");
             $table->foreignId("user_id");
-            $table->string("value");
+            $table->string("value")->default("");
             $table->timestamps();
             $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade");
         });

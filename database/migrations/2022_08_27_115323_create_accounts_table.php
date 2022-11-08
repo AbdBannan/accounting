@@ -14,12 +14,13 @@ class CreateAccountsTable extends Migration
     public function up()
     {
         Schema::create('accounts', function (Blueprint $table) {
-            $table->id();
-            $table->string("first_name");
-            $table->string("last_name");
-            $table->string("type")->default("");
-            $table->string("category")->default("");
-            $table->integer("ref")->default(0);
+//            $table->id();
+            $table->integer("id");
+            $table->string("name")->default("");
+            $table->integer("account_type")->default(1);
+            $table->integer("group")->default(0);
+            $table->integer("up")->default(0);
+            $table->integer("larg")->default(0);
             $table->string("notes")->default("");
             $table->integer("debit")->default(0);
             $table->integer("credit")->default(0);

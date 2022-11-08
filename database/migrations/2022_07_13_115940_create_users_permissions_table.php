@@ -15,8 +15,10 @@ class CreateUsersPermissionsTable extends Migration
     {
         Schema::create('permission_user', function (Blueprint $table) {
             $table->primary(["user_id","permission_id"]);
-            $table->foreignId("user_id")->constrained()->cascadeOnDelete();
-            $table->foreignId("permission_id")->constrained()->cascadeOnDelete();
+//            $table->foreignId("user_id")->constrained()->cascadeOnDelete();
+//            $table->foreignId("permission_id")->constrained()->cascadeOnDelete();
+            $table->foreignId("user_id")->default(0);
+            $table->foreignId("permission_id")->default(0);
             $table->timestamps();
         });
     }

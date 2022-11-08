@@ -16,7 +16,8 @@ class CreateActivityLogsTable extends Migration
         Schema::create('activity_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId("user_id");
-            $table->string("content");
+            $table->string("content")->default("");
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -15,9 +15,9 @@ class CreateConfigsTable extends Migration
     {
         Schema::create('config', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->enum("controlled_by",["admin","user"]);
-            $table->string("type");
+            $table->string("name")->default("");
+            $table->enum("controlled_by",["admin","user"])->default("user");
+            $table->string("type")->default("global");
             $table->timestamps();
         });
     }
