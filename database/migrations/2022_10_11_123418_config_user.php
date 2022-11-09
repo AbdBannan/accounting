@@ -15,14 +15,13 @@ class ConfigUser extends Migration
     {
         Schema::create('config_user', function (Blueprint $table) {
             $table->primary(["config_id","user_id"]);
-            $table->foreignId("config_id");
-            $table->foreignId("user_id");
+            $table->foreignId("config_id")->default(0);
+            $table->foreignId("user_id")->default(0);
             $table->string("value")->default("");
             $table->timestamps();
             $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade");
+            $table->foreign("config_id")->references("id")->on("config")->onDelete("cascade");
         });
-//        CREATE table uuu (id int PRIMARY KEY,u_id int REFERENCES u.id ON DELETE CASCADE,CONSTRAINT F_K_1 FOREIGN KEY u_id  REFERENCES u(id))
-
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 use App\functions\globalFunctions;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,6 +21,7 @@ class DatabaseSeeder extends Seeder
          DB::table("roles")->truncate();
          DB::table("config")->truncate();
          DB::table("config_user")->truncate();
+         DB::table("role_user")->truncate();
 //        \App\Models\User::factory(4)->create()->each(function ($user){
 //             $user->posts()->saveMany(\App\Models\Post::factory(5)->make());
 //         });
@@ -29,7 +31,7 @@ class DatabaseSeeder extends Seeder
                 "first_name" => "عبد القادر",
                 "last_name" => "بناَّن",
                 "email" => "abdulkhader@gamil.com",
-                "password" => "password",
+                "password" => Hash::make('password'),
                 "active" => 1,
                 "profile_image" => "systemImages/default_user_img.png"
             ]
