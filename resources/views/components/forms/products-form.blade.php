@@ -1,40 +1,3 @@
-{{--<div class="form-group">--}}
-{{--    <label style="font-size: x-large" for="name" class="font-weight-bolder">{{__("global.name",[],session("lang"))}}</label>--}}
-{{--    <input class="form-control" type="text" name="name" id="name" value="">--}}
-{{--</div>--}}
-{{--<div class="form-group">--}}
-{{--    <label style="font-size: x-large" for="category_id" class="font-weight-bolder">{{__("global.category",[],session("lang"))}}</label>--}}
-{{--    <div class="form-group">--}}
-{{--        <select id="category_id" name="category_id" class="form-control" >--}}
-{{--            <option></option>--}}
-{{--            @foreach(App\Models\Category::get() as $category)--}}
-{{--                <option value="{{$category->id}}">{{$category->name}}</option>--}}
-{{--            @endforeach--}}
-{{--        </select>--}}
-{{--    </div>--}}
-{{--</div>--}}
-{{--<div class="form-group">--}}
-{{--    <label style="font-size: x-large" for="store_id" class="font-weight-bolder">{{__("global.store",[],session("lang"))}}</label>--}}
-{{--    <div class="form-group">--}}
-{{--        <select id="store_id" name="store_id" class="form-control" >--}}
-{{--        <option></option>--}}
-{{--            @foreach(App\Models\Store::get() as $Store)--}}
-{{--                <option id="{{$Store->id}}" value="{{$Store->id}}">{{$Store->name}}</option>--}}
-{{--            @endforeach--}}
-{{--        </select>--}}
-{{--    </div>--}}
-{{--</div>--}}
-{{--<div class="form-group">--}}
-{{--    <img id="image"  src={{asset("images/systemImages/default_product_img.png")}} style="width:100%;max-width:200px;margin:10px auto; ;border-radius:50%">--}}
-{{--    <input id="image" type="file" class=" form-control-file" name="image" placeholder="profile image">--}}
-{{--</div>--}}
-
-
-
-
-
-
-
 <div class="row">
     <div class="form-group col-6">
         <label style="font-size: x-large" for="id" class="font-weight-bolder">{{__("global.id",[],session("lang"))}}</label>
@@ -74,7 +37,7 @@
     <textarea class="form-control" name="notes" id="notes" value="" rows="3"></textarea>
 </div>
 <div class="form-group">
-    <img id="image"  src={{asset("images/systemImages/default_product_img.png")}} style="width:100%;max-width:200px;margin:10px auto; ;border-radius:50%">
+    <img id="image"  src="{{asset("images/systemImages/default_product_img.png")}}" style="width:100%;max-width:200px;margin:10px auto; ;border-radius:50%">
     <input id="product_image" type="file" class=" form-control-file" name="product_image" placeholder="profile image">
 </div>
 

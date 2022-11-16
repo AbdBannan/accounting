@@ -123,7 +123,7 @@ class storeController extends Controller
      */
     public function destroy($store_id)
     {
-        $result = Store::onlyTrashed()->where("id",$store_id)->forceDelete();
+        $result = Store::withTrashed()->where("id",$store_id)->forceDelete();
 
 //        if ($result!=null) {
 //            session()->flash("success",__("messages.deleted_successfully",["attribute"=>__("global.store",[],session("lang"))],session("lang")));

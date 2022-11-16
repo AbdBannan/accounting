@@ -19,7 +19,7 @@
     @endif
 
     @section("recycle_bin")
-        <a class="dropdown-item" href="{{route("invoice.viewRecyclebin")}}">
+        <a class="dropdown-item" href="{{route("invoice.viewInvoiceRecyclebin")}}">
             <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-400"></i>
             {{__("global.recycle_bin",["attribute"=>__("global.invoices",[],session("lang"))],session("lang"))}}
         </a>
@@ -30,18 +30,17 @@
             <x-invoices.invoice-body :invoiceType="$invoice_type"></x-invoices.invoice-body>
         </div>
     @endsection
-    @section("models")
-        <x-models.delete-confirm-model></x-models.delete-confirm-model>
-        <x-models.close-invoice-model></x-models.close-invoice-model>
+    @section("modals")
+        <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
+        <x-modals.close-invoice-modal></x-modals.close-invoice-modal>
     @endsection
     @section("script")
             <script>
                 let ids = [];
                 let isNewLineMode = true;
                 let isLineInEditing = false;
-                // $(".row input[type='text'],.row input[type='number'],.row select").prop("disabled",true);
-                // $("#invoice_id").prop("disabled",false);
-                // $("#second_part_name").prop("disabled",false);
+                $("#second_part_name").click();
+
 
                 function validateDropDownBox(dropDownBox){
                     let error="";

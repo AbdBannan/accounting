@@ -8,7 +8,7 @@
             {{__("global.recycle_bin",["attribute"=>__("global.users",[],session("lang"))],session("lang"))}}
         </a>
     @endsection
-    @section("content")
+    @section("content")-
 
         <div class="container">
 
@@ -16,14 +16,14 @@
                 <div class="card-body p-0">
                     <!-- Nested Row within Card Body -->
                     <div class="row">
-                        <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-                        <div class="col-lg-7">
+{{--                        <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>--}}
+                        <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">{{__("global.profile",[],session("lang"))}}</h1>
                                 </div>
 
-                                <form method="POST" class="user" action="{{ route('user.updateUser',$user) }}" accept-charset="UTF-8" enctype="multipart/form-data">
+                                <form method="POST" class="user" action="{{ route('user.updateUser',$user) }}" accept-charset="UTF-8" enctype="multipart/form-data" autocomplete="off">
                                     @csrf
                                     <input type="hidden" name="_method" value="PUT">
                                     <div class="form-group row">
@@ -89,70 +89,71 @@
                             </div>
 
                         </div>
+                        <div class="col-lg-6 d-flex flex-column justify-content-around">
+                            @if(auth()->user()->hasRole('admin'))
 
-                    </div>
-                    @if(auth()->user()->hasRole('admin'))
+                                <div class="card mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">{{__("global.roles",[],session("lang"))}}</h6>
+                                    </div>
+                                    <div class="card-body" >
 
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">{{__("global.roles",[],session("lang"))}}</h6>
-                            </div>
-                            <div class="card-body" >
-
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                        <tr>
-                                            <th>{{__("global.id",[],session("lang"))}}</th>
-                                            <th>{{__("global.role_name",[],session("lang"))}}</th>
-                                            <th>{{__("global.assign_deassign_role",[],session("lang"))}}</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            @foreach (App\Models\Role::all() as $role)
-
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                                                <thead>
                                                 <tr>
-                                                    <td>{{$role->id}}</td>
-                                                    @if(strtolower($role->name) != "admin" )
-                                                        <td>{{$role->name}}</td>
-                                                    @else
-                                                        <td>{{__("global.".$role->name,[],session("lang"))}}</td>
-                                                    @endif
-                                                    <td class="text-center">
-                                                        @if($role->slug == "admin")
-                                                        @elseif(count($user->roles) != 0)
-                                                            @php $found = false; @endphp
-                                                            @foreach($user->roles as $user_role)
-                                                                @if($user_role->slug == $role->slug)
-                                                                    @php $found = true; @endphp
-                                                                    @break
-                                                                @endif
-                                                            @endforeach
-
-                                                            @if($found == true)
-                                                                <a id="btn_detach_role" route-attr="{{route("user.detachRole",[$user->id,$role->id])}}" class="btn btn-sm btn-success">{{__("global.detach",[],session("lang"))}}</a>
-                                                                <a id="btn_attach_role" route-attr="{{route("user.attachRole",[$user->id,$role->id])}}" hidden="true" class="btn btn-sm btn-danger">{{__("global.attach",[],session("lang"))}}</a>
-                                                            @else
-                                                                <a id="btn_detach_role" route-attr="{{route("user.detachRole",[$user->id,$role->id])}}" hidden="true" class="btn btn-sm btn-success">{{__("global.detach",[],session("lang"))}}</a>
-                                                                <a id="btn_attach_role" route-attr="{{route("user.attachRole",[$user->id,$role->id])}}" class="btn btn-sm btn-danger">attach</a>
-                                                            @endif
-
-                                                        @else
-                                                            <a id="btn_detach_role" route-attr="{{route("user.detachRole",[$user->id,$role->id])}}" hidden="true" class="btn btn-sm btn-success">{{__("global.detach",[],session("lang"))}}</a>
-                                                            <a id="btn_attach_role" route-attr="{{route("user.attachRole",[$user->id,$role->id])}}" class="btn btn-sm btn-danger">attach</a>
-                                                        @endif
-                                                    </td>
+                                                    <th>{{__("global.id",[],session("lang"))}}</th>
+                                                    <th>{{__("global.role_name",[],session("lang"))}}</th>
+                                                    <th>{{__("global.assign_deassign_role",[],session("lang"))}}</th>
                                                 </tr>
-                                            @endforeach
+                                                </thead>
+                                                <tbody>
 
-                                        </tbody>
-                                    </table>
+                                                    @foreach (App\Models\Role::all() as $role)
+
+                                                        <tr>
+                                                            <td>{{$role->id}}</td>
+                                                            @if(strtolower($role->name) != "admin" )
+                                                                <td>{{$role->name}}</td>
+                                                            @else
+                                                                <td>{{__("global.".$role->name,[],session("lang"))}}</td>
+                                                            @endif
+                                                            <td class="text-center">
+                                                                @if(strtolower($role->slug) == "admin")
+                                                                @elseif(count($user->roles) != 0)
+                                                                    @php $found = false; @endphp
+                                                                    @foreach($user->roles as $user_role)
+                                                                        @if($user_role->slug == $role->slug)
+                                                                            @php $found = true; @endphp
+                                                                            @break
+                                                                        @endif
+                                                                    @endforeach
+
+                                                                    @if($found == true)
+                                                                        <a id="btn_detach_role" route-attr="{{route("user.detachRole",[$user->id,$role->id])}}" class="btn btn-sm btn-success">{{__("global.detach",[],session("lang"))}}</a>
+                                                                        <a id="btn_attach_role" route-attr="{{route("user.attachRole",[$user->id,$role->id])}}" hidden="true" class="btn btn-sm btn-danger">{{__("global.attach",[],session("lang"))}}</a>
+                                                                    @else
+                                                                        <a id="btn_detach_role" route-attr="{{route("user.detachRole",[$user->id,$role->id])}}" hidden="true" class="btn btn-sm btn-success">{{__("global.detach",[],session("lang"))}}</a>
+                                                                        <a id="btn_attach_role" route-attr="{{route("user.attachRole",[$user->id,$role->id])}}" class="btn btn-sm btn-danger">{{__("global.attach",[],session("lang"))}}</a>
+                                                                    @endif
+
+                                                                @else
+                                                                    <a id="btn_detach_role" route-attr="{{route("user.detachRole",[$user->id,$role->id])}}" hidden="true" class="btn btn-sm btn-success">{{__("global.detach",[],session("lang"))}}</a>
+                                                                    <a id="btn_attach_role" route-attr="{{route("user.attachRole",[$user->id,$role->id])}}" class="btn btn-sm btn-danger">{{__("global.attach",[],session("lang"))}}</a>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
 
-                    @endif
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
 

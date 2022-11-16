@@ -124,7 +124,7 @@ permissionController extends Controller
      */
     public function destroy($permission_id)
     {
-        $result = Permission::onlyTrashed()->find($permission_id)->forceDelete();
+        $result = Permission::withTrashed()->find($permission_id)->forceDelete();
 
 //        if ($result!=null) {
 //            session()->flash("success",__("messages.deleted_successfully",["attribute"=>__("global.permission",[],session("lang"))],session("lang")));

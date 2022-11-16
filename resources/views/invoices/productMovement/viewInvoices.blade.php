@@ -36,7 +36,7 @@
                                 @foreach ($invoices as $invoice)
 
                                     <tr>
-                                        <td><a id="btn_show_element" href={{route("invoice.showProductMovementInvoice",$invoice->invoice_id)}}>{{$invoice->invoice_id}}</a></td>
+                                        <td><a id="btn_show_element" href="{{route("invoice.showProductMovementInvoice",$invoice->invoice_id)}}>{{$invoice->invoice_id}}"</a></td>
                                         <td>{{$invoice->value}}</td>
                                         <td>{{$invoice->closing_date->format("d/m/Y")}}</td>
 
@@ -61,8 +61,8 @@
         </div>
 
     @endsection
-    @section("models")
-        <x-models.delete-confirm-model></x-models.delete-confirm-model>
+    @section("modals")
+        <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
     @endsection
     @section("script")
   

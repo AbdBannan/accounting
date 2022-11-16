@@ -50,7 +50,7 @@
                             <tbody>
                             @foreach ($users as $user)
                                 <tr>
-                                    <td><a id="btn_show_element" href={{route("user.showUser",$user)}}> {{$user->first_name}} </a></td>
+                                    <td><a id="btn_show_element" href="{{route("user.showUser",$user)}}"> {{$user->first_name}} </a></td>
                                     <td> {{$user->last_name}} </td>
                                     <td> {{$user->email}} </td>
 
@@ -65,11 +65,6 @@
                                             @endif
 
                                         </td>
-                                        {{--                                        <td>--}}
-                                        {{--                                          <x-buttons.delete-button>--}}
-                                        {{--                                              @section("data_route"){{route("user.softDeleteUser",$user->id)}}@endsection--}}
-                                        {{--                                          </x-buttons.delete-button>--}}
-                                        {{--                                        </td>--}}
                                     @else
                                         <td></td>
                                     @endif
@@ -88,7 +83,7 @@
                                             <input class="grid-button grid-edit-button" type="button" title="Update">
                                         </a>
                                         @if(!$user->hasRole("admin"))
-                                            <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-3 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("user.softDeleteUser",$user->id)}}">
+                                            <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-3 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("user.softDeleteUser",$user->id)}}" @else data-route="{{route("user.deleteUser",$user->id)}}" @endif >
                                                 <input class="grid-button grid-delete-button" type="button" title="Delete">
                                             </a>
                                         @else
@@ -107,8 +102,8 @@
 
 
     @endsection
-    @section("models")
-        <x-models.delete-confirm-model></x-models.delete-confirm-model>
+    @section("modals")
+        <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
     @endsection
     @section("script")
 

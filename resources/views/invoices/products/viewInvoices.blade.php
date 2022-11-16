@@ -19,7 +19,7 @@
     @endif
 
     @section("recycle_bin")
-        <a class="dropdown-item" href="{{route("invoice.viewRecyclebin")}}">
+        <a class="dropdown-item" href="{{route("invoice.viewInvoiceRecyclebin")}}">
             <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-400"></i>
             {{__("global.recycle_bin",["attribute"=>__("global.invoices",[],session("lang"))],session("lang"))}}
         </a>
@@ -50,7 +50,7 @@
                                 @foreach ($invoices as $invoice)
 
                                     <tr>
-                                        <td><a id="btn_show_element" href={{route("invoice.showInvoice",[$invoice->invoice_id,$invoice_type]    )}}>{{$invoice->invoice_id}}</a></td>
+                                        <td><a id="btn_show_element" href="{{route("invoice.showInvoice",[$invoice->invoice_id,$invoice_type]    )}}">{{$invoice->invoice_id}}</a></td>
                                         <td>{{$invoice->second_part_name}}</td>
                                         <td>{{$invoice->value}}</td>
 
@@ -74,13 +74,13 @@
         </div>
 
     @endsection
-    @section("models")
-        <x-models.delete-confirm-model></x-models.delete-confirm-model>
-        <x-models.update-model :modelName="$modelName = 'saleInvoice'"></x-models.update-model>
+    @section("modals")
+        <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
+        <x-modals.update-modal :modelName="$modelName = 'saleInvoice'"></x-modals.update-modal>
 
     @endsection
     @section("script")
-  
+
     @endsection
 </x-masterLayout.master>
 

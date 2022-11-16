@@ -178,8 +178,8 @@ class productController extends Controller
      */
     public function destroy($product_id)
     {
-        $image = Product::onlyTrashed()->where("id",$product_id)->first()->image;
-        $result = Product::onlyTrashed()->where("id",$product_id)->forceDelete();
+        $image = Product::withTrashed()->where("id",$product_id)->first()->image;
+        $result = Product::withTrashed()->where("id",$product_id)->forceDelete();
 
         if ($result!=null) {
             if ($image != "images/systemImages/default_product_img.png"  and file_exists(public_path($image))) {

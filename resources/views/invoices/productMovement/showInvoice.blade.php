@@ -1,7 +1,7 @@
 <x-masterLayout.master>
     @if(count($invoiceLines)==0)
         @section("title")
-            {{ __("global.search",[],session("lang")) }}
+            {{ __("global.search_in_product_movement_invoices",[],session("lang")) }}
         @endsection
     @else
         @section("title")
@@ -26,7 +26,7 @@
                               <a id="btn_update_invoice" title="{{__("global.update",[],session("lang"))}}" class="col-4">
                                   <input class="grid-button grid-edit-button" type="button" title="Update">
                               </a>
-                              <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="col-4" data-toggle="modal" data-target="#deleteConfirmModal" data-route={{route("invoice.softDeleteProductMovementInvoice",$invoiceLines[0]->invoice_id)}}>
+                              <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="col-4" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("invoice.softDeleteProductMovementInvoice",$invoiceLines[0]->invoice_id)}}" @else data-route="{{route("invoice.deleteProductMovementInvoice",$invoiceLines[0]->invoice_id)}}" @endif>
                                   <input class="grid-button grid-delete-button" type="button" title="Delete">
                               </a>
                           </div>
@@ -74,7 +74,7 @@
                             <div class="form-group text-center">
                                 <label style="font-size: x-large" for="invoice_id" >{{__("global.enter_invoice_id",[],session("lang"))}}</label>
                                 <input type="number" name="invoice_id" id="invoice_id" class="form-control" autofocus>
-                                <input id="btn_search" type="submit" class="btn btn-outline-primary form-control">
+                                <input id="btn_search" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.search",[],session("lang"))}}">
                             </div>
                         </form>
                     </div>
@@ -82,9 +82,9 @@
             @endif
         </div>
     @endsection
-    @section("models")
-        <x-models.delete-confirm-model></x-models.delete-confirm-model>
-        <x-models.close-invoice-model></x-models.close-invoice-model>
+    @section("modals")
+        <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
+        <x-modals.close-invoice-modal></x-modals.close-invoice-modal>
     @endsection
     @section("script")
         <script>

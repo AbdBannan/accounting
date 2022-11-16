@@ -62,7 +62,7 @@ class productMovementController extends Controller
             $file->move($path,$file_name);
         }
         else{
-            $file_name = "default_invoice_img.phg";
+            $file_name = "default_invoice_img.png";
             $path = "systemImages";
         }
 
@@ -266,8 +266,8 @@ class productMovementController extends Controller
      */
     public function destroy($invoice_id)
     {
-        $image = Journal::onlyTrashed()->where("detail",0)->where("invoice_id",$invoice_id)->whereIn("invoice_type",[11,12])->first()->image;
-        $result = Journal::onlyTrashed()->where("detail",0)->where("invoice_id",$invoice_id)->whereIn("invoice_type",[11,12])->forceDelete();
+        $image = Journal::withTrashed()->where("detail",0)->where("invoice_id",$invoice_id)->whereIn("invoice_type",[11,12])->first()->image;
+        $result = Journal::withTrashed()->where("detail",0)->where("invoice_id",$invoice_id)->whereIn("invoice_type",[11,12])->forceDelete();
         if ($result!=null) {
             if ($image != "images/systemImages/default_product_img.png"  and file_exists(public_path($image))) {
                 unlink(public_path($image));
@@ -278,11 +278,10 @@ class productMovementController extends Controller
 //        }else{
 //            session()->flash("error",__("messages.not_deleted_successfully",["attribute"=>"Invoice"],session("lang")));
 //        }
-
         globalFunctions::flashMessage("delete",$result,"product_movement_invoice");
         globalFunctions::registerUserActivityLog("deleted","product_movement_invoice",$invoice_id);
 
-       return back();
+        return redirect(session("previous_previous_url"));
     }
 
     /**

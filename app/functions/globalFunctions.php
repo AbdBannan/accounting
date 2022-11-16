@@ -78,23 +78,31 @@ class globalFunctions
             return;
         }
         $content = "";
+        $the_user = __("global.the_user",[],session("lang"));
+        $has = __("global.has",[],session("lang"));
+        $at = __("global.at",[],session("lang"));
+        $whose_id_is = __("global.whose_id_is",[],session("lang"));
+        $with_row_id = __("global.with_row_id",[],session("lang"));
+        $for_permission_whose_id_is = __("global.for_permission_whose_id_is",[],session("lang"));
+
+
         $user = auth()->user()->first_name . " " . auth()->user()->last_name;
 
-        $action_type = str_replace("_"," ",$action_type);
-        $action_name = str_replace("_"," ",$action_name);
-//        if (in_array($action_type,["seen all","archived"]) or Str::contains($action_name,"recyclebin")) {
+        $temp_action_type = $action_type;
+        $action_type = __("global.$action_type",[],session("lang"));
+        $action_name = __("global.$action_name",[],session("lang"));
+
         if ($id == null) {
-            $content = "the user : $user has $action_type $action_name at " . Carbon::now();
-        } elseif (in_array($action_type,["discovered"])) {
-            $content = "the user : $user has $action_type '$action_name' whose id is " . $id . " at " . Carbon::now();
-        } elseif (in_array($action_type,["made"])) {
-            $content = "the user : $user has $action_type '$action_name' with row id " . $id . " at " . Carbon::now();
-        } elseif (in_array($action_type,["attached","detached"] ) and explode(" ",$action_name)[1] == "permission" ) {
-            $content = "the user : $user has $action_type $action_name for permission whose id is " . $id . " at " . Carbon::now();
+            $content = "$the_user : $user $has $action_type $action_name $at " . Carbon::now();
+        } elseif (in_array($temp_action_type,["discovered"])) {
+            $content = "$the_user : $user $has $action_type '$action_name' $whose_id_is $id $at " . Carbon::now();
+        } elseif (in_array($temp_action_type,["made"])) {
+            $content = "$the_user : $user $has $action_type '$action_name' $with_row_id $id $at " . Carbon::now();
+        } elseif (in_array($temp_action_type,["attached","detached"] ) and explode(" ",$action_name)[1] == "permission" ) {
+            $content = "$the_user : $user $has $action_type $action_name $for_permission_whose_id_is " . $id . " $at " . Carbon::now();
         } else {
-            $content = "the user : $user has $action_type a/an $action_name whose id is " . $id . " at " . Carbon::now();
+            $content = "$the_user : $user $has $action_type $action_name $whose_id_is $id $at " . Carbon::now();
         }
-//        $content = "the user : $user has " . $action_type . "ed a $action_name whose id is " . $id . " at " . Carbon::now();
 
         ActivityLog::create([
             "user_id"=>auth()->user()->id,
@@ -119,6 +127,8 @@ class globalFunctions
             ["name"=>"add_method","controlled_by"=>"user", "type" => "global", "default_value" => "modal"],
             ["name"=>"user_activity_log","controlled_by"=>"admin", "type" => "admin_control", "default_value" => "true"],
             ["name"=>"default_pound","controlled_by"=>"user", "type" => "global", "default_value" => "Syrian"],
+            ["name"=>"use_recyclebin","controlled_by"=>"user", "type" => "global", "default_value" => "true"],
+            ["name"=>"clean_recyclebin_after","controlled_by"=>"user", "type" => "global", "default_value" => "-1"],
             ["name"=>"dark_mode","controlled_by"=>"user", "type" => "look", "default_value" => "0"],
             ["name"=>"fixed_header","controlled_by"=>"user", "type" => "look", "default_value" => "1"],
             ["name"=>"drop_down_legacy_offset","controlled_by"=>"user", "type" => "look", "default_value" => "0"],
@@ -172,9 +182,12 @@ class globalFunctions
         $splited = explode("#",$message);
         if (count($splited)>1){
             $splited[1] = str_replace(" ","_",$splited[1]);
-            return $splited[0] . __("global.".$splited[1],[],session("lang")) . $splited[2];
+            return $splited[0] . "('" . __("global.".$splited[1],[],session("lang")) . "')" . $splited[2];
         }
         else
             return $message;
     }
 }
+
+
+

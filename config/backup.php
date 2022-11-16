@@ -83,7 +83,6 @@ return [
 
             'databases' => [
                 'mysql',
-//                'mysqldump_path' => 'C:\wamp64\bin\mysql\mysql8.0.27\bin',
             ],
         ],
 
@@ -113,7 +112,7 @@ return [
             /*
              * The filename prefix used for the backup zip file.
              */
-            'filename_prefix' => '',
+            'filename_prefix' => 'accounting_',
 
             /*
              * The disk names on which the backups will be stored.
@@ -132,7 +131,7 @@ return [
          * The password to be used for archive encryption.
          * Set to `null` to disable encryption.
          */
-        'password' => env('BACKUP_ARCHIVE_PASSWORD'),
+        'password' => env('BACKUP_ARCHIVE_PASSWORD',"accounting"),
 
         /*
          * The encryption algorithm to be used for archive encryption.
@@ -244,12 +243,12 @@ return [
             /*
              * The number of days for which backups must be kept.
              */
-            'keep_all_backups_for_days' => 7,
+            'keep_all_backups_for_days' => null,
 
             /*
              * The number of days for which daily backups must be kept.
              */
-            'keep_daily_backups_for_days' => 16,
+            'keep_daily_backups_for_days' => 30,
 
             /*
              * The number of weeks for which one weekly backup must be kept.

@@ -17,11 +17,11 @@
 
                 <div class="row">
                     <div class="bg-gray-100 card o-hidden border-0 shadow-lg p-4 col-lg-3 col-sm-12">
-                        <form action={{route("store.storeStore")}} method="POST">
+                        <form action="{{route("store.storeStore")}}" method="POST" autocomplete="off">
                             @csrf
                             <x-forms.stores-form>
                             </x-forms.stores-form>
-                            <input id="btn_add" class="btn btn-primary btn-block" type="submit" value={{__("global.create",[],session("lang"))}}>
+                            <input id="btn_add" class="btn btn-primary btn-block" type="submit" value="{{__("global.create",[],session("lang"))}}">
                         </form>
                     </div>
 
@@ -70,7 +70,7 @@
                                                     <a id="btn_update" title="{{__("global.update",[],session("lang"))}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$store}}" data-route="{{route("store.updateStore",$store->id)}}">
                                                         <input class="grid-button grid-edit-button" type="button" title="Update">
                                                     </a>
-                                                    <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("store.softDeleteStore",$store->id)}}">
+                                                    <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true")  data-route="{{route("store.softDeleteStore",$store->id)}}" @else  data-route="{{route("store.deleteStore",$store->id)}}" @endif>
                                                         <input class="grid-button grid-delete-button" type="button" title="Delete">
                                                     </a>
                                                 </td>
@@ -89,12 +89,12 @@
         </div>
 
     @endsection
-    @section("models")
-        <x-models.delete-confirm-model></x-models.delete-confirm-model>
+    @section("modals")
+        <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
         @if(auth()->user()->getConfig("add_method") == "modal")
-            <x-models.add-model :modelName="$modelName = 'store'"></x-models.add-model>
+            <x-modals.add-modal :modelName="$modelName = 'store'"></x-modals.add-modal>
         @endif
-        <x-models.update-model :modelName="$modelName = 'store'"></x-models.update-model>
+        <x-modals.update-modal :modelName="$modelName = 'store'"></x-modals.update-modal>
 
     @endsection
     @section("script")

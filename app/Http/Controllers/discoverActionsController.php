@@ -594,7 +594,7 @@ class discoverActionsController extends Controller
         }
         $total_debit = abs($total_debit);
         $total_credit = abs($total_credit);
-        globalFunctions::registerUserActivityLog("seen_all","accounts_balances",null);
+        globalFunctions::registerUserActivityLog("seen","accounts_balances",null);
         return view("admin.discoverActions.allAccountsDiscover")->with(["actions"=>$actions,"total_debit"=>$total_debit,"total_credit"=>$total_credit]);
     }
 
@@ -604,7 +604,7 @@ class discoverActionsController extends Controller
         $actions = Product::selectRaw("products.id ,products.name ,sum(journal.in_quantity) as in_quantity,sum(journal.out_quantity) as out_quantity,sum(journal.in_quantity) - sum(journal.out_quantity) as balance")->leftJoin("journal","products.id","=","journal.product_id")->groupBy(["products.id","products.name"])->get();
 
         $totals = Journal::where("product_id",">",0)->selectRaw("sum(in_quantity) as total_in_quantity,sum(out_quantity) as total_out_quantity")->first();
-        globalFunctions::registerUserActivityLog("seen_all","products_balances",null);
+        globalFunctions::registerUserActivityLog("seen","products_balances",null);
         return view("admin.discoverActions.allProductsDiscover")->with(["actions"=>$actions,"total_in_quantity"=>$totals->total_in_quantity,"total_out_quantity"=>$totals->total_out_quantity,"total_balance"=>$totals->total_in_quantity-$totals->total_out_quantity]);
     }
 
@@ -612,7 +612,7 @@ class discoverActionsController extends Controller
     {
         $actions = Journal::where("created_at",Carbon::now()->format("Y-m-d"))->whereIn("invoice_type",[0,1,2,3,4,5,6,7])->get();
         $totals = Journal::where("created_at",Carbon::now()->format("Y-m-d"))->whereIn("invoice_type",[1,2,3,4,5])->selectRaw("sum(debit) as total_debit , sum(credit) as total_credit")->first();
-        globalFunctions::registerUserActivityLog("seen_all","daily_actions",null);
+        globalFunctions::registerUserActivityLog("seen","daily_actions",null);
         return view("admin.discoverActions.dailyDiscover")->with(["actions"=>$actions,"total_debit"=>$totals->total_debit,"total_credit"=>$totals->total_credit,"total_balance"=>$totals->total_credit-$totals->total_debit]);
     }
 

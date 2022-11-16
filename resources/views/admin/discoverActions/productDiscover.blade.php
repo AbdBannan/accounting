@@ -101,10 +101,6 @@
                 </div>
                 <div class="p-2">
                     <a href="{{route("discover.chooseListProductDiscover")}}" class="btn btn-outline-primary">{{__("global.discovers",[],session("lang"))}}</a>
-                    <form hidden id="check_point_form" method="post" action="{{route("discover.makeCheckPoint")}}">
-                        @csrf
-                        <input name="check_point_row_id" id="check_point_row_id" type="hidden" value="">
-                    </form>
                 </div>
             @else
                 <div id="accordion" class="bg-gradient-light shadow p-md-5 p-sm-2" style="width: 50%;margin: auto;">
@@ -117,7 +113,7 @@
                     </div>
                     <div id="productDiscoverUntilNowCollapse" class="collapse">
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form  style="margin: auto" action="{{route("discover.productDiscoverUntilNow")}}" >
+                        <form  style="margin: auto" action="{{route("discover.productDiscoverUntilNow")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="product" >{{__("global.account",[],session("lang"))}}</label>
                                 <input id="product_1" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
@@ -136,7 +132,7 @@
                     </div>
                     <div id="productDiscoverUntilLastBalanceCollapse" class="collapse">
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form  style="margin: auto" action="{{route("discover.productDiscoverUntilLastBalance")}}" >
+                        <form  style="margin: auto" action="{{route("discover.productDiscoverUntilLastBalance")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="product" >{{__("global.account",[],session("lang"))}}</label>
                                 <input id="product_2" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
@@ -155,7 +151,7 @@
                     </div>
                     <div id="productDiscoverWithAccountCollapse" class="collapse">
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form style="margin: auto" action="{{route("discover.productDiscoverWithAccount")}}" >
+                        <form style="margin: auto" action="{{route("discover.productDiscoverWithAccount")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="product" >{{__("global.product",[],session("lang"))}}</label>
                                 <input id="product_3" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
@@ -186,7 +182,7 @@
                     </div>
                     <div id="productDiscoverBetweenTowDatesCollapse" class="collapse" >
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form  style="margin: auto" action="{{route("discover.productDiscoverBetweenTowDates")}}" >
+                        <form  style="margin: auto" action="{{route("discover.productDiscoverBetweenTowDates")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="product" >{{__("global.account",[],session("lang"))}}</label>
                                 <input id="product_4" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
@@ -213,7 +209,7 @@
                     </div>
                     <div id="productDiscoverByStoreCollapse" class="collapse" >
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form  style="margin: auto" action="{{route("discover.productDiscoverByStore")}}" >
+                        <form  style="margin: auto" action="{{route("discover.productDiscoverByStore")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="store" >{{__("global.store",[],session("lang"))}}</label>
                                 <input id="store" name="store" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />

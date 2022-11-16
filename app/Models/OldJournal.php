@@ -13,7 +13,7 @@ class OldJournal extends Model
     use HasFactory;
     use SoftDeletes;
     protected $dates = ['closing_date'];
-    protected $table = "oldjournal";
+    protected $table = "old_journal";
     protected $primaryKey = "invoice_id";
     protected $guarded = [];
 

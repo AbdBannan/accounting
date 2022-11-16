@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
          DB::statement("SET FOREIGN_KEY_CHECKS=0;");
          DB::table("users")->truncate();
          DB::table("pounds")->truncate();
+         DB::table("stores")->truncate();
          DB::table("roles")->truncate();
          DB::table("config")->truncate();
          DB::table("config_user")->truncate();
@@ -60,6 +61,14 @@ class DatabaseSeeder extends Seeder
                 "value" => 4500,
             ]
         );
+
+
+        \App\Models\Store::factory(1)->create(
+            [
+                "name" => "المخزن الإفتراضي"
+            ]
+        );
+
 
     }
 }

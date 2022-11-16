@@ -15,7 +15,7 @@
     @section('content')
         <div class="container">
             <x-invoices.cash-body></x-invoices.cash-body>
-            <x-models.close-invoice-model></x-models.close-invoice-model>
+            <x-modals.close-invoice-modal></x-modals.close-invoice-modal>
         </div>
     @endsection
     @section("script")
@@ -23,7 +23,7 @@
             let ids = [];
             let isNewLineMode = true;
             let isLineInEditing = false;
-
+            $("#first_part_name").click();
             function validateDropDownBox(dropDownBox){
                 let error="";
                 let options = $(dropDownBox).siblings("div").children("option");
@@ -190,7 +190,7 @@
             }
 
 
-</script>
+        </script>
     @endsection
 </x-masterLayout.master>
 

@@ -21,6 +21,12 @@
         $(this).siblings().filter("#image").attr("src",url);
     });
 
+    //this is click the next anchor when image is dbClicked
+    $("img#image").on("dblclick",function(event){
+        $(this).siblings("a").get(0).click();
+    });
+
+
     // this is to populate delete confirm model
     $("a#btn_delete").on("click",function(){
         let route = $(this).data("route");
@@ -230,31 +236,56 @@
 
 
     $("body").on("keydown",function (e){
-        const F1 = 112;
-        const F2 = 113;
-        const F3 = 114;
-        const F4 = 115;
-        const F5 = 116;
+        const F1 = 112; // accounts tree
+        const F2 = 113; // close the invoice
+        const F3 = 114; // search window for invoice
+        const F4 = 115; // go to welcome page
+        const F5 = 116; // refresh
+        const F6 = 117; // view recyclebin
 
         if (e.which == F1 ) {
             e.preventDefault();
-            $("a#create_invoice").get(0).click();
+            if ($("a#btn_show_discover_dashboard").get(0) != undefined){
+                $("a#btn_show_discover_dashboard").get(0).click();
+            }
         }
         else if (e.which == F2 ) {
             e.preventDefault();
-
+            if ($("#btn_close_invoice").get(0) != undefined){
+                $("#btn_close_invoice").get(0).click();
+            }
         }
         else if (e.which == F3 ) {
             e.preventDefault();
-
+            if (location.pathname.indexOf("Cash") > -1 && $("#btn_search_edit_delete_cash").get(0) != undefined) {
+                $("#btn_search_edit_delete_cash").get(0).click();
+            } else if (location.pathname.indexOf("Movement") > -1 && $("#btn_search_edit_delete_product_movement").get(0) != undefined) {
+                $("#btn_search_edit_delete_product_movement").get(0).click();
+            } else if (location.pathname.indexOf("Invoice") > -1 && $("#btn_search_edit_delete_invoice").get(0) != undefined) {
+                $("#btn_search_edit_delete_invoice").get(0).click();
+            }
         }
         else if (e.which == F4 ) {
             e.preventDefault();
-
+            if ($("a#btn_welcome").get(0) != undefined){
+                $("a#btn_welcome").get(0).click();
+            }
         }
         else if (e.which == F5 ) {
+            // e.preventDefault();
+        }
+        else if (e.which == F6 ) {
             e.preventDefault();
-
+            if (location.pathname.indexOf("Cash") > -1 && $("#btn_cashes_recycle_bin").get(0) != undefined) {
+                $("#btn_cashes_recycle_bin").get(0).click();
+            } else if (location.pathname.indexOf("Movement") > -1 && $("#btn_product_movement_recycle_bin").get(0) != undefined) {
+                $("#btn_product_movement_recycle_bin").get(0).click();
+            } else if (location.pathname.indexOf("Invoice") > -1 && $("#btn_invoices_recycle_bin").get(0) != undefined) {
+                $("#btn_invoices_recycle_bin").get(0).click();
+            }
+            // btn_invoices_recycle_bin
+            // btn_cashes_recycle_bin
+            // btn_product_movement_recycle_bin
         }
     });
 
@@ -324,8 +355,8 @@
     });
 
     $("#back_arrow").on("click",function (){
-        // history.back();
-        location = document.referrer;
+        history.back();
+        // location = document.referrer;
     });
 
 

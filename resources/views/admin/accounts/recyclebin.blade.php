@@ -53,9 +53,9 @@
         </div>
 
     @endsection
-    @section("models")
-        <x-models.delete-confirm-model></x-models.delete-confirm-model>
-        <x-models.restore-confirm-model></x-models.restore-confirm-model>
+    @section("modals")
+        <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
+        <x-modals.restore-confirm-modal></x-modals.restore-confirm-modal>
     @endsection
     @section("script")
   

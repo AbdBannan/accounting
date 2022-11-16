@@ -87,11 +87,11 @@
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                                     document.getElementById('logout_form').submit();">
                                         {{ __('global.logout',[],session("lang")) }}
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    <form id="logout_form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
                                 </div>
@@ -113,20 +113,15 @@
         </main>
     </div>
     <!-- Bootstrap core JavaScript-->
-    <script src={{asset("vendor/jquery/jquery.min.js")}}></script>
-    <script src={{asset("vendor/bootstrap/js/bootstrap.bundle.min.js")}}></script>
+    <script src="{{asset("vendor/jquery/jquery.min.js")}}"></script>
+    <script src="{{asset("vendor/bootstrap/js/bootstrap.bundle.min.js")}}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src={{asset("vendor/jquery-easing/jquery.easing.min.js")}}></script>
+    <script src="{{asset("vendor/jquery-easing/jquery.easing.min.js")}}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src={{asset("js/sb-admin-2.js?var=".rand())}}></script>
+    <script src="{{asset("js/sb-admin-2.js?var=".rand())}}"></script>
 
-    <script>
-        // $("#lang").on("click",function (){
-        //     alert();
-        // });
-    </script>
 
 </body>
 </html>

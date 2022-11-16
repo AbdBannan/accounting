@@ -1,6 +1,7 @@
 <x-masterLayout.master>
     @section("title")
-        {{ __("global.recycle_bin",["attribute"=>"invoices"],session("lang")) }}
+        {{ __("global.recycle_bin",["attribute"=>__("global.invoices",[],session("lang"))],session("lang")) }}
+
     @endsection
 
     @section('content')
@@ -50,12 +51,12 @@
         </div>
 
     @endsection
-    @section("models")
-        <x-models.delete-confirm-model></x-models.delete-confirm-model>
-        <x-models.restore-confirm-model></x-models.restore-confirm-model>
+    @section("modals")
+        <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
+        <x-modals.restore-confirm-modal></x-modals.restore-confirm-modal>
     @endsection
     @section("script")
-  
+
     @endsection
 </x-masterLayout.master>
 

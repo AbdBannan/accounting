@@ -19,11 +19,11 @@
                 <div class="row">
 
                     <div class="bg-gray-100 card o-hidden border-0 shadow-lg p-4 col-lg-3 col-sm-12">
-                        <form action={{route("category.storeCategory")}} method="POST">
+                        <form action="{{route("category.storeCategory")}}" method="POST" autocomplete="off">
                             @csrf
                             <x-forms.categories-form>
                             </x-forms.categories-form>
-                            <input id="btn_add" class="btn btn-primary btn-block" type="submit" value={{__("global.create",[],session("lang"))}}>
+                            <input id="btn_add" class="btn btn-primary btn-block" type="submit" value="{{__("global.create",[],session("lang"))}}">
                         </form>
                     </div>
 
@@ -88,12 +88,12 @@
         </div>
 
     @endsection
-    @section("models")
-        <x-models.delete-confirm-model></x-models.delete-confirm-model>
+    @section("modals")
+        <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
         @if(auth()->user()->getConfig("add_method") == "modal")
-            <x-models.add-model :modelName="$modelName = 'category'"></x-models.add-model>
+            <x-modals.add-modal :modelName="$modelName = 'category'"></x-modals.add-modal>
         @endif
-        <x-models.update-model :modelName="$modelName = 'category'"></x-models.update-model>
+        <x-modals.update-modal :modelName="$modelName = 'category'"></x-modals.update-modal>
 
     @endsection
     @section("script")

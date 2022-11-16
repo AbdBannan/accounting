@@ -14,7 +14,7 @@
 
                 <div class="row">
                     <div class="col-lg-3 col-sm-12 bg-gray-100 card o-hidden border-0 shadow-lg p-4" style="height: auto">
-                        <form action="{{route("pound.storePound")}}" method="POST">
+                        <form action="{{route("pound.storePound")}}" method="POST" autocomplete="off">
                             @csrf
                             <x-forms.pounds-form></x-forms.pounds-form>
                             <input id="btn_add_pound" class="btn btn-primary btn-block" type="submit" value="create">
@@ -57,14 +57,14 @@
 
                                         <tr>
                                             <td>{{$pound->id}}</td>
-                                            <td>{{$pound->name}}</td>
+                                            <td>{{__("global.".$pound->name,[],session("lang"))}}</td>
                                             <td>{{$pound->value}}</td>
 
                                             <td class="row m-0">
                                                 <a id="btn_update" title="{{__("global.update",[],session("lang"))}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$pound}}" data-route="{{route("pound.updatePound",$pound->id)}}">
                                                     <input class="grid-button grid-edit-button" type="button" title="Update">
                                                 </a>
-                                                <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("pound.softDeletePound",$pound->id)}}">
+                                                <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true")  data-route="{{route("pound.softDeletePound",$pound->id)}}" @else  data-route="{{route("pound.deletePound",$pound->id)}}" @endif>
                                                     <input class="grid-button grid-delete-button" type="button" title="Delete">
                                                 </a>
                                             </td>
@@ -80,14 +80,14 @@
             </div>
         </div>
     @endsection
-    @section("models")
-        <x-models.delete-confirm-model></x-models.delete-confirm-model>
+    @section("modals")
+        <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
         @if(auth()->user()->getConfig("add_method") == "modal")
-            <x-models.add-model :modelName="$modelName = 'pound'"></x-models.add-model>
+            <x-modals.add-modal :modelName="$modelName = 'pound'"></x-modals.add-modal>
         @endif
-        <x-models.update-model :modelName="$modelName = 'pound'"></x-models.update-model>
+        <x-modals.update-modal :modelName="$modelName = 'pound'"></x-modals.update-modal>
     @endsection
     @section("script")
-  
+
     @endsection
 </x-masterLayout.master>

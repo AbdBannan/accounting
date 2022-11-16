@@ -30,8 +30,8 @@
         <link rel="stylesheet" href="{{asset("css/dist/css/en/adminlte.css")."?var=".rand()}}">
     @endif
 
-{{--    <link href={{asset("css/sb-admin-2.css?var=".rand())}} rel="stylesheet">--}}
-{{--    <link href={{asset("vendor/datatables/dataTables.bootstrap4.css")}} rel="stylesheet">--}}
+{{--    <link href="{{asset("css/sb-admin-2.css?var=".rand())}}" rel="stylesheet">--}}
+{{--    <link href="{{asset("vendor/datatables/dataTables.bootstrap4.css")}}" rel="stylesheet">--}}
 
     <!-- DataTables -->
     @if(auth()->user()->getConfig("language") == "arabic")
@@ -42,7 +42,7 @@
     <link rel="stylesheet" href="{{asset("css/plugins/datatables-responsive/css/responsive.bootstrap4.min.css")}}">
     <link rel="stylesheet" href="{{asset("css/plugins/datatables-buttons/css/buttons.bootstrap4.min.css")}}">
 
-<style>
+    <style>
     /*input[type="date"]::-webkit-datetime-edit, input[type="date"]::-webkit-inner-spin-button, input[type="date"]::-webkit-clear-button {*/
     /*!*    color: #fff;*!*/
     /*    position: relative;*/
@@ -74,13 +74,17 @@
     /*}*/
 </style>
     @yield("style")
-
 </head>
 
 @php
     $lang = (auth()->user()->getConfig("language") == "english")? "en": "ar" ;
     app()->setLocale($lang);
     session(["lang"=>$lang]);
+    //config(['app.locale' => $lang]);
+    //cache(['config.locale' => "ar"]);
+    //dd(cache('config.locale'));
+    //$text = '<?php return ' . var_export(config('app'), true) . ';';
+    //file_put_contents(config_path('app.php'), $text);
 @endphp
 <body class="hold-transition
     @if(auth()->user()->getConfig("dark_mode") !== null) dark-mode @endif
@@ -141,7 +145,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{{route("welcomePage")}}" class="nav-link">{{__("global.home",[],session("lang"))}}</a>
+                    <a id="btn_welcome" href="{{route("welcomePage")}}" class="nav-link">{{__("global.home",[],session("lang"))}}</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="#" class="nav-link">{{__("global.contact",[],session("lang"))}}</a>
@@ -259,16 +263,16 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                    <a id="btn_fullscreen" class="nav-link" data-widget="fullscreen" href="#" role="button">
                         <i class="fas fa-expand-arrows-alt"></i>
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
-                        <i class="fas fa-th-large"></i>
-                    </a>
-                </li>
+{{--                <li class="nav-item">--}}
+{{--                    <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">--}}
+{{--                        <i class="fas fa-th-large"></i>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
 
                 <div class="topbar-divider d-none d-sm-block"></div>
                 <!-- Nav Item - User Information -->
@@ -357,7 +361,7 @@
                         @if(auth()->user()->getConfig("nav_child_hide_on_collapse") !== null) nav-collapse-hide-child @endif
                         @if(auth()->user()->getConfig("side_bar_nav_hover_or_focus_auto_expand") !== null) text-sm @endif
 
-                        flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        flex-column" data-widget="treeview" role="menu" data-accordion="true">
                         <!-- Add icons to the links using the .nav-icon class
                              with font-awesome or any other icon font library -->
                         @if(auth()->user()->hasRole("admin"))
@@ -367,7 +371,7 @@
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     {{__("global.management_section",[],session("lang"))}}
-                                    <i class="right fas fa-angle-left"></i>
+                                    <i class="@if(session("lang") == "ar") left @else right @endif fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
@@ -408,7 +412,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{route("discover.showDiscoverDashboard")}}" class="nav-link">
+                                    <a id="btn_show_discover_dashboard" href="{{route("discover.showDiscoverDashboard")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>{{__("global.discovers",[],session("lang"))}}</p>
                                     </a>
@@ -417,6 +421,12 @@
                                     <a href="{{route("backup.view")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>{{__("global.backups",[],session("lang"))}}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route("archive.viewArchiveBalances")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.role_balances",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                             </ul>
@@ -428,7 +438,7 @@
                                 <i class="nav-icon fas fa-file-invoice"></i>
                                 <p>
                                     {{__("global.resources",[],session("lang"))}}
-                                    <i class="fas fa-angle-left right"></i>
+                                    <i class="fas fa-angle-left @if(session("lang") == "ar") left @else right @endif"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
@@ -461,7 +471,7 @@
                                 <i class="nav-icon fas fa-file-invoice"></i></i>
                                 <p>
                                     {{__("global.add_new_invoice",[],session("lang"))}}
-                                    <i class="fas fa-angle-left right"></i>
+                                    <i class="fas fa-angle-left @if(session("lang") == "ar") left @else right @endif"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
@@ -497,7 +507,7 @@
                                 <i class="nav-icon fas fa-file-invoice"></i></i>
                                 <p>
                                     {{__("global.view_invoices",[],session("lang"))}}
-                                    <i class="fas fa-angle-left right"></i>
+                                    <i class="fas fa-angle-left @if(session("lang") == "ar") left @else right @endif"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
@@ -533,18 +543,18 @@
                                 <i class="nav-icon fas fa-file-invoice"></i>
                                 <p>
                                     {{__("global.search_edit_delete",[],session("lang"))}}
-                                    <i class="fas fa-angle-left right"></i>
+                                    <i class="fas fa-angle-left @if(session("lang") == "ar") left @else right @endif"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{route("invoice.showSearchInvoice","none")}}" class="nav-link">
+                                    <a id="btn_search_edit_delete_invoice" href="{{route("invoice.showSearchInvoice","none")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>{{__("global.search_edit_delete",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{route("invoice.viewRecyclebin","none")}}" class="nav-link">
+                                    <a id="btn_invoices_recycle_bin" href="{{route("invoice.viewInvoiceRecyclebin","none")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>{{__("global.recyclebin",[],session("lang"))}}</p>
                                     </a>
@@ -559,7 +569,7 @@
                                 <i class="nav-icon fas fa-cash-register"></i>
                                 <p>
                                     {{__("global.cash_invoices",[],session("lang"))}}
-                                    <i class="fas fa-angle-left right"></i>
+                                    <i class="fas fa-angle-left @if(session("lang") == "ar") left @else right @endif"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
@@ -579,14 +589,14 @@
                                 </li>
                                 {{--search edit delete cash invoice--}}
                                 <li class="nav-item">
-                                    <a href="{{route("invoice.showSearchCashInvoice")}}" class="nav-link">
+                                    <a id="btn_search_edit_delete_cash" href="{{route("invoice.showSearchCashInvoice")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>{{__("global.search_edit_delete_cash_invoice",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                                 {{--recyclebin cash invoices--}}
                                 <li class="nav-item">
-                                    <a href="{{route("invoice.viewCashRecyclebin")}}" class="nav-link">
+                                    <a id="btn_cashes_recycle_bin" href="{{route("invoice.viewCashRecyclebin")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>{{__("global.recyclebin",[],session("lang"))}}</p>
                                     </a>
@@ -601,7 +611,7 @@
                                 <i class="nav-icon fas fa-book"></i>
                                 <p>
                                     {{__("global.product_movement_invoices",[],session("lang"))}}
-                                    <i class="fas fa-angle-left right"></i>
+                                    <i class="fas fa-angle-left @if(session("lang") == "ar") left @else right @endif"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
@@ -621,14 +631,14 @@
                                 </li>
                                 {{--search edit delete product movement invoice--}}
                                 <li class="nav-item">
-                                    <a href="{{route("invoice.showSearchProductMovementInvoice")}}" class="nav-link">
+                                    <a id="btn_search_edit_delete_product_movement" href="{{route("invoice.showSearchProductMovementInvoice")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>{{__("global.search_edit_delete_product_movement_invoice",[],session("lang"))}}</p>
                                     </a>
                                 </li>
                                 {{--recyclebin product movement invoices--}}
                                 <li class="nav-item">
-                                    <a href="{{route("invoice.viewProductMovementRecyclebin")}}" class="nav-link">
+                                    <a id="btn_product_movement_recycle_bin" href="{{route("invoice.viewProductMovementRecyclebin")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>{{__("global.recyclebin",[],session("lang"))}}</p>
                                     </a>
@@ -668,45 +678,10 @@
                         </a>
                     </div>
                     <!-- End Back Button-->
-
-{{--                        <div class="sidebar-search-results">--}}
-{{--                            <div class="list-group">--}}
-{{--                                <a href="#" class="list-group-item">--}}
-{{--                                    <div class="search-title">--}}
-{{--                                        <strong class="text-light"></strong>N<strong class="text-light"></strong>o<strong class="text-light"></strong> <strong class="text-light"></strong>e<strong class="text-light"></strong>l<strong class="text-light"></strong>e<strong class="text-light"></strong>m<strong class="text-light"></strong>e<strong class="text-light"></strong>n<strong class="text-light"></strong>t<strong class="text-light"></strong> <strong class="text-light"></strong>f<strong class="text-light"></strong>o<strong class="text-light"></strong>u<strong class="text-light"></strong>n<strong class="text-light"></strong>d<strong class="text-light"></strong>!<strong class="text-light"></strong>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="search-path">--}}
-{{--                                        <script>haay</script>--}}
-{{--                                        <script>haay</script>--}}
-{{--                                        <script>haay</script>--}}
-{{--                                    </div>--}}
-{{--                                </a>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
                     </div>
                 @section("content")
 
                 @show
-{{--                <table id="example1" class="table table-bordered table-striped">--}}
-{{--                    <thead>--}}
-{{--                    <tr>--}}
-{{--                        <th>id</th>--}}
-{{--                        <th>name</th>--}}
-{{--                    </tr>--}}
-{{--                    </thead>--}}
-{{--                    <tbody>--}}
-{{--                    <tr>--}}
-{{--                        <td>1</td>--}}
-{{--                        <td>Abdulmoty</td>--}}
-{{--                    </tr>--}}
-{{--                    </tbody>--}}
-{{--                    <tfoot>--}}
-{{--                    <tr>--}}
-{{--                        <td>id</td>--}}
-{{--                        <td>name</td>--}}
-{{--                    </tr>--}}
-{{--                    </tfoot>--}}
-{{--                </table>--}}
 
             </div>
         </div>
@@ -716,26 +691,21 @@
             <div class="float-right d-none d-sm-inline-block">
                 <b>{{__("global.version",[],session("lang"))}} 1.0.0</b>
             </div>
-            <strong>Copyright &copy; 2022-2023 <a href="https://adminlte.io">Abdulmoty Bannan</a>.</strong>
+            <strong>Copyright &copy; 2022-2023 <a href="">Abdulmoty Bannan</a>.</strong>
         </footer>
 
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
+{{--        <!-- Control Sidebar -->--}}
+{{--        <aside class="control-sidebar control-sidebar-dark">--}}
+{{--            <!-- Control sidebar content goes here -->--}}
+{{--        </aside>--}}
+{{--        <!-- /.control-sidebar -->--}}
 
     </div>
 <!-- ./wrapper -->
-    <!-- Scroll to Top Button-->
-{{--    <a class="scroll-to-top rounded" href="#page-top">--}}
-{{--        <i class="fas fa-angle-up"></i>--}}
-{{--    </a>--}}
-    <!-- End Scroll to Top Button-->
 
-    <x-models.logout-model></x-models.logout-model>
+    <x-modals.logout-modal></x-modals.logout-modal>
 
-@section("models")
+@section("modals")
 @show
 
 
@@ -763,7 +733,7 @@
 
 
 <!-- Custom scripts for all pages-->
-<script src={{asset("js/sb-admin-2.js?var=".rand())}}></script>
+<script src="{{asset("js/sb-admin-2.js?var=".rand())}}"></script>
 
 {{--<table id="example1" class="table table-bordered table-striped">--}}
 <!-- DataTables  & Plugins -->
@@ -780,12 +750,12 @@
 {{--<script src="{{asset("js/plugins/datatables-buttons/js/buttons.print.min.js")}}"></script>--}}
 {{--<script src="{{asset("js/plugins/datatables-buttons/js/buttons.colVis.min.js")}}"></script>--}}
     <!-- Page level plugins -->
-    <script src={{asset("vendor/datatables/jquery.dataTables.js")}}></script>
-    <script src={{asset("vendor/datatables/dataTables.bootstrap4.js")}}></script>
-    <script src={{asset("js/moment.js")}}></script>
+    <script src="{{asset("vendor/datatables/jquery.dataTables.js")}}"></script>
+    <script src="{{asset("vendor/datatables/dataTables.bootstrap4.js")}}"></script>
+    <script src="{{asset("js/moment.js")}}"></script>
 
 {{--    <!-- Page level custom scripts -->--}}
-{{--    <script src={{asset("js/demo/datatables-demo.js?var=415".rand(1,100))}}></script>--}}
+{{--    <script src="{{asset("js/demo/datatables-demo.js?var=415".rand(1,100))}}"></script>--}}
 @yield("script")
     <script>
         $(function () {
@@ -819,17 +789,17 @@
 
             // Call the dataTables jQuery plugin
 
-                let info = "{{__("global.Showing",[],session("lang"))}} _START_ {{__("global.to",[],session("lang"))}} _END_ {{__("global.of",[],session("lang"))}} _TOTAL_ {{__("global.entries",[],session("lang"))}}";
-                let emptyTable = "{{__("global.no_data_available_in_table",[],session("lang"))}}";
-                let infoEmpty = "{{__("global.Showing",[],session("lang"))}} 0 {{__("global.to",[],session("lang"))}} 0 {{__("global.of",[],session("lang"))}} 0 {{__("global.entries",[],session("lang"))}}";
-                let lengthMenu = "{{__("global.Show",[],session("lang"))}} _MENU_ {{__("global.entries",[],session("lang"))}}";
-                let loadingRecords = "{{__("global.please_wait_loading",[],session("lang"))}}";
-                let search = "{{__("global.Search",[],session("lang"))}}:";
-                let next = "{{__("global.Next",[],session("lang"))}}";
-                let previous = "{{__("global.Previous",[],session("lang"))}}";
-                let infoFiltered = " - {{__("global.filtered_from",[],session("lang"))}} _MAX_ {{__("global.entries",[],session("lang"))}}";
+            let info = "{{__("global.Showing",[],session("lang"))}} _START_ {{__("global.to",[],session("lang"))}} _END_ {{__("global.of",[],session("lang"))}} _TOTAL_ {{__("global.entries",[],session("lang"))}}";
+            let emptyTable = "{{__("global.no_data_available_in_table",[],session("lang"))}}";
+            let infoEmpty = "{{__("global.Showing",[],session("lang"))}} 0 {{__("global.to",[],session("lang"))}} 0 {{__("global.of",[],session("lang"))}} 0 {{__("global.entries",[],session("lang"))}}";
+            let lengthMenu = "{{__("global.Show",[],session("lang"))}} _MENU_ {{__("global.entries",[],session("lang"))}}";
+            let loadingRecords = "{{__("global.please_wait_loading",[],session("lang"))}}";
+            let search = "{{__("global.Search",[],session("lang"))}}:";
+            let next = "{{__("global.Next",[],session("lang"))}}";
+            let previous = "{{__("global.Previous",[],session("lang"))}}";
+            let infoFiltered = " - {{__("global.filtered_from",[],session("lang"))}} _MAX_ {{__("global.entries",[],session("lang"))}}";
 
-                $('#dataTable').DataTable(
+            let datatable = $('#dataTable').DataTable(
                 {
                     "ordering":true,
                     "autoWidth": false,
@@ -846,9 +816,28 @@
                             "previous": previous,
                         },
                         "infoFiltered": infoFiltered,
-                    }
+                    },
+                    "processing": true,
+                    "stateSave": true,
+                    "createdRow": function( row, data, dataIndex ) {
+                        // alert();
+                    },
+                    "scrollCollapse": true,
                 });
+            // console.log(datatable);
+            $("#dataTable_filter").children("label").children("input").on("keyup",function (){
+                if ($(this).val() == "") {
+                    // $('#dataTable').DataTable()._fnLoadState();
+                    // $('#dataTable').dataTable().stateLoad();
+                    // $.fn.dataTable.ext.fnFilterClear();
 
+                    // var api = new $.fn.dataTable.Api( "pageNumber" );
+                    // var state = api.state.loaded();
+                    // console.log(state);
+
+                    // datatable._fnLoadState();
+                }
+            });
 
             // $("#example1").DataTable({
             //     "responsive": true, "lengthChange": true, "autoWidth": true,
@@ -873,9 +862,10 @@
         $("li.nav-item a").each(function (){
             if (this.href == location.href) {
                 $(this).addClass("active");
-                $(this).parent("li").parent("ul").siblings("a").removeClass("bg-gradient-secondary").addClass("active").parent("li").addClass("menu-open");
+                $(this).parent("li").parent("ul").siblings("a").removeClass("bg-gradient-secondary").addClass("active").parent("li").addClass("menu-open").addClass("menu-is-opening");
             }
         });
+
         // var moment = require('moment'); // require
         // moment().format();
         // alert(moment().format(''));

@@ -48,7 +48,7 @@
                             </table>
                         </div>
                     </div>
-                    <form id="go_to_global_discover_form" hidden action="{{route("discover.globalDiscoverUntilNow")}}" method="post">
+                    <form id="go_to_global_discover_form" hidden action="{{route("discover.globalDiscoverUntilNow")}}" method="get">
                         @csrf
                         <input id="account" name="account" type="hidden">
                         <input type="submit" hidden>

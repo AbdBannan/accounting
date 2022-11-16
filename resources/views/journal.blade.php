@@ -97,7 +97,7 @@
             </div>
 
     @endsection
-    @section("models")
+    @section("modals")
 
     @endsection
     @section("script")

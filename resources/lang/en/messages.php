@@ -28,6 +28,9 @@ return [
     'deleted_successfully'=>':attribute has been deleted successfully',
     'not_deleted_successfully'=>':attribute has not been deleted successfully',
 
+    'archived_successfully'=>':attribute has been archived successfully',
+    'not_archived_successfully'=>':attribute has not been archived successfully',
+
     'recycled_successfully'=>':attribute has been moved to recycle bin',
     'not_recycled_successfully'=>':attribute has not been moved to recycle bin',
 
@@ -43,6 +46,7 @@ return [
 
     'restore_confirm' => 'are you sure you want to restore this item ?',
     'delete_confirm' => 'are you sure you want to delete this item ?',
+    'archive_confirm' => 'are you sure you want to archive balances ?',
 
 
     'not_found' => ':attribute not found',

@@ -4,18 +4,19 @@
     @endsection
     @section("style")
         <style>
-            body {
-                background-image: url('{{asset("images/systemImages/istockphoto-1335050708-170667a.jpg")}}')!important;
-                background-size:cover!important;
+            .content-wrapper {
+                background-image: url('{{asset("images/systemImages/istockphoto-1339953021-612x612.jpg")}}')!important;
+                background-size:100% 100%!important;
                 background-repeat: no-repeat!important;
-            }
+                background-attachment: fixed;
+            }`
         </style>
 
     @endsection
     @section("content")
-        <div class="container">
-            <h1 style="text-align: center">{{__("global.Welcome",[],session("lang"))}}</h1>
-        </div>
+{{--        <div class="container" style="background: transparent">--}}
+{{--            <h1 style="text-align: center" class="text-blue">{{__("global.Welcome",[],session("lang"))}}</h1>--}}
+{{--        </div>--}}
     @show
     @section("script")
 

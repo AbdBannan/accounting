@@ -128,7 +128,7 @@
                     </div>
                     <div id="globalDiscoverUntilNowCollapse" class="collapse">
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form  style="margin: auto" action="{{route("discover.globalDiscoverUntilNow")}}">
+                        <form  style="margin: auto" action="{{route("discover.globalDiscoverUntilNow")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
                                 <input id="account_1" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
@@ -147,7 +147,7 @@
                     </div>
                     <div id="globalDiscoverAfterLastCheckedPointCollapse" class="collapse">
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form  style="margin: auto" action="{{route("discover.globalDiscoverAfterLastCheckedPoint")}}" >
+                        <form  style="margin: auto" action="{{route("discover.globalDiscoverAfterLastCheckedPoint")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
                                 <input id="account_2" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
@@ -166,7 +166,7 @@
                     </div>
                     <div id="globalDiscoverUntilLastBalanceCollapse" class="collapse">
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form  style="margin: auto" action="{{route("discover.globalDiscoverUntilLastBalance")}}" >
+                        <form  style="margin: auto" action="{{route("discover.globalDiscoverUntilLastBalance")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
                                 <input id="account_3" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
@@ -185,7 +185,7 @@
                     </div>
                     <div id="globalDiscoverBetweenTowDatesCollapse" class="collapse" >
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form  style="margin: auto" action="{{route("discover.globalDiscoverBetweenTowDates")}}" >
+                        <form  style="margin: auto" action="{{route("discover.globalDiscoverBetweenTowDates")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
                                 <input id="account_4" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
@@ -212,7 +212,7 @@
                     </div>
                     <div id="globalDiscoverByAccountCollapse" class="collapse" >
                         <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
-                        <form id="accounts_form" style="margin: auto" action="{{route("discover.globalDiscoverByAccount")}}" >
+                        <form id="accounts_form" style="margin: auto" action="{{route("discover.globalDiscoverByAccount")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account_1" >{{__("global.account",[],session("lang"))}}</label>
                                 <input id="account_5" name="account_1" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
@@ -332,6 +332,7 @@
                 let search = "{{__("global.Search",[],session("lang"))}}:";
                 let next = "{{__("global.Next",[],session("lang"))}}";
                 let previous = "{{__("global.Previous",[],session("lang"))}}";
+                let infoFiltered = " - {{__("global.filtered_from",[],session("lang"))}} _MAX_ {{__("global.entries",[],session("lang"))}}";
                 $('#dataTable1').DataTable(
                     {
                         "ordering":false,
@@ -347,9 +348,17 @@
                             "paginate": {
                                 "next": next,
                                 "previous": previous,
-                            }
-                        }
+                            },
+                            "infoFiltered": infoFiltered,
+                        },
+                        "processing": true,
+                        "stateSave": true,
+                        "createdRow": function( row, data, dataIndex ) {
+                            // alert();
+                        },
+                        // "scrollCollapse": true,
                     });
+
             </script>
     @endsection
 </x-masterLayout.master>

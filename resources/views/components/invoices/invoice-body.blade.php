@@ -2,7 +2,7 @@
     <div class="card shadow">
         <div class="card-header py-3">
 
-            <form id="f" class="row" autocomplete="false">
+            <form id="f" class="row" autocomplete="off">
                 <div class="col-md-10 col-sm-12">
                     <div class="row">
                         <div class="form-group col-md-3 col-sm-12">
@@ -113,6 +113,7 @@
                     </div>
                 </div>
                 <div class="form-group col-md-2 col-sm-12  ">
+                    <a href="@yield("image_path",asset("images/systemImages/default_invoice_img.png"))" hidden></a>
                     <img id="image" src="@yield("image_path",asset("images/systemImages/default_invoice_img.png"))" style="width:100%;max-width:200px;margin:10px auto ;border-radius:50%">
                     <input form="form" type="file" id="invoice_image" name="image" class="form-control-file">
                 </div>
@@ -140,7 +141,7 @@
                         <th id="td_delete_restore"@yield("hidden")></th>
                     </tr>
                     </thead>
-                    <form id="form" action="@yield("form_route",route("invoice.storeInvoice",$invoiceType))" autocomplete="false" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                    <form id="form" action="@yield("form_route",route("invoice.storeInvoice",$invoiceType))" method="post" accept-charset="UTF-8" enctype="multipart/form-data" autocomplete="off">
                         @csrf
                         @yield("method")
                         <tbody id="body">

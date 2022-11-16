@@ -10,7 +10,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form_update" action="" method="POST" accept-charset="UTF-8" enctype="multipart/form-data">
+                <form id="form_update" action="" method="POST" accept-charset="UTF-8" enctype="multipart/form-data" autocomplete="off">
                     @csrf
                     <input type="hidden" name="_method" value="PUT">
                     @if($modelName == "account")

@@ -61,7 +61,7 @@ class cashController extends Controller
             $file->move($path,$file_name);
         }
         else{
-            $file_name = "default_invoice_img.phg";
+            $file_name = "default_invoice_img.png";
             $path = "systemImages";
         }
         $path_and_file_name = Str::replace("/","#", $path . "/" . $file_name);
@@ -259,8 +259,8 @@ class cashController extends Controller
      */
     public function destroy($invoice_id)
     {
-        $image = Journal::onlyTrashed()->where("detail",1)->whereIn("invoice_type",[5,6,7])->where("invoice_id",$invoice_id)->first()->image;
-        $result = Journal::onlyTrashed()->where("detail",1)->whereIn("invoice_type",[5,6,7])->where("invoice_id",$invoice_id)->forceDelete();
+        $image = Journal::withTrashed()->where("detail",1)->whereIn("invoice_type",[5,6,7])->where("invoice_id",$invoice_id)->first()->image;
+        $result = Journal::withTrashed()->where("detail",1)->whereIn("invoice_type",[5,6,7])->where("invoice_id",$invoice_id)->forceDelete();
 
         if ($result!=null) {
             if ($image != "images/systemImages/default_product_img.png"  and file_exists(public_path($image))) {
@@ -276,7 +276,7 @@ class cashController extends Controller
         globalFunctions::flashMessage("delete",$result,"cash_invoice");
         globalFunctions::registerUserActivityLog("deleted","cash_invoice",$invoice_id);
 
-        return back();
+        return redirect(session("previous_previous_url"));
     }
 
     /**

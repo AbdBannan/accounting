@@ -1,4 +1,4 @@
-<form action="{{route("config.saveConfig")}}" method="post">
+<form action="{{route("config.saveConfig")}}" method="post" autocomplete="off">
     @csrf
 {{--    <aside class="control-sidebar-dark" style="display: block;">--}}
         <!-- Control sidebar content goes here -->

@@ -19,9 +19,9 @@ class CreateAccountsTable extends Migration
             $table->string("name")->default("");
             $table->integer("account_type")->default(1);
             $table->integer("group")->default(0);
-            $table->integer("up")->default(0);
+            $table->integer("reference")->default(0);
             $table->integer("larg")->default(0);
-            $table->string("notes")->default("");
+            $table->string("notes")->default("")->nullable();
             $table->integer("debit")->default(0);
             $table->integer("credit")->default(0);
             $table->softDeletes();

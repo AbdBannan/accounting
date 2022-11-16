@@ -20,16 +20,16 @@ class CreateProductsTable extends Migration
             $table->integer("account_type")->default(0);
             $table->foreignId("category_id")->default(0);
             $table->string("image")->default("systemImages/default_product_img.png");
-            $table->foreignId("store_id")->default(0);
+            $table->foreignId("store_id")->default(1);
             $table->integer("group")->default(0);
-            $table->integer("up")->default(0);
+            $table->integer("reference")->default(0);
             $table->integer("larg")->default(0);
-            $table->string("notes")->default("");
+            $table->string("notes")->default("")->nullable();
             $table->integer("debit")->default(0);
             $table->integer("credit")->default(0);
             $table->integer("st")->default(0);
             $table->string("nu1")->default(0);
-            $table->float("price")->default(0);
+            $table->double("price",20,10)->default(0);
             $table->softDeletes();
             $table->timestamps();
 

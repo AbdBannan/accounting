@@ -69,8 +69,9 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $fileName = "systemImages/default_user_img.png";
         if($file = request()->file("file")){
-            $fileName = Carbon::now()->format("d_m_Y_h_i_s") . "_" . $data["first_name"] . " " . $data['last_name'];
+            $fileName = Carbon::now()->format("d_m_Y_h_i_s") . "_" . $data["first_name"] . " " . $data['last_name'] . "." .  request()->file("file")->getClientOriginalExtension();;
             $file->move(public_path("images/usersImages"),$fileName);
         }
 
@@ -79,7 +80,8 @@ class RegisterController extends Controller
             'last_name' => $data['last_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            "profile_image" => isset($data["file"]) ? request()->file("file")->getClientOriginalName() : "systemImages/default_user_img.png"
+//            "profile_image" => isset($data["file"]) ? request()->file("file")->getClientOriginalName() : "systemImages/default_user_img.png"
+            "profile_image" => $fileName
         ]);
         globalFunctions::initialUserConfig($user);
         $user->config()->detach(1);

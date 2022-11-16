@@ -27,6 +27,9 @@ return [
     'deleted_successfully'=>'تم حذف :attribute بنجاح',
     'not_deleted_successfully'=>'لم يتم حذف :attribute بنجاح',
 
+    'archived_successfully'=>'تم أرشفة :attribute بنجاح',
+    'not_archived_successfully'=>'لم يتم أرشفة :attribute بنجاح',
+
     'recycled_successfully'=>'تم نقل :attribute إلى سلة المحذوفات بنجاح',
     'not_recycled_successfully'=>'لم يتم نقل :attribute إلى سلة المحذوفات بنجاح',
 
@@ -42,6 +45,7 @@ return [
 
     'restore_confirm' => 'هل أنت متأكد من الاسترجاع ؟',
     'delete_confirm' => 'هل أنت متأكد من الحذف ؟',
+    'archive_confirm' => 'هل أنت متأكد من أرشفة الأرصدة ؟',
 
 
     'not_found' => ':attribute غير موجود',

@@ -20,7 +20,7 @@
                                         <h1 class="h4 text-gray-900 mb-4">{{__("global.welcome_back",[],session("lang"))}}</h1>
                                     </div>
 
-                                    <form id="form_auth" method="POST" class="user" action="{{ route('login') }}">
+                                    <form id="form_auth" method="POST" class="user" action="{{ route('login') }}" autocomplete="off">
                                         @csrf
 
                                         <div class="form-group">

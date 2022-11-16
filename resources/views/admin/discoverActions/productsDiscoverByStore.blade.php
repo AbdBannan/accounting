@@ -44,7 +44,7 @@
                             </table>
                         </div>
                     </div>
-                    <form id="go_to_global_discover_form" hidden action="{{route("discover.productDiscoverUntilNow")}}" method="post">
+                    <form id="go_to_global_discover_form" hidden action="{{route("discover.productDiscoverUntilNow")}}" method="get">
                         @csrf
                         <input id="product" name="product" type="hidden">
                         <input type="submit" hidden>
@@ -79,6 +79,6 @@
             });
 
         </script>
-      
+
     @endsection
 </x-masterLayout.master>

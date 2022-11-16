@@ -17,7 +17,7 @@
                                     <h1 class="h4 text-gray-900 mb-4">{{__("global.new_user")}}</h1>
                                 </div>
 
-                                <form method="POST" class="user" action="{{ route('user.storeUser') }}" accept-charset="UTF-8" enctype="multipart/form-data">
+                                <form method="POST" class="user" action="{{ route('user.storeUser') }}" accept-charset="UTF-8" enctype="multipart/form-data" autocomplete="off">
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
@@ -53,10 +53,10 @@
                                                 <input id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password" placeholder="{{__("global.password",[],session("lang"))}}" autocomplete="new-password">
                                                 @error('password')
                                                 <span class="invalid-feedback" role="alert">
-                                                <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
-                                            </span>
-                                                @enderror
-                                            </div>
+                                                    <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
+                                                </span>
+                                                    @enderror
+                                                </div>
 
                                             <div class="form-group">
                                                 <input id="password-confirm"  name="password_confirmation" type="password" class="form-control form-control-user" placeholder="{{__("global.confirm_your_password",[],session("lang"))}}" autocomplete="new-password">
@@ -89,6 +89,6 @@
     @endsection
 
     @section("script")
-  
+
     @endsection
 </x-masterLayout.master>

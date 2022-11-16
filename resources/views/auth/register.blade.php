@@ -14,7 +14,7 @@
                             <h1 class="h4 text-gray-900 mb-4">{{__("global.create_an_account",[],session("lang"))}}</h1>
                         </div>
 
-                        <form id="form_auth" method="POST" class="user" action="{{ route('register') }}" accept-charset="UTF-8" enctype="multipart/form-data">
+                        <form id="form_auth" method="POST" class="user" action="{{ route('register') }}" accept-charset="UTF-8" enctype="multipart/form-data" autocomplete="off">
                             @csrf
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">

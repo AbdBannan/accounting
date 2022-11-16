@@ -18,12 +18,12 @@ class Kernel extends ConsoleKernel
 //        // $schedule->command('inspire')->hourly();
 //    }
 
-//    protected function schedule(Schedule $schedule)
-//    {
-//        // if you are not using notifications you should add the `--disable-notifications` flag to this commands
-//        $schedule->command('backup:clean')->daily()->at('09:45');
-//        $schedule->command('backup:run')->daily()->at('09:45');
-//    }
+    protected function schedule(Schedule $schedule)
+    {
+        // if you are not using notifications you should add the `--disable-notifications` flag to this commands
+        $schedule->command('backup:clean --disable-notifications')->daily()->at('16:4');
+        $schedule->command('backup:run --disable-notifications')->daily()->at('16:4');
+    }
     /**
      * Register the commands for the application.
      *

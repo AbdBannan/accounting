@@ -17,11 +17,11 @@
         @if(auth()->user()->getConfig("add_method") != "modal")
             <div class="row">
                 <div class="col-lg-3 col-sm-12 bg-gray-100 card o-hidden border-0 shadow-lg p-4 ">
-                    <form action="{{route("account.storeAccount")}}" method="POST">
+                    <form action="{{route("account.storeAccount")}}" method="POST" autocomplete="off">
                         @csrf
                         <x-forms.accounts-form>
                         </x-forms.accounts-form>
-                        <input id="btn_add" class="btn btn-primary btn-block" type="submit" value={{__("global.create",[],session("lang"))}}>
+                        <input id="btn_add" class="btn btn-primary btn-block" type="submit" value="{{__("global.create",[],session("lang"))}}">
                     </form>
                 </div>
 
@@ -68,18 +68,11 @@
                                             <td>{{$account->account_type}}</td>
                                             <td>{{$account->reference}}</td>
                                             <td>{{$account->group}}</td>
-{{--                                            <td>{{$account->notes}}</td>--}}
-
-{{--                                            <x-buttons.update-delete-buttons>--}}
-{{--                                                @section("data_field"){{$account}}@endsection--}}
-{{--                                                    @section("data_route_update"){{route("account.updateAccount",$account->id)}}@endsection--}}
-{{--                                                @section("data_route_delete"){{route("account.softDeleteAccount",$account->id)}}@endsection--}}
-{{--                                            </x-buttons.update-delete-buttons>--}}
                                             <td class="row m-0">
                                                 <a id="btn_update" title="{{__("global.update",[],session("lang"))}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$account}}" data-route="{{route("account.updateAccount",$account->id)}}">
                                                     <input class="grid-button grid-edit-button" type="button" title="Update">
                                                 </a>
-                                                <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("account.softDeleteAccount",$account->id)}}">
+                                                <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("account.softDeleteAccount",$account->id)}}" @else data-route="{{route("account.deleteAccount",$account->id)}}" @endif>
                                                     <input class="grid-button grid-delete-button" type="button" title="Delete">
                                                 </a>
                                             </td>
@@ -99,12 +92,12 @@
     </div>
 
     @endsection
-    @section("models")
-        <x-models.delete-confirm-model></x-models.delete-confirm-model>
+    @section("modals")
+        <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
         @if(auth()->user()->getConfig("add_method") == "modal")
-            <x-models.add-model :modelName="$modelName = 'account'"></x-models.add-model>
+            <x-modals.add-modal :modelName="$modelName = 'account'"></x-modals.add-modal>
         @endif
-        <x-models.update-model :modelName="$modelName = 'account'"></x-models.update-model>
+        <x-modals.update-modal :modelName="$modelName = 'account'"></x-modals.update-modal>
     @endsection
     @section("script")
 

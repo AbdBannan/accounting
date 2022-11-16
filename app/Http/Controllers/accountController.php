@@ -160,7 +160,7 @@ class accountController extends Controller
      */
     public function destroy($account_id)
     {
-        $result = Account::onlyTrashed()->where("id",$account_id)->forceDelete();
+        $result = Account::withTrashed()->where("id",$account_id)->forceDelete();
 
 //        if ($result!=null) {
 //            session()->flash("success",__("messages.deleted_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));

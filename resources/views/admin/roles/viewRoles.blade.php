@@ -14,7 +14,7 @@
 
             <div class="row">
                 <div class="col-lg-3 col-sm-12 bg-gray-100 card o-hidden border-0 shadow-lg p-4" style="height: auto">
-                    <form action="{{route("role.storeRole")}}" method="POST">
+                    <form action="{{route("role.storeRole")}}" method="POST" autocomplete="off">
                         @csrf
                         <x-forms.roles-form></x-forms.roles-form>
                         <input class="btn btn-primary btn-block" type="submit" value="create">
@@ -57,17 +57,17 @@
                                     <tr>
                                         <td>{{$role->id}}</td>
                                         @if(strtolower($role->name) != "admin" )
-                                            <td><a id="btn_show_element" href={{route("role.showRolePermission",$role)}}>{{$role->name}}</a></td>
+                                            <td><a id="btn_show_element" href="{{route("role.showRolePermission",$role)}}">{{$role->name}}</a></td>
                                             <td class="row m-0">
                                                 <a id="btn_update" title="{{__("global.update",[],session("lang"))}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$role}}" data-route="{{route("role.updateRole",$role->id)}}">
                                                     <input class="grid-button grid-edit-button" type="button" title="Update">
                                                 </a>
-                                                <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("role.softDeleteRole",$role->id)}}">
+                                                <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("role.softDeleteRole",$role->id)}}" @else  data-route="{{route("role.deleteRole",$role->id)}}" @endif>
                                                     <input class="grid-button grid-delete-button" type="button" title="Delete">
                                                 </a>
                                             </td>
                                         @else
-                                            <td><a id="btn_show_element" href={{route("role.showRolePermission",$role)}}>{{__("global.".$role->name,[],session("lang"))}}</a></td>
+                                            <td><a id="btn_show_element" href="{{route("role.showRolePermission",$role)}}">{{__("global.".$role->name,[],session("lang"))}}</a></td>
                                             <td></td>
                                         @endif
                                     </tr>
@@ -81,12 +81,12 @@
         </div>
     </div>
     @endsection
-    @section("models")
-        <x-models.delete-confirm-model></x-models.delete-confirm-model>
+    @section("modals")
+        <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
         @if(auth()->user()->getConfig("add_method") == "modal")
-            <x-models.add-model :modelName="$modelName = 'role'"></x-models.add-model>
+            <x-modals.add-modal :modelName="$modelName = 'role'"></x-modals.add-modal>
         @endif
-        <x-models.update-model :modelName="$modelName = 'role'"></x-models.update-model>
+        <x-modals.update-modal :modelName="$modelName = 'role'"></x-modals.update-modal>
         @endsection
     @section("script")
 

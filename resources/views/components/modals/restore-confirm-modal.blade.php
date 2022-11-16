@@ -1,4 +1,4 @@
-<!-- delete confirm Modal-->
+<!-- restore confirm Modal-->
 <div class="modal fade" id="restoreConfirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -14,7 +14,7 @@
                 <form id="form_restore" action="" method="get">
                     @csrf
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">{{__("global.cancel",[],session("lang"))}}</button>
-                    <input type="submit" class="btn btn-primary" value={{__("global.restore",[],session("lang"))}}>
+                    <input type="submit" class="btn btn-primary" value="{{__("global.restore",[],session("lang"))}}">
                 </form>
             </div>
         </div>

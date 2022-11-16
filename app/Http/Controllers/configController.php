@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class configController extends Controller
 {
     public function index(){
-        $config = auth()->user()->config()->where("type","!=","admin_controle")->get();
+        $config = auth()->user()->config()->where("type","!=","admin_control")->get();
         $conf = [];
         foreach ($config as $cfg) {
             $conf[$cfg->name] = $cfg->pivot->value;
@@ -21,6 +21,9 @@ class configController extends Controller
     }
 
     public function store(Request $request){
+        foreach ($request->all() as $config_name => $config_value){
+            $this->validate($request,[$config_name=>"required"]);
+        }
         $config_type = $request->config_type;
         unset($request["config_type"]);
         unset($request["_token"]);

@@ -16,15 +16,16 @@
             <x-invoices.product-movement-body></x-invoices.product-movement-body>
         </div>
     @endsection
-    @section("models")
-        <x-models.delete-confirm-model></x-models.delete-confirm-model>
-        <x-models.close-invoice-model></x-models.close-invoice-model>
+    @section("modals")
+        <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
+        <x-modals.close-invoice-modal></x-modals.close-invoice-modal>
     @endsection
     @section("script")
             <script>
                 let ids = [];
                 let isNewLineMode = true;
                 let isLineInEditing = false;
+                $("#moved_product_name").click();
 
                 function validateDropDownBox(dropDownBox){
                     let error="";

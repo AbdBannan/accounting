@@ -14,7 +14,7 @@
 
                 <div class="row">
                     <div class="col-lg-3 col-sm-12 bg-gray-100 card o-hidden border-0 shadow-lg p-4" style="height: auto">
-                        <form action={{route("permission.storePermission")}} method="POST">
+                        <form action="{{route("permission.storePermission")}}" method="POST" autocomplete="off">
                             @csrf
                             <x-forms.permissions-form></x-forms.permissions-form>
                             <input id="btn_add_permission" class="btn btn-primary btn-block" type="submit" value="create">
@@ -61,7 +61,7 @@
                                                 <a id="btn_update" title="{{__("global.update",[],session("lang"))}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$permission}}" data-route="{{route("permission.updatePermission",$permission->id)}}">
                                                     <input class="grid-button grid-edit-button" type="button" title="Update">
                                                 </a>
-                                                <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("permission.softDeletePermission",$permission->id)}}">
+                                                <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("permission.softDeletePermission",$permission->id)}}"  @else data-route="{{route("permission.deletePermission",$permission->id)}}"  @endif>
                                                     <input class="grid-button grid-delete-button" type="button" title="Delete">
                                                 </a>
                                             </td>
@@ -78,14 +78,14 @@
 
         </div>
     @endsection
-    @section("models")
-        <x-models.delete-confirm-model></x-models.delete-confirm-model>
+    @section("modals")
+        <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
         @if(auth()->user()->getConfig("add_method") == "modal")
-            <x-models.add-model :modelName="$modelName = 'permission'"></x-models.add-model>
+            <x-modals.add-modal :modelName="$modelName = 'permission'"></x-modals.add-modal>
         @endif
-        <x-models.update-model :modelName="$modelName = 'permission'"></x-models.update-model>
+        <x-modals.update-modal :modelName="$modelName = 'permission'"></x-modals.update-modal>
         @endsection
     @section("script")
-  
+
     @endsection
 </x-masterLayout.master>

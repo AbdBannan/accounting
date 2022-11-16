@@ -130,7 +130,7 @@ class roleController extends Controller
     {
         if (strtolower(Role::find($role_id)->name) == "admin")
             abort(304,"not permitted to delete this role");
-        $result = Role::onlyTrashed()->find($role_id)->forceDelete();
+        $result = Role::withTrashed()->find($role_id)->forceDelete();
 
 //        if ($result!=null) {
 //            session()->flash("success",__("messages.deleted_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
@@ -185,13 +185,13 @@ class roleController extends Controller
 
     public function attachPermission(Role $role,int $permission_id){
         $permission = Role::find($permission_id)->name;
-        globalFunctions::registerUserActivityLog("attached","$permission permission",$role->id);
+        globalFunctions::registerUserActivityLog("attached_permission",$permission,$role->id);
         $role->permissions()->attach($permission_id);
     }
 
     public function detachPermission(Role $role,int $permission_id){
         $permission = Role::find($permission_id)->name;
-        globalFunctions::registerUserActivityLog("detached","$permission permission",$role->id);
+        globalFunctions::registerUserActivityLog("detached_permission",$permission,$role->id);
         $role->permissions()->detach($permission_id);
     }
 

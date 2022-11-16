@@ -196,7 +196,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Delete an invoice</h6>
                         <a class="collapse-item" href="{{route("invoice.showSearchInvoice","none")}}">delete an invoice</a>
-                        <a class="collapse-item" href="{{route("invoice.viewRecyclebin")}}">recycle bin</a>
+                        <a class="collapse-item" href="{{route("invoice.viewInvoiceRecyclebin")}}">recycle bin</a>
                     </div>
                 </div>
 
@@ -523,8 +523,8 @@
 </a>
 <!-- End Scroll to Top Button-->
 
-<x-models.logout-model></x-models.logout-model>
-@section("models")
+<x-modals.logout-modal></x-modals.logout-modal>
+@section("modals")
 @show
 
 <!-- Bootstrap core JavaScript-->

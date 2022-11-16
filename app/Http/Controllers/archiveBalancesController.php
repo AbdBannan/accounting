@@ -16,45 +16,67 @@ class archiveBalancesController extends Controller
     }
 
     public function archiveBalances(Request $request){
-
         $result = true;
         try {
             DB::beginTransaction();
-            $original_balances = Journal::where("created_at","<",Carbon::now())->get();
-            $balances = Journal::selectRaw("first_part_id,first_part_name,sum(debit) as debit , sum(credit) as credit")->where("created_at","<",Carbon::now())->groupBy(["first_part_name","first_part_id"])->get();
-            Journal::where("created_at","<",Carbon::now())->forceDelete();
-
-
-            foreach ($balances as $balance){
-                $blns = new Journal();
-                $blns->invoice_id = 0;
-                if ($balance->credit > $balance->debit ){
-                    $blns->credit = $balance->credit - $balance->debit;
-                    $blns->debit = 0;
-                } else {
-                    $blns->debit = $balance->debit - $balance->credit;
-                    $blns->credit = 0;
+            DB::statement("delete from old_journal");
+            DB::statement("insert into old_journal select * from journal");
+            $account_balances = Journal::selectRaw("first_part_id,first_part_name,sum(debit) as debit , sum(credit) as credit")->groupBy(["first_part_name","first_part_id"])->where("first_part_id","!=",0)->get();
+            $product_balances = Journal::selectRaw("product_id,product_name,sum(in_quantity) as in_quantity , sum(out_quantity) as out_quantity")->groupBy(["product_id","product_name"])->get();
+            DB::statement("delete from journal");
+            foreach ($account_balances as $balance){
+                if ($balance->debit != $balance->credit){
+                    $blns = new Journal();
+                    $blns->invoice_id = 0;
+                    if ($balance->credit > $balance->debit ){
+                        $blns->credit = $balance->credit - $balance->debit;
+                        $blns->debit = 0;
+                    } else {
+                        $blns->debit = $balance->debit - $balance->credit;
+                        $blns->credit = 0;
+                    }
+                    $blns->sum_of_balance = $balance->credit - $balance->debit;
+                    $blns->first_part_id = $balance->first_part_id;
+                    $blns->first_part_name = $balance->first_part_name;
+                    $blns->pound_type = __("global.Syrian",[],session("lang"));
+                    $blns->num_for_pound = 1;
+                    $blns->detail = -1;
+                    $blns->invoice_type = -1;
+                    $blns->created_at = $request["date"];
+                    $blns->closing_date = $request["date"];
+                    $blns->notes = __("global.roled_balance",[],session("lang"));
+                    $blns->save();
                 }
 
-                $blns->first_part_id = $balance->first_part_id;
-                $blns->first_part_name = $balance->first_part_name;
-                $blns->pound_type = __("global.Syrian",[],session("lang"));
-                $blns->num_for_pound = 1;
-                $blns->detail = 1;
-                $blns->invoice_type = 0;
-                $blns->created_at = $request["date"];
-//                $blns->closing_date = $request["date"];
-                $blns->notes = __("global.roled_balance",[],session("lang"));
-                $blns->save();
             }
+            foreach ($product_balances as $balance){
+                if ($balance->in_quantity != $balance->out_quantity){
+                    $blns = new Journal();
+                    $blns->invoice_id = 0;
+                    if ($balance->in_quantity > $balance->out_quantity ){
+                        $blns->in_quantity = $balance->in_quantity - $balance->out_quantity;
+                        $blns->out_quantity = 0;
+                    } else {
+                        $blns->out_quantity = $balance->out_quantity - $balance->in_quantity;
+                        $blns->in_quantity = 0;
+                    }
 
-            foreach ($original_balances as $balance) {
-                OldJournal::create($balance->getAttributes());
+                    $blns->quantity = $balance->in_quantity - $balance->out_quantity;
+                    $blns->product_id = $balance->product_id;
+                    $blns->product_name = $balance->product_name;
+                    $blns->detail = -1;
+                    $blns->invoice_type = -1;
+                    $blns->created_at = $request["date"];
+                    $blns->closing_date = $request["date"];
+                    $blns->notes = __("global.product_of_begin_and_end",[],session("lang"));
+                    $blns->save();
+                }
+
             }
             DB::commit();
         } catch (\PDOException $e) {
-            DB::rollBack();
             dd($e->getMessage());
+            DB::rollBack();
             $result = null;
         }
 

@@ -15,7 +15,7 @@
                     @csrf
                     @method("DELETE")
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">{{__("global.cancel",[],session("lang"))}}</button>
-                    <input type="submit" class="btn btn-primary" value={{__("global.delete",[],session("lang"))}}>
+                    <input type="submit" class="btn btn-primary" value="{{__("global.delete",[],session("lang"))}}">
                 </form>
             </div>
         </div>

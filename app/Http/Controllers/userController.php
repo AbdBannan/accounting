@@ -26,9 +26,9 @@ class userController extends Controller
             'file' => ['image','mimes:jpg,png,jpeg,gif,svg']
         ]);
 
-
+        $fileName = "systemImages/default_user_img.png";
         if($file = request()->file("file")){
-            $fileName = Carbon::now()->format("d_m_Y_h_i_s") . "_" . $request["first_name"] . " " . $request['last_name'];
+            $fileName = Carbon::now()->format("d_m_Y_h_i_s") . "_" . $request["first_name"] . " " . $request['last_name'] . "." . request()->file("file")->getClientOriginalExtension();
             $file->move("images/usersImages",$fileName);
         }
         $result = User::create([
@@ -36,7 +36,8 @@ class userController extends Controller
             'last_name' => $request['last_name'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
-            "profile_image" => isset($request["file"]) ? request()->file("file")->getClientOriginalName() : "systemImages/default_user_img.png"
+//            "profile_image" => isset($request["file"]) ? request()->file("file")->getClientOriginalName() : "systemImages/default_user_img.png"
+            "profile_image" => $fileName
         ]);
         globalFunctions::initialUserConfig($result);
 //        if ($result != null) {
@@ -77,7 +78,7 @@ class userController extends Controller
 
         $oldProfileImage = $user->profile_image;
         if($file = $request->file("file")){
-            $fileName = Carbon::now()->format("d_m_Y_h_i_s") . "_" . $request["first_name"] . " " . $request['last_name'];
+            $fileName = Carbon::now()->format("d_m_Y_h_i_s") . "_" . $request["first_name"] . " " . $request['last_name'] . "." . $request->file("file")->getClientOriginalExtension();
             if ($oldProfileImage != "images/systemImages/default_user_img.png" and file_exists(public_path($oldProfileImage))){
                 unlink(public_path($oldProfileImage));
             }
@@ -118,8 +119,8 @@ class userController extends Controller
      */
     public function destroyUser($user_id)
     {
-        $image = User::onlyTrashed()->find($user_id)->first()->profile_image;
-        $result = User::onlyTrashed()->find($user_id)->forceDelete();
+        $image = User::withTrashed()->find($user_id)->profile_image;
+        $result = User::withTrashed()->find($user_id)->forceDelete();
 
         if ($result!=null) {
             if ($image != "images/systemImages/default_user_img.png" and file_exists(public_path($image))){
@@ -239,6 +240,7 @@ class userController extends Controller
     public function trackUserActivity(User $user){
         $name = "user_activity_log";
 
+        globalFunctions::registerUserActivityLog("enabled","track_activity",$user->id);
         $user->config()->detach(Config::where("name",$name)->first()->id);
         $user->config()->attach(Config::where("name",$name)->first()->id,["value"=>"true"]);
     }
@@ -255,6 +257,7 @@ class userController extends Controller
 //                ]
 //            );
 //        }
+        globalFunctions::registerUserActivityLog("disabled","track_activity",$user->id);
         $user->config()->detach(Config::where("name",$name)->first()->id);
         $user->config()->attach(Config::where("name",$name)->first()->id,["value"=>"false"]);
     }

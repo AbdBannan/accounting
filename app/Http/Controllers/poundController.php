@@ -77,7 +77,7 @@ class poundController extends Controller
 
     public function destroy($pound_id)
     {
-        $result = Pound::onlyTrashed()->find($pound_id)->forceDelete();
+        $result = Pound::withTrashed()->find($pound_id)->forceDelete();
 
 //        if ($result!=null) {
 //            session()->flash("success",__("messages.deleted_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
