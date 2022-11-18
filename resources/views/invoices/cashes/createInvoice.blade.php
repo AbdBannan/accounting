@@ -1,4 +1,4 @@
-<x-masterLayout.master>
+-<x-masterLayout.master>
 
     @section("title")
         {{ __("global.new_cash_invoice",[],session("lang")) }}

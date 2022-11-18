@@ -658,27 +658,26 @@
             <div style="padding-top:2%" class="container-fluid">
                 @include("inc.messages")
                 <!-- Back Button-->
-                    <div >
-                        {{--                        @if(session("last_method"))--}}
-                        {{--                            <form action="{{\Illuminate\Support\Facades\URL::previous()}}" method="{{session("last_method")}}">--}}
-                        {{--                                @foreach(session("last_params") as $name=>$value)--}}
-                        {{--                                    <input type="hidden" name="{{$name}}" value="{{$value}}">--}}
-                        {{--                                @endforeach--}}
-                        {{--                                <i id="back_arrow" class="fas fa-arrow-left">--}}
-                        {{--                                    <input id="back_submit" hidden type="submit" class="fas fa-arrow-left">--}}
-                        {{--                                </i>--}}
-                        {{--                            </form>--}}
-                        {{--                        @endif--}}
-                        <a id="back_arrow" class="m-5" href="#">
-                            @if(auth()->user()->getConfig("language") == "arabic")
-                                <i class="fas fa-arrow-right"></i>
-                            @else
-                                <i class="fas fa-arrow-left"></i>
-                            @endif
-                        </a>
-                    </div>
-                    <!-- End Back Button-->
-                    </div>
+                <div style="height: 46px">
+                    {{--                        @if(session("last_method"))--}}
+                    {{--                            <form action="{{\Illuminate\Support\Facades\URL::previous()}}" method="{{session("last_method")}}">--}}
+                    {{--                                @foreach(session("last_params") as $name=>$value)--}}
+                    {{--                                    <input type="hidden" name="{{$name}}" value="{{$value}}">--}}
+                    {{--                                @endforeach--}}
+                    {{--                                <i id="back_arrow" class="fas fa-arrow-left">--}}
+                    {{--                                    <input id="back_submit" hidden type="submit" class="fas fa-arrow-left">--}}
+                    {{--                                </i>--}}
+                    {{--                            </form>--}}
+                    {{--                        @endif--}}
+                    <a id="back_arrow" style="margin: 80px" href="#">
+                        @if(auth()->user()->getConfig("language") == "arabic")
+                            <i class="fas fa-arrow-right"></i>
+                        @else
+                            <i class="fas fa-arrow-left"></i>
+                        @endif
+                    </a>
+                </div>
+                <!-- End Back Button-->
                 @section("content")
 
                 @show

@@ -113,7 +113,7 @@
                     </div>
                 </div>
                 <div class="form-group col-md-2 col-sm-12  ">
-                    <a href="@yield("image_path",asset("images/systemImages/default_invoice_img.png"))" hidden></a>
+                    <a target="_blank" href="@yield("image_path",asset("images/systemImages/default_invoice_img.png"))" hidden></a>
                     <img id="image" src="@yield("image_path",asset("images/systemImages/default_invoice_img.png"))" style="width:100%;max-width:200px;margin:10px auto ;border-radius:50%">
                     <input form="form" type="file" id="invoice_image" name="image" class="form-control-file">
                 </div>

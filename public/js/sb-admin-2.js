@@ -1,14 +1,7 @@
 (function($) {
-  "use strict"; // Start of use strict
+    "use strict"; // Start of use strict
 
-    // alert(performance.navigation.type);
-    // alert(document.referrer);
-    // alert(location.pathname);
 
-    if (document.referrer == location.href ){
-        // alert("yes");
-        // location = document.referrer;
-    }
     //this is to fill the image from file input
     $("input#file").on("change",function(event){
         let url = URL.createObjectURL(event.target.files[0])
@@ -28,15 +21,11 @@
 
 
     // this is to populate delete confirm model
-    $("a#btn_delete").on("click",function(){
+    $("a#btn_delete,a#btn_multi_delete").on("click",function(){
         let route = $(this).data("route");
         $(this).siblings("div").children("input[type='checkbox']").attr("checked",true);
         $("#form_delete").attr("action",route);
     });
-    // $("#btn_multi_delete").on("click",function(){
-    //     let route = $(this).data("route");
-    //     $("#form_delete").attr("action",route);
-    // });
 
     // this is to populate restore confirm model
     $("a#btn_restore").on("click",function(){
@@ -45,12 +34,8 @@
         $("#form_restore").attr("action",route);
     });
 
-    // $("#btn_multi_restore").on("click",function(){
-    //     let route = $(this).data("route");
-    //     $("#form_delete").attr("action",route);
-    // });
-
-    $("a#btn_update").on("click",function(){ // to populate the update form
+    // to populate the update form
+    $("a#btn_update").on("click",function(){
         let route = $(this).data("route");
         let fields = $(this).data("fields");
         for (let field in fields){
@@ -69,7 +54,8 @@
         $("#form_update").attr("action",route);
     });
 
-    $("a#btn_add").on("click",function(){ // to populate the add form
+    // to populate the add form
+    $("a#btn_add").on("click",function(){
         let route = $(this).data("route");
         $("#form_add").attr("action",route);
     });
@@ -94,7 +80,7 @@
                     $(siblingElement).attr("disabled",false);
                 },
                 error:function (e){
-                    alert("e");
+                    alert("error");
                 }
             }
         );
@@ -152,16 +138,19 @@
         });
     });
 
-    $("div option").on("click",function (){// to copy the option value into its input
+    // to copy the option value into its input
+    $("div option").on("click",function (){
         $(this).parent().siblings().filter("input").val($(this).text()).data("correct",true);
         $(this).parent().filter("div#dropdown_menu.dropdown-menu").removeClass("show")
     });
 
+    // to add the class show into the menu when focus
     $("input[class~='dropdown-toggle").on("focus", function(e) {
-        $(this).siblings().filter("div#dropdown_menu.dropdown-menu").addClass("show")// to add the class show into the menu when focus
+        $(this).siblings().filter("div#dropdown_menu.dropdown-menu").addClass("show")
     });
 
-    $("input[class~='dropdown-toggle").on("blur", function(e) {// to remove the class show from the menu when blur
+    // to remove the class show from the menu when blur
+    $("input[class~='dropdown-toggle").on("blur", function(e) {
         let thisItem = $(this);
         setTimeout(function (){
             thisItem.siblings().filter("div#dropdown_menu.dropdown-menu").removeClass("show")
@@ -180,7 +169,6 @@
         else
             return false;
     }
-
 
     // to move into the next input by pressing enter
     $("input,select,textarea,button#btn_add_item_to_invoice").on("keypress",function (e){//to prevent submitting and focus on next input
@@ -233,8 +221,7 @@
         }
     });
 
-
-
+    // to handel the function key
     $("body").on("keydown",function (e){
         const F1 = 112; // accounts tree
         const F2 = 113; // close the invoice
@@ -301,6 +288,7 @@
         $("#invoice_pound").text($(this).val());
     });
 
+    // this is to validate the dropdown select menu and see if the typed text is exist in the dropdown menu
     function validateDropDownBox(dropDownBox){
         let error="";
         let options = $(dropDownBox).siblings("div").children("option");
@@ -317,6 +305,7 @@
         return error;
     }
 
+    // this is to highlight the selected row in the table
     $("tr").on("click",function (){
         if ($(this).children("th").length>0)
             return;
@@ -326,23 +315,21 @@
         });
     });
 
-    $("tr#discover_rows").on("click",function (){// this is to copy the row_id into the input for submitting check point
+    // this is to copy the row_id into the input for submitting check point
+    $("tr#discover_rows").on("click",function (){
         $("#check_point_row_id").val($(this).children("#row_id").text());
     });
 
-    // $("#back_arrow").on("click",function (){
-    //    $("#back_submit")[0].click();
-    // });
-
-    $("tr").on("dblclick",function (){// this is for moving into show page when tr is dblClicked
+    // this is for moving into show page when tr is dblClicked
+    $("tr").on("dblclick",function (){
         if ($(this).children("td").children("a#btn_show_element")[0]==undefined){
             return;
         }
         $(this).children("td").children("a#btn_show_element")[0].click();
     });
 
-
-    $("#btn_add,#btn_update").on("click",function (){ // to set the route for the closing invoice model
+    // to set the route for the closing invoice model
+    $("#btn_add,#btn_update").on("click",function (){
         let model_id = $(this).data("target");
         setTimeout(function (){
             if (model_id == "#updateModal") {
@@ -354,63 +341,68 @@
 
     });
 
+    // this is to handel the back action in the custom back button
     $("#back_arrow").on("click",function (){
+        sessionStorage.setItem("custom_back_button_pressed",true);
         history.back();
         // location = document.referrer;
     });
 
+    // this is to check all checkbox in dataTable rows
+    $("input#check_all").on("click",function (){
+        if ($(this).is(":checked")){
+            $("td input[type='checkbox']").each(function (){
+               this.checked = true;
+            });
+            // $(this).siblings("#label_check_none").attr("hidden",false);
+            // $(this).siblings("#label_check_all").attr("hidden",true);
+            $("#btn_multi_delete").attr("disabled",false);
+        } else {
+            $("td input[type='checkbox']").filter(function (){
+                this.checked = false;
+            });
+            // $(this).siblings("#label_check_none").attr("hidden",true);
+            // $(this).siblings("#label_check_all").attr("hidden",false);
+            $("#btn_multi_delete").attr("disabled",true);
+        }
+    });
 
-    // $("#check_all").on("click",function (){
-    //     if ($(this).is(":checked")){
-    //         $("td div input[type='checkbox']").each(function (){
-    //            this.checked = true;
-    //         });
-    //         $(this).siblings("#label_check_none").attr("hidden",false);
-    //         $(this).siblings("#label_check_all").attr("hidden",true);
-    //         $("#btn_multi_delete").attr("disabled",false);
-    //     } else {
-    //         $("td div input[type='checkbox']").filter(function (){
-    //             this.checked = false;
-    //         });
-    //         $(this).siblings("#label_check_none").attr("hidden",true);
-    //         $(this).siblings("#label_check_all").attr("hidden",false);
-    //         $("#btn_multi_delete").attr("disabled",true);
-    //     }
-    // });
+    // this is to make the "check_all" checkbox checked or unchecked whe any checkbox in dataTable rows is changed
+    $("td input[type='checkbox']").on("click",function (){
+        if (this.checked==true) {
 
-    // $("td div input[type='checkbox']").on("click",function (){
-    //     if (this.checked==true) {
-    //
-    //         let all_checked = true;
-    //         $(this).parent("div").parent("td").parent("tr").siblings("tr").children("td").children("div").children("input").each(function (){
-    //             if (this.checked == false){
-    //                 all_checked=false;
-    //             }
-    //         });
-    //         if (all_checked){
-    //             $("input#check_all").each(function (){
-    //                 this.checked = true;
-    //             });
-    //         }
-    //         $("#btn_multi_delete").attr("disabled",false);
-    //
-    //     } else {
-    //
-    //         let all_not_checked = true;
-    //         $(this).parent("div").parent("td").parent("tr").siblings("tr").children("td").children("div").children("input").each(function (){
-    //             if (this.checked == true){
-    //                 all_not_checked=false;
-    //             }
-    //         });
-    //         if (all_not_checked){
-    //             $("#btn_multi_delete").attr("disabled",true);
-    //         }
-    //         $("input#check_all").each(function (){
-    //             this.checked = false;
-    //         });
-    //
-    //     }
-    // });
+            let all_checked = true;
+            $(this).parent("td").parent("tr").siblings("tr").children("td").children("input").each(function (){
+                if (this.checked == false){
+                    all_checked=false;
+                }
+            });
+            if (all_checked){
+                $("input#check_all").each(function (){
+                    this.checked = true;
+                });
+            }
+            $("#btn_multi_delete").attr("disabled",false);
+
+        } else {
+
+            let all_not_checked = true;
+            $(this).parent("td").parent("tr").siblings("tr").children("td").children("input").each(function (){
+                if (this.checked == true){
+                    all_not_checked=false;
+                }
+            });
+            if (all_not_checked){
+                $("#btn_multi_delete").attr("disabled",true);
+            }
+            $("input#check_all").each(function (){
+                this.checked = false;
+            });
+
+        }
+    });
+
+    // this is to make the head of tables as minimum as fits the content perfectly
     // $("th").each(function () {
     //     if ($(this).children("input").val() == undefined) {
     //         $("#test_size_label").text($(this).text());
@@ -420,13 +412,34 @@
     //     }
     // });
 
-    // window.addEventListener("pageshow",function (){
-    //     alert(performance.navigation.type);
-    //     if (performance.navigation.type == 2){
-    //         alert("new out");
-    //
-    //         location.reload();
-    //     }
-    // });
+    // this is to handle the "reload" back button and skip duplicated
+    window.addEventListener("pageshow",function (event){
+        var historyTraversal = event.persisted;
+        if (historyTraversal){
+            sessionStorage.setItem("custom_back_button_pressed",false);
+            location.reload();
+        }
+    });
 
 })(jQuery); // End of use strict
+
+
+
+
+
+
+// window.addEventListener("pageshow",function (event){
+//     // var historyTraversal = event.persisted || (typeof window.performance != undefined && window.performance.navigation.type === 2);
+//     var historyTraversal = event.persisted;
+//
+//     if (document.referrer == location.href && sessionStorage.getItem("custom_back_button_pressed") == "true"){
+//         history.back();
+//     }
+//     else if (historyTraversal){
+//         sessionStorage.setItem("custom_back_button_pressed",false);
+//         location.reload();
+//     } else {
+//         // sessionStorage.setItem("reload_by_code",false);
+//     }
+// });
+

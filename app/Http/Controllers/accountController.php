@@ -188,11 +188,21 @@ class accountController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Account $account
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function softDelete(Account $account)
+    public function softDelete(Request $request,$account)
     {
-        $result = $account->delete();
+        if ($account > 0) {
+             $result = Account::find($account)->delete();
+            globalFunctions::registerUserActivityLog("recycled","account",$account);
+        } else {
+            $ids = $request["multi_delete_ids"];
+            $result = Account::whereIn("id",$ids)->delete();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("recycled","account",$id);
+            }
+
+        }
 
 //        if ($result!=null) {
 //            session()->flash("success",__("messages.recycled_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));
@@ -200,7 +210,6 @@ class accountController extends Controller
 //            session()->flash("success",__("messages.not_recycled_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));
 //        }
         globalFunctions::flashMessage("softDelete",$result,"account");
-        globalFunctions::registerUserActivityLog("recycled","account",$account->id);
 
         return back();
     }

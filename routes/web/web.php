@@ -40,5 +40,5 @@ Auth::routes();
 
 
 Route::get("/t",function (){
-    dd(\Illuminate\Support\Carbon::now());
+    dd(request()->ips());
 });
