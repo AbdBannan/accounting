@@ -69,7 +69,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $fileName = "systemImages/default_user_img.png";
+        $fileName = "default_user_img.png";
         if($file = request()->file("file")){
             $fileName = Carbon::now()->format("d_m_Y_h_i_s") . "_" . $data["first_name"] . " " . $data['last_name'] . "." .  request()->file("file")->getClientOriginalExtension();;
             $file->move(public_path("images/usersImages"),$fileName);

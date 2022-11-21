@@ -18,6 +18,7 @@ return [
     'day' => 'day',
     'yes' => 'yes',
     'no' => 'no',
+    'restore_selected' => 'restore selected',
     'clean_recyclebin_after' => 'clean recyclebin after',
     'use_recyclebin' => 'use recyclebin',
     'product_lase_year' => 'product lase year',

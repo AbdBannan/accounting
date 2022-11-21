@@ -65,7 +65,7 @@ class productController extends Controller
             $file->move("images/productsImages", $fileName);
         }
         else{
-            $request["image"] =  "systemImages/default_product_img.png";
+            $request["image"] =  "default_product_img.png";
         }
 
         $result = Product::create($request->except("product_image"));

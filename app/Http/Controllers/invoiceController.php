@@ -44,14 +44,15 @@ class invoiceController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, $invoice_type)
     {
         $this->validate($request, [
             "invoice_id" => "required",
             "pound_type" => "required",
-            "second_part_name" => "required",
+            "second_part_name" => ["required",Rule::exists("accounts","name")],
+            "product_name" => [Rule::exists("products","name")],
             'file' => ['image','mimes:jpg,png,jpeg,gif,svg']
         ]);
         $file_name = null;
@@ -59,90 +60,95 @@ class invoiceController extends Controller
         $path_and_file_name = null;
         if ($file = $request->file("image")) {
             $splitedDate = explode("-", $request["closing_date"]);
-            $path = "images/productInvoices/" . $splitedDate[0] . "/" . $splitedDate[1] . "/" . $splitedDate[2];
+            $path = $splitedDate[0] . "/" . $splitedDate[1] . "/" . $splitedDate[2];
             $file_name = $request["invoice_id"] . "." . $file->getClientOriginalExtension();
-            $file->move($path, $file_name);
+            $file->move("images/productInvoices/" . $path, $file_name);
         } else {
             $file_name = "default_invoice_img.png";
-            $path = "systemImages";
+            $path = "";
         }
         $path_and_file_name = Str::replace("/", "#", $path . "/" . $file_name);
 
-
-        $result = $this->saveJournal($request, $invoice_type, $path_and_file_name);
-//        if ($result=="none") {
-//            session()->flash("success",__("messages.created_successfully",["attribute"=>"Invoice"],session("lang")));
-//        }elseif($result == "adding_error"){
-//            session()->flash("error",__("messages.not_created_successfully",["attribute"=>"Invoice"],session("lang")));
-//        }elseif($result == "no_item_error"){
-//            session()->flash("error",__("messages.no_item",["attribute"=>"Invoice"],session("lang")));
-//        }
-
-        globalFunctions::flashMessage("create", $result[0], $invoice_type . "_invoice");
-        globalFunctions::registerUserActivityLog("added", $invoice_type . "_invoice", $result[1]);
-
+        try {
+            DB::beginTransaction();
+            $result = $this->saveJournal($request,$invoice_type,$path_and_file_name);
+            if ($result == "no_item_error"){
+                globalFunctions::flashMessage("create","no_item_error",$invoice_type . "_invoice");
+                DB::rollBack();
+            } else {
+                globalFunctions::flashMessage("create",true,$invoice_type . "_invoice");
+                globalFunctions::registerUserActivityLog("added",$invoice_type . "_invoice",$result);
+            }
+            DB::commit();
+        } catch (\PDOException $e)
+        {
+            DB::rollBack();
+            globalFunctions::flashMessage("create",false,$invoice_type . "_invoice");
+        }
         return back();
     }
 
     private function saveJournal(Request $request, $invoice_type, $file_name)
     {
-
         $ctr = 1;
         $data = $request->all();
-        $error = "none";
-        try {
-            DB::beginTransaction();
-            while (count($data) > 7) {
-                $result1 = $result2 = null;
-                if (isset($data["first_part_name_" . $ctr])) {
-                    $record1 = new Journal();
-                    $record1["invoice_id"] = $data["invoice_id"];
-                    $record1["line"] = $ctr;
-                    $record1["debit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? 0 : $data["total_price_" . $ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]);
-                    $record1["credit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? $data["total_price_" . $ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]) : 0;
-                    $record1["first_part_id"] = Account::where("name", $data["first_part_name_" . $ctr])->first()->id;
-                    $record1["first_part_name"] = $data["first_part_name_" . $ctr];
-                    $record1["second_part_id"] = Account::where("name", $data["second_part_name"])->first()->id;
-                    $record1["second_part_name"] = $data["second_part_name"];
-                    $record1["product_id"] = Product::where("name", $data["product_name_" . $ctr])->first()->id;
-                    $record1["product_name"] = $data["product_name_" . $ctr];
-                    $record1["price"] = $data["price_" . $ctr];
-                    $record1["quantity"] = $data["quantity_" . $ctr];
-                    $record1[($invoice_type == "sale" || $invoice_type == "purchase_return") ? "out_quantity" : "in_quantity"] = $data["quantity_" . $ctr];
+        while (count($data) > 7) {
+            $result1 = $result2 = null;
+            if (isset($data["first_part_name_" . $ctr])) {
+                $record1 = new Journal();
+                $record1["invoice_id"] = $data["invoice_id"];
+                $record1["line"] = $ctr;
+                $record1["debit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? 0 : $data["total_price_" . $ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]);
+                $record1["credit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? $data["total_price_" . $ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]) : 0;
+                $record1["first_part_id"] = Account::where("name", $data["first_part_name_" . $ctr])->first()->id;
+                $record1["first_part_name"] = $data["first_part_name_" . $ctr];
+                $record1["second_part_id"] = Account::where("name", $data["second_part_name"])->first()->id;
+                $record1["second_part_name"] = $data["second_part_name"];
+                $record1["product_id"] = Product::where("name", $data["product_name_" . $ctr])->first()->id;
+                $record1["product_name"] = $data["product_name_" . $ctr];
+                $record1["price"] = $data["price_" . $ctr];
+                $record1["quantity"] = $data["quantity_" . $ctr];
+                $record1[($invoice_type == "sale" || $invoice_type == "purchase_return") ? "out_quantity" : "in_quantity"] = $data["quantity_" . $ctr];
 //                $record1["posting"] = $data["posting".$ctr];
-                    $record1["pound_type"] = $data["pound_type"];
-                    $record1["num_for_pound"] = globalFunctions::getEquivalentPoundValue($data["pound_type"]);
-                    $record1["notes"] = $data["notes_" . $ctr];
-                    $record1["invoice_type"] = $invoice_type;
-                    $record1["detail"] = 0;
-                    $record1["image"] = $file_name;
-                    $record1["closing_date"] = $data["closing_date"];
+                $record1["pound_type"] = $data["pound_type"];
+                $record1["num_for_pound"] = globalFunctions::getEquivalentPoundValue($data["pound_type"]);
+                $record1["notes"] = $data["notes_" . $ctr];
+                $record1["invoice_type"] = $invoice_type;
+                $record1["detail"] = 0;
+                $record1["image"] = $file_name;
+                $record1["closing_date"] = $data["closing_date"];
 //sub of balance
-                    $result1 = $record1->save();
+                $result1 = $record1->save();
 
-                    $record2 = new Journal();
-                    $record2["invoice_id"] = $data["invoice_id"];
-                    $record2["line"] = $ctr;
-                    $record2["debit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? $data["total_price_" . $ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]): 0;
-                    $record2["credit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? 0 : $data["total_price_" . $ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]);
-                    $record2["first_part_id"] = Account::where("name", $data["second_part_name"])->first()->id;
-                    $record2["first_part_name"] = $data["second_part_name"];
-                    $record2["second_part_id"] = Account::where("name", $data["first_part_name_" . $ctr])->first()->id;
-                    $record2["second_part_name"] = $data["first_part_name_" . $ctr];
-                    $record2["product_id"] = Product::where("name", $data["product_name_" . $ctr])->first()->id;
-                    $record2["product_name"] = $data["product_name_" . $ctr];
-                    $record2["price"] = $data["price_" . $ctr];
-                    $record2["quantity"] = $data["quantity_" . $ctr];
+                $record2 = new Journal();
+                $record2["invoice_id"] = $data["invoice_id"];
+                $record2["line"] = $ctr;
+                $record2["debit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? $data["total_price_" . $ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]): 0;
+                $record2["credit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? 0 : $data["total_price_" . $ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]);
+                $this->validate(
+                    $request,
+                    [
+                        "first_part_name_$ctr"=>Rule::exists("accounts","name")
+                    ]
+                );
+                $record2["first_part_id"] = Account::where("name", $data["second_part_name"])->first()->id;
+                $record2["first_part_name"] = $data["second_part_name"];
+                $record2["second_part_id"] = Account::where("name", $data["first_part_name_" . $ctr])->first()->id;
+                $record2["second_part_name"] = $data["first_part_name_" . $ctr];
+                $record2["product_id"] = Product::where("name", $data["product_name_" . $ctr])->first()->id;
+                $record2["product_name"] = $data["product_name_" . $ctr];
+                $record2["price"] = $data["price_" . $ctr];
+                $record2["quantity"] = $data["quantity_" . $ctr];
 //                $record2["in_quantity"] = $data["quantity_".$ctr];
 //                $record2["posting"] = $data["posting_".$ctr];
-                    $record2["pound_type"] = $data["pound_type"];
-                    $record2["num_for_pound"] = globalFunctions::getEquivalentPoundValue($data["pound_type"]);
-                    $record2["notes"] = $data["notes_" . $ctr];
-                    $record2["invoice_type"] = "zero";
-                    $record2["detail"] = 0;
-                    $record2["image"] = $file_name;
-                    $record2["closing_date"] = $data["closing_date"];
-                    $result2 = $record2->save();
+                $record2["pound_type"] = $data["pound_type"];
+                $record2["num_for_pound"] = globalFunctions::getEquivalentPoundValue($data["pound_type"]);
+                $record2["notes"] = $data["notes_" . $ctr];
+                $record2["invoice_type"] = "zero";
+                $record2["detail"] = 0;
+                $record2["image"] = $file_name;
+                $record2["closing_date"] = $data["closing_date"];
+                $result2 = $record2->save();
 
 //                $first_part = Account::find($record1["first_part_id"]);
 //                $second_part = Account::find($record2["first_part_id"]);
@@ -153,27 +159,22 @@ class invoiceController extends Controller
 //                $first_part->save();
 //                $second_part->save();
 
-                    unset($data["first_part_name_" . $ctr]);
+                unset($data["first_part_name_" . $ctr]);
 //                unset($data["second_part_name_".$ctr]);
-                    unset($data["product_name_" . $ctr]);
-                    unset($data["quantity_" . $ctr]);
-                    unset($data["price_" . $ctr]);
-                    unset($data["total_price_" . $ctr]);
+                unset($data["product_name_" . $ctr]);
+                unset($data["quantity_" . $ctr]);
+                unset($data["price_" . $ctr]);
+                unset($data["total_price_" . $ctr]);
 //                unset($data["posting_".$ctr]);
 //                unset($data["pound_type_".$ctr]);
-                    unset($data["notes_" . $ctr]);
-                }
-                $ctr += 1;
+                unset($data["notes_" . $ctr]);
             }
-
-            DB::commit();
-        } catch (\PDOException $e) {
-            DB::rollBack();
-            $error = "adding_error";
+            $ctr += 1;
         }
+
         if ($ctr == 1)
-            $error = "no_item_error";
-        return [$error, $data["invoice_id"]];
+            return "no_item_error";
+        return $data["invoice_id"];
     }
 
     /**
@@ -206,7 +207,7 @@ class invoiceController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $invoice_type, $invoice_id)
     {
@@ -214,23 +215,24 @@ class invoiceController extends Controller
         $this->validate($request, [
             "invoice_id" => "required",
             "pound_type" => "required",
-            "second_part_name" => "required",
+            "second_part_name" => ["required",Rule::exists("accounts","name")],
+            "product_name" => [Rule::exists("products","name")],
             'file' => ['image','mimes:jpg,png,jpeg,gif,svg'],
         ]);
 
-        if (count($request->all()) <= 7) {
-            globalFunctions::flashMessage("update", "no_item_error", $invoice_type . "_invoice");
-            return back();
-        }
+//        if (count($request->all()) <= 7) {
+//            globalFunctions::flashMessage("update", "no_item_error", $invoice_type . "_invoice");
+//            return back();
+//        }
         $file_name = null;
         $path = null;
         $path_and_file_name = null;
         $oldPath = Journal::where("detail", 0)->whereIn("invoice_type", [0, 1, 2, 3, 4])->find($invoice_id)->image;
         if ($file = $request->file("image")) {
-            if (file_exists(public_path($oldPath)) and $oldPath != "images/systemImages/default_product_img.png")
+            if (file_exists(public_path($oldPath)) and $oldPath != "images/systemImages/default_invoice_img.png")
                 unlink(public_path($oldPath));
             $splitedPath = explode("/", $oldPath);
-            if (count($splitedPath) == 5) {
+            if (count($splitedPath) == 6) {
                 $path = $splitedPath[2] . "/" . $splitedPath[3] . "/" . $splitedPath[4];
             } else {
                 $date = Journal::where("invoice_id", $request["invoice_id"])->whereIn("invoice_type", [0, 1, 2, 3, 4])->first()->closing_date;
@@ -241,21 +243,48 @@ class invoiceController extends Controller
             $file->move("images/productInvoices/" . $path, $file_name);
             $path_and_file_name = Str::replace("/", "#", $path . "/" . $file_name);
         } else {
-            $path_and_file_name = Str::replace("/", "#", $oldPath);
+            $oldPath = Str::replace("images/","",$oldPath);
+            $oldPath = Str::replace("productInvoices/","",$oldPath);
+            $oldPath = Str::replace("systemImages/","",$oldPath);
+            $path_and_file_name = Str::replace("/","#",$oldPath);
         }
 
-        Journal::where("detail", 0)->whereIn("invoice_type", [0, 1, 2, 3, 4])->where("invoice_id", $invoice_id)->forceDelete();
+        try {
+            DB::beginTransaction();
 
-        $result = $this->saveJournal($request, $invoice_type, $path_and_file_name);
-//        if ($result=="none") {
-//            session()->flash("success",__("messages.updated_successfully",["attribute"=>"Invoice"],session("lang")));
-//        }elseif($result == "adding_error") {
-//            session()->flash("error", __("messages.not_updated_successfully", ["attribute" => "Invoice"], session("lang")));
+            $num_for_pound_temp = Journal::where("detail", 0)->whereIn("invoice_type", [0, 1, 2, 3, 4])->where("invoice_id", $invoice_id)->first()->num_for_pound;
+
+            Journal::where("detail", 0)->whereIn("invoice_type", [0, 1, 2, 3, 4])->where("invoice_id", $invoice_id)->forceDelete();
+            $result = $this->saveJournal($request, $invoice_type, $path_and_file_name);
+            if ($result == "no_item_error"){
+                globalFunctions::flashMessage("update","no_item_error",$invoice_type . "_invoice");
+                DB::rollBack();
+            } else {
+                $new_invoice = Journal::where("detail", 0)->whereIn("invoice_type", [0, 1, 2, 3, 4])->where("invoice_id", $invoice_id);
+                if ($num_for_pound_temp > 1 && $new_invoice->first()->num_for_pound > 1) {
+                    foreach ($new_invoice->get() as $invoice) {
+                        $invoice->num_for_pound_temp = $num_for_pound_temp;
+                        $invoice->save();
+                    }
+                }
+                globalFunctions::flashMessage("update",true,$invoice_type . "_invoice");
+                globalFunctions::registerUserActivityLog("update",$invoice_type . "_invoice",$result);
+                DB::commit();
+            }
+        } catch (\PDOException $e)
+        {
+            DB::rollBack();
+            globalFunctions::flashMessage("update",false,$invoice_type . "_invoice");
+        }
+
+
+//        $new_invoice = Journal::where("detail", 0)->whereIn("invoice_type", [0, 1, 2, 3, 4])->where("invoice_id", $invoice_id);
+//        dd($new_invoice->get());
+//        if ($num_for_pound_temp > 1 && $new_invoice->first()->num_for_pound) {
+//            $new_invoice->update(["num_for_pound" => $num_for_pound_temp]);
 //        }
 
-        globalFunctions::flashMessage("update", $result[0], $invoice_type . "_invoice");
-        globalFunctions::registerUserActivityLog("updated", $invoice_type . "_invoice", $invoice_id);
-//        return redirect("/invoice/showInvoice/$request[invoice_id]");
+
         return back();
     }
 
@@ -290,7 +319,7 @@ class invoiceController extends Controller
         $image = Journal::withTrashed()->where("detail", 0)->whereIn("invoice_type", [0, 1, 2, 3, 4])->where("invoice_id", $invoice_id)->first()->image;
         $result = Journal::withTrashed()->where("detail", 0)->whereIn("invoice_type", [0, 1, 2, 3, 4])->where("invoice_id", $invoice_id)->forceDelete();
         if ($result != null) {
-            if ($image != "images/systemImages/default_product_img.png" and file_exists(public_path($image))) {
+            if ($image != "images/systemImages/default_invoice_img.png" and file_exists(public_path($image))) {
                 unlink(public_path($image));
             }
         }

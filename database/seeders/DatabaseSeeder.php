@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
                 "email" => "abdulkhader@gamil.com",
                 "password" => Hash::make('password'),
                 "active" => 1,
-                "profile_image" => "systemImages/default_user_img.png"
+                "profile_image" => "default_user_img.png"
             ]
         )->each(function ($user){
             $user->roles()->saveMany(

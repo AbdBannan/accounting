@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\softDeletes;
+use Illuminate\Support\Str;
 use function PHPUnit\Framework\stringContains;
 
 class User extends Authenticatable
@@ -92,11 +93,12 @@ class User extends Authenticatable
     }
 
     public function getProfileImageAttribute($value):string{
-        if (explode("/",$value)[0]=="systemImages"){
-            return "images/" . $value;
+        if (Str::contains($value,"default_")){
+            return "images/systemImages/" . $value;
         }
         else {
             return "images/usersImages/" . $value;
+
         }
     }
 }

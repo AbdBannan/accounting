@@ -16,6 +16,7 @@ return [
     //    -------- account section --------    //
 
     '' => '',
+    'restore_selected' => 'استرجاع العناصر المختارة',
     'delete_selected' => 'حذف العناصر المختارة',
     'yes' => 'نعم',
     'no' => 'لا',

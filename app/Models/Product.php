@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\softDeletes;
+use Illuminate\Support\Str;
 use function PHPUnit\Framework\stringContains;
 
 class Product extends Model
@@ -16,8 +17,8 @@ class Product extends Model
 
 
     public function getImageAttribute($value):string {
-        if (explode("/",$value)[0]=="systemImages"){
-            return "images/" . $value;
+        if (str::contains($value,"default_")){
+            return "images/systemImages/" . $value;
         }
         else {
             return "images/productsImages/" . $value;

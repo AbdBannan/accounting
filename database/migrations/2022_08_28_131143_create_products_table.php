@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->boolean("is_active")->default(true);
             $table->integer("account_type")->default(0);
             $table->foreignId("category_id")->default(0);
-            $table->string("image")->default("systemImages/default_product_img.png");
+            $table->string("image")->default("default_product_img.png");
             $table->foreignId("store_id")->default(1);
             $table->integer("group")->default(0);
             $table->integer("reference")->default(0);

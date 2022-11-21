@@ -63,7 +63,7 @@ class globalFunctions
         } else {
              if ("".$result == "no_item_error") {
                 session()->flash("error",__("messages.no_item",["attribute"=>__("global.$name",[],session("lang"))],session("lang")));
-            } elseif ($result != null or "".$result == "none") {
+            } elseif ($result != null or $result == true) {
                 session()->flash("success", __("messages." . $actionType . "_successfully", ["attribute" => __("global.$name", [], session("lang"))], session("lang")));
             } elseif ("".$result == "not_found") {
                 session()->flash("error",__("messages.not_found",["attribute"=>__("global.$name",[],session("lang"))],session("lang")));

@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->default("");
             $table->integer("role_id")->nullable();
-            $table->string("profile_image")->default("systemImages/default_user_img.png");
+            $table->string("profile_image")->default("default_user_img.png");
             $table->boolean("active")->default(false);
             $table->rememberToken();
             $table->softDeletes();

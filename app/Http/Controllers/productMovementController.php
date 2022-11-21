@@ -43,7 +43,7 @@ class productMovementController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -57,39 +57,42 @@ class productMovementController extends Controller
         $path_and_file_name = null;
         if($file = $request->file("image")){
             $splitedDate = explode("-",$request["closing_date"]);
-            $path = "images/productMovementInvoices/".$splitedDate[0]."/".$splitedDate[1]."/".$splitedDate[2];
+            $path = $splitedDate[0]."/".$splitedDate[1]."/".$splitedDate[2];
             $file_name = $request["invoice_id"] . "." . $file->getClientOriginalExtension();
-            $file->move($path,$file_name);
+            $file->move($path,"images/productMovementInvoices/".$file_name);
         }
         else{
             $file_name = "default_invoice_img.png";
-            $path = "systemImages";
+            $path = "";
         }
 
         $path_and_file_name = Str::replace("/","#", $path . "/" . $file_name);
 
-        $result = $this->saveJournal($request, $path_and_file_name);
-//        if ($result=="none") {
-//            session()->flash("success",__("messages.created_successfully",["attribute"=>"Invoice"],session("lang")));
-//        }elseif($result == "adding_error"){
-//            session()->flash("error",__("messages.not_created_successfully",["attribute"=>"Invoice"],session("lang")));
-//        }elseif($result == "no_item_error"){
-//            session()->flash("error",__("messages.no_item",["attribute"=>"Invoice"],session("lang")));
-//        }
-        globalFunctions::flashMessage("create",$result[0],"product_movement_invoice");
-        globalFunctions::registerUserActivityLog("added","product_movement_invoice",$result[1]);
 
+        try {
+            DB::beginTransaction();
+            $result = $this->saveJournal($request,$path_and_file_name);
+            if ($result == "no_item_error"){
+                globalFunctions::flashMessage("create","no_item_error","product_movement_invoice");
+                DB::rollBack();
+            } else {
+                globalFunctions::flashMessage("create",true,"product_movement_invoice");
+                globalFunctions::registerUserActivityLog("added","product_movement_invoice",$result);
+            }
+            DB::commit();
+        } catch (\PDOException $e)
+        {
+            DB::rollBack();
+            globalFunctions::flashMessage("create",false,"product_movement_invoice");
+        }
         return back();
     }
 
     private function saveJournal(Request $request ,$file_name)
     {
-//        dd($file_name);
         $ctr = 1;
         $data = $request->all();
-        $error = "none";
         try {
-            DB::beginTransaction();
             while (count($data)>6) {
                 $result1 = $result2 = null;
                 if (isset($data["moved_product_name_".$ctr])){
@@ -98,6 +101,13 @@ class productMovementController extends Controller
                     $record1["line"] = $ctr;
                     $record1["debit"] = 0;
                     $record1["credit"] = 0;
+                    $this->validate(
+                        $request,
+                        [
+                            "moved_to_product_name_$ctr"=>Rule::exists("products","name"),
+                            "moved_product_name_$ctr"=>Rule::exists("products","name")
+                        ]
+                    );
                     $record1["second_part_id"] = Product::where("name",$data["moved_to_product_name_".$ctr])->first()->id;
                     $record1["second_part_name"] = $data["moved_to_product_name_".$ctr];
                     $record1["product_id"] = Product::where("name",$data["moved_product_name_".$ctr])->first()->id;
@@ -147,22 +157,21 @@ class productMovementController extends Controller
                 }
                 $ctr+=1;
             }
-            DB::commit();
         }
-        catch (\PDOException $e){
-            DB::rollBack();
-            $error = "adding_error";
+        catch (\Exception $e) {
+            dd($data["second_part_name_".$ctr]);
         }
+
         if ($ctr == 1)
-            $error = "no_item_error";
-        return [$error,$data["invoice_id"]];
+            return "no_item_error";
+        return $data["invoice_id"];
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function show($invoice_id)
     {
@@ -187,7 +196,7 @@ class productMovementController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $invoice_id)
     {
@@ -209,7 +218,7 @@ class productMovementController extends Controller
             if (file_exists(public_path($oldPath)) and $oldPath != "images/systemImages/default_product_img.png")
                 unlink(public_path($oldPath));
             $splitedPath = explode("/",$oldPath);
-            if (count($splitedPath) == 5) {
+            if (count($splitedPath) == 6) {
                 $path = $splitedPath[2] . "/" . $splitedPath[3] . "/" . $splitedPath[4];
             } else {
                 $date = Journal::where("invoice_id",$request["invoice_id"])->whereIn("invoice_type",[11,12])->first()->closing_date;
@@ -218,22 +227,42 @@ class productMovementController extends Controller
             $file_name = $request["invoice_id"] . "." . $file->getClientOriginalExtension();
             $file->move("images/productMovementInvoices/".$path,$file_name);
             $path_and_file_name = Str::replace("/","#", $path . "/" . $file_name);
-
         }
         else{
-            $path_and_file_name = Str::replace("/","#", $oldPath);
+            $oldPath = Str::replace("images/","",$oldPath);
+            $oldPath = Str::replace("productMovementInvoices/","",$oldPath);
+            $oldPath = Str::replace("systemImages/","",$oldPath);
+            $path_and_file_name = Str::replace("/","#",$oldPath);
         }
-        Journal::where("invoice_id",$invoice_id)->whereIn("invoice_type",[11,12])->forceDelete();
-        $result = $this->saveJournal($request, Str::replace("/","#",$path) ."#".$file_name);
-//        if ($result=="none") {
-//            session()->flash("success",__("messages.updated_successfully",["attribute"=>"Invoice"],session("lang")));
-//        }elseif($result == "adding_error") {
-//            session()->flash("error", __("messages.not_updated_successfully", ["attribute" => "Invoice"], session("lang")));
-//        }
 
-        globalFunctions::flashMessage("update",$result[0],"product_movement_invoice");
-        globalFunctions::registerUserActivityLog("updated","product_movement_invoice",$invoice_id);
-        return redirect("/invoice/showProductMovementInvoice/$request[invoice_id]");
+
+        try {
+            DB::beginTransaction();
+            $num_for_pound_temp = Journal::where("invoice_id", $invoice_id)->whereIn("invoice_type", [11, 12])->first()->num_for_pound;
+
+            Journal::where("invoice_id", $invoice_id)->whereIn("invoice_type", [11, 12])->forceDelete();
+            $result = $this->saveJournal($request,$path_and_file_name);
+            if ($result == "no_item_error"){
+                globalFunctions::flashMessage("update","no_item_error","product_movement_invoice");
+                DB::rollBack();
+            } else {
+                $new_invoice = Journal::where("invoice_id", $invoice_id)->whereIn("invoice_type", [11, 12]);
+                if ($num_for_pound_temp > 1 && $new_invoice->first()->num_for_pound > 1) {
+                    foreach ($new_invoice->get() as $invoice) {
+                        $invoice->num_for_pound_temp = $num_for_pound_temp;
+                        $invoice->save();
+                    }
+                }
+                globalFunctions::flashMessage("update",true,"product_movement_invoice");
+                globalFunctions::registerUserActivityLog("update","product_movement_invoice",$result);
+                DB::commit();
+            }
+        } catch (\PDOException $e)
+        {
+            DB::rollBack();
+            globalFunctions::flashMessage("update",false,"product_movement_invoice");
+        }
+        return back();
     }
 
 
@@ -269,7 +298,7 @@ class productMovementController extends Controller
         $image = Journal::withTrashed()->where("detail",0)->where("invoice_id",$invoice_id)->whereIn("invoice_type",[11,12])->first()->image;
         $result = Journal::withTrashed()->where("detail",0)->where("invoice_id",$invoice_id)->whereIn("invoice_type",[11,12])->forceDelete();
         if ($result!=null) {
-            if ($image != "images/systemImages/default_product_img.png"  and file_exists(public_path($image))) {
+            if ($image != "images/systemImages/default_invoice_img.png"  and file_exists(public_path($image))) {
                 unlink(public_path($image));
             }
         }

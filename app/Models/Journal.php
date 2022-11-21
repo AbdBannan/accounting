@@ -20,9 +20,9 @@ class Journal extends Model
     public function getImageAttribute($value)
     {
         $prefixFolder = "";
-        if (Str::contains($value,"systemImages"))
+        if (Str::contains($value,"default_"))
         {
-            $prefixFolder = "images/";
+            $prefixFolder = "images/systemImages/";
         }
         elseif (in_array($this->attributes["invoice_type"],[0,1,2,3,4]))
         {

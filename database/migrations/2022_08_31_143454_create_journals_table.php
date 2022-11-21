@@ -28,7 +28,7 @@ class CreateJournalsTable extends Migration
             $table->string("product_name")->default("");
             $table->integer("detail")->default(-1);
             $table->integer("invoice_type")->default(-1);
-            $table->string("image")->default("systemImages#default_invoice_img.png");
+            $table->string("image")->default("default_invoice_img.png");
             $table->string("pound_type")->default("");
             $table->double("num_for_pound",20,10)->default(1);
             $table->timestamp("closing_date");

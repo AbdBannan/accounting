@@ -158,9 +158,18 @@ class accountController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($account_id)
+    public function destroy(Request $request,$account_id)
     {
-        $result = Account::withTrashed()->where("id",$account_id)->forceDelete();
+        if ($account_id > 0) {
+            $result = Account::withTrashed()->find($account_id)->forceDelete();
+            globalFunctions::registerUserActivityLog("recycled","account",$account_id);
+        } else {
+            $ids = $request["multi_ids"];
+            $result = Account::withTrashed()->whereIn("id",$ids)->forceDelete();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("recycled","account",$id);
+            }
+        }
 
 //        if ($result!=null) {
 //            session()->flash("success",__("messages.deleted_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));
@@ -193,15 +202,14 @@ class accountController extends Controller
     public function softDelete(Request $request,$account)
     {
         if ($account > 0) {
-             $result = Account::find($account)->delete();
+            $result = Account::find($account)->delete();
             globalFunctions::registerUserActivityLog("recycled","account",$account);
         } else {
-            $ids = $request["multi_delete_ids"];
+            $ids = $request["multi_ids"];
             $result = Account::whereIn("id",$ids)->delete();
             foreach ($ids as $id){
                 globalFunctions::registerUserActivityLog("recycled","account",$id);
             }
-
         }
 
 //        if ($result!=null) {
@@ -220,10 +228,18 @@ class accountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function restore($account_id)
+    public function restore(Request $request,$account_id)
     {
-        $result = Account::onlyTrashed()->where("id",$account_id)->restore();
-
+        if ($account_id > 0) {
+            $result = Account::onlyTrashed()->find($account_id)->restore();
+            globalFunctions::registerUserActivityLog("recycled","account",$account_id);
+        } else {
+            $ids = $request["multi_ids"];
+            $result = Account::onlyTrashed()->whereIn("id",$ids)->restore();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("recycled","account",$id);
+            }
+        }
 //        if ($result!=null) {
 //            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));
 //        }else{

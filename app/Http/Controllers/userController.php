@@ -26,7 +26,7 @@ class userController extends Controller
             'file' => ['image','mimes:jpg,png,jpeg,gif,svg']
         ]);
 
-        $fileName = "systemImages/default_user_img.png";
+        $fileName = "default_user_img.png";
         if($file = request()->file("file")){
             $fileName = Carbon::now()->format("d_m_Y_h_i_s") . "_" . $request["first_name"] . " " . $request['last_name'] . "." . request()->file("file")->getClientOriginalExtension();
             $file->move("images/usersImages",$fileName);

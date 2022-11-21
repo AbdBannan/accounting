@@ -74,7 +74,7 @@
                                 <tbody>
                                     @foreach ($accounts as $key=>$account)
                                         <tr>
-                                            <td><input form="form_delete" name="multi_delete_ids[]" value="{{$account->id}}" type="checkbox" class="form-check"></td>
+                                            <td><input form="form_delete" name="multi_ids[]" value="{{$account->id}}" type="checkbox" class="form-check"></td>
                                             <td>{{$account->id}}</td>
 {{--                                            <td><a href={{route("account.showAccount",$account->id)}}>{{$account->name}}</a></td>--}}
                                             <td>{{$account->name}}</td>

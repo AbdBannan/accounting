@@ -28,7 +28,7 @@
     });
 
     // this is to populate restore confirm model
-    $("a#btn_restore").on("click",function(){
+    $("a#btn_restore,a#btn_multi_restore").on("click",function(){
         let route = $(this).data("route");
         $(this).siblings("div").children("input[type='checkbox']").attr("checked",true);
         $("#form_restore").attr("action",route);
@@ -117,7 +117,9 @@
     });
 
     // to filter the menu and copy its value when enter key is pressed
-    $("input[class~='dropdown-toggle']").on("keyup", function(e) {
+    $("input[class~='dropdown-toggle']").on("keyup", filter);
+    $("input[class~='dropdown-toggle']").on("focus", filter);
+    function filter(e) {
         const ENTER = 13;
         e.preventDefault();
         if (e.which == ENTER){
@@ -136,7 +138,7 @@
             let isDesired = intersection(value,$(this).text().toLowerCase()) || value == $(this).val();
             $(this).toggle(isDesired);
         });
-    });
+    }
 
     // to copy the option value into its input
     $("div option").on("click",function (){
