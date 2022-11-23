@@ -10,7 +10,7 @@ class categoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
@@ -32,7 +32,7 @@ class categoryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -57,7 +57,7 @@ class categoryController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function show(Category $category)
     {
@@ -80,7 +80,7 @@ class categoryController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Category $category)
     {
@@ -111,26 +111,30 @@ class categoryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($category_id)
+    public function destroy(Request $request,$category_id)
     {
-        $result = Category::onlyTrashed()->where("id",$category_id)->forceDelete();
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.deleted_successfully",["attribute"=>"Category"],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.not_deleted_successfully",["attribute"=>"Category"],session("lang")));
-//        }
+        if ($category_id > 0) {
+            $result = Category::withTrashed()->find($category_id)->forceDelete();
+            globalFunctions::registerUserActivityLog("deleted","category",$category_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Category::withTrashed()->whereIn("id",$ids)->forceDelete();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("deleted","category",$id);
+            }
+        } else {
+            $result = null;
+        }
         globalFunctions::flashMessage("delete",$result,"category");
-        globalFunctions::registerUserActivityLog("deleted","category",$category_id);
         return back();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function viewRecyclebin()
     {
@@ -142,19 +146,23 @@ class categoryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Category $account
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function softDelete(Category $category)
+    public function softDelete(Request $request,$category_id)
     {
-        $result = $category->delete();
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.recycled_successfully",["attribute"=>"Category"],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.not_recycled_successfully",["attribute"=>"Category"],session("lang")));
-//        }
+        if ($category_id > 0) {
+            $result = Category::find($category_id)->delete();
+            globalFunctions::registerUserActivityLog("recycled","category",$category_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Category::whereIn("id",$ids)->delete();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("recycled","category",$id);
+            }
+        } else {
+            $result = null;
+        }
         globalFunctions::flashMessage("softDelete",$result,"category");
-        globalFunctions::registerUserActivityLog("recycled","category",$category->id);
         return back();
     }
 
@@ -162,19 +170,23 @@ class categoryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function restore($category_id)
+    public function restore(Request $request,$category_id)
     {
-        $result = Category::onlyTrashed()->where("id",$category_id)->restore();
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>"Category"],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>"Category"],session("lang")));
-//        }
+        if ($category_id > 0) {
+            $result = Request::onlyTrashed()->find($category_id)->restore();
+            globalFunctions::registerUserActivityLog("restored","category",$category_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Request::onlyTrashed()->whereIn("id",$ids)->restore();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("restored","category",$id);
+            }
+        } else {
+            $result = null;
+        }
         globalFunctions::flashMessage("restore",$result,"category");
-        globalFunctions::registerUserActivityLog("restored","category",$category_id);
         return back();
     }
 }

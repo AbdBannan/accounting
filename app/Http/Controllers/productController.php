@@ -12,7 +12,7 @@ class productController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
@@ -34,7 +34,7 @@ class productController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -84,7 +84,7 @@ class productController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function show(Product $product)
     {
@@ -108,7 +108,7 @@ class productController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Product $product)
     {
@@ -174,25 +174,38 @@ class productController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($product_id)
+    public function destroy(Request $request,$product_id)
     {
-        $image = Product::withTrashed()->where("id",$product_id)->first()->image;
-        $result = Product::withTrashed()->where("id",$product_id)->forceDelete();
 
-        if ($result!=null) {
-            if ($image != "images/systemImages/default_product_img.png"  and file_exists(public_path($image))) {
-                unlink(public_path($image));
+        if ($product_id > 0) {
+            $image = Product::withTrashed()->find($product_id)->image;
+            $result = Product::withTrashed()->find($product_id)->forceDelete();
+
+            if ($result!=null) {
+                if ($image != "images/systemImages/default_product_img.png"  and file_exists(public_path($image))) {
+                    unlink(public_path($image));
+                }
             }
-//            session()->flash("success",__("messages.deleted_successfully",["attribute"=>__("global.product",[],session("lang"))],session("lang")));
+            globalFunctions::registerUserActivityLog("deleted","product",$product_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+//            dd($ids);
+            foreach ($ids as $id){
+                $image = Product::withTrashed()->find($id)->image;
+                $result = Product::withTrashed()->find($id)->forceDelete();
+                if ($result!=null) {
+                    if ($image != "images/systemImages/default_product_img.png"  and file_exists(public_path($image))) {
+                        unlink(public_path($image));
+                    }
+                }
+                globalFunctions::registerUserActivityLog("deleted","product",$id);
+            }
+        } else {
+            $result = null;
         }
-//        else{
-//            session()->flash("success",__("messages.not_deleted_successfully",["attribute"=>__("global.product",[],session("lang"))],session("lang")));
-//        }
-
         globalFunctions::flashMessage("delete",$result,"product");
-        globalFunctions::registerUserActivityLog("deleted","product",$product_id);
 
         return back();
     }
@@ -200,7 +213,7 @@ class productController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function viewRecyclebin()
     {
@@ -212,19 +225,24 @@ class productController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Account $account
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function softDelete(Product $product)
+    public function softDelete(Request $request,$product_id)
     {
-        $result = $product->delete();
+        if ($product_id > 0) {
+            $result = Product::find($product_id)->delete();
+            globalFunctions::registerUserActivityLog("recycled","product",$product_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Product::whereIn("id",$ids)->delete();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("recycled","product",$id);
+            }
+        } else {
+            $result = null;
+        }
 
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.recycled_successfully",["attribute"=>__("global.product",[],session("lang"))],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.not_recycled_successfully",["attribute"=>__("global.product",[],session("lang"))],session("lang")));
-//        }
         globalFunctions::flashMessage("softDelete",$result,"product");
-        globalFunctions::registerUserActivityLog("recycled","product",$product->id);
 
         return back();
     }
@@ -233,19 +251,23 @@ class productController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function restore($product_id)
+    public function restore(Request $request,$product_id)
     {
-        $result = Product::onlyTrashed()->where("id",$product_id)->restore();
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.product",[],session("lang"))],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.product",[],session("lang"))],session("lang")));
-//        }
+        if ($product_id > 0) {
+            $result = Product::onlyTrashed()->find($product_id)->restore();
+            globalFunctions::registerUserActivityLog("restored","product",$product_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Product::onlyTrashed()->whereIn("id",$ids)->restore();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("restored","product",$id);
+            }
+        } else {
+            $result = null;
+        }
         globalFunctions::flashMessage("restore",$result,"product");
-        globalFunctions::registerUserActivityLog("restored","product",$product_id);
 
         return back();
     }

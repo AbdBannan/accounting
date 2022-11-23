@@ -15,7 +15,12 @@
 
         <div class="container">
             @if(auth()->user()->getConfig("add_method") != "modal")
-
+                <div class="form-group">
+                    <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("category.softDeleteCategory",-1)}}" @else data-route="{{route("category.deleteCategory",-1)}}" @endif>
+                        <i class="fas fa-trash"></i>
+                        {{__("global.delete_selected",[],session("lang"))}}
+                    </a>
+                </div>
                 <div class="row">
 
                     <div class="bg-gray-100 card o-hidden border-0 shadow-lg p-4 col-lg-3 col-sm-12">
@@ -29,7 +34,7 @@
 
                     <div class="col-sm-0 col-lg-1"></div>
 
-                    <dev class="col-lg-8 col-sm-12">
+                    <div class="col-lg-8 col-sm-12">
             @else
                 <div>
                     <div>
@@ -37,6 +42,10 @@
                             <a id="btn_add" title="{{__("global.add",[],session("lang"))}}" class="btn btn-sm btn-info" href="#" data-toggle="modal" data-target="#addModal" data-route="{{route("category.storeCategory")}}">
                                 <i class="fas fa-plus"></i>
                                 {{__("global.add",[],session("lang"))}}
+                            </a>
+                            <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("category.softDeleteCategory",-1)}}" @else data-route="{{route("category.deleteCategory",-1)}}" @endif>
+                                <i class="fas fa-trash"></i>
+                                {{__("global.delete_selected",[],session("lang"))}}
                             </a>
                         </div>
             @endif
@@ -50,6 +59,7 @@
                                 <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                     <tr>
+                                        <th><input id="check_all" type="checkbox" class="form-check"></th>
                                         <th>{{__("global.id",[],session("lang"))}}</th>
                                         <th>{{__("global.name",[],session("lang"))}}</th>
                                         <th>{{__("global.delete",[],session("lang"))}}</th>
@@ -61,8 +71,8 @@
                                         @foreach ($categories as $category)
 
                                             <tr>
+                                                <td><input form="form_delete" name="multi_ids[]" value="{{$category->id}}" type="checkbox" class="form-check"></td>
                                                 <td>{{$category->id}}</td>
-{{--                                                <td><a href={{route("category.showCategory",$category)}}>{{$category->name}}</a></td>--}}
                                                 <td>{{$category->name}}</td>
 
                                                 <td class="row m-0">
@@ -81,7 +91,7 @@
                             </div>
                         </div>
                     </div>
-                </dev>
+                </div>
 
 
             </div>

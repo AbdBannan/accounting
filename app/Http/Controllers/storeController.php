@@ -11,7 +11,7 @@ class storeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
@@ -33,7 +33,7 @@ class storeController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -60,7 +60,7 @@ class storeController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function show(Store $store)
     {
@@ -84,7 +84,7 @@ class storeController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Store $store)
     {
@@ -119,19 +119,23 @@ class storeController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($store_id)
+    public function destroy(Request $request,$store_id)
     {
-        $result = Store::withTrashed()->where("id",$store_id)->forceDelete();
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.deleted_successfully",["attribute"=>__("global.store",[],session("lang"))],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.not_deleted_successfully",["attribute"=>__("global.store",[],session("lang"))],session("lang")));
-//        }
+        if ($store_id > 0) {
+            $result = Store::withTrashed()->find($store_id)->forceDelete();
+            globalFunctions::registerUserActivityLog("deleted","store",$store_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Store::withTrashed()->whereIn("id",$ids)->forceDelete();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("deleted","store",$id);
+            }
+        } else {
+            $result = null;
+        }
         globalFunctions::flashMessage("delete",$result,"store");
-        globalFunctions::registerUserActivityLog("deleted","store",$store_id);
 
         return back();
     }
@@ -139,7 +143,7 @@ class storeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function viewRecyclebin()
     {
@@ -151,19 +155,23 @@ class storeController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Store $store
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function softDelete(Store $store)
+    public function softDelete(Request $request,$store_id)
     {
-        $result = $store->delete();
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.recycled_successfully",["attribute"=>__("global.store",[],session("lang"))],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.not_recycled_successfully",["attribute"=>__("global.store",[],session("lang"))],session("lang")));
-//        }
+        if ($store_id > 0) {
+            $result = Store::find($store_id)->delete();
+            globalFunctions::registerUserActivityLog("recycled","store",$store_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Store::whereIn("id",$ids)->delete();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("recycled","store",$id);
+            }
+        } else {
+            $result = null;
+        }
         globalFunctions::flashMessage("softDelete",$result,"store");
-        globalFunctions::registerUserActivityLog("recycled","store",$store->id);
 
         return back();
     }
@@ -172,19 +180,23 @@ class storeController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function restore($store_id)
+    public function restore(Request $request,$store_id)
     {
-        $result = Store::onlyTrashed()->where("id",$store_id)->restore();
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.store",[],session("lang"))],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.store",[],session("lang"))],session("lang")));
-//        }
+        if ($store_id > 0) {
+            $result = Store::onlyTrashed()->find($store_id)->restore();
+            globalFunctions::registerUserActivityLog("restored","store",$store_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Store::onlyTrashed()->whereIn("id",$ids)->restore();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("restored","store",$id);
+            }
+        } else {
+            $result = null;
+        }
         globalFunctions::flashMessage("restore",$result,"store");
-        globalFunctions::registerUserActivityLog("restored","store",$store_id);
 
         return back();
     }

@@ -14,7 +14,12 @@
 
         <div class="container">
             @if(auth()->user()->getConfig("add_method") != "modal")
-
+                <div class="form-group">
+                    <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("product.softDeleteProduct",-1)}}" @else data-route="{{route("product.deleteProduct",-1)}}" @endif >
+                        <i class="fas fa-trash"></i>
+                        {{__("global.delete_selected",[],session("lang"))}}
+                    </a>
+                </div>
                 <div class="row">
                     <div class="bg-gray-100 card o-hidden border-0 shadow-lg p-4 col-lg-3 col-sm-12">
                         <form action="{{route("product.storeProduct")}}" method="POST"  accept-charset="UTF-8" enctype="multipart/form-data" autocomplete="off">
@@ -35,6 +40,10 @@
                             <i class="fas fa-plus"></i>
                             {{__("global.add",[],session("lang"))}}
                         </a>
+                        <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("product.softDeleteProduct",-1)}}" @else data-route="{{route("product.deleteProduct",-1)}}" @endif >
+                            <i class="fas fa-trash"></i>
+                            {{__("global.delete_selected",[],session("lang"))}}
+                        </a>
                     </div>
         @endif
                     <div class="card shadow">
@@ -47,6 +56,7 @@
                                 <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
+                                            <th><input id="check_all" type="checkbox" class="form-check"></th>
                                             <th>{{__("global.id",[],session("lang"))}}</th>
                                             <th>{{__("global.name",[],session("lang"))}}</th>
                                             <th>{{__("global.type",[],session("lang"))}}</th>
@@ -61,8 +71,8 @@
                                         @foreach ($products as $product)
 
                                             <tr>
+                                                <td><input form="form_delete" name="multi_ids[]" value="{{$product->id}}" type="checkbox" class="form-check"></td>
                                                 <td>{{$product->id}}</td>
-{{--                                                <td><a href={{route("product.showProduct",$product)}}>{{$product->name}}</a></td>--}}
                                                 <td>{{$product->name}}</td>
                                                 <td>{{$product->account_type}}</td>
                                                 <td>{{$product->reference}}</td>

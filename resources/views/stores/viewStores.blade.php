@@ -14,7 +14,12 @@
         @section("id"){{\App\Models\Store::withTrashed()->selectRaw("max(id) as id")->first()->id + 1}}@endsection
         <div class="container">
             @if(auth()->user()->getConfig("add_method") != "modal")
-
+                <div class="form-group">
+                    <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("store.softDeleteStore",-1)}}" @else data-route="{{route("store.deleteStore",-1)}}" @endif >
+                        <i class="fas fa-trash"></i>
+                        {{__("global.delete_selected",[],session("lang"))}}
+                    </a>
+                </div>
                 <div class="row">
                     <div class="bg-gray-100 card o-hidden border-0 shadow-lg p-4 col-lg-3 col-sm-12">
                         <form action="{{route("store.storeStore")}}" method="POST" autocomplete="off">
@@ -27,7 +32,7 @@
 
                     <div class="col-sm-0 col-lg-1"></div>
 
-                    <dev class="col-lg-8 col-sm-12">
+                    <div class="col-lg-8 col-sm-12">
             @else
                 <div>
                     <div>
@@ -35,6 +40,10 @@
                             <a id="btn_add" title="{{__("global.add",[],session("lang"))}}" class="btn btn-sm btn-info" href="#" data-toggle="modal" data-target="#addModal" data-route="{{route("store.storeStore")}}">
                                 <i class="fas fa-plus"></i>
                                 {{__("global.add",[],session("lang"))}}
+                            </a>
+                            <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("store.softDeleteStore",-1)}}" @else data-route="{{route("store.deleteStore",-1)}}" @endif >
+                                <i class="fas fa-trash"></i>
+                                {{__("global.delete_selected",[],session("lang"))}}
                             </a>
                         </div>
             @endif
@@ -48,6 +57,7 @@
                                 <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                     <tr>
+                                        <th><input id="check_all" type="checkbox" class="form-check"></th>
                                         <th>{{__("global.id",[],session("lang"))}}</th>
                                         <th>{{__("global.name",[],session("lang"))}}</th>
                                         <th>{{__("global.location",[],session("lang"))}}</th>
@@ -60,8 +70,8 @@
                                         @foreach ($stores as $store)
 
                                             <tr>
+                                                <td><input form="form_delete" name="multi_ids[]" value="{{$store->id}}" type="checkbox" class="form-check"></td>
                                                 <td>{{$store->id}}</td>
-{{--                                                <td><a href={{route("store.showStore",$store)}}>{{$store->name}}</a></td>--}}
                                                 <td>{{$store->name}}</td>
                                                 <td>{{$store->location}}</td>
 
@@ -82,7 +92,7 @@
                             </div>
                         </div>
                     </div>
-                </dev>
+                </div>
 
 
             </div>

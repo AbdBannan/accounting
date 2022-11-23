@@ -18,19 +18,19 @@ class cashController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
         globalFunctions::registerUserActivityLog("seen_all", "cash_invoices",null);
-        $invoices = Journal::where("detail",1)->where("invoice_type",5)->selectRaw("invoice_id,first_part_name,sum(debit) / num_for_pound as deb, sum(credit) / num_for_pound as cred , pound_type")->groupBy(["invoice_id","first_part_name","num_for_pound","pound_type"])->orderBy("invoice_id")->get();
+        $invoices = Journal::where("detail",1)->where("invoice_type",5)->selectRaw("invoice_id,first_part_name,sum(debit) / num_for_pound as debit, sum(credit) / num_for_pound as credit , pound_type")->groupBy(["invoice_id","first_part_name","num_for_pound","pound_type"])->orderBy("invoice_id")->get();
         return view("invoices.cashes.viewInvoices")->with("invoices",$invoices);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function create()
     {
@@ -152,7 +152,7 @@ class cashController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function show($invoice_id)
     {
@@ -274,39 +274,51 @@ class cashController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
-    public function destroy($invoice_id)
+    public function destroy(Request $request,$invoice_id)
     {
-        $image = Journal::withTrashed()->where("detail",1)->whereIn("invoice_type",[5,6,7])->where("invoice_id",$invoice_id)->first()->image;
-        $result = Journal::withTrashed()->where("detail",1)->whereIn("invoice_type",[5,6,7])->where("invoice_id",$invoice_id)->forceDelete();
-
-        if ($result!=null) {
-            if ($image != "images/systemImages/default_invoice_img.png"  and file_exists(public_path($image))) {
-                unlink(public_path($image));
+        if ($invoice_id > 0) {
+            $image = Journal::withTrashed()->where("detail",1)->whereIn("invoice_type",[5,6,7])->where("invoice_id",$invoice_id)->first()->image;
+            $result = Journal::withTrashed()->where("detail",1)->whereIn("invoice_type",[5,6,7])->where("invoice_id",$invoice_id)->forceDelete();
+            if ($result != null) {
+                if ($image != "images/systemImages/default_invoice_img.png" and file_exists(public_path($image))) {
+                    unlink(public_path($image));
+                }
             }
+            globalFunctions::registerUserActivityLog("deleted","cash_invoice",$invoice_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            foreach ($ids as $id){
+                $image = Journal::withTrashed()->where("detail",1)->whereIn("invoice_type",[5,6,7])->where("invoice_id",$id)->first()->image;
+                $result = Journal::withTrashed()->where("detail",1)->whereIn("invoice_type",[5,6,7])->where("invoice_id",$id)->forceDelete();
+                if ($result != null) {
+                    if ($image != "images/systemImages/default_invoice_img.png" and file_exists(public_path($image))) {
+                        unlink(public_path($image));
+                    }
+                }
+                globalFunctions::registerUserActivityLog("deleted","cash_invoice",$id);
+            }
+        } else {
+            $result = null;
         }
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.deleted_successfully",["attribute"=>"Invoice"],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.not_deleted_successfully",["attribute"=>"Invoice"],session("lang")));
-//        }
-
         globalFunctions::flashMessage("delete",$result,"cash_invoice");
-        globalFunctions::registerUserActivityLog("deleted","cash_invoice",$invoice_id);
 
-        return redirect(session("previous_previous_url"));
+        if (session("previous_previous_url") != null)
+            return redirect(session("previous_previous_url"));
+        else
+            return back();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function viewRecyclebin()
     {
         globalFunctions::registerUserActivityLog("seen","cash_invoices_recyclebin",null);
-        $deletedInvoices = Journal::onlyTrashed()->where("detail",1)->where("invoice_type",5)->selectRaw("invoice_id,first_part_name,sum(debit) / num_for_pound as deb, sum(credit) / num_for_pound as cred , pound_type")->groupBy(["invoice_id","first_part_name","num_for_pound",'pound_type'])->get()->sortBy("line");
+        $deletedInvoices = Journal::onlyTrashed()->where("detail",1)->where("invoice_type",5)->selectRaw("invoice_id,first_part_name,sum(debit) / num_for_pound as debit, sum(credit) / num_for_pound as credit , pound_type")->groupBy(["invoice_id","first_part_name","num_for_pound",'pound_type'])->get()->sortBy("line");
         return view("invoices.cashes.recyclebin")->with("deletedInvoices",$deletedInvoices);
     }
 
@@ -314,44 +326,53 @@ class cashController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Account $account
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
-    public function softDelete($invoice_id)
+    public function softDelete(Request $request,$invoice_id)
     {
-        $result = Journal::where("detail",1)->whereIn("invoice_type",[5,6,7])->where("invoice_id",$invoice_id)->delete();
 
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.recycled_successfully",["attribute"=>"Invoice"],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.not_recycled_successfully",["attribute"=>"Invoice"],session("lang")));
-//        }
-
+        if ($invoice_id > 0) {
+            $result = Journal::where("detail",1)->whereIn("invoice_type",[5,6,7])->where("invoice_id",$invoice_id)->delete();
+            globalFunctions::registerUserActivityLog("recycled","cash_invoice",$invoice_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Journal::where("detail",1)->whereIn("invoice_type",[5,6,7])->whereIn("invoice_id",$ids)->delete();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("recycled","cash_invoice",$id);
+            }
+        } else {
+            $result = null;
+        }
         globalFunctions::flashMessage("softDelete",$result,"cash_invoice");
-        globalFunctions::registerUserActivityLog("recycled","cas_invoice",$invoice_id);
 
-        return redirect(session("previous_previous_url"));
+        if (session("previous_previous_url") != null)
+            return redirect(session("previous_previous_url"));
+        else
+            return back();
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function restore($invoice_id)
+    public function restore(Request $request,$invoice_id)
     {
-        $result = Journal::onlyTrashed()->where("detail",1)->whereIn("invoice_type",[5,6,7])->where("invoice_id",$invoice_id)->restore();
 
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>"Invoice"],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>"Invoice"],session("lang")));
-//        }
-
-
+        if ($invoice_id > 0) {
+            $result = Journal::onlyTrashed()->where("detail",1)->whereIn("invoice_type",[5,6,7])->where("invoice_id",$invoice_id)->restore();
+            globalFunctions::registerUserActivityLog("restored","cash_invoice",$invoice_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Journal::onlyTrashed()->where("detail",1)->whereIn("invoice_type",[5,6,7])->whereIn("invoice_id",$ids)->restore();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("restored","cash_invoice",$id);
+            }
+        } else {
+            $result = null;
+        }
         globalFunctions::flashMessage("restore",$result,"cash_invoice");
-        globalFunctions::registerUserActivityLog("restored","cash_invoice",$invoice_id);
         return back();
     }
 }

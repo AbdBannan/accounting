@@ -124,21 +124,25 @@ class roleController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($role_id)
+    public function destroy(Request $request,$role_id)
     {
-        if (strtolower(Role::find($role_id)->name) == "admin")
+        if (Role::find($role_id) and strtolower(Role::find($role_id)->name) == "admin")
             abort(304,"not permitted to delete this role");
-        $result = Role::withTrashed()->find($role_id)->forceDelete();
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.deleted_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.not_deleted_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
-//        }
+        if ($role_id > 0) {
+            $result = Role::withTrashed()->find($role_id)->forceDelete();
+            globalFunctions::registerUserActivityLog("deleted","role",$role_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Role::withTrashed()->whereIn("id",$ids)->forceDelete();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("deleted","role",$id);
+            }
+        } else {
+            $result = null;
+        }
         globalFunctions::flashMessage("delete",$result,"role");
-        globalFunctions::registerUserActivityLog("deleted","role",$role_id);
 
         return back();
     }
@@ -147,37 +151,45 @@ class roleController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Role $account
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function softDelete(Role $role)
+    public function softDelete(Request $request,$role_id)
     {
-        if (strtolower($role->name) == "admin")
+        if (Role::find($role_id) and strtolower(Role::find($role_id)->name) == "admin")
             abort(304,"not permitted to delete this role");
-        $result = $role->delete();
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.recycled_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.not_recycled_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
-//        }
+        if ($role_id > 0) {
+            $result = Role::find($role_id)->delete();
+            globalFunctions::registerUserActivityLog("recycled","role",$role_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Role::whereIn("id",$ids)->delete();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("recycled","role",$id);
+            }
+        } else {
+            $result = null;
+        }
 
         globalFunctions::flashMessage("softDelete",$result,"role");
-        globalFunctions::registerUserActivityLog("recycled","role",$role->id);
 
         return back();
     }
 
-    public function restore($role_id)
+    public function restore(Request $request,$role_id)
     {
-        $result = Role::onlyTrashed()->where("id",$role_id)->restore();
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
-//        }
+        if ($role_id > 0) {
+            $result = Role::onlyTrashed()->find($role_id)->restore();
+            globalFunctions::registerUserActivityLog("restored","role",$role_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Role::onlyTrashed()->whereIn("id",$ids)->restore();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("restored","role",$id);
+            }
+        } else {
+            $result = null;
+        }
         globalFunctions::flashMessage("restore",$result,"role");
-        globalFunctions::registerUserActivityLog("restored","role",$role_id);
 
         return back();
     }

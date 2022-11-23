@@ -115,49 +115,32 @@ class userController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroyUser($user_id)
+    public function destroyUser(Request $request,$user_id)
     {
-        $image = User::withTrashed()->find($user_id)->profile_image;
-        $result = User::withTrashed()->find($user_id)->forceDelete();
-
-        if ($result!=null) {
-            if ($image != "images/systemImages/default_user_img.png" and file_exists(public_path($image))){
-                unlink(public_path($image));
+        if ($user_id > 0) {
+            $result = User::withTrashed()->find($user_id)->forceDelete();
+            globalFunctions::registerUserActivityLog("deleted","user",$user_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = User::withTrashed()->whereIn("id",$ids)->forceDelete();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("deleted","user",$id);
             }
-//            session()->flash("success",__("messages.deleted_successfully",["attribute"=>__("global.user",[],session("lang"))],session("lang")));
+        } else {
+            $result = null;
         }
-//        else {
-//            session()->flash("error",__("messages.not_deleted_successfully",["attribute"=>__("global.user",[],session("lang"))],session("lang")));
-//        }
         globalFunctions::flashMessage("delete",$result,"user");
-        globalFunctions::registerUserActivityLog("deleted","user",$user_id);
 
         return back();
     }
-
-//    public function multiDelete(Request $request) {
-//        $ids = $request->delete_users;
-//        if (auth()->user()->getConfig("use_recyclebin") == "true"){
-//            $result = User::whereIn("id",$ids)->delete();
-//        } else {
-//            $result = User::whereIn("id",$ids)->forceDelete();
-//        }
-//        globalFunctions::flashMessage("delete",$result,"user");
-//        foreach ($ids as $id){
-//
-//        }
-//        globalFunctions::registerUserActivityLog("deleted","users", $ids);
-//
-//        return back();
-//    }
 
 
     /**
      * Remove the specified resource from storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function viewRecyclebin()
     {
@@ -171,20 +154,24 @@ class userController extends Controller
      * Remove the specified resource from storage.
      *
      * @param User $account
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function softDeleteUser(User $user)
+    public function softDeleteUser(Request $request,$user_id)
     {
+        if ($user_id > 0) {
+            $result = User::find($user_id)->delete();
+            globalFunctions::registerUserActivityLog("recycled","user",$user_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = User::whereIn("id",$ids)->delete();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("recycled","user",$id);
+            }
+        } else {
+            $result = null;
+        }
 
-        $result = $user->delete();
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.recycled_successfully",["attribute"=>__("global.user",[],session("lang"))],session("lang")));
-//        }else{
-//            session()->flash("error",__("messages.not_recycled_successfully",["attribute"=>__("global.user",[],session("lang"))],session("lang")));
-//        }
         globalFunctions::flashMessage("softDelete",$result,"user");
-        globalFunctions::registerUserActivityLog("recycled","user",$user->id);
 
         return back();
     }
@@ -193,18 +180,24 @@ class userController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function restoreUser($user_id)
+    public function restoreUser(Request $request,$user_id)
     {
-        $result = User::onlyTrashed()->find($user_id)->restore();
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.user",[],session("lang"))],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.user",[],session("lang"))],session("lang")));
-//        }
+        if ($user_id > 0) {
+            $result = User::onlyTrashed()->find($user_id)->restore();
+            globalFunctions::registerUserActivityLog("restored","user",$user_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = User::onlyTrashed()->whereIn("id",$ids)->restore();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("restored","user",$id);
+            }
+        } else {
+            $result = null;
+        }
+
         globalFunctions::flashMessage("restore",$result,"user");
-        globalFunctions::registerUserActivityLog("restored","user",$user_id);
 
         return back();
     }

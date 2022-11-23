@@ -120,19 +120,23 @@ permissionController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($permission_id)
+    public function destroy(Request $request,$permission_id)
     {
-        $result = Permission::withTrashed()->find($permission_id)->forceDelete();
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.deleted_successfully",["attribute"=>__("global.permission",[],session("lang"))],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.not_deleted_successfully",["attribute"=>__("global.permission",[],session("lang"))],session("lang")));
-//        }
+        if ($permission_id > 0) {
+            $result = Permission::withTrashed()->find($permission_id)->forceDelete();
+            globalFunctions::registerUserActivityLog("deleted","permission",$permission_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Permission::withTrashed()->whereIn("id",$ids)->forceDelete();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("deleted","permission",$id);
+            }
+        } else {
+            $result = null;
+        }
         globalFunctions::flashMessage("delete",$result,"permission");
-        globalFunctions::registerUserActivityLog("deleted","permission",$permission_id);
 
         return back();
     }
@@ -141,34 +145,42 @@ permissionController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Permission $permission
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function softDelete(Permission $permission)
+    public function softDelete(Request $request,$permission_id)
     {
-        $result = $permission->delete();
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.recycled_successfully",["attribute"=>__("global.permission",[],session("lang"))],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.not_recycled_successfully",["attribute"=>__("global.permission",[],session("lang"))],session("lang")));
-//        }
+        if ($permission_id > 0) {
+            $result = Permission::find($permission_id)->delete();
+            globalFunctions::registerUserActivityLog("recycled","permission",$permission_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Permission::whereIn("id",$ids)->delete();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("recycled","permission",$id);
+            }
+        } else {
+            $result = null;
+        }
         globalFunctions::flashMessage("softDelete",$result,"permission");
-        globalFunctions::registerUserActivityLog("recycled","permission",$permission->id);
 
         return back();
     }
 
-    public function restore($permission_id)
+    public function restore(Request $request,$permission_id)
     {
-        $result = Permission::onlyTrashed()->where("id",$permission_id)->restore();
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.permission",[],session("lang"))],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.permission",[],session("lang"))],session("lang")));
-//        }
+        if ($permission_id > 0) {
+            $result = Permission::onlyTrashed()->find($permission_id)->restore();
+            globalFunctions::registerUserActivityLog("restored","permission",$permission_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Permission::onlyTrashed()->whereIn("id",$ids)->restore();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("restored","permission",$id);
+            }
+        } else {
+            $result = null;
+        }
         globalFunctions::flashMessage("restore",$result,"permission");
-        globalFunctions::registerUserActivityLog("restored","permission",$permission_id);
 
         return back();
     }

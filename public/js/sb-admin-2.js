@@ -34,6 +34,17 @@
         $("#form_restore").attr("action",route);
     });
 
+    // this is to make checkbox in table rows belongs to form whose button is pressed
+    $("a#btn_multi_delete").on("click",function(){
+       $("input[name='multi_ids[]']").attr("form","form_delete");
+    });
+
+    // this is to make checkbox in table rows belongs to form whose button is pressed
+    $("a#btn_multi_restore").on("click",function(){
+        $("input[name='multi_ids[]']").attr("form","form_restore");
+    });
+
+
     // to populate the update form
     $("a#btn_update").on("click",function(){
         let route = $(this).data("route");
@@ -356,20 +367,18 @@
             $("td input[type='checkbox']").each(function (){
                this.checked = true;
             });
-            // $(this).siblings("#label_check_none").attr("hidden",false);
-            // $(this).siblings("#label_check_all").attr("hidden",true);
-            $("#btn_multi_delete").attr("disabled",false);
+            $("a#btn_multi_delete").removeClass("disable-pointer")
+            $("a#btn_multi_restore").removeClass("disable-pointer");
         } else {
             $("td input[type='checkbox']").filter(function (){
                 this.checked = false;
             });
-            // $(this).siblings("#label_check_none").attr("hidden",true);
-            // $(this).siblings("#label_check_all").attr("hidden",false);
-            $("#btn_multi_delete").attr("disabled",true);
+            $("a#btn_multi_delete").addClass("disable-pointer")
+            $("a#btn_multi_restore").addClass("disable-pointer");
         }
     });
 
-    // this is to make the "check_all" checkbox checked or unchecked whe any checkbox in dataTable rows is changed
+    // this is to make the "check_all" checkbox checked or unchecked when any checkbox in dataTable rows is changed
     $("td input[type='checkbox']").on("click",function (){
         if (this.checked==true) {
 
@@ -384,8 +393,8 @@
                     this.checked = true;
                 });
             }
-            $("#btn_multi_delete").attr("disabled",false);
-
+            $("a#btn_multi_delete").removeClass("disable-pointer")
+            $("a#btn_multi_restore").removeClass("disable-pointer");
         } else {
 
             let all_not_checked = true;
@@ -395,7 +404,9 @@
                 }
             });
             if (all_not_checked){
-                $("#btn_multi_delete").attr("disabled",true);
+
+                $("a#btn_multi_delete").addClass("disable-pointer")
+                $("a#btn_multi_restore").addClass("disable-pointer");
             }
             $("input#check_all").each(function (){
                 this.checked = false;

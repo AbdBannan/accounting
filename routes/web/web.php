@@ -39,6 +39,15 @@ Route::middleware(["auth","role:admin","saveCurrentRequest"])->group(function ()
 Auth::routes();
 
 
-Route::get("/t",function (){
-    dd(request()->ips());
-});
+//Route::post("/t",function (){
+//    return "sdfgdgrd";
+//    if ($file = request()->file("image")){
+////        $file->move("images","new.jpg");
+//        return "good";
+//    } else {
+//        return "not good";
+//    }
+//});
+
+
+//169.254.141.42/accounting/public/t

@@ -75,49 +75,61 @@ class poundController extends Controller
     }
 
 
-    public function destroy($pound_id)
+    public function destroy(Request $request,$pound_id)
     {
-        $result = Pound::withTrashed()->find($pound_id)->forceDelete();
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.deleted_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.not_deleted_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
-//        }
+        if ($pound_id > 0) {
+            $result = Pound::withTrashed()->find($pound_id)->forceDelete();
+            globalFunctions::registerUserActivityLog("deleted","pound",$pound_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Pound::withTrashed()->whereIn("id",$ids)->forceDelete();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("deleted","pound",$id);
+            }
+        } else {
+            $result = null;
+        }
         globalFunctions::flashMessage("delete",$result,"pound");
-        globalFunctions::registerUserActivityLog("deleted","pound",$pound_id);
 
         return back();
     }
 
 
-    public function softDelete(Pound $pound)
+    public function softDelete(Request $request,$pound_id)
     {
-        $result = $pound->delete();
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.recycled_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.not_recycled_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
-//        }
+        if ($pound_id > 0) {
+            $result = Pound::find($pound_id)->delete();
+            globalFunctions::registerUserActivityLog("recycled","pound",$pound_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Pound::whereIn("id",$ids)->delete();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("recycled","pound",$id);
+            }
+        } else {
+            $result = null;
+        }
 
         globalFunctions::flashMessage("softDelete",$result,"pound");
-        globalFunctions::registerUserActivityLog("recycled","pound",$pound->id);
 
         return back();
     }
 
-    public function restore($pound_id)
+    public function restore(Request $request,$pound_id)
     {
-        $result = Pound::onlyTrashed()->where("id",$pound_id)->restore();
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
-//        }else{
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
-//        }
+        if ($pound_id > 0) {
+            $result = Pound::onlyTrashed()->find($pound_id)->restore();
+            globalFunctions::registerUserActivityLog("restored","pound",$pound_id);
+        } else if (isset($request["multi_ids"])) {
+            $ids = $request["multi_ids"];
+            $result = Pound::onlyTrashed()->whereIn("id",$ids)->restore();
+            foreach ($ids as $id){
+                globalFunctions::registerUserActivityLog("restored","pound",$id);
+            }
+        } else {
+            $result = null;
+        }
         globalFunctions::flashMessage("restore",$result,"pound");
-        globalFunctions::registerUserActivityLog("restored","pound",$pound_id);
 
         return back();
     }

@@ -14,7 +14,12 @@
 
     @section('content')
         <div class="container">
-
+            <div class="form-group">
+                <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("invoice.softDeleteCashInvoice",-1)}}" @else data-route="{{route("invoice.deleteCashInvoice",-1)}}" @endif>
+                    <i class="fas fa-trash"></i>
+                    {{__("global.delete_selected",[],session("lang"))}}
+                </a>
+            </div>
             <div class="card shadow">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">{{__("global.cash_invoices",[],session("lang"))}}</h6>
@@ -25,6 +30,7 @@
                         <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                             <tr>
+                                <th><input id="check_all" type="checkbox" class="form-check"></th>
                                 <th>{{__("global.invoice_id",[],session("lang"))}}</th>
                                 <th>{{__("global.first_part_name",[],session("lang"))}}</th>
                                 <th>{{__("global.received",[],session("lang"))}}</th>
@@ -40,10 +46,11 @@
                                 @foreach ($invoices as $invoice)
 
                                     <tr>
-                                        <td><a id="btn_show_element" href="{{route("invoice.showCashInvoice",$invoice->invoice_id)}}>{{$invoice->invoice_id}}"</a></td>
+                                        <td><input form="form_delete" name="multi_ids[]" value="{{$invoice->invoice_id}}" type="checkbox" class="form-check"></td>
+                                        <td><a id="btn_show_element" href="{{route("invoice.showCashInvoice",$invoice->invoice_id)}}">{{$invoice->invoice_id}}</a></td>
                                         <td>{{$invoice->first_part_name}}</td>
-                                        <td>{{$invoice->deb}}</td>
-                                        <td>{{$invoice->cred}}</td>
+                                        <td>{{$invoice->debit}}</td>
+                                        <td>{{$invoice->credit}}</td>
                                         <td>{{$invoice->pound_type}}</td>
 
                                         <td class="row m-0">
@@ -71,7 +78,7 @@
         <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
     @endsection
     @section("script")
-  
+
     @endsection
 </x-masterLayout.master>
 

@@ -5,6 +5,16 @@
 
     @section('content')
         <div class="container">
+            <div class="form-group">
+                <a id="btn_multi_restore" title="{{__("global.restore_selected",[],session("lang"))}}" class="btn btn-sm btn-success disable-pointer" href="#" data-toggle="modal" data-target="#restoreConfirmModal" data-route="{{route("role.restoreRole",-1)}}">
+                    <i class="fas fa-undo"></i>
+                    {{__("global.restore_selected",[],session("lang"))}}
+                </a>
+                <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("role.deleteRole",-1)}}">
+                    <i class="fas fa-trash"></i>
+                    {{__("global.delete_selected",[],session("lang"))}}
+                </a>
+            </div>
             <div class="card shadow">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">{{__("global.deleted_",["attribute"=>__("global.role",[],session("lang"))],session("lang"))}}</h6>
@@ -14,17 +24,19 @@
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                             <thead>
-                                    <tr>
-                                        <th>{{__("global.id",[],session("lang"))}}</th>
-                                        <th>{{__("global.name",[],session("lang"))}}</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
+                                <tr>
+                                    <th><input id="check_all" type="checkbox" class="form-check"></th>
+                                    <th>{{__("global.id",[],session("lang"))}}</th>
+                                    <th>{{__("global.name",[],session("lang"))}}</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
 
                             <tbody>
                                 @foreach ($deletedRoles as $role)
 
                                         <tr>
+                                            <td><input form="form_restore" name="multi_ids[]" value="{{$role->id}}" type="checkbox" class="form-check"></td>
                                             <td>{{$role->id}}</td>
                                             <td>{{$role->name}}</td>
                                             <td class="row m-0">
@@ -51,7 +63,7 @@
         <x-modals.restore-confirm-modal></x-modals.restore-confirm-modal>
     @endsection
     @section("script")
-  
+
     @endsection
 </x-masterLayout.master>
 

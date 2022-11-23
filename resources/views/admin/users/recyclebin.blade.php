@@ -5,7 +5,16 @@
 
     @section('content')
         <div class="container">
-
+            <div class="form-group">
+                <a id="btn_multi_restore" title="{{__("global.restore_selected",[],session("lang"))}}" class="btn btn-sm btn-success disable-pointer" href="#" data-toggle="modal" data-target="#restoreConfirmModal" data-route="{{route("user.restoreUser",-1)}}">
+                    <i class="fas fa-undo"></i>
+                    {{__("global.restore_selected",[],session("lang"))}}
+                </a>
+                <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("user.deleteUser",-1)}}">
+                    <i class="fas fa-trash"></i>
+                    {{__("global.delete_selected",[],session("lang"))}}
+                </a>
+            </div>
             <div class="card shadow">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">{{__("global.plural_deleted_",["attribute"=>__("global.users",[],session("lang"))],session("lang"))}}</h6>
@@ -16,6 +25,7 @@
                         <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                             <tr>
+                                <th><input id="check_all" type="checkbox" class="form-check"></th>
                                 <th>{{__("global.first_name",[],session("lang"))}}</th>
                                 <th>{{__("global.last_name",[],session("lang"))}}</th>
                                 <th>{{__("global.email",[],session("lang"))}}</th>
@@ -27,6 +37,7 @@
 
                                 @foreach ($deletedUsers as $user)
                                         <tr>
+                                            <td><input form="form_restore" name="multi_ids[]" value="{{$user->id}}" type="checkbox" class="form-check"></td>
                                             <td> {{$user->first_name}} </td>
                                             <td> {{$user->last_name}} </td>
                                             <td> {{$user->email}} </td>
@@ -56,7 +67,7 @@
         <x-modals.restore-confirm-modal></x-modals.restore-confirm-modal>
     @endsection
     @section("script")
-  
+
     @endsection
 </x-masterLayout.master>
 

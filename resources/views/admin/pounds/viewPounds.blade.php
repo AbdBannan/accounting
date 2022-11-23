@@ -11,7 +11,12 @@
     @section('content')
         <div class="container">
             @if(auth()->user()->getConfig("add_method") != "modal")
-
+                <div class="form-group">
+                    <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("pound.softDeletePound",-1)}}" @else data-route="{{route("pound.deletePound",-1)}}" @endif>
+                        <i class="fas fa-trash"></i>
+                        {{__("global.delete_selected",[],session("lang"))}}
+                    </a>
+                </div>
                 <div class="row">
                     <div class="col-lg-3 col-sm-12 bg-gray-100 card o-hidden border-0 shadow-lg p-4" style="height: auto">
                         <form action="{{route("pound.storePound")}}" method="POST" autocomplete="off">
@@ -32,6 +37,10 @@
                                 <i class="fas fa-plus"></i>
                                 {{__("global.add",[],session("lang"))}}
                             </a>
+                            <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("pound.softDeletePound",-1)}}" @else data-route="{{route("pound.deletePound",-1)}}" @endif >
+                                <i class="fas fa-trash"></i>
+                                {{__("global.delete_selected",[],session("lang"))}}
+                            </a>
                         </div>
             @endif
                     <!-- DataTales Example -->
@@ -45,6 +54,7 @@
                                 <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                     <tr>
+                                        <th><input id="check_all" type="checkbox" class="form-check"></th>
                                         <th>{{__("global.id",[],session("lang"))}}</th>
                                         <th>{{__("global.name",[],session("lang"))}}</th>
                                         <th>{{__("global.value",[],session("lang"))}}</th>
@@ -56,6 +66,7 @@
                                     @foreach ($pounds as $pound)
 
                                         <tr>
+                                            <td><input form="form_restore" name="multi_ids[]" value="{{$pound->id}}" type="checkbox" class="form-check"></td>
                                             <td>{{$pound->id}}</td>
                                             <td>{{__("global.".$pound->name,[],session("lang"))}}</td>
                                             <td>{{$pound->value}}</td>

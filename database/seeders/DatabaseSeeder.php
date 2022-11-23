@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             [
                 "first_name" => "عبد القادر",
                 "last_name" => "بناَّن",
-                "email" => "abdulkhader@gamil.com",
+                "email" => "abdulkhader@gmail.com",
                 "password" => Hash::make('password'),
                 "active" => 1,
                 "profile_image" => "default_user_img.png"

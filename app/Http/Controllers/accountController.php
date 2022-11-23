@@ -6,6 +6,8 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Models\Account;
 use App\functions\globalFunctions;
+use phpDocumentor\Reflection\PseudoTypes\NonEmptyLowercaseString;
+
 class accountController extends Controller
 {
     /**
@@ -162,13 +164,15 @@ class accountController extends Controller
     {
         if ($account_id > 0) {
             $result = Account::withTrashed()->find($account_id)->forceDelete();
-            globalFunctions::registerUserActivityLog("recycled","account",$account_id);
-        } else {
+            globalFunctions::registerUserActivityLog("deleted","account",$account_id);
+        } else if (isset($request["multi_ids"])) {
             $ids = $request["multi_ids"];
             $result = Account::withTrashed()->whereIn("id",$ids)->forceDelete();
             foreach ($ids as $id){
-                globalFunctions::registerUserActivityLog("recycled","account",$id);
+                globalFunctions::registerUserActivityLog("deleted","account",$id);
             }
+        } else {
+            $result = null;
         }
 
 //        if ($result!=null) {
@@ -177,7 +181,6 @@ class accountController extends Controller
 //            session()->flash("success",__("messages.not_deleted_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));
 //        }
         globalFunctions::flashMessage("delete",$result,"account");
-        globalFunctions::registerUserActivityLog("deleted","account",$account_id);
 
         return back();
     }
@@ -199,17 +202,19 @@ class accountController extends Controller
      * @param Account $account
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function softDelete(Request $request,$account)
+    public function softDelete(Request $request,$account_id)
     {
-        if ($account > 0) {
-            $result = Account::find($account)->delete();
-            globalFunctions::registerUserActivityLog("recycled","account",$account);
-        } else {
+        if ($account_id > 0) {
+            $result = Account::find($account_id)->delete();
+            globalFunctions::registerUserActivityLog("recycled","account",$account_id);
+        } else if (isset($request["multi_ids"])) {
             $ids = $request["multi_ids"];
             $result = Account::whereIn("id",$ids)->delete();
             foreach ($ids as $id){
                 globalFunctions::registerUserActivityLog("recycled","account",$id);
             }
+        } else {
+            $result = null;
         }
 
 //        if ($result!=null) {
@@ -226,19 +231,21 @@ class accountController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function restore(Request $request,$account_id)
     {
         if ($account_id > 0) {
             $result = Account::onlyTrashed()->find($account_id)->restore();
-            globalFunctions::registerUserActivityLog("recycled","account",$account_id);
-        } else {
+            globalFunctions::registerUserActivityLog("restored","account",$account_id);
+        } else if (isset($request["multi_ids"])) {
             $ids = $request["multi_ids"];
             $result = Account::onlyTrashed()->whereIn("id",$ids)->restore();
             foreach ($ids as $id){
-                globalFunctions::registerUserActivityLog("recycled","account",$id);
+                globalFunctions::registerUserActivityLog("restored","account",$id);
             }
+        } else {
+            $result = null;
         }
 //        if ($result!=null) {
 //            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));
@@ -246,7 +253,6 @@ class accountController extends Controller
 //            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));
 //        }
         globalFunctions::flashMessage("restore",$result,"account");
-        globalFunctions::registerUserActivityLog("restored","account",$account_id);
 
         return back();
     }

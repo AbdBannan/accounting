@@ -10,22 +10,12 @@
     @endsection
     @section('content')
         <div class="container">
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <a class="btn btn-info m-3" href="{{route("user.createUser")}}"><i class="fas fa-plus"></i> {{__("global.add_new_user",[],session("lang"))}}</a>
-
-                {{--            <div>--}}
-                {{--                <button id="btn_multi_delete" title="{{__("global.delete",[],session("lang"))}}" class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("user.softDeleteUser")}}" disabled>--}}
-                {{--                    <input class="grid-button grid-delete-button" type="button" title="Delete">--}}
-                {{--                    {{__("global.delete_selected",[],session("lang"))}}--}}
-                {{--                </button>--}}
-                {{--               <br>--}}
-                {{--               <div class="form-check">--}}
-                {{--                   <input class="form-check-input" type="checkbox" name="check_all" id="check_all">--}}
-                {{--                   <label id="label_check_all" for="check_all">{{__("global.check_all",[],session("lang"))}}</label>--}}
-                {{--                   <label id="label_check_none" for="check_all" hidden>{{__("global.check_none",[],session("lang"))}}</label>--}}
-                {{--               </div>--}}
-
-                {{--           </div>--}}
+            <div class="form-group">
+                <a class="btn btn-sm btn-info" href="{{route("user.createUser")}}"><i class="fas fa-plus"></i> {{__("global.add_new_user",[],session("lang"))}}</a>
+                <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("user.softDeleteUser",-1)}}" @else data-route="{{route("user.softDeleteUser",-1)}}" @endif>
+                    <i class="fas fa-trash"></i>
+                    {{__("global.delete_selected",[],session("lang"))}}
+                </a>
             </div>
 
             <!-- DataTales Example -->
@@ -39,6 +29,7 @@
                         <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                             <tr>
+                                <th><input id="check_all" type="checkbox" class="form-check"></th>
                                 <th>{{__("global.first_name",[],session("lang"))}}</th>
                                 <th>{{__("global.last_name",[],session("lang"))}}</th>
                                 <th>{{__("global.email",[],session("lang"))}}</th>
@@ -50,6 +41,11 @@
                             <tbody>
                             @foreach ($users as $user)
                                 <tr>
+                                    @if(!$user->hasRole("admin"))
+                                        <td><input form="form_delete" name="multi_ids[]" value="{{$user->id}}" type="checkbox" class="form-check"></td>
+                                    @else
+                                        <td></td>
+                                    @endif
                                     <td><a id="btn_show_element" href="{{route("user.showUser",$user)}}"> {{$user->first_name}} </a></td>
                                     <td> {{$user->last_name}} </td>
                                     <td> {{$user->email}} </td>

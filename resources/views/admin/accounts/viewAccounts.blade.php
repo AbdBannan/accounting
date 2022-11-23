@@ -17,7 +17,7 @@
 
         @if(auth()->user()->getConfig("add_method") != "modal")
             <div class="form-group">
-                <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("account.softDeleteAccount",-1)}}" @else data-route="{{route("account.deleteAccount",-1)}}" @endif>
+                <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("account.softDeleteAccount",-1)}}" @else data-route="{{route("account.deleteAccount",-1)}}" @endif >
                     <i class="fas fa-trash"></i>
                     {{__("global.delete_selected",[],session("lang"))}}
                 </a>
@@ -45,7 +45,7 @@
                             <i class="fas fa-plus"></i>
                             {{__("global.add",[],session("lang"))}}
                         </a>
-                        <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("account.softDeleteAccount",-1)}}" @else data-route="{{route("account.deleteAccount",-1)}}" @endif>
+                        <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("account.softDeleteAccount",-1)}}" @else data-route="{{route("account.deleteAccount",-1)}}" @endif >
                             <i class="fas fa-trash"></i>
                             {{__("global.delete_selected",[],session("lang"))}}
                         </a>

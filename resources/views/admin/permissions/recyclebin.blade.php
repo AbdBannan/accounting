@@ -5,6 +5,16 @@
 
     @section('content')
         <div class="container">
+            <div class="form-group">
+                <a id="btn_multi_restore" title="{{__("global.restore_selected",[],session("lang"))}}" class="btn btn-sm btn-success disable-pointer" href="#" data-toggle="modal" data-target="#restoreConfirmModal" data-route="{{route("permission.restorePermission",-1)}}">
+                    <i class="fas fa-undo"></i>
+                    {{__("global.restore_selected",[],session("lang"))}}
+                </a>
+                <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("permission.deletePermission",-1)}}">
+                    <i class="fas fa-trash"></i>
+                    {{__("global.delete_selected",[],session("lang"))}}
+                </a>
+            </div>
             <div class="card shadow">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">{{__("global.deleted_",["attribute"=>__("global.permissions",[],session("lang"))],session("lang"))}}</h6>
@@ -15,6 +25,7 @@
                         <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
+                                    <th><input id="check_all" type="checkbox" class="form-check"></th>
                                     <th>{{__("global.id",[],session("lang"))}}</th>
                                     <th>{{__("global.name",[],session("lang"))}}</th>
                                     <td></td>
@@ -24,6 +35,7 @@
                             <tbody>
                                 @foreach ($deletedPermissions as $permission)
                                     <tr>
+                                        <td><input form="form_restore" name="multi_ids[]" value="{{$permission->id}}" type="checkbox" class="form-check"></td>
                                         <td>{{$permission->id}}</td>
                                         <td>{{$permission->name}}</td>
 
@@ -51,7 +63,7 @@
         <x-modals.restore-confirm-modal></x-modals.restore-confirm-modal>
     @endsection
     @section("script")
-  
+
     @endsection
 </x-masterLayout.master>
 

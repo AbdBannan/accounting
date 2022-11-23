@@ -6,11 +6,11 @@
     @section('content')
         <div class="container">
             <div class="form-group">
-                <a id="btn_multi_restore" title="{{__("global.restore_selected",[],session("lang"))}}" class="btn btn-sm btn-success" href="#" data-toggle="modal" data-target="#restoreConfirmModal" data-route="{{route("account.restoreAccount",-1)}}">
+                <a id="btn_multi_restore" title="{{__("global.restore_selected",[],session("lang"))}}" class="btn btn-sm btn-success disable-pointer" href="#" data-toggle="modal" data-target="#restoreConfirmModal" data-route="{{route("account.restoreAccount",-1)}}">
                     <i class="fas fa-undo"></i>
                     {{__("global.restore_selected",[],session("lang"))}}
                 </a>
-                <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("account.deleteAccount",-1)}}">
+                <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("account.deleteAccount",-1)}}">
                     <i class="fas fa-trash"></i>
                     {{__("global.delete_selected",[],session("lang"))}}
                 </a>
