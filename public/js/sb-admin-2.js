@@ -137,7 +137,7 @@
 
             let options = $(this).siblings().filter("div#dropdown_menu.dropdown-menu").children("option");
             for (const option in options) {
-                if (options[option].style.display != "none") {
+                if (!Number(options[option]) && options[option].style.display != "none") {
                     $(options[option]).click();
                     return;
                 }

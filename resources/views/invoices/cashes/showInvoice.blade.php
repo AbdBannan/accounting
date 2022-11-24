@@ -33,7 +33,6 @@
                     @endsection
                     @section("invoice_id"){{$invoiceLines[0]->invoice_id}}@endsection
                     @section("second_part_name"){{$invoiceLines[0]->first_part_name}}@endsection
-                    @section("auto_focus")@endsection
                     @section("hidden") hidden="true" @endsection
 
                     @section("image_path"){{asset($invoiceLines[0]->image)}}@endsection

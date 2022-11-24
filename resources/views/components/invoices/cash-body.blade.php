@@ -11,7 +11,7 @@
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="first_part_name" >{{__("global.first_part",[],session("lang"))}}</label>
-                            <input form="form" id="first_part_name" name="first_part_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("second_part_name",181)" @yield("auto_focus","autofocus")/>
+                            <input form="form" id="first_part_name" name="first_part_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("second_part_name",181)" />
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
                             </span>

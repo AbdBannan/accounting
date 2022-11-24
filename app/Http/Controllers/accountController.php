@@ -246,6 +246,7 @@ class accountController extends Controller
             }
         } else {
             $result = null;
+            header('Location:'+$_SERVER['HTTP_REFERER']);
         }
 //        if ($result!=null) {
 //            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));

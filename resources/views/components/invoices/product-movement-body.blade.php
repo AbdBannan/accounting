@@ -11,7 +11,7 @@
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="moved_product_name" >{{__("global.moved_product_name",[],session("lang"))}}</label>
-                            <input id="moved_product_name" name="moved_product_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("moved_to_product_name")" @yield("auto_focus","autofocus")/>
+                            <input id="moved_product_name" name="moved_product_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("moved_to_product_name")"/>
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
                             </span>

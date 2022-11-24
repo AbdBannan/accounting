@@ -25,7 +25,9 @@
                 let ids = [];
                 let isNewLineMode = true;
                 let isLineInEditing = false;
-                $("#moved_product_name").click();
+                $("input#moved_product_name").focus();
+                $("input#moved_product_name").change();
+
 
                 function validateDropDownBox(dropDownBox){
                     let error="";

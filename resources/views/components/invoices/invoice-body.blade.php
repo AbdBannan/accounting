@@ -1,4 +1,4 @@
-<dev class="col-lg-8 col-sm-12">
+<div class="col-sm-12">
     <div class="card shadow">
         <div class="card-header py-3">
 
@@ -11,7 +11,7 @@
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="second_part_name" >{{__("global.second_part",[],session("lang"))}}</label>
-                            <input form="form" id="second_part_name" name="second_part_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("second_part_name")" @yield("auto_focus","autofocus")/>
+                            <input form="form" id="second_part_name" name="second_part_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("second_part_name")"/>
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
                             </span>
@@ -83,7 +83,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-2 col-sm-12">
+                        <div class="col-md-3 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="product_name" >{{__("global.product",[],session("lang"))}}</label>
                                 <input form="f" id="product_name" name="product_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
@@ -156,4 +156,12 @@
             <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_invoice_price",[],session("lang"))}} : <span id="total_invoice_price" style="font-style: italic; color:darkblue">@yield("total_price",0)</span>  <span id="invoice_pound">@yield("pound_type")</span></label>
         </div>
     </div>
-</dev>
+</div>
+
+
+{{--<option>--}}
+{{--    <div>--}}
+{{--        <input type="number" class="form-control" value="100">--}}
+{{--        <input type="button" id="btn_update_pound" class="btn btn-sm btn-success" value="{{__("global.update",[],session("lang"))}}" >--}}
+{{--    </div>--}}
+{{--</option>--}}

@@ -116,7 +116,7 @@
 
     ">
     <div class="wrapper">
-
+        <h5 style="display: inline-block;position: absolute" id="test_size_label"></h5>
         <!-- Preloader -->
 {{--        {{dd(session("is_first_load"))}}--}}
         @if(!session("is_first_load"))

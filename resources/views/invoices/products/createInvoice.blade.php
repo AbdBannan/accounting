@@ -39,7 +39,8 @@
                 let ids = [];
                 let isNewLineMode = true;
                 let isLineInEditing = false;
-                $("#second_part_name").click();
+                $("input#second_part_name").focus();
+                $("input#second_part_name").change();
 
 
                 function validateDropDownBox(dropDownBox){
@@ -98,24 +99,6 @@
                         return;
                     }
                     if (!isLineInEditing) {
-                        // let entries = "<tr>"
-                        // // let ctr=0;
-                        // let inputs = $("form#f input");
-                        // for (let input in inputs) {
-                        //     if(Number(inputs[input]) || $(inputs[input]).attr("type")=="reset")
-                        //         break;
-                        //     let val = $(inputs[input]).val();
-                        //     let name = $(inputs[input]).attr("name");
-                        //     if(val == "") {
-                        //         alert("must not be empty");
-                        //         return;
-                        //     }
-                        //     entries += "<td ondblclick='putLineInEdit(this)' id='td'><input form='form' name='"+name+"_"+ctr+"' type='text' value='"+val+"' style='outline: none; border: none;background-color: transparent' readonly></td>"
-                        //     ctr++;
-                        //
-                        // }
-                        // entries += "</tr>";
-
                         let ctr = $("#body").children().filter("tr").length + 1;
                         let entries =
                         `<tr>
@@ -186,12 +169,6 @@
                     $(e).parent().parent().siblings().filter("td").children().prop("disabled",false).css("color","black");
                     reCalcInvoiceTotalPrice();
                 }
-                //
-                // $("#btn_add-new-item-to-edited-invoice").on("click",function (e){
-                //     e.preventDefault();
-                //     // $(".row input[type='text'],.row input[type='number'],.row select").prop("disabled",false);
-                //     isNewLineMode=true;
-                // });
                 function reCalcInvoiceTotalPrice(){
                     let total_price = 0;
                     $("#body tr td input[name^='total_price_']").filter(function (){
@@ -215,61 +192,6 @@
             </script>
     @endsection
 </x-masterLayout.master>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{{--if (errors[0].indexOf("first_part_name")>=0){--}}
-{{--@php--}}
-{{--    $error = __("global.first_part_name_is_not_correct",[],session("lang"));--}}
-{{--@endphp--}}
-{{--}--}}
-{{--let errMessage = `--}}
-{{--<div id="errors" style="max-width: 200px; position: fixed;bottom: 10px; @if(auth()->user()->getConfig("language") == "arabic") left: 2px; @else right: 2px; @endif z-index: 100">--}}
-{{--    <button id="btn_hide_all" onclick="$('#errors').slideToggle();" class="btn btn-info btn-sm btn-block mb-2" >--}}
-{{--        {{__("global.hide_all",[],session("lang"))}}--}}
-{{--    </button>--}}
-{{--    <div class="alert alert-danger alert-dismissible fade show">--}}
-{{--        <button class="close" data-dismiss="alert" type="button">--}}
-{{--            <span>×</span>--}}
-{{--        </button>--}}
-{{--        {{$error}}--}}
-{{--    </div>--}}
-{{--</div>`;--}}
-{{--document.body.innerHTML+=errMessage;--}}
-{{--setTimeout(function (){--}}
-{{--$("#errors").slideUp();--}}
-{{--},6000);--}}
-{{--$("#btn_hide_all").on("click",function (){--}}
-{{--$('#errors').slideToggle();--}}
-{{--});--}}
-
-
-
-
-
-
 
 
 

@@ -1,4 +1,4 @@
--<x-masterLayout.master>
+<x-masterLayout.master>
 
     @section("title")
         {{ __("global.new_cash_invoice",[],session("lang")) }}
@@ -23,7 +23,10 @@
             let ids = [];
             let isNewLineMode = true;
             let isLineInEditing = false;
-            $("#first_part_name").click();
+            $("input#first_part_name").focus();
+            $("input#first_part_name").change();
+
+
             function validateDropDownBox(dropDownBox){
                 let error="";
                 let options = $(dropDownBox).siblings("div").children("option");
