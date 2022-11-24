@@ -1,6 +1,6 @@
 <x-masterLayout.master>
     @section("title")
-        {{ __("global.user_config",[],session("lang")) }}
+        {{ __("global.user_config") }}
     @endsection
     @section('content')
         <div class="container">
@@ -8,10 +8,10 @@
                 <div class="card-header p-0 pt-1">
                     <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="global-config-tab" data-toggle="pill" href="#global-config" role="tab" aria-controls="global-config" aria-selected="false">{{__("global.global",[],session("lang"))}}</a>
+                            <a class="nav-link active" id="global-config-tab" data-toggle="pill" href="#global-config" role="tab" aria-controls="global-config" aria-selected="false">{{__("global.global")}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="app-look-config-tab" data-toggle="pill" href="#app-look-config" role="tab" aria-controls="app-look-config" aria-selected="true">{{__("global.look",[],session("lang"))}}</a>
+                            <a class="nav-link" id="app-look-config-tab" data-toggle="pill" href="#app-look-config" role="tab" aria-controls="app-look-config" aria-selected="true">{{__("global.look")}}</a>
                         </li>
                     </ul>
                 </div>

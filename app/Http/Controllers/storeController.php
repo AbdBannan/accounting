@@ -46,9 +46,9 @@ class storeController extends Controller
 
         $result = Store::create($store);
 //        if ($result!=null) {
-//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.store",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.store")]));
 //        }else{
-//            session()->flash("success",__("messages.not_created_successfully",["attribute"=>__("global.store",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.not_created_successfully",["attribute"=>__("global.store")]));
 //        }
         globalFunctions::flashMessage("create",$result,"store");
         globalFunctions::registerUserActivityLog("added","store",$result->id);
@@ -103,11 +103,11 @@ class storeController extends Controller
         }
         $result = null;
         if ($store->isDirty(["name","location","id"])) {
-//            session()->flash("success",__("messages.updated_successfully",["attribute"=>__("global.store",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.updated_successfully",["attribute"=>__("global.store")]));
             $result = $store->save();
         }
 //        else{
-//            session()->flash("success",__("messages.nothing_to_be_updated",[],session("lang")));
+//            session()->flash("success",__("messages.nothing_to_be_updated"));
 //        }
         globalFunctions::flashMessage("update",$result,"store");
         globalFunctions::registerUserActivityLog("updated","store",$store->id);

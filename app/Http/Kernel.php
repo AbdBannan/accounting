@@ -69,6 +69,6 @@ class Kernel extends HttpKernel
         "activated" => \App\Http\Middleware\ActivatedMiddleWare::class,
         "saveCurrentRequest" => \App\Http\Middleware\SaveCurrentRequest::class,
         "cleanRecyclebinCheck" => \App\Http\Middleware\CleanRecyclebinMiddleware::class,
-        "localizationMiddleWare" => \App\Http\Middleware\localizationMiddleWare::class,
+        "localization" => \App\Http\Middleware\localizationMiddleWare::class,
     ];
 }

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Mailgun\Mailgun;
 use Illuminate\Support\Facades\Mail;
 
@@ -16,20 +18,20 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware(["auth","saveCurrentRequest"])->group(function (){
+Route::middleware(["auth","saveCurrentRequest","localization"])->group(function (){
     Route::get('/',function (){
        return redirect("/welcome");
     });
 //    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });
 
-Route::middleware(["auth","cleanRecyclebinCheck"])->group(function (){
+Route::middleware(["auth","cleanRecyclebinCheck","localization"])->group(function (){
     Route::get('/welcome',function () {
         return view('welcomePage');
     })->name("welcomePage");
 });
 
-Route::middleware(["auth","role:admin","saveCurrentRequest"])->group(function (){
+Route::middleware(["auth","role:admin","saveCurrentRequest","localization"])->group(function (){
     Route::get("/dashboard",function(){
         return view("admin.dashboard");
     })->name("dashboard");

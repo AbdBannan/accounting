@@ -56,7 +56,7 @@ class accountController extends Controller
         if ($request["reference"]!=null && $request["reference"]!=0){
             $ref_account = Account::find($request["reference"]);
             if ($ref_account == null || $ref_account->account_type == 0){// means reference is invalid
-                session()->flash("error",__("messages.invalid_reference",[],session("lang")));
+                session()->flash("error",__("messages.invalid_reference"));
 //                globalFunctions::flashMessage("create",$result,"user");
                 return back();
             }
@@ -64,9 +64,9 @@ class accountController extends Controller
 
         $result = Account::create($request->all());
 //        if ($result!=null) {
-//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.account")]));
 //        }else{
-//            session()->flash("success",__("messages.not_created_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.not_created_successfully",["attribute"=>__("global.account")]));
 //        }
         globalFunctions::flashMessage("create",$result,"account");
         globalFunctions::registerUserActivityLog("added","account",$result->id);
@@ -129,7 +129,7 @@ class accountController extends Controller
         if ($request["reference"]!=null && $request["reference"]!=0){
             $ref_account = Account::find($request["reference"]);
             if ($ref_account == null || $ref_account->account_type == 0){// means reference is invalid
-                session()->flash("error",__("messages.invalid_reference",[],session("lang")));
+                session()->flash("error",__("messages.invalid_reference"));
                 return back();
             }
         }
@@ -142,11 +142,11 @@ class accountController extends Controller
 
         $result = null;
         if ($account->isDirty(["id","name","reference","group","account_type"])) {
-//            session()->flash("success",__("messages.updated_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.updated_successfully",["attribute"=>__("global.account")]));
             $result = $account->save();
         }
 //        else{
-//            session()->flash("success",__("messages.nothing_to_be_updated",[],session("lang")));
+//            session()->flash("success",__("messages.nothing_to_be_updated"));
 //        }
         globalFunctions::flashMessage("update",$result,"account");
         globalFunctions::registerUserActivityLog("updated","account",$account->id);
@@ -176,9 +176,9 @@ class accountController extends Controller
         }
 
 //        if ($result!=null) {
-//            session()->flash("success",__("messages.deleted_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.deleted_successfully",["attribute"=>__("global.account")]));
 //        }else{
-//            session()->flash("success",__("messages.not_deleted_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.not_deleted_successfully",["attribute"=>__("global.account")]));
 //        }
         globalFunctions::flashMessage("delete",$result,"account");
 
@@ -218,9 +218,9 @@ class accountController extends Controller
         }
 
 //        if ($result!=null) {
-//            session()->flash("success",__("messages.recycled_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.recycled_successfully",["attribute"=>__("global.account")]));
 //        }else{
-//            session()->flash("success",__("messages.not_recycled_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.not_recycled_successfully",["attribute"=>__("global.account")]));
 //        }
         globalFunctions::flashMessage("softDelete",$result,"account");
 
@@ -249,9 +249,9 @@ class accountController extends Controller
             header('Location:'+$_SERVER['HTTP_REFERER']);
         }
 //        if ($result!=null) {
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.account")]));
 //        }else{
-//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.account",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.restored_successfully",["attribute"=>__("global.account")]));
 //        }
         globalFunctions::flashMessage("restore",$result,"account");
 

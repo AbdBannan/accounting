@@ -29,9 +29,9 @@ class Product extends Model
     public function getAccountTypeAttribute($value)
     {
         if ($value == 1){
-            $value = __("global.primary",[],session("lang"));
+            $value = __("global.primary");
         } elseif ($value == 0) {
-            $value = __("global.secondary",[],session("lang"));
+            $value = __("global.secondary");
         }
         return $value;
     }

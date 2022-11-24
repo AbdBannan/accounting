@@ -47,9 +47,9 @@ permissionController extends Controller
             "slug"=>Str::of(Str::ucfirst($input["name"]))->slug("-")
         ]);
 //        if ($result!=null) {
-//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.permission",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.permission")]));
 //        }else{
-//            session()->flash("success",__("messages.not_created_successfully",["attribute"=>__("global.permission",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.not_created_successfully",["attribute"=>__("global.permission")]));
 //        }
         globalFunctions::flashMessage("create",$result,"permission");
         globalFunctions::registerUserActivityLog("added","permission",$result->id);
@@ -98,11 +98,11 @@ permissionController extends Controller
 
         $result = null;
         if ($permission->isDirty(["name"])) {
-//            session()->flash("success",__("messages.updated_successfully",["attribute"=>__("global.permission",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.updated_successfully",["attribute"=>__("global.permission")]));
             $result = $permission->save();
         }
 //        else{
-//            session()->flash("success",__("messages.nothing_to_be_updated",[],session("lang")));
+//            session()->flash("success",__("messages.nothing_to_be_updated"));
 //        }
         globalFunctions::flashMessage("update",$result,"permission");
         globalFunctions::registerUserActivityLog("updated","permission",$permission->id);

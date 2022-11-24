@@ -107,7 +107,7 @@ class discoverActionsController extends Controller
             $roled_line = new Journal();
             $roled_line->debit = $roled_debit;
             $roled_line->credit = $roled_credit;
-            $roled_line->notes = __("global.checked",[],session("lang"));
+            $roled_line->notes = __("global.checked");
             $roled_line->closing_date = new DateTime("01-01-0001");
             $roled_line->invoice_type = -1; // means checked point
 
@@ -124,7 +124,7 @@ class discoverActionsController extends Controller
 //        $roled_line = new Journal();
 //        $roled_line->debit = $roled_balance->debit;
 //        $roled_line->credit = $roled_balance->credit;
-//        $roled_line->notes = __("global.roled",[],session("lang"));
+//        $roled_line->notes = __("global.roled");
 //        $roled_line->closing_date = Carbon::now();
 //
 //        $actions->add($roled_line);
@@ -186,7 +186,7 @@ class discoverActionsController extends Controller
 //        $account_1_id = Account::where("name",$request["account_1"])->first()->id;
 //        $accounts_2_id = Account::where("name",$request["account_2"])->first()->id+1;
 //        if ($account_1_id >$accounts_2_id){
-//            session()->flash("error",__("messages.second_greater_than_first",[],session("lang")));
+//            session()->flash("error",__("messages.second_greater_than_first"));
 //            return back();
 //        }
 //        $balances = Journal::whereBetween("first_part_id",[$account_1_id,$accounts_2_id])->selectRaw("first_part_name,sum(debit) as debit,sum(credit) as credit")->groupBy(["first_part_name"])->orderBy("first_part_name")->get();
@@ -231,7 +231,7 @@ class discoverActionsController extends Controller
         $account_1_id = Account::where("name",$request["account_1"])->first()->id;
         $account_2_id = Account::where("name",$request["account_2"])->first()->id;
         if ($account_1_id > $account_2_id){
-            session()->flash("error",__("messages.second_greater_than_first",[],session("lang")));
+            session()->flash("error",__("messages.second_greater_than_first"));
             return back();
         }
 //        dd($request->all());
@@ -266,9 +266,9 @@ class discoverActionsController extends Controller
     public function makeCheckPoint(Request $request){
         $result = Journal::where("row_id",$request["check_point_row_id"])->update(["equivalent"=>1]);
         if ($result==1) {
-            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.check_point",[],session("lang"))],session("lang")));
+            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.check_point")]));
         } else {
-            session()->flash("error",__("messages.not_created_successfully",["attribute"=>__("global.check_point",[],session("lang"))],session("lang")));
+            session()->flash("error",__("messages.not_created_successfully",["attribute"=>__("global.check_point")]));
         }
         globalFunctions::registerUserActivityLog("made","check_point",$request["check_point_row_id"]);
         return back();
@@ -372,7 +372,7 @@ class discoverActionsController extends Controller
             $roled_line->debit = $roled_debit;
             $roled_line->credit = $roled_credit;
             $roled_line->num_for_pound = 1;
-            $roled_line->notes = __("global.checked",[],session("lang"));
+            $roled_line->notes = __("global.checked");
             $roled_line->closing_date = new DateTime("01-01-0001");
             $roled_line->invoice_type = -1; // means checked point
 

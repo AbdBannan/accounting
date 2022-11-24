@@ -1,13 +1,13 @@
 <x-masterLayout.master>
     @section("title")
-        {{ __("global.products_discover_by_store",[],session("lang")) }}
+        {{ __("global.products_discover_by_store") }}
     @endsection
     @section('content')
         <div class="container">
             @if($actions != null)
                 <div class="card shadow">
                     <div class="card-header py-3">
-                        <h6 class="d-inline-block m-0 font-weight-bold text-primary">{{__("global.products_discover_by_store",[],session("lang"))}}</h6>
+                        <h6 class="d-inline-block m-0 font-weight-bold text-primary">{{__("global.products_discover_by_store")}}</h6>
                     </div>
                     <div class="card-body">
 
@@ -15,11 +15,11 @@
                             <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>{{__("global.product_id",[],session("lang"))}}</th>
-                                    <th>{{__("global.product_name",[],session("lang"))}}</th>
-                                    <th>{{__("global.balance",[],session("lang"))}}</th>
-                                    <th>{{__("global.price",[],session("lang"))}}</th>
-                                    <th>{{__("global.total",[],session("lang"))}}</th>
+                                    <th>{{__("global.product_id")}}</th>
+                                    <th>{{__("global.product_name")}}</th>
+                                    <th>{{__("global.balance")}}</th>
+                                    <th>{{__("global.price")}}</th>
+                                    <th>{{__("global.total")}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -51,15 +51,15 @@
                     </form>
                     <div class="card-footer">
                         @if($actions!=null)
-                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_in_quantity",[],session("lang"))}} :
+                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_in_quantity")}} :
                                 <span id="total_received" style="font-style: italic; color:darkblue">{{$total_in_quantity}}</span>
                                 {{--                                <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}
                             </label>
-                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_out_quantity",[],session("lang"))}} :
+                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_out_quantity")}} :
                                 <span id="total_payed" style="font-style: italic; color:darkblue">{{$total_out_quantity}}</span>
                                 {{--                                 <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}{{--should be syrian pound--}}
                             </label>
-                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.balance",[],session("lang"))}} :
+                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.balance")}} :
                                 <span id="total_payed" style="font-style: italic; color:darkblue">{{$total_balance}}</span>
                                 {{--                                 <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}{{--should be syrian pound--}}
                             </label>
@@ -67,7 +67,7 @@
                     </div>
                 </div>
             @endif
-            <a href="{{route("discover.chooseListProductDiscover")}}" class="btn btn-outline-primary">{{__("global.discovers",[],session("lang"))}}</a>
+            <a href="{{route("discover.chooseListProductDiscover")}}" class="btn btn-outline-primary">{{__("global.discovers")}}</a>
         </div>
     @endsection
     @section("script")

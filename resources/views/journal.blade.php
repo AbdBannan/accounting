@@ -1,6 +1,6 @@
 <x-masterLayout.master>
     @section("title")
-        {{ __("global.stores",[],session("lang")) }}
+        {{ __("global.stores") }}
     @endsection
 
     @section("recycle_bin")
@@ -15,7 +15,7 @@
 
                     <div class="card shadow">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">{{__("global.stores",[],session("lang"))}}</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">{{__("global.stores")}}</h6>
                         </div>
                         <div class="card-body">
 

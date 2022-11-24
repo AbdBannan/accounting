@@ -38,13 +38,13 @@ class archiveBalancesController extends Controller
                     $blns->sum_of_balance = $balance->credit - $balance->debit;
                     $blns->first_part_id = $balance->first_part_id;
                     $blns->first_part_name = $balance->first_part_name;
-                    $blns->pound_type = __("global.Syrian",[],session("lang"));
+                    $blns->pound_type = __("global.Syrian");
                     $blns->num_for_pound = 1;
                     $blns->detail = -1;
                     $blns->invoice_type = -1;
                     $blns->created_at = $request["date"];
                     $blns->closing_date = $request["date"];
-                    $blns->notes = __("global.roled_balance",[],session("lang"));
+                    $blns->notes = __("global.roled_balance");
                     $blns->save();
                 }
 
@@ -68,7 +68,7 @@ class archiveBalancesController extends Controller
                     $blns->invoice_type = -1;
                     $blns->created_at = $request["date"];
                     $blns->closing_date = $request["date"];
-                    $blns->notes = __("global.product_of_begin_and_end",[],session("lang"));
+                    $blns->notes = __("global.product_of_begin_and_end");
                     $blns->save();
                 }
 

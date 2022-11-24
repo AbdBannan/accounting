@@ -1,13 +1,13 @@
 <x-masterLayout.master>
     @section("title")
-        {{ __("global.accounts_discover",[],session("lang")) }}
+        {{ __("global.accounts_discover") }}
     @endsection
     @section('content')
         <div class="container">
             @if($info != null)
                 <div class="card shadow">
                     <div class="card-header py-3">
-                        <h6 class="d-inline-block m-0 font-weight-bold text-primary">{{__("global.accounts_discover",[],session("lang"))}}</h6>
+                        <h6 class="d-inline-block m-0 font-weight-bold text-primary">{{__("global.accounts_discover")}}</h6>
                     </div>
                     <div class="card-body">
 
@@ -15,11 +15,11 @@
                             <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>{{__("global.account_name",[],session("lang"))}}</th>
-                                    <th>{{__("global.balance",[],session("lang"))}}</th>
-                                    <th>{{__("global.date",[],session("lang"))}}</th>
-                                    <th>{{__("global.last_cash_action",[],session("lang"))}}</th>
-                                    <th>{{__("global.percent",[],session("lang"))}}</th>
+                                    <th>{{__("global.account_name")}}</th>
+                                    <th>{{__("global.balance")}}</th>
+                                    <th>{{__("global.date")}}</th>
+                                    <th>{{__("global.last_cash_action")}}</th>
+                                    <th>{{__("global.percent")}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -44,22 +44,22 @@
                     </div>
                     <div class="card-footer">
                         @if($info!=null)
-                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received",[],session("lang"))}} :
+                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received")}} :
                             <span id="total_received" style="font-style: italic; color:darkblue">{{$total_debit}}</span>
 {{--                                <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}
                             </label>
-                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed",[],session("lang"))}} :
+                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed")}} :
                                 <span id="total_payed" style="font-style: italic; color:darkblue">{{$total_credit}}</span>
 {{--                                 <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}{{--should be syrian pound--}}
                             </label>
-                            <label  class="ml-md-5 ml-sm-3" style="font-size: large">{{__("global.balance",[],session("lang"))}} :
+                            <label  class="ml-md-5 ml-sm-3" style="font-size: large">{{__("global.balance")}} :
                                 <span id="total_payed" style="font-style: italic; color:darkblue">{{$total_credit - $total_debit}}</span>
                             </label>
                         @endif
                     </div>
                 </div>
                 <div class="p-2">
-                    <a href="{{route("discover.chooseListGlobalDiscover")}}" class="btn btn-outline-primary">{{__("global.discovers",[],session("lang"))}}</a>
+                    <a href="{{route("discover.chooseListGlobalDiscover")}}" class="btn btn-outline-primary">{{__("global.discovers")}}</a>
                 </div>
             @endif
         </div>

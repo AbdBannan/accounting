@@ -43,9 +43,9 @@ class categoryController extends Controller
             ]);
         $result = Category::create($request->all());
 //        if ($result!=null) {
-//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.category",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.category")]));
 //        }else{
-//            session()->flash("success",__("messages.not_created_successfully",["attribute"=>__("global.category",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.not_created_successfully",["attribute"=>__("global.category")]));
 //        }
 
         globalFunctions::flashMessage("create",$result,"category");
@@ -96,11 +96,11 @@ class categoryController extends Controller
 
         $result = null;
         if ($category->isDirty(["name","id"])) {
-//            session()->flash("success",__("messages.updated_successfully",["attribute"=>"Category"],session("lang")));
+//            session()->flash("success",__("messages.updated_successfully",["attribute"=>"Category"]));
             $result = $category->save();
         }
 //        else{
-//            session()->flash("success",__("messages.nothing_to_be_updated",[],session("lang")));
+//            session()->flash("success",__("messages.nothing_to_be_updated"));
 //        }
         globalFunctions::flashMessage("update",$result,"category");
         globalFunctions::registerUserActivityLog("updated","category",$category->id);

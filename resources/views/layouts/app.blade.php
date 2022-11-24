@@ -7,13 +7,15 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @if(session("lang") === null)
-        {{session(["lang"=>"ar"])}}
-    @endif
+{{--    @if(app()->getLocale() === null)--}}
+{{--        {{session(["lang"=>"ar"])}}--}}
+{{--    @endif--}}
     @isset($_GET["lang"])
-        {{session(["lang"=>$_GET["lang"]])}}
+        @php
+            app()->setLocale($_GET["lang"])
+        @endphp
     @endisset
-    <title>{{ __("global.".config('app.name', 'accounting'),[],session("lang")) }}</title>
+    <title>{{ __("global.".config('app.name', 'accounting')) }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -35,7 +37,7 @@
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="{{asset("css/plugins/overlayScrollbars/css/OverlayScrollbars.min.css")}}">
 
-    @if(session("lang") == "ar")
+    @if(app()->getLocale() == "ar")
     <!-- Theme style RTL -->
         <link rel="stylesheet" href="{{asset("css/dist/css/ar/adminlte.css")."?var=".rand()}}">
         <!-- Custom style for RTL -->
@@ -46,13 +48,13 @@
     @endif
 </head>
 <body>
-    <input form="form_auth" type="hidden" name="language" value="{{session("lang")}}">
+    <input form="form_auth" type="hidden" name="language" value="{{app()->getLocale()}}">
 
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ __("global.".config('app.name', 'accounting'),[],session("lang")) }}
+                    {{ __("global.".config('app.name', 'accounting')) }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -68,13 +70,13 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('global.login',[],session("lang")) }}</a>
+                                    <a class="nav-link" href="{{ route('login')."?lang=$_GET[lang]" }}">{{ __('global.login') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('global.register',[],session("lang")) }}</a>
+                                    <a class="nav-link" href="{{ route('register')."?lang=$_GET[lang]" }}">{{ __('global.register') }}</a>
                                 </li>
                             @endif
 
@@ -88,7 +90,7 @@
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout_form').submit();">
-                                        {{ __('global.logout',[],session("lang")) }}
+                                        {{ __('global.logout') }}
                                     </a>
 
                                     <form id="logout_form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -105,9 +107,8 @@
 
         <main class="py-4">
             <div class="container">
-
-                <a href="{{$_SERVER["PHP_SELF"]."?lang=ar"}}" id="lang">{{__("global.arabic",[],session("lang"))}}</a> /
-                <a href="{{$_SERVER["PHP_SELF"]."?lang=en"}}" id="lang">{{__("global.english",[],session("lang"))}}</a>
+                <a href="{{$_SERVER["PHP_SELF"]."?lang=ar"}}" id="lang">{{__("global.arabic")}}</a> /
+                <a href="{{$_SERVER["PHP_SELF"]."?lang=en"}}" id="lang">{{__("global.english")}}</a>
             </div>
             @yield('content')
         </main>

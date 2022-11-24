@@ -144,12 +144,12 @@ class OldJournal extends Model
             'dollar'=>'dollar'
         ];
         $this->attributes["pound_type"] = $translate[$value];
-//        return __("global.$value",[],session("lang"));
+//        return __("global.$value");
     }
 
 
     public function getPoundTypeAttribute($value){
-        return __("global.$value",[],session("lang"));
+        return __("global.$value");
     }
 
 //    public function getDebitAttribute($value){

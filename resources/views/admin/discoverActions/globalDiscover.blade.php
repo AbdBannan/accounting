@@ -1,6 +1,6 @@
 <x-masterLayout.master>
     @section("title")
-        {{ __("global.global_discover",[],session("lang")) }}
+        {{ __("global.global_discover") }}
     @endsection
     @section('content')
         <div class="container">
@@ -10,16 +10,16 @@
                     <form action="{{route("discover.globalDiscoverLastYear")}}" >
                         <div class="form-group">
                             <input name="account" type="hidden" value="{{$account_name}}">
-                            <input type="submit" class="btn btn-outline-primary" value="{{__("global.last_year",[],session("lang"))}}">
+                            <input type="submit" class="btn btn-outline-primary" value="{{__("global.last_year")}}">
                         </div>
                     </form>
                 @endif
 
                     <div class="card shadow">
                     <div class="card-header py-3">
-                        <h6 class="d-inline-block m-0 font-weight-bold text-primary">{{__("global.account_name",[],session("lang")) . " : " . $account_name}}</h6>
+                        <h6 class="d-inline-block m-0 font-weight-bold text-primary">{{__("global.account_name") . " : " . $account_name}}</h6>
                         @if(isset($start_date) and isset($end_date) )
-                            <p class="m-0 font-weight-bold text-secondary">{{__("global.date_between",[],session("lang")) . " : (" . $start_date . " , " . $end_date . ")"}}</p>
+                            <p class="m-0 font-weight-bold text-secondary">{{__("global.date_between") . " : (" . $start_date . " , " . $end_date . ")"}}</p>
                         @endif
                     </div>
                     <div class="card-body">
@@ -30,16 +30,16 @@
                                 <tr>
                                     <th hidden></th>
                                     <th hidden></th>
-                                    <th>{{__("global.balance",[],session("lang"))}}</th>
-                                    <th>{{__("global.received",[],session("lang"))}}</th>
-                                    <th>{{__("global.payed",[],session("lang"))}}</th>
-                                    <th>{{__("global.quantity",[],session("lang"))}}</th>
-                                    <th>{{__("global.price",[],session("lang"))}}</th>
-                                    <th>{{__("global.date",[],session("lang"))}}</th>
-                                    <th>{{__("global.account_name",[],session("lang"))}}</th>
-                                    <th>{{__("global.product_name",[],session("lang"))}}</th>
-                                    <th>{{__("global.notes",[],session("lang"))}}</th>
-                                    <th>{{__("global.invoice_type",[],session("lang"))}}</th>
+                                    <th>{{__("global.balance")}}</th>
+                                    <th>{{__("global.received")}}</th>
+                                    <th>{{__("global.payed")}}</th>
+                                    <th>{{__("global.quantity")}}</th>
+                                    <th>{{__("global.price")}}</th>
+                                    <th>{{__("global.date")}}</th>
+                                    <th>{{__("global.account_name")}}</th>
+                                    <th>{{__("global.product_name")}}</th>
+                                    <th>{{__("global.notes")}}</th>
+                                    <th>{{__("global.invoice_type")}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -74,11 +74,11 @@
                                             <td>{{$action->second_part_name}}</td>
                                             <td>{{$action->product_name}}</td>
                                             @if($action->equivalent === 1)
-                                            <td>{{$action->notes . " (" . __("global.check_point",[],session("lang")) . ")"}}</td>
+                                            <td>{{$action->notes . " (" . __("global.check_point") . ")"}}</td>
                                             @else
                                             <td>{{$action->notes }}</td>
                                             @endif
-                                            <td>{{__("global.$action->invoice_type",[],session("lang"))}}</td>
+                                            <td>{{__("global.$action->invoice_type")}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -87,31 +87,31 @@
                     </div>
                     <div class="card-footer">
                         @if($actions!=null)
-                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received",[],session("lang"))}} :
+                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received")}} :
                                 <span id="total_received" style="font-style: italic; color:darkblue">{{$total_debit}}</span>
                                 {{--                <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}
                             </label>
-                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed",[],session("lang"))}} :
+                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed")}} :
                                 <span id="total_payed" style="font-style: italic; color:darkblue">{{$total_credit}}</span>
                                 {{--                <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}{{--should be syrian pound--}}
                             </label>
                             <label  class="ml-md-5 ml-sm-3" style="font-size: large">
                                 @if(($total_credit - $total_debit)>0)
-                                    {{__("global.you_have",[],session("lang")) . " : ". abs($total_credit - $total_debit)}}
+                                    {{__("global.you_have") . " : ". abs($total_credit - $total_debit)}}
                                 @elseif(($total_credit - $total_debit)==0)
-                                    {{__("global.balance_is_zero",[],session("lang")) . " : ". abs($total_credit - $total_debit)}}
+                                    {{__("global.balance_is_zero") . " : ". abs($total_credit - $total_debit)}}
                                 @elseif(($total_credit - $total_debit)<0)
-                                    {{__("global.we_have",[],session("lang")) . " : ". abs($total_credit - $total_debit)}}
+                                    {{__("global.we_have") . " : ". abs($total_credit - $total_debit)}}
                                 @endif
                             </label>
                         @endif
                     </div>
                 </div>
                 <div class="p-2">
-                    <a href="{{route("discover.chooseListGlobalDiscover")}}" class="btn btn-outline-primary">{{__("global.discovers",[],session("lang"))}}</a>
-                    <a href="{{route("invoice.createCashInvoice")}}" class="btn btn-outline-primary">{{__("global.payment",[],session("lang"))}}</a>
-                    <a href="{{route("invoice.createCashInvoice")}}" class="btn btn-outline-primary">{{__("global.receive",[],session("lang"))}}</a>
-                    <input type="submit" form="check_point_form" class="btn btn-outline-primary" value="{{__("global.check_point",[],session("lang"))}}">
+                    <a href="{{route("discover.chooseListGlobalDiscover")}}" class="btn btn-outline-primary">{{__("global.discovers")}}</a>
+                    <a href="{{route("invoice.createCashInvoice")}}" class="btn btn-outline-primary">{{__("global.payment")}}</a>
+                    <a href="{{route("invoice.createCashInvoice")}}" class="btn btn-outline-primary">{{__("global.receive")}}</a>
+                    <input type="submit" form="check_point_form" class="btn btn-outline-primary" value="{{__("global.check_point")}}">
                     <form hidden id="check_point_form" method="post" action="{{route("discover.makeCheckPoint")}}">
                         @csrf
                         <input name="check_point_row_id" id="check_point_row_id" type="hidden" value="">
@@ -120,20 +120,20 @@
             @else
                 <div id="accordion" class="bg-gradient-light shadow p-md-5 p-sm-2" style="width: 50%;margin: auto;">
                     <div id="buttons">
-                        <button data-target="#globalDiscoverUntilNowCollapse" class="btn btn-primary btn-block">{{__("global.discover_until_now",[],session("lang"))}}</button>
-                        <button data-target="#globalDiscoverAfterLastCheckedPointCollapse" class="btn btn-primary btn-block">{{__("global.discover_until_last_checked_point",[],session("lang"))}}</button>
-                        <button data-target="#globalDiscoverUntilLastBalanceCollapse" class="btn btn-primary btn-block">{{__("global.discover_until_last_balance",[],session("lang"))}}</button>
-                        <button data-target="#globalDiscoverBetweenTowDatesCollapse" class="btn btn-primary btn-block">{{__("global.discover_between_tow_dates",[],session("lang"))}}</button>
-                        <button data-target="#globalDiscoverByAccountCollapse" class="btn btn-primary btn-block">{{__("global.discover_by_balance",[],session("lang"))}}</button>
+                        <button data-target="#globalDiscoverUntilNowCollapse" class="btn btn-primary btn-block">{{__("global.discover_until_now")}}</button>
+                        <button data-target="#globalDiscoverAfterLastCheckedPointCollapse" class="btn btn-primary btn-block">{{__("global.discover_until_last_checked_point")}}</button>
+                        <button data-target="#globalDiscoverUntilLastBalanceCollapse" class="btn btn-primary btn-block">{{__("global.discover_until_last_balance")}}</button>
+                        <button data-target="#globalDiscoverBetweenTowDatesCollapse" class="btn btn-primary btn-block">{{__("global.discover_between_tow_dates")}}</button>
+                        <button data-target="#globalDiscoverByAccountCollapse" class="btn btn-primary btn-block">{{__("global.discover_by_balance")}}</button>
                     </div>
                     <div id="globalDiscoverUntilNowCollapse" class="collapse">
-                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(app()->getLocale() == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back")}}"></i></a>
                         <form  style="margin: auto" action="{{route("discover.globalDiscoverUntilNow")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
-                                <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
+                                <label style="font-size: x-large" for="account" >{{__("global.account")}}</label>
                                 <input id="account_1" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                    <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account">
                                     @foreach(App\Models\Account::get() as $account)
@@ -142,17 +142,17 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_submit_global_discover_until_now" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
+                            <input id="btn_submit_global_discover_until_now" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                     <div id="globalDiscoverAfterLastCheckedPointCollapse" class="collapse">
-                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(app()->getLocale() == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back")}}"></i></a>
                         <form  style="margin: auto" action="{{route("discover.globalDiscoverAfterLastCheckedPoint")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
-                                <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
+                                <label style="font-size: x-large" for="account" >{{__("global.account")}}</label>
                                 <input id="account_2" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                    <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account">
                                     @foreach(App\Models\Account::get() as $account)
@@ -161,17 +161,17 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_submit_global_after_last_checked_point" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
+                            <input id="btn_submit_global_after_last_checked_point" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                     <div id="globalDiscoverUntilLastBalanceCollapse" class="collapse">
-                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(app()->getLocale() == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back")}}"></i></a>
                         <form  style="margin: auto" action="{{route("discover.globalDiscoverUntilLastBalance")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
-                                <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
+                                <label style="font-size: x-large" for="account" >{{__("global.account")}}</label>
                                 <input id="account_3" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                    <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account">
                                     @foreach(App\Models\Account::get() as $account)
@@ -180,17 +180,17 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_submit_global_until_last_balance" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
+                            <input id="btn_submit_global_until_last_balance" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                     <div id="globalDiscoverBetweenTowDatesCollapse" class="collapse" >
-                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(app()->getLocale() == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back")}}"></i></a>
                         <form  style="margin: auto" action="{{route("discover.globalDiscoverBetweenTowDates")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
-                                <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
+                                <label style="font-size: x-large" for="account" >{{__("global.account")}}</label>
                                 <input id="account_4" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                    <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account">
                                     @foreach(App\Models\Account::get() as $account)
@@ -199,25 +199,25 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <label class="col-md-4 col-sm-12" style="font-size: x-large" for="account" >{{__("global.from",[],session("lang"))}}</label>
+                                <label class="col-md-4 col-sm-12" style="font-size: x-large" for="account" >{{__("global.from")}}</label>
                                 <input id="from" name="from" class="col-md-8 col-sm-12 form-control" type="date">
                             </div>
                             <div class="row">
-                                <label class="col-md-4 col-sm-12" style="font-size: x-large" for="account" >{{__("global.to",[],session("lang"))}}</label>
+                                <label class="col-md-4 col-sm-12" style="font-size: x-large" for="account" >{{__("global.to")}}</label>
                                 <input id="to" name="to" class="col-md-8 col-sm-12 form-control" type="date">
                             </div>
                             <hr>
-                            <input id="btn_submit_global_between_tow_dates" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
+                            <input id="btn_submit_global_between_tow_dates" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                     <div id="globalDiscoverByAccountCollapse" class="collapse" >
-                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(app()->getLocale() == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back")}}"></i></a>
                         <form id="accounts_form" style="margin: auto" action="{{route("discover.globalDiscoverByAccount")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
-                                <label style="font-size: x-large" for="account_1" >{{__("global.account",[],session("lang"))}}</label>
+                                <label style="font-size: x-large" for="account_1" >{{__("global.account")}}</label>
                                 <input id="account_5" name="account_1" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                    <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account_1">
                                     @foreach(App\Models\Account::get() as $account)
@@ -226,10 +226,10 @@
                                 </div>
                             </div>
                             <div class="position-relative form-group text-center">
-                                <label style="font-size: x-large" for="account_2" >{{__("global.account",[],session("lang"))}}</label>
+                                <label style="font-size: x-large" for="account_2" >{{__("global.account")}}</label>
                                 <input id="account_6" name="account_2" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                    <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account_2">
                                     @foreach(App\Models\Account::get() as $account)
@@ -238,7 +238,7 @@
                                 </div>
                             </div>
                             <hr>
-                            <input id="btn_submit_global_by_account" form="accounts_form" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
+                            <input id="btn_submit_global_by_account" form="accounts_form" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
 
                     </div>
@@ -325,14 +325,14 @@
 
 
 
-                let info = "{{__("global.Showing",[],session("lang"))}} _START_ {{__("global.to",[],session("lang"))}} _END_ {{__("global.of",[],session("lang"))}} _TOTAL_ {{__("global.entries",[],session("lang"))}}";
-                let emptyTable = "{{__("global.no_data_available_in_table",[],session("lang"))}}";
-                let infoEmpty = "{{__("global.Showing",[],session("lang"))}} 0 {{__("global.to",[],session("lang"))}} 0 {{__("global.of",[],session("lang"))}} 0 {{__("global.entries",[],session("lang"))}}";
-                let lengthMenu = "{{__("global.Show",[],session("lang"))}} _MENU_ {{__("global.entries",[],session("lang"))}}";let loadingRecords = "Please wait - loading...";
-                let search = "{{__("global.Search",[],session("lang"))}}:";
-                let next = "{{__("global.Next",[],session("lang"))}}";
-                let previous = "{{__("global.Previous",[],session("lang"))}}";
-                let infoFiltered = " - {{__("global.filtered_from",[],session("lang"))}} _MAX_ {{__("global.entries",[],session("lang"))}}";
+                let info = "{{__("global.Showing")}} _START_ {{__("global.to")}} _END_ {{__("global.of")}} _TOTAL_ {{__("global.entries")}}";
+                let emptyTable = "{{__("global.no_data_available_in_table")}}";
+                let infoEmpty = "{{__("global.Showing")}} 0 {{__("global.to")}} 0 {{__("global.of")}} 0 {{__("global.entries")}}";
+                let lengthMenu = "{{__("global.Show")}} _MENU_ {{__("global.entries")}}";let loadingRecords = "Please wait - loading...";
+                let search = "{{__("global.Search")}}:";
+                let next = "{{__("global.Next")}}";
+                let previous = "{{__("global.Previous")}}";
+                let infoFiltered = " - {{__("global.filtered_from")}} _MAX_ {{__("global.entries")}}";
                 $('#dataTable1').DataTable(
                     {
                         "ordering":false,

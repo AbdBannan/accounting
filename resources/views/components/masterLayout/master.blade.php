@@ -78,13 +78,7 @@
 
 @php
     $lang = (auth()->user()->getConfig("language") == "english")? "en": "ar" ;
-    app()->setLocale($lang);
     session(["lang"=>$lang]);
-    //config(['app.locale' => $lang]);
-    //cache(['config.locale' => "ar"]);
-    //dd(cache('config.locale'));
-    //$text = '<?php return ' . var_export(config('app'), true) . ';';
-    //file_put_contents(config_path('app.php'), $text);
 @endphp
 <body class="hold-transition
     @if(auth()->user()->getConfig("dark_mode") !== null) dark-mode @endif
@@ -145,10 +139,10 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a id="btn_welcome" href="{{route("welcomePage")}}" class="nav-link">{{__("global.home",[],session("lang"))}}</a>
+                    <a id="btn_welcome" href="{{route("welcomePage")}}" class="nav-link">{{__("global.home")}}</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">{{__("global.contact",[],session("lang"))}}</a>
+                    <a href="#" class="nav-link">{{__("global.contact")}}</a>
                 </li>
             </ul>
 
@@ -162,7 +156,7 @@
                     <div class="navbar-search-block">
                         <form class="form-inline">
                             <div class="input-group input-group-sm">
-                                <input id="search" class="form-control form-control-navbar" type="search" placeholder="{{__("global.Search",[],session("lang"))}}" aria-label="Search">
+                                <input id="search" class="form-control form-control-navbar" type="search" placeholder="{{__("global.Search")}}" aria-label="Search">
                                 <div class="input-group-append">
                                     <button class="btn btn-navbar" type="submit">
                                         <i class="fas fa-search"></i>
@@ -287,23 +281,23 @@
                          aria-labelledby="userDropdown">
                         <a class="dropdown-item" href="{{route("user.showUser",auth()->user())}}">
                             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                            {{__("global.profile",[],session("lang"))}}
+                            {{__("global.profile")}}
                         </a>
                         <a class="dropdown-item" href="{{route("config.viewUserConfig")}}">
                             <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                            {{__("global.settings",[],session("lang"))}}
+                            {{__("global.settings")}}
                         </a>
                         @if(auth()->user()->hasRole("admin"))
                             <a class="dropdown-item" href="{{route("activityLog.viewUsersActivityLog")}}">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                {{__("global.activity_log",[],session("lang"))}}
+                                {{__("global.activity_log")}}
                             </a>
                         @endif
                         @yield("recycle_bin")
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                            {{__("global.logout",[],session("lang"))}}
+                            {{__("global.logout")}}
                         </a>
                     </div>
                 </li>
@@ -343,7 +337,7 @@
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
                     <div class="input-group" data-widget="sidebar-search">
-                        <input id="search" class="form-control form-control-sidebar" type="search" placeholder="{{__("global.Search",[],session("lang"))}}" aria-label="Search">
+                        <input id="search" class="form-control form-control-sidebar" type="search" placeholder="{{__("global.Search")}}" aria-label="Search">
                         <div class="input-group-append">
                             <button class="btn btn-sidebar">
                                 <i class="fas fa-search fa-fw"></i>
@@ -370,63 +364,63 @@
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
-                                    {{__("global.management_section",[],session("lang"))}}
-                                    <i class="@if(session("lang") == "ar") left @else right @endif fas fa-angle-left"></i>
+                                    {{__("global.management_section")}}
+                                    <i class="@if(app()->getLocale() == "ar") left @else right @endif fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{route("dashboard")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.dashboard",[],session("lang"))}}</p>
+                                        <p>{{__("global.dashboard")}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("user.viewUsers")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.users",[],session("lang"))}}</p>
+                                        <p>{{__("global.users")}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("account.viewAccounts")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.accounts",[],session("lang"))}}</p>
+                                        <p>{{__("global.accounts")}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("role.viewRoles")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.roles",[],session("lang"))}}</p>
+                                        <p>{{__("global.roles")}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("permission.viewPermissions")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.permissions",[],session("lang"))}}</p>
+                                        <p>{{__("global.permissions")}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("pound.viewPounds")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.pounds",[],session("lang"))}}</p>
+                                        <p>{{__("global.pounds")}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a id="btn_show_discover_dashboard" href="{{route("discover.showDiscoverDashboard")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.discovers",[],session("lang"))}}</p>
+                                        <p>{{__("global.discovers")}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("backup.view")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.backups",[],session("lang"))}}</p>
+                                        <p>{{__("global.backups")}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("archive.viewArchiveBalances")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.role_balances",[],session("lang"))}}</p>
+                                        <p>{{__("global.role_balances")}}</p>
                                     </a>
                                 </li>
                             </ul>
@@ -437,66 +431,66 @@
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-file-invoice"></i>
                                 <p>
-                                    {{__("global.resources",[],session("lang"))}}
-                                    <i class="fas fa-angle-left @if(session("lang") == "ar") left @else right @endif"></i>
+                                    {{__("global.resources")}}
+                                    <i class="fas fa-angle-left @if(app()->getLocale() == "ar") left @else right @endif"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{route("product.viewProducts")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.products",[],session("lang"))}}</p>
+                                        <p>{{__("global.products")}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("store.viewStores")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.stores",[],session("lang"))}}</p>
+                                        <p>{{__("global.stores")}}</p>
                                     </a>
                                 </li>
 {{--                                <li class="nav-item">--}}
 {{--                                    <a href="{{route("category.viewCategories")}}" class="nav-link">--}}
 {{--                                        <i class="far fa-circle nav-icon"></i>--}}
-{{--                                        <p>{{__("global.categories",[],session("lang"))}}</p>--}}
+{{--                                        <p>{{__("global.categories")}}</p>--}}
 {{--                                    </a>--}}
 {{--                                </li>--}}
                             </ul>
                         </li>
 
-                        <li class="nav-header">{{__("global.invoices",[],session("lang"))}}</li>
+                        <li class="nav-header">{{__("global.invoices")}}</li>
 
                         {{--new invoices--}}
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-file-invoice"></i></i>
                                 <p>
-                                    {{__("global.add_new_invoice",[],session("lang"))}}
-                                    <i class="fas fa-angle-left @if(session("lang") == "ar") left @else right @endif"></i>
+                                    {{__("global.add_new_invoice")}}
+                                    <i class="fas fa-angle-left @if(app()->getLocale() == "ar") left @else right @endif"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a id="create_invoice" href="{{route("invoice.createInvoice","sale")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.sale",[],session("lang"))}}</p>
+                                        <p>{{__("global.sale")}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("invoice.createInvoice","purchase")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.purchase",[],session("lang"))}}</p>
+                                        <p>{{__("global.purchase")}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("invoice.createInvoice","sale_return")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.sale_return",[],session("lang"))}}</p>
+                                        <p>{{__("global.sale_return")}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("invoice.createInvoice","purchase_return")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.purchase_return",[],session("lang"))}}</p>
+                                        <p>{{__("global.purchase_return")}}</p>
                                     </a>
                                 </li>
                             </ul>
@@ -506,33 +500,33 @@
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-file-invoice"></i></i>
                                 <p>
-                                    {{__("global.view_invoices",[],session("lang"))}}
-                                    <i class="fas fa-angle-left @if(session("lang") == "ar") left @else right @endif"></i>
+                                    {{__("global.view_invoices")}}
+                                    <i class="fas fa-angle-left @if(app()->getLocale() == "ar") left @else right @endif"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{route("invoice.viewInvoices","sale")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.sale",[],session("lang"))}}</p>
+                                        <p>{{__("global.sale")}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("invoice.viewInvoices","purchase")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.purchase",[],session("lang"))}}</p>
+                                        <p>{{__("global.purchase")}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("invoice.viewInvoices","sale_return")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.sale_return",[],session("lang"))}}</p>
+                                        <p>{{__("global.sale_return")}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route("invoice.viewInvoices","purchase_return")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.purchase_return",[],session("lang"))}}</p>
+                                        <p>{{__("global.purchase_return")}}</p>
                                     </a>
                                 </li>
                             </ul>
@@ -542,34 +536,34 @@
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-file-invoice"></i>
                                 <p>
-                                    {{__("global.search_edit_delete",[],session("lang"))}}
-                                    <i class="fas fa-angle-left @if(session("lang") == "ar") left @else right @endif"></i>
+                                    {{__("global.search_edit_delete")}}
+                                    <i class="fas fa-angle-left @if(app()->getLocale() == "ar") left @else right @endif"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a id="btn_search_edit_delete_invoice" href="{{route("invoice.showSearchInvoice","none")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.search_edit_delete",[],session("lang"))}}</p>
+                                        <p>{{__("global.search_edit_delete")}}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a id="btn_invoices_recycle_bin" href="{{route("invoice.viewInvoiceRecyclebin","none")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.recyclebin",[],session("lang"))}}</p>
+                                        <p>{{__("global.recyclebin")}}</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
 
-                        <li class="nav-header">{{__("global.cash_invoices",[],session("lang"))}}</li>
+                        <li class="nav-header">{{__("global.cash_invoices")}}</li>
 
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-cash-register"></i>
                                 <p>
-                                    {{__("global.cash_invoices",[],session("lang"))}}
-                                    <i class="fas fa-angle-left @if(session("lang") == "ar") left @else right @endif"></i>
+                                    {{__("global.cash_invoices")}}
+                                    <i class="fas fa-angle-left @if(app()->getLocale() == "ar") left @else right @endif"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
@@ -577,41 +571,41 @@
                                 <li class="nav-item">
                                     <a href="{{route("invoice.createCashInvoice")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.add_new_cash_invoice",[],session("lang"))}}</p>
+                                        <p>{{__("global.add_new_cash_invoice")}}</p>
                                     </a>
                                 </li>
                                 {{--view cash invoices--}}
                                 <li class="nav-item">
                                     <a href="{{route("invoice.viewCashInvoices")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.view_cash_invoices",[],session("lang"))}}</p>
+                                        <p>{{__("global.view_cash_invoices")}}</p>
                                     </a>
                                 </li>
                                 {{--search edit delete cash invoice--}}
                                 <li class="nav-item">
                                     <a id="btn_search_edit_delete_cash" href="{{route("invoice.showSearchCashInvoice")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.search_edit_delete_cash_invoice",[],session("lang"))}}</p>
+                                        <p>{{__("global.search_edit_delete_cash_invoice")}}</p>
                                     </a>
                                 </li>
                                 {{--recyclebin cash invoices--}}
                                 <li class="nav-item">
                                     <a id="btn_cashes_recycle_bin" href="{{route("invoice.viewCashRecyclebin")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.recyclebin",[],session("lang"))}}</p>
+                                        <p>{{__("global.recyclebin")}}</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
 
-                        <li class="nav-header">{{__("global.product_movement_invoices",[],session("lang"))}}</li>
+                        <li class="nav-header">{{__("global.product_movement_invoices")}}</li>
 
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-book"></i>
                                 <p>
-                                    {{__("global.product_movement_invoices",[],session("lang"))}}
-                                    <i class="fas fa-angle-left @if(session("lang") == "ar") left @else right @endif"></i>
+                                    {{__("global.product_movement_invoices")}}
+                                    <i class="fas fa-angle-left @if(app()->getLocale() == "ar") left @else right @endif"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
@@ -619,28 +613,28 @@
                                 <li class="nav-item">
                                     <a href="{{route("invoice.createProductMovementInvoice")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.add_new_product_movement_invoice",[],session("lang"))}}</p>
+                                        <p>{{__("global.add_new_product_movement_invoice")}}</p>
                                     </a>
                                 </li>
                                 {{--view product movement invoices--}}
                                 <li class="nav-item">
                                     <a href="{{route("invoice.viewProductMovementInvoices")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.view_product_movement_invoices",[],session("lang"))}}</p>
+                                        <p>{{__("global.view_product_movement_invoices")}}</p>
                                     </a>
                                 </li>
                                 {{--search edit delete product movement invoice--}}
                                 <li class="nav-item">
                                     <a id="btn_search_edit_delete_product_movement" href="{{route("invoice.showSearchProductMovementInvoice")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.search_edit_delete_product_movement_invoice",[],session("lang"))}}</p>
+                                        <p>{{__("global.search_edit_delete_product_movement_invoice")}}</p>
                                     </a>
                                 </li>
                                 {{--recyclebin product movement invoices--}}
                                 <li class="nav-item">
                                     <a id="btn_product_movement_recycle_bin" href="{{route("invoice.viewProductMovementRecyclebin")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.recyclebin",[],session("lang"))}}</p>
+                                        <p>{{__("global.recyclebin")}}</p>
                                     </a>
                                 </li>
                             </ul>
@@ -686,9 +680,9 @@
         </div>
         <!-- /.content-wrapper -->
         <footer style="text-align: center" class="main-footer @if(auth()->user()->getConfig("footer_small_text_options") !== null) text-sm @endif">
-            {{__("global.all_rights_reserved",[],session("lang"))}}
+            {{__("global.all_rights_reserved")}}
             <div class="float-right d-none d-sm-inline-block">
-                <b>{{__("global.version",[],session("lang"))}} 1.0.0</b>
+                <b>{{__("global.version")}} 1.0.0</b>
             </div>
             <strong>Copyright &copy; 2022-2023 <a href="">Abdulmoty Bannan</a>.</strong>
         </footer>
@@ -760,43 +754,43 @@
         $(function () {
             {{--$("a.page-link").each(function (){--}}
             {{--   if($(this).text() == "Next" ){--}}
-            {{--       $(this).text("{{__("global.Next",[],session("lang"))}}");--}}
+            {{--       $(this).text("{{__("global.Next")}}");--}}
             {{--   } else if ($(this).text() == "Previous"){--}}
-            {{--       $(this).text("{{__("global.Previous",[],session("lang"))}}");--}}
+            {{--       $(this).text("{{__("global.Previous")}}");--}}
             {{--   }--}}
             {{--});--}}
             {{--$("#dataTable_filter").children("label").each(function (){--}}
             {{--    let value = this.innerHTML;--}}
-            {{--    value = value.replace("Search","{{__("global.Search",[],session("lang"))}}");--}}
+            {{--    value = value.replace("Search","{{__("global.Search")}}");--}}
             {{--    this.innerHTML = value;--}}
             {{--});--}}
             {{--$("#dataTable_length").children("label").each(function (){--}}
             {{--    let value = this.innerHTML;--}}
-            {{--    value = value.replace("Show","{{__("global.Show",[],session("lang"))}}");--}}
-            {{--    value = value.replace("entries","{{__("global.entries",[],session("lang"))}}");--}}
+            {{--    value = value.replace("Show","{{__("global.Show")}}");--}}
+            {{--    value = value.replace("entries","{{__("global.entries")}}");--}}
             {{--    this.innerHTML = value;--}}
             {{--});--}}
             {{--$("#dataTable_info").each(function (){--}}
             {{--    let value = this.innerHTML;--}}
-            {{--    value = value.replace("Showing","{{__("global.Showing",[],session("lang"))}}");--}}
-            {{--    value = value.replace("to","{{__("global.to",[],session("lang"))}}");--}}
-            {{--    value = value.replace("of","{{__("global.of",[],session("lang"))}}");--}}
-            {{--    value = value.replace("entries","{{__("global.entries",[],session("lang"))}}");--}}
+            {{--    value = value.replace("Showing","{{__("global.Showing")}}");--}}
+            {{--    value = value.replace("to","{{__("global.to")}}");--}}
+            {{--    value = value.replace("of","{{__("global.of")}}");--}}
+            {{--    value = value.replace("entries","{{__("global.entries")}}");--}}
             {{--    this.innerHTML = value;--}}
             {{--});--}}
 
 
             // Call the dataTables jQuery plugin
 
-            let info = "{{__("global.Showing",[],session("lang"))}} _START_ {{__("global.to",[],session("lang"))}} _END_ {{__("global.of",[],session("lang"))}} _TOTAL_ {{__("global.entries",[],session("lang"))}}";
-            let emptyTable = "{{__("global.no_data_available_in_table",[],session("lang"))}}";
-            let infoEmpty = "{{__("global.Showing",[],session("lang"))}} 0 {{__("global.to",[],session("lang"))}} 0 {{__("global.of",[],session("lang"))}} 0 {{__("global.entries",[],session("lang"))}}";
-            let lengthMenu = "{{__("global.Show",[],session("lang"))}} _MENU_ {{__("global.entries",[],session("lang"))}}";
-            let loadingRecords = "{{__("global.please_wait_loading",[],session("lang"))}}";
-            let search = "{{__("global.Search",[],session("lang"))}}:";
-            let next = "{{__("global.Next",[],session("lang"))}}";
-            let previous = "{{__("global.Previous",[],session("lang"))}}";
-            let infoFiltered = " - {{__("global.filtered_from",[],session("lang"))}} _MAX_ {{__("global.entries",[],session("lang"))}}";
+            let info = "{{__("global.Showing")}} _START_ {{__("global.to")}} _END_ {{__("global.of")}} _TOTAL_ {{__("global.entries")}}";
+            let emptyTable = "{{__("global.no_data_available_in_table")}}";
+            let infoEmpty = "{{__("global.Showing")}} 0 {{__("global.to")}} 0 {{__("global.of")}} 0 {{__("global.entries")}}";
+            let lengthMenu = "{{__("global.Show")}} _MENU_ {{__("global.entries")}}";
+            let loadingRecords = "{{__("global.please_wait_loading")}}";
+            let search = "{{__("global.Search")}}:";
+            let next = "{{__("global.Next")}}";
+            let previous = "{{__("global.Previous")}}";
+            let infoFiltered = " - {{__("global.filtered_from")}} _MAX_ {{__("global.entries")}}";
 
             let datatable = $('#dataTable').DataTable(
                 {

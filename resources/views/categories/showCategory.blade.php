@@ -1,12 +1,12 @@
 <x-masterLayout.master>
     @section("title")
-        {{ __("category",[],session("lang")) }}
+        {{ __("category") }}
     @endsection
 
     @section("recycle_bin")
         <a class="dropdown-item" href="{{route("category.viewRecyclebin")}}">
             <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-400"></i>
-            {{__("global.recycle_bin",["attribute"=>"categories"],session("lang"))}}
+            {{__("global.recycle_bin",["attribute"=>"categories"])}}
         </a>
     @endsection
 

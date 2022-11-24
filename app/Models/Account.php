@@ -16,9 +16,9 @@ class Account extends Model
     public function getAccountTypeAttribute($value)
     {
         if ($value == 1){
-            $value = __("global.primary",[],session("lang"));
+            $value = __("global.primary");
         } elseif ($value == 0) {
-            $value = __("global.secondary",[],session("lang"));
+            $value = __("global.secondary");
         }
         return $value;
     }
@@ -26,11 +26,11 @@ class Account extends Model
     public function getGroupAttribute($value)
     {
         if ($value == 0){
-            $value = __("global.budget",[],session("lang"));
+            $value = __("global.budget");
         } elseif ($value == 1) {
-            $value = __("global.gain_loss",[],session("lang"));
+            $value = __("global.gain_loss");
         } elseif ($value == 2) {
-            $value = __("global.trades",[],session("lang"));
+            $value = __("global.trades");
         }
         return $value;
     }

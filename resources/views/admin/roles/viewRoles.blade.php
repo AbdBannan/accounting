@@ -1,20 +1,20 @@
 <x-masterLayout.master>
     @section("title")
-        {{ __("global.view_roles",[],session("lang")) }}
+        {{ __("global.view_roles") }}
     @endsection
     @section("recycle_bin")
         <a class="dropdown-item" href="{{route("role.viewRecyclebin")}}">
             <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-400"></i>
-            {{__("global.recycle_bin",["attribute"=>__("global.roles",[],session("lang"))],session("lang"))}}
+            {{__("global.recycle_bin",["attribute"=>__("global.roles")])}}
         </a>
     @endsection
     @section('content')
     <div class="container">
         @if(auth()->user()->getConfig("add_method") != "modal")
             <div class="form-group">
-                <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("role.softDeleteRole",-1)}}" @else data-route="{{route("role.deleteRole",-1)}}" @endif>
+                <a id="btn_multi_delete" title="{{__("global.delete_selected")}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("role.softDeleteRole",-1)}}" @else data-route="{{route("role.deleteRole",-1)}}" @endif>
                     <i class="fas fa-trash"></i>
-                    {{__("global.delete_selected",[],session("lang"))}}
+                    {{__("global.delete_selected")}}
                 </a>
             </div>
             <div class="row">
@@ -33,20 +33,20 @@
             <div>
                 <div>
                     <div class="form-group">
-                        <a id="btn_add" title="{{__("global.add",[],session("lang"))}}" class="btn btn-sm btn-info  disable-pointer" href="#" data-toggle="modal" data-target="#addModal" data-route="{{route("role.storeRole")}}">
+                        <a id="btn_add" title="{{__("global.add")}}" class="btn btn-sm btn-info  disable-pointer" href="#" data-toggle="modal" data-target="#addModal" data-route="{{route("role.storeRole")}}">
                             <i class="fas fa-plus"></i>
-                            {{__("global.add",[],session("lang"))}}
+                            {{__("global.add")}}
                         </a>
-                        <a id="btn_multi_delete" title="{{__("global.delete_selected",[],session("lang"))}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("role.softDeleteRole",-1)}}" @else data-route="{{route("role.deleteRole",-1)}}" @endif>
+                        <a id="btn_multi_delete" title="{{__("global.delete_selected")}}" class="btn btn-sm btn-danger disable-pointer" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("role.softDeleteRole",-1)}}" @else data-route="{{route("role.deleteRole",-1)}}" @endif>
                             <i class="fas fa-trash"></i>
-                            {{__("global.delete_selected",[],session("lang"))}}
+                            {{__("global.delete_selected")}}
                         </a>
                     </div>
             @endif
             <!-- DataTales Example -->
                 <div class="card shadow">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">{{ __("global.roles",[],session("lang")) }}</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">{{ __("global.roles") }}</h6>
                     </div>
                     <div class="card-body">
 
@@ -55,9 +55,9 @@
                                 <thead>
                                 <tr>
                                     <th><input id="check_all" type="checkbox" class="form-check"></th>
-                                    <th>{{__("global.id",[],session("lang"))}}</th>
-                                    <th>{{__("global.name",[],session("lang"))}}</th>
-                                    <th>{{__("global.delete",[],session("lang"))}}</th>
+                                    <th>{{__("global.id")}}</th>
+                                    <th>{{__("global.name")}}</th>
+                                    <th>{{__("global.delete")}}</th>
                                 </tr>
                                 </thead>
 
@@ -74,15 +74,15 @@
                                         @if(strtolower($role->name) != "admin" )
                                             <td><a id="btn_show_element" href="{{route("role.showRolePermission",$role)}}">{{$role->name}}</a></td>
                                             <td class="row m-0">
-                                                <a id="btn_update" title="{{__("global.update",[],session("lang"))}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$role}}" data-route="{{route("role.updateRole",$role->id)}}">
+                                                <a id="btn_update" title="{{__("global.update")}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$role}}" data-route="{{route("role.updateRole",$role->id)}}">
                                                     <input class="grid-button grid-edit-button" type="button" title="Update">
                                                 </a>
-                                                <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("role.softDeleteRole",$role->id)}}" @else  data-route="{{route("role.deleteRole",$role->id)}}" @endif>
+                                                <a id="btn_delete" title="{{__("global.delete")}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("role.softDeleteRole",$role->id)}}" @else  data-route="{{route("role.deleteRole",$role->id)}}" @endif>
                                                     <input class="grid-button grid-delete-button" type="button" title="Delete">
                                                 </a>
                                             </td>
                                         @else
-                                            <td><a id="btn_show_element" href="{{route("role.showRolePermission",$role)}}">{{__("global.".$role->name,[],session("lang"))}}</a></td>
+                                            <td><a id="btn_show_element" href="{{route("role.showRolePermission",$role)}}">{{__("global.".$role->name)}}</a></td>
                                             <td></td>
                                         @endif
                                     </tr>

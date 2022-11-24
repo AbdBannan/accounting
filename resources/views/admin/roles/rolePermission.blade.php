@@ -1,6 +1,6 @@
 <x-masterLayout.master>
     @section("title")
-        {{ __("global.roles_permission",[],session("lang")) }}
+        {{ __("global.roles_permission") }}
     @endsection
     @section('content')
         <div class="container">
@@ -9,17 +9,17 @@
                     @if(strtolower($role->name) != "admin" )
                         <td>{{$role->name}}</td>
                     @else
-                        <td>{{__("global.".$role->name,[],session("lang"))}}</td>
+                        <td>{{__("global.".$role->name)}}</td>
                     @endif
                     <hr>
                     <br>
-                    <p>{{__("global.created_at",[],session("lang")) . " : " . $role->created_at . " (" . $role->created_at->diffForHumans() . ")"}}</p>
+                    <p>{{__("global.created_at") . " : " . $role->created_at . " (" . $role->created_at->diffForHumans() . ")"}}</p>
                 </div>
                 <div class="col-8">
 
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">{{__("global.roles_permission",[],session("lang"))}}</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">{{__("global.roles_permission")}}</h6>
                         </div>
                         <div class="card-body">
 
@@ -27,9 +27,9 @@
                                 <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                     <tr>
-                                        <th>{{__("global.id",[],session("lang"))}}</th>
-                                        <th>{{__("global.name",[],session("lang"))}}</th>
-                                        <th>{{__("global.assign_deassign_permission",[],session("lang"))}}</th>
+                                        <th>{{__("global.id")}}</th>
+                                        <th>{{__("global.name")}}</th>
+                                        <th>{{__("global.assign_deassign_permission")}}</th>
                                     </tr>
                                     </thead>
                                     <tbody>

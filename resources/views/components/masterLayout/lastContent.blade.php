@@ -6,22 +6,22 @@
             Discovers
         </button>
         <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton" style="">
-            <a class="dropdown-item" href="{{route("discover.chooseListGlobalDiscover")}}">{{__("global.global_discover",[],session("lang"))}}</a>
-            <a class="dropdown-item" href="{{route("discover.chooseListCashDiscover")}}">{{__("global.cash_discover",[],session("lang"))}}</a>
-            <a class="dropdown-item" href="{{route("discover.chooseListProductDiscover")}}">{{__("global.product_discover",[],session("lang"))}}</a>
-            <a class="dropdown-item" href="{{route("discover.allAccountsDiscover")}}">{{__("global.all_accounts_discover",[],session("lang"))}}</a>
-            <a class="dropdown-item" href="{{route("discover.allProductsDiscover")}}">{{__("global.all_products_discover",[],session("lang"))}}</a>
-            <a class="dropdown-item" href="{{route("discover.dailyDiscover")}}">{{__("global.daily_discover",[],session("lang"))}}</a>
+            <a class="dropdown-item" href="{{route("discover.chooseListGlobalDiscover")}}">{{__("global.global_discover")}}</a>
+            <a class="dropdown-item" href="{{route("discover.chooseListCashDiscover")}}">{{__("global.cash_discover")}}</a>
+            <a class="dropdown-item" href="{{route("discover.chooseListProductDiscover")}}">{{__("global.product_discover")}}</a>
+            <a class="dropdown-item" href="{{route("discover.allAccountsDiscover")}}">{{__("global.all_accounts_discover")}}</a>
+            <a class="dropdown-item" href="{{route("discover.allProductsDiscover")}}">{{__("global.all_products_discover")}}</a>
+            <a class="dropdown-item" href="{{route("discover.dailyDiscover")}}">{{__("global.daily_discover")}}</a>
         </div>
     </div>
-    <a href="{{route("archive.viewArchiveBalances")}}" class="btn btn-primary">{{__("global.role_balances",[],session("lang"))}}</a>
+    <a href="{{route("archive.viewArchiveBalances")}}" class="btn btn-primary">{{__("global.role_balances")}}</a>
 </div>
-{{--<a href="{{route("discover.chooseListGlobalDiscover")}}" class="btn btn-primary" >{{__("global.global_discover",[],session("lang"))}}</a>--}}
-{{--<a href="{{route("discover.chooseListCashDiscover")}}" class="btn btn-primary" >{{__("global.cash_discover",[],session("lang"))}}</a>--}}
-{{--<a href="{{route("discover.chooseListProductDiscover")}}" class="btn btn-primary" >{{__("global.product_discover",[],session("lang"))}}</a>--}}
-{{--<a href="{{route("discover.allAccountsDiscover")}}" class="btn btn-primary" >{{__("global.all_accounts_discover",[],session("lang"))}}</a>--}}
-{{--<a href="{{route("discover.allProductsDiscover")}}" class="btn btn-primary" >{{__("global.all_products_discover",[],session("lang"))}}</a>--}}
-{{--<a href="{{route("discover.dailyDiscover")}}" class="btn btn-primary" >{{__("global.product_discover",[],session("lang"))}}</a>--}}
+{{--<a href="{{route("discover.chooseListGlobalDiscover")}}" class="btn btn-primary" >{{__("global.global_discover")}}</a>--}}
+{{--<a href="{{route("discover.chooseListCashDiscover")}}" class="btn btn-primary" >{{__("global.cash_discover")}}</a>--}}
+{{--<a href="{{route("discover.chooseListProductDiscover")}}" class="btn btn-primary" >{{__("global.product_discover")}}</a>--}}
+{{--<a href="{{route("discover.allAccountsDiscover")}}" class="btn btn-primary" >{{__("global.all_accounts_discover")}}</a>--}}
+{{--<a href="{{route("discover.allProductsDiscover")}}" class="btn btn-primary" >{{__("global.all_products_discover")}}</a>--}}
+{{--<a href="{{route("discover.dailyDiscover")}}" class="btn btn-primary" >{{__("global.product_discover")}}</a>--}}
 
 <!-- Content Row -->
 <div class="row">

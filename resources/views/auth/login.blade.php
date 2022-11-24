@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-
+    @isset($_GET["lang"])
+        @php
+            app()->setLocale($_GET["lang"])
+        @endphp
+    @endisset
     <div class="container">
 
         <!-- Outer Row -->
@@ -17,14 +21,14 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">{{__("global.welcome_back",[],session("lang"))}}</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">{{__("global.welcome_back")}}</h1>
                                     </div>
 
                                     <form id="form_auth" method="POST" class="user" action="{{ route('login') }}" autocomplete="off">
                                         @csrf
 
                                         <div class="form-group">
-                                            <input id="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="{{__("global.enter_email_address",[],session("lang"))}}" autocomplete="email" autofocus>
+                                            <input id="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="{{__("global.enter_email_address")}}" autocomplete="email" autofocus>
                                             @error('email')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
@@ -33,7 +37,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <input id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password" placeholder="{{__("global.password",[],session("lang"))}}" autocomplete="current-password">
+                                            <input id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password" placeholder="{{__("global.password")}}" autocomplete="current-password">
 
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
@@ -49,14 +53,14 @@
                                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
                                                     <label class="form-check-label" for="remember">
-                                                        {{ __('global.remember_me',[],session("lang")) }}
+                                                        {{ __('global.remember_me') }}
                                                     </label>
                                                 </div>
                                             </div>
                                         </div>
 
 
-                                        <input id="btn_login" type="submit" class="btn btn-primary btn-user btn-block" value="{{ __('global.login',[],session("lang")) }}">
+                                        <input id="btn_login" type="submit" class="btn btn-primary btn-user btn-block" value="{{ __('global.login') }}">
                                         <hr>
 {{--                                        <a href="#" class="btn btn-google btn-user btn-block">--}}
 {{--                                            <i class="fab fa-google fa-fw"></i> Login with Google--}}
@@ -67,8 +71,8 @@
 {{--                                        <hr>--}}
                                         @if (Route::has('password.request'))
                                             <div class="text-center">
-                                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                                    {{ __('global.forgot_your_password',[],session("lang")) }}
+                                                <a class="btn btn-link" href="{{ route('password.request')."?lang=$_GET[lang]" }}">
+                                                    {{ __('global.forgot_your_password') }}
                                                 </a>
                                             </div>
                                         @endif

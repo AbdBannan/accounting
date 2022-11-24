@@ -1,13 +1,13 @@
 <x-masterLayout.master>
     @section("title")
-        {{ __("global.new_product_movement_invoice",[],session("lang")) }}
+        {{ __("global.new_product_movement_invoice") }}
     @endsection
 
 
     @section("recycle_bin")
         <a class="dropdown-item" href="{{route("invoice.viewProductMovementRecyclebin")}}">
             <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-400"></i>
-            {{__("global.recycle_bin",["attribute"=>__("global.product_movement_invoices",[],session("lang"))],session("lang"))}}
+            {{__("global.recycle_bin",["attribute"=>__("global.product_movement_invoices")])}}
         </a>
     @endsection
 

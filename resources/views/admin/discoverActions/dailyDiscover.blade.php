@@ -1,6 +1,6 @@
 <x-masterLayout.master>
     @section("title")
-        {{ __("global.daily_discover",[],session("lang")) }}
+        {{ __("global.daily_discover") }}
     @endsection
     @section('content')
         <div class="container">
@@ -16,14 +16,14 @@
                                 <thead>
                                 <tr>
                                     <th hidden></th>
-                                    <th>{{__("global.debit",[],session("lang"))}}</th>
-                                    <th>{{__("global.credit",[],session("lang"))}}</th>
-                                    <th>{{__("global.quantity",[],session("lang"))}}</th>
-                                    <th>{{__("global.price",[],session("lang"))}}</th>
-                                    <th>{{__("global.account_name",[],session("lang"))}}</th>
-                                    <th>{{__("global.product_name",[],session("lang"))}}</th>
-                                    <th>{{__("global.notes",[],session("lang"))}}</th>
-                                    <th>{{__("global.invoice_type",[],session("lang"))}}</th>
+                                    <th>{{__("global.debit")}}</th>
+                                    <th>{{__("global.credit")}}</th>
+                                    <th>{{__("global.quantity")}}</th>
+                                    <th>{{__("global.price")}}</th>
+                                    <th>{{__("global.account_name")}}</th>
+                                    <th>{{__("global.product_name")}}</th>
+                                    <th>{{__("global.notes")}}</th>
+                                    <th>{{__("global.invoice_type")}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -49,7 +49,7 @@
                                             <td>{{$action->first_part_name}}</td>
                                             <td>{{$action->product_name}}</td>
                                             <td>{{$action->notes}}</td>
-                                            <td>{{__("global.$action->invoice_type",[],session("lang"))}}</td>
+                                            <td>{{__("global.$action->invoice_type")}}</td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -59,11 +59,11 @@
                     </div>
                     <div class="card-footer">
                         @if($actions!=null)
-                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received",[],session("lang"))}} :
+                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received")}} :
                                 <span id="total_received" style="font-style: italic; color:darkblue">{{$total_debit}}</span>
                                 {{--                <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}
                             </label>
-                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed",[],session("lang"))}} :
+                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed")}} :
                                 <span id="total_payed" style="font-style: italic; color:darkblue">{{$total_credit}}</span>
                                 {{--                <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}{{--should be syrian pound--}}
                             </label>

@@ -1,19 +1,19 @@
 <x-masterLayout.master>
     @section("title")
-        {{ __("global.product_discover",[],session("lang")) }}
+        {{ __("global.product_discover") }}
     @endsection
     @section('content')
         <div class="container">
             @if($actions != null)
                 <div class="card shadow">
                     <div class="card-header py-3">
-                        <h6 class="d-inline-block m-0 font-weight-bold text-primary">{{__("global.product_name",[],session("lang")) . " : " . $product_name}}</h6>
+                        <h6 class="d-inline-block m-0 font-weight-bold text-primary">{{__("global.product_name") . " : " . $product_name}}</h6>
                         <br>
                         @if(isset($account_name) )
-                            <h6 class="d-inline-block m-0 font-weight-bold text-primary">{{__("global.account_name",[],session("lang")) . " : " . $account_name}}</h6>
+                            <h6 class="d-inline-block m-0 font-weight-bold text-primary">{{__("global.account_name") . " : " . $account_name}}</h6>
                         @endif
                         @if(isset($start_date) and isset($end_date) )
-                            <p class="m-0 font-weight-bold text-secondary">{{__("global.date_between",[],session("lang")) . " : (" . $start_date . " , " . $end_date . ")"}}</p>
+                            <p class="m-0 font-weight-bold text-secondary">{{__("global.date_between") . " : (" . $start_date . " , " . $end_date . ")"}}</p>
                         @endif
                     </div>
                     <div class="card-body">
@@ -24,15 +24,15 @@
                                 <tr>
                                     <th hidden></th>
                                     <th hidden></th>
-                                    <th>{{__("global.balance",[],session("lang"))}}</th>
-                                    <th>{{__("global.in_quantity",[],session("lang"))}}</th>
-                                    <th>{{__("global.out_quantity",[],session("lang"))}}</th>
-                                    <th>{{__("global.price",[],session("lang"))}}</th>
-                                    <th>{{__("global.total_price",[],session("lang"))}}</th>
-                                    <th>{{__("global.date",[],session("lang"))}}</th>
-                                    <th>{{__("global.account_name",[],session("lang"))}}</th>
-                                    <th>{{__("global.notes",[],session("lang"))}}</th>
-                                    <th>{{__("global.invoice_type",[],session("lang"))}}</th>
+                                    <th>{{__("global.balance")}}</th>
+                                    <th>{{__("global.in_quantity")}}</th>
+                                    <th>{{__("global.out_quantity")}}</th>
+                                    <th>{{__("global.price")}}</th>
+                                    <th>{{__("global.total_price")}}</th>
+                                    <th>{{__("global.date")}}</th>
+                                    <th>{{__("global.account_name")}}</th>
+                                    <th>{{__("global.notes")}}</th>
+                                    <th>{{__("global.invoice_type")}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -68,7 +68,7 @@
                                             @endif
                                             <td>{{$action->second_part_name}}</td>
                                             <td>{{$action->notes}}</td>
-                                            <td>{{__("global.$action->invoice_type",[],session("lang"))}}</td>
+                                            <td>{{__("global.$action->invoice_type")}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -78,21 +78,21 @@
                     </div>
                     <div class="card-footer">
                         @if($actions!=null)
-                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.in_quantity",[],session("lang"))}} :
+                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.in_quantity")}} :
                                 <span id="total_received" style="font-style: italic; color:darkblue">{{$in_quantity}}</span>
                             </label>
-                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.out_quantity",[],session("lang"))}} :
+                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.out_quantity")}} :
                                 <span id="total_payed" style="font-style: italic; color:darkblue">{{$out_quantity}}</span>
                             </label>
                             <label  class="ml-md-5 ml-sm-3" style="font-size: large">
                                 @if(($in_quantity - $out_quantity)>0)
-                                    {{__("global.store_has",[],session("lang")) . " : ". abs($in_quantity - $out_quantity)}}
+                                    {{__("global.store_has") . " : ". abs($in_quantity - $out_quantity)}}
                                 @elseif(($in_quantity - $out_quantity)==0)
-                                    {{__("global.store_not_has_product",[],session("lang")) . " : ". abs($in_quantity - $out_quantity)}}
+                                    {{__("global.store_not_has_product") . " : ". abs($in_quantity - $out_quantity)}}
                                 @elseif(($in_quantity - $out_quantity)<0)
-                                    {{__("global.store_is_down_by",[],session("lang")) . " : ". abs($in_quantity - $out_quantity)}}
+                                    {{__("global.store_is_down_by") . " : ". abs($in_quantity - $out_quantity)}}
                                 @endif
-                                    {{__("global.piece",[],session("lang"))}}
+                                    {{__("global.piece")}}
 {{--                                    <sapn> \ {{abs($total_price) . $actions->first()->pound_type}}</sapn>--}}
                                     <sapn> \ {{abs($total_price)}}</sapn>
                             </label>
@@ -100,25 +100,25 @@
                     </div>
                 </div>
                 <div class="p-2">
-                    <a href="{{route("discover.chooseListProductDiscover")}}" class="btn btn-outline-primary">{{__("global.discovers",[],session("lang"))}}</a>
+                    <a href="{{route("discover.chooseListProductDiscover")}}" class="btn btn-outline-primary">{{__("global.discovers")}}</a>
                 </div>
             @else
                 <div id="accordion" class="bg-gradient-light shadow p-md-5 p-sm-2" style="width: 50%;margin: auto;">
                     <div id="buttons">
-                        <button data-target="#productDiscoverUntilNowCollapse" class="btn btn-primary btn-block">{{__("global.discover_until_now",[],session("lang"))}}</button>
-                        <button data-target="#productDiscoverUntilLastBalanceCollapse" class="btn btn-primary btn-block">{{__("global.discover_until_last_balance",[],session("lang"))}}</button>
-                        <button data-target="#productDiscoverWithAccountCollapse" class="btn btn-primary btn-block">{{__("global.discover_with_account",[],session("lang"))}}</button>
-                        <button data-target="#productDiscoverBetweenTowDatesCollapse" class="btn btn-primary btn-block">{{__("global.discover_between_tow_dates",[],session("lang"))}}</button>
-                        <button data-target="#productDiscoverByStoreCollapse" class="btn btn-primary btn-block">{{__("global.discover_by_store",[],session("lang"))}}</button>
+                        <button data-target="#productDiscoverUntilNowCollapse" class="btn btn-primary btn-block">{{__("global.discover_until_now")}}</button>
+                        <button data-target="#productDiscoverUntilLastBalanceCollapse" class="btn btn-primary btn-block">{{__("global.discover_until_last_balance")}}</button>
+                        <button data-target="#productDiscoverWithAccountCollapse" class="btn btn-primary btn-block">{{__("global.discover_with_account")}}</button>
+                        <button data-target="#productDiscoverBetweenTowDatesCollapse" class="btn btn-primary btn-block">{{__("global.discover_between_tow_dates")}}</button>
+                        <button data-target="#productDiscoverByStoreCollapse" class="btn btn-primary btn-block">{{__("global.discover_by_store")}}</button>
                     </div>
                     <div id="productDiscoverUntilNowCollapse" class="collapse">
-                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(app()->getLocale() == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back")}}"></i></a>
                         <form  style="margin: auto" action="{{route("discover.productDiscoverUntilNow")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
-                                <label style="font-size: x-large" for="product" >{{__("global.account",[],session("lang"))}}</label>
+                                <label style="font-size: x-large" for="product" >{{__("global.account")}}</label>
                                 <input id="product_1" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                    <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="product">
                                     @foreach(App\Models\Product::get() as $product)
@@ -127,17 +127,17 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_product_until_now" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
+                            <input id="btn_product_until_now" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                     <div id="productDiscoverUntilLastBalanceCollapse" class="collapse">
-                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(app()->getLocale() == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back")}}"></i></a>
                         <form  style="margin: auto" action="{{route("discover.productDiscoverUntilLastBalance")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
-                                <label style="font-size: x-large" for="product" >{{__("global.account",[],session("lang"))}}</label>
+                                <label style="font-size: x-large" for="product" >{{__("global.account")}}</label>
                                 <input id="product_2" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                    <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="product">
                                     @foreach(App\Models\Product::get() as $product)
@@ -146,17 +146,17 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_product_after_last_checked_point" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
+                            <input id="btn_product_after_last_checked_point" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                     <div id="productDiscoverWithAccountCollapse" class="collapse">
-                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(app()->getLocale() == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back")}}"></i></a>
                         <form style="margin: auto" action="{{route("discover.productDiscoverWithAccount")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
-                                <label style="font-size: x-large" for="product" >{{__("global.product",[],session("lang"))}}</label>
+                                <label style="font-size: x-large" for="product" >{{__("global.product")}}</label>
                                 <input id="product_3" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                    <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="product">
                                     @foreach(App\Models\Product::get() as $product)
@@ -165,10 +165,10 @@
                                 </div>
                             </div>
                             <div class="position-relative form-group text-center">
-                                <label style="font-size: x-large" for="account" >{{__("global.account",[],session("lang"))}}</label>
+                                <label style="font-size: x-large" for="account" >{{__("global.account")}}</label>
                                 <input id="account" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                    <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="account">
                                     @foreach(App\Models\Account::get() as $account)
@@ -177,17 +177,17 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_product_with_account" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
+                            <input id="btn_product_with_account" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                     <div id="productDiscoverBetweenTowDatesCollapse" class="collapse" >
-                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(app()->getLocale() == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back")}}"></i></a>
                         <form  style="margin: auto" action="{{route("discover.productDiscoverBetweenTowDates")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
-                                <label style="font-size: x-large" for="product" >{{__("global.account",[],session("lang"))}}</label>
+                                <label style="font-size: x-large" for="product" >{{__("global.account")}}</label>
                                 <input id="product_4" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                    <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="product">
                                     @foreach(App\Models\Product::get() as $product)
@@ -196,25 +196,25 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <label class="col-md-4 col-sm-12" style="font-size: x-large" for="product" >{{__("global.from",[],session("lang"))}}</label>
+                                <label class="col-md-4 col-sm-12" style="font-size: x-large" for="product" >{{__("global.from")}}</label>
                                 <input id="from" name="from" class="col-md-8 col-sm-12 form-control" type="date">
                             </div>
                             <div class="row">
-                                <label class="col-md-4 col-sm-12" style="font-size: x-large" for="product" >{{__("global.to",[],session("lang"))}}</label>
+                                <label class="col-md-4 col-sm-12" style="font-size: x-large" for="product" >{{__("global.to")}}</label>
                                 <input id="to" name="to" class="col-md-8 col-sm-12 form-control" type="date">
                             </div>
                             <hr>
-                            <input id="btn_product_between_tow_dates" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
+                            <input id="btn_product_between_tow_dates" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                     <div id="productDiscoverByStoreCollapse" class="collapse" >
-                        <a id="back"><i @if(session("lang") == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back",[],session("lang"))}}"></i></a>
+                        <a id="back"><i @if(app()->getLocale() == "en") class="fas fa-arrow-left" @else class="fas fa-arrow-right" @endif title="{{__("global.back")}}"></i></a>
                         <form  style="margin: auto" action="{{route("discover.productDiscoverByStore")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
-                                <label style="font-size: x-large" for="store" >{{__("global.store",[],session("lang"))}}</label>
+                                <label style="font-size: x-large" for="store" >{{__("global.store")}}</label>
                                 <input id="store" name="store" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                    <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="store">
                                     @foreach(App\Models\Store::get() as $store)
@@ -228,17 +228,17 @@
                                 <div class="form-check">
                                     <label class="form-check-label">
                                         <input id="radio_by_last_purchase_price" name="store_discover_type"  type="radio" class="form-check-input" value="last" >
-                                        {{__("global.by_last_purchase_price",[],session("lang"))}}
+                                        {{__("global.by_last_purchase_price")}}
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label">
                                         <input id="radio_by_mean_of_purchase_prices" name="store_discover_type" type="radio" class="form-check-input" value="mean" >
-                                        {{__("global.by_mean_of_purchase_prices",[],session("lang"))}}
+                                        {{__("global.by_mean_of_purchase_prices")}}
                                     </label>
                                 </div>
                             </fieldset>
-                            <input id="btn_product_by_store" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go",[],session("lang"))}}">
+                            <input id="btn_product_by_store" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                 </div>

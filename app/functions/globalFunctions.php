@@ -54,21 +54,21 @@ class globalFunctions
         }
         if ($actionType == "updated") {
              if ("".$result == "no_item_error") {
-                session()->flash("error",__("messages.no_item",["attribute"=>__("global.$name",[],session("lang"))],session("lang")));
+                session()->flash("error",__("messages.no_item",["attribute"=>__("global.$name")]));
             } elseif ($result!=null) {
-                session()->flash("success",__("messages." . $actionType . "_successfully",["attribute"=>__("global." . $name,[],session("lang"))],session("lang")));
+                session()->flash("success",__("messages." . $actionType . "_successfully",["attribute"=>__("global." . $name)]));
             } else {
-                session()->flash("success",__("messages.nothing_to_be_updated",[],session("lang")));
+                session()->flash("success",__("messages.nothing_to_be_updated"));
             }
         } else {
              if ("".$result == "no_item_error") {
-                session()->flash("error",__("messages.no_item",["attribute"=>__("global.$name",[],session("lang"))],session("lang")));
+                session()->flash("error",__("messages.no_item",["attribute"=>__("global.$name")]));
             } elseif ($result != null or $result == true) {
-                session()->flash("success", __("messages." . $actionType . "_successfully", ["attribute" => __("global.$name", [], session("lang"))], session("lang")));
+                session()->flash("success", __("messages." . $actionType . "_successfully", ["attribute" => __("global.$name")]));
             } elseif ("".$result == "not_found") {
-                session()->flash("error",__("messages.not_found",["attribute"=>__("global.$name",[],session("lang"))],session("lang")));
+                session()->flash("error",__("messages.not_found",["attribute"=>__("global.$name")]));
             } else {
-                session()->flash("error", __("messages.not_" . $actionType . "_successfully", ["attribute" => __("global." . $name, [], session("lang"))], session("lang")));
+                session()->flash("error", __("messages.not_" . $actionType . "_successfully", ["attribute" => __("global." . $name)]));
             }
         }
     }
@@ -78,19 +78,19 @@ class globalFunctions
             return;
         }
         $content = "";
-        $the_user = __("global.the_user",[],session("lang"));
-        $has = __("global.has",[],session("lang"));
-        $at = __("global.at",[],session("lang"));
-        $whose_id_is = __("global.whose_id_is",[],session("lang"));
-        $with_row_id = __("global.with_row_id",[],session("lang"));
-        $for_permission_whose_id_is = __("global.for_permission_whose_id_is",[],session("lang"));
+        $the_user = __("global.the_user");
+        $has = __("global.has");
+        $at = __("global.at");
+        $whose_id_is = __("global.whose_id_is");
+        $with_row_id = __("global.with_row_id");
+        $for_permission_whose_id_is = __("global.for_permission_whose_id_is");
 
 
         $user = auth()->user()->first_name . " " . auth()->user()->last_name;
 
         $temp_action_type = $action_type;
-        $action_type = __("global.$action_type",[],session("lang"));
-        $action_name = __("global.$action_name",[],session("lang"));
+        $action_type = __("global.$action_type");
+        $action_name = __("global.$action_name");
 
         if ($id == null) {
             $content = "$the_user : $user $has $action_type $action_name $at " . Carbon::now();
@@ -128,7 +128,7 @@ class globalFunctions
             ["name"=>"user_activity_log","controlled_by"=>"admin", "type" => "admin_control", "default_value" => "true"],
             ["name"=>"default_pound","controlled_by"=>"user", "type" => "global", "default_value" => "Syrian"],
             ["name"=>"use_recyclebin","controlled_by"=>"user", "type" => "global", "default_value" => "true"],
-            ["name"=>"clean_recyclebin_after","controlled_by"=>"user", "type" => "global", "default_value" => "-1"],
+            ["name"=>"clean_recyclebin_after","controlled_by"=>"user", "type" => "global", "default_value" => "5"],
             ["name"=>"dark_mode","controlled_by"=>"user", "type" => "look", "default_value" => "0"],
             ["name"=>"fixed_header","controlled_by"=>"user", "type" => "look", "default_value" => "1"],
             ["name"=>"drop_down_legacy_offset","controlled_by"=>"user", "type" => "look", "default_value" => "0"],
@@ -182,7 +182,7 @@ class globalFunctions
         $splited = explode("#",$message);
         if (count($splited)>1){
             $splited[1] = str_replace(" ","_",$splited[1]);
-            return $splited[0] . "('" . __("global.".$splited[1],[],session("lang")) . "')" . $splited[2];
+            return $splited[0] . "('" . __("global.".$splited[1]) . "')" . $splited[2];
         }
         else
             return $message;

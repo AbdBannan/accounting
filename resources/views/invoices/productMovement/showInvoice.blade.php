@@ -1,18 +1,18 @@
 <x-masterLayout.master>
     @if(count($invoiceLines)==0)
         @section("title")
-            {{ __("global.search_in_product_movement_invoices",[],session("lang")) }}
+            {{ __("global.search_in_product_movement_invoices") }}
         @endsection
     @else
         @section("title")
-            {{ __("global.product_movement",[],session("lang")) }}
+            {{ __("global.product_movement") }}
         @endsection
     @endif
 
     @section("recycle_bin")
         <a class="dropdown-item" href="{{route("invoice.viewProductMovementRecyclebin")}}">
             <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-400"></i>
-            {{__("global.recycle_bin",["attribute"=>__("global.product_movement_invoices",[],session("lang"))],session("lang"))}}
+            {{__("global.recycle_bin",["attribute"=>__("global.product_movement_invoices")])}}
         </a>
     @endsection
 
@@ -23,10 +23,10 @@
                 <x-invoices.product-movement-body>
                     @section("edit_delete")
                           <div class="row">
-                              <a id="btn_update_invoice" title="{{__("global.update",[],session("lang"))}}" class="col-4">
+                              <a id="btn_update_invoice" title="{{__("global.update")}}" class="col-4">
                                   <input class="grid-button grid-edit-button" type="button" title="Update">
                               </a>
-                              <a id="btn_delete" title="{{__("global.delete",[],session("lang"))}}" class="col-4" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("invoice.softDeleteProductMovementInvoice",$invoiceLines[0]->invoice_id)}}" @else data-route="{{route("invoice.deleteProductMovementInvoice",$invoiceLines[0]->invoice_id)}}" @endif>
+                              <a id="btn_delete" title="{{__("global.delete")}}" class="col-4" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("invoice.softDeleteProductMovementInvoice",$invoiceLines[0]->invoice_id)}}" @else data-route="{{route("invoice.deleteProductMovementInvoice",$invoiceLines[0]->invoice_id)}}" @endif>
                                   <input class="grid-button grid-delete-button" type="button" title="Delete">
                               </a>
                           </div>
@@ -71,9 +71,9 @@
                     <div class="row bg-gradient-light shadow" style="width: 50%;margin: auto;">
                         <form id="search_form" style="margin: auto" action="{{route("invoice.searchProductMovementInvoice")}}">
                             <div class="form-group text-center">
-                                <label style="font-size: x-large" for="invoice_id" >{{__("global.enter_invoice_id",[],session("lang"))}}</label>
+                                <label style="font-size: x-large" for="invoice_id" >{{__("global.enter_invoice_id")}}</label>
                                 <input type="number" name="invoice_id" id="invoice_id" class="form-control" autofocus>
-                                <input id="btn_search" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.search",[],session("lang"))}}">
+                                <input id="btn_search" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.search")}}">
                             </div>
                         </form>
                     </div>

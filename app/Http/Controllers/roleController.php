@@ -46,9 +46,9 @@ class roleController extends Controller
             "slug"=>Str::of(Str::ucfirst($input["name"]))->slug("-")
         ]);
 //        if ($result!=null) {
-//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.role")]));
 //        }else{
-//            session()->flash("success",__("messages.not_created_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.not_created_successfully",["attribute"=>__("global.role")]));
 //        }
 
         globalFunctions::flashMessage("create",$result,"role");
@@ -101,11 +101,11 @@ class roleController extends Controller
 
         $result = null;
         if ($role->isDirty(["name"])) {
-//            session()->flash("success",__("messages.updated_successfully",["attribute"=>__("global.role",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.updated_successfully",["attribute"=>__("global.role")]));
             $result = $role->save();
         }
 //        else{
-//            session()->flash("success",__("messages.nothing_to_be_updated",[],session("lang")));
+//            session()->flash("success",__("messages.nothing_to_be_updated"));
 //        }
         globalFunctions::flashMessage("update",$result,"role");
         globalFunctions::registerUserActivityLog("updated","role",$role->id);

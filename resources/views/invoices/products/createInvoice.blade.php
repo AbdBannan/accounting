@@ -2,26 +2,26 @@
 
     @if($invoice_type == "sale")
         @section("title")
-            {{ __("global.new_sale_invoice",[],session("lang")) }}
+            {{ __("global.new_sale_invoice") }}
         @endsection
     @elseif($invoice_type == "purchase")
         @section("title")
-            {{ __("global.new_purchase_invoice",[],session("lang")) }}
+            {{ __("global.new_purchase_invoice") }}
         @endsection
     @elseif($invoice_type == "sale_return")
         @section("title")
-            {{ __("global.new_sale_return_invoice",[],session("lang")) }}
+            {{ __("global.new_sale_return_invoice") }}
         @endsection
     @elseif($invoice_type == "purchase_return")
         @section("title")
-            {{ __("global.new_purchase_return_invoice",[],session("lang")) }}
+            {{ __("global.new_purchase_return_invoice") }}
         @endsection
     @endif
 
     @section("recycle_bin")
         <a class="dropdown-item" href="{{route("invoice.viewInvoiceRecyclebin")}}">
             <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-400"></i>
-            {{__("global.recycle_bin",["attribute"=>__("global.invoices",[],session("lang"))],session("lang"))}}
+            {{__("global.recycle_bin",["attribute"=>__("global.invoices")])}}
         </a>
     @endsection
 

@@ -16,6 +16,21 @@ return [
     //    -------- account section --------    //
 
     '' => '',
+
+
+
+    'verify_your_email_address' => 'قم بتأكيد حسابك الإلكتروني.',
+    'a_fresh_verification_link_has_been_sent_to_your_email_address.' => 'لقد قمنا بإرسال رابط التأكيد الى حسابك الإلكتروني.',
+    'before_proceeding_please_check_your_email_for_a_verification_link' => 'قبل المتابعة, يرجى تأكيد الحساب من خلال الرابط الذي تم إرساله الى حسابك الإلكتروني.',
+    'if_you_did_not_receive_the_email' => 'إذا لم تتلقى الإيميل.',
+    'click_here_to_request_another' => 'إضغط هنا لإرسال إيميل آخر.',
+    'reset_password' => 'إعادة تعيين كلمة السر',
+    'email_address' => 'الإيميل',
+    'confirm_password' => 'تأكيد كلمة السر',
+    'please_confirm_your_password_before_continuing' => 'من فضلك , قم بتأكيد كلمة السر قبل المتابعة.',
+    'send_password_reset_link' => 'أرسل رابط إعادة تعيين كلمة السر.',
+
+
     'restore_selected' => 'استرجاع العناصر المختارة',
     'delete_selected' => 'حذف العناصر المختارة',
     'yes' => 'نعم',

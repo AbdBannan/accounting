@@ -16,7 +16,7 @@ Route::group([
 //    'namespace'  => 'Backpack\BackupManager\app\Http\Controllers',
 //    'prefix'     => config('backpack.base.route_prefix', 'admin'),
 //    'middleware' => ['web',, config('backpack.base.middleware_key', 'admin')],
-    'middleware' => ['web',"role:admin","auth" ],
+    'middleware' => ['web',"role:admin","auth"],
 ], function () {
     Route::get('backup/backup', 'backupController@index')->name('backup.view');
     Route::get('backup/create', 'backupController@create')->name('backup.store');

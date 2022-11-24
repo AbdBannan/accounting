@@ -1,13 +1,13 @@
 <x-masterLayout.master>
     @section("title")
-        {{ __("global.all_products_discover",[],session("lang")) }}
+        {{ __("global.all_products_discover") }}
     @endsection
     @section('content')
         <div class="container">
             @if($actions != null)
                 <div class="card shadow">
                     <div class="card-header py-3">
-                        <h6 class="d-inline-block m-0 font-weight-bold text-primary">{{__("global.all_products_discover",[],session("lang"))}}</h6>
+                        <h6 class="d-inline-block m-0 font-weight-bold text-primary">{{__("global.all_products_discover")}}</h6>
                     </div>
                     <div class="card-body">
 
@@ -15,11 +15,11 @@
                             <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>{{__("global.product_id",[],session("lang"))}}</th>
-                                    <th>{{__("global.product_name",[],session("lang"))}}</th>
-                                    <th>{{__("global.in_quantity",[],session("lang"))}}</th>
-                                    <th>{{__("global.out_quantity",[],session("lang"))}}</th>
-                                    <th>{{__("global.balance",[],session("lang"))}}</th>
+                                    <th>{{__("global.product_id")}}</th>
+                                    <th>{{__("global.product_name")}}</th>
+                                    <th>{{__("global.in_quantity")}}</th>
+                                    <th>{{__("global.out_quantity")}}</th>
+                                    <th>{{__("global.balance")}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -53,11 +53,11 @@
                     </form>
                     <div class="card-footer">
 {{--                        @if($actions!=null)--}}
-{{--                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received",[],session("lang"))}} :--}}
+{{--                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received")}} :--}}
 {{--                                <span id="total_received" style="font-style: italic; color:darkblue"></span>--}}
 {{--                                --}}{{--                                <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}
 {{--                            </label>--}}
-{{--                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed",[],session("lang"))}} :--}}
+{{--                            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed")}} :--}}
 {{--                                <span id="total_payed" style="font-style: italic; color:darkblue"></span>--}}
 {{--                                --}}{{--                                 <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}{{----}}{{--should be syrian pound--}}
 {{--                            </label>--}}

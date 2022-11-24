@@ -41,9 +41,9 @@ class userController extends Controller
         ]);
         globalFunctions::initialUserConfig($result);
 //        if ($result != null) {
-//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.user",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.user")]));
 //        } else {
-//            session()->flash("error", __("messages.not_created_successfully",["attribute"=>__("global.user",[],session("lang"))], session("lang")));
+//            session()->flash("error", __("messages.not_created_successfully",["attribute"=>__("global.user")]));
 //        }
 //        }
         globalFunctions::flashMessage("create",$result,"user");
@@ -94,10 +94,10 @@ class userController extends Controller
         $result = null;
         if ($user->isDirty(["first_name","last_name","profile_image","email","password"])) {
             $result = $user->save();
-//            session()->flash("success",__("messages.updated_successfully",["attribute"=>__("global.user",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.updated_successfully",["attribute"=>__("global.user")]));
         }
 //        else {
-//            session()->flash("success",__("messages.nothing_to_be_updated",[],session("lang")));
+//            session()->flash("success",__("messages.nothing_to_be_updated"));
 //        }
         globalFunctions::flashMessage("update",$result,"user");
         globalFunctions::registerUserActivityLog("updated","user",$user->id);

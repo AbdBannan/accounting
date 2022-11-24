@@ -15,6 +15,20 @@ return [
 
     //    -------- account section --------    //
 
+
+    'verify_your_email_address' => 'Verify Your Email Address',
+    'a_fresh_verification_link_has_been_sent_to_your_email_address.' => 'A fresh verification link has been sent to your email address.',
+    'before_proceeding_please_check_your_email_for_a_verification_link' => 'Before proceeding, please check your email for a verification link.',
+    'if_you_did_not_receive_the_email' => 'If you did not receive the email',
+    'click_here_to_request_another' => 'click here to request another',
+    'reset_password' => 'Reset Password',
+    'email_address' => 'Email Address',
+    'confirm_password' => 'Confirm Password',
+    'please_confirm_your_password_before_continuing' => 'Please confirm your password before continuing.',
+    'send_password_reset_link' => 'Send Password Reset Link',
+
+
+
     'day' => 'day',
     'yes' => 'yes',
     'no' => 'no',

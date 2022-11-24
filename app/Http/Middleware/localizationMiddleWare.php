@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class localizationMiddleWare
 {
@@ -17,7 +18,7 @@ class localizationMiddleWare
     public function handle(Request $request, Closure $next)
     {
         $lang = (auth()->user()->getConfig("language") == "english")? "en": "ar" ;
-        app()->setLocale($lang);
+        App::setLocale($lang);
         return $next($request);
     }
 }

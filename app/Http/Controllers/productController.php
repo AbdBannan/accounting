@@ -55,7 +55,7 @@ class productController extends Controller
         if ($request["reference"]!=null && $request["reference"]!=0){
             $ref_account = Product::find($request["reference"]);
             if ($ref_account == null || $ref_account->account_type == 0){// means reference is invalid
-                session()->flash("error",__("messages.invalid_reference",[],session("lang")));
+                session()->flash("error",__("messages.invalid_reference"));
                 return back();
             }
         }
@@ -70,9 +70,9 @@ class productController extends Controller
 
         $result = Product::create($request->except("product_image"));
 //        if ($result!=null) {
-//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.product",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.product")]));
 //        }else{
-//            session()->flash("success",__("messages.not_created_successfully",["attribute"=>__("global.product",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.not_created_successfully",["attribute"=>__("global.product")]));
 //        }
         globalFunctions::flashMessage("create",$result,"product");
         globalFunctions::registerUserActivityLog("added","product",$result->id);
@@ -135,7 +135,7 @@ class productController extends Controller
         if ($request["reference"]!=null && $request["reference"]!=0){
             $ref_account = Product::find($request["reference"]);
             if ($ref_account == null || $ref_account->account_type == 0){// means reference is invalid
-                session()->flash("error",__("messages.invalid_reference",[],session("lang")));
+                session()->flash("error",__("messages.invalid_reference"));
                 return back();
             }
         }
@@ -158,11 +158,11 @@ class productController extends Controller
 
         $result = null;
         if ($product->isDirty(["name","category_id","store_id","reference","image"])) {
-//            session()->flash("success",__("messages.updated_successfully",["attribute"=>__("global.product",[],session("lang"))],session("lang")));
+//            session()->flash("success",__("messages.updated_successfully",["attribute"=>__("global.product")]));
             $result = $product->save();
         }
 //        else{
-//            session()->flash("success",__("messages.nothing_to_be_updated",[],session("lang")));
+//            session()->flash("success",__("messages.nothing_to_be_updated"));
 //        }
         globalFunctions::flashMessage("update",$result,"product");
         globalFunctions::registerUserActivityLog("updated","product",$product->id);

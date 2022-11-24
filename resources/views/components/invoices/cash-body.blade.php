@@ -1,4 +1,4 @@
-<dev class="col-lg-8 col-sm-12">
+<div class="col-sm-12">
     <div class="card shadow">
         <div class="card-header py-3">
 
@@ -6,14 +6,14 @@
                 <div class="col-md-10 col-sm-12">
                     <div class="row">
                         <div class="form-group col-md-3 col-sm-12">
-                            <label class="" style="font-size: large" for="invoice_id" >{{__("global.invoice_id",[],session("lang"))}}</label>
+                            <label class="" style="font-size: large" for="invoice_id" >{{__("global.invoice_id")}}</label>
                             <input form="form" id="invoice_id" name="invoice_id" min="0" type="number" class="form-control" readonly value="@yield("invoice_id",App\Models\Journal::withTrashed()->where("detail",1)->whereIn("invoice_type",[5])->selectRaw("max(invoice_id) as mid")->get()[0]["mid"]+1)">
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
-                            <label style="font-size: large" for="first_part_name" >{{__("global.first_part",[],session("lang"))}}</label>
+                            <label style="font-size: large" for="first_part_name" >{{__("global.first_part")}}</label>
                             <input form="form" id="first_part_name" name="first_part_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("second_part_name",181)" />
                             <span class="invalid-feedback" role="alert">
-                                <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                <strong>{{__("messages.value_not_found")}}</strong>
                             </span>
                             <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="first_part_name">
                                 @foreach(App\Models\Account::get() as $account)
@@ -22,14 +22,14 @@
                             </div>
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
-                            <label style="font-size: large" for="pound_type" >{{__("global.pound",[],session("lang"))}}</label>
-                            <input value="@yield('pound_type',__("global.".auth()->user()->getConfig("default_pound"),[],session("lang")))" form="form" id="pound_type" name="pound_type" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                            <label style="font-size: large" for="pound_type" >{{__("global.pound")}}</label>
+                            <input value="@yield('pound_type',__("global.".auth()->user()->getConfig("default_pound")))" form="form" id="pound_type" name="pound_type" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                             <span class="invalid-feedback" role="alert">
-                                <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                <strong>{{__("messages.value_not_found")}}</strong>
                             </span>
                             <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="pound_type">
                                 @foreach(App\Models\Pound::all() as $pound)
-                                    <option value="{{$pound->name}}" class="dropdown-item" >{{__("global.$pound->name",[],session("lang"))}}</option>
+                                    <option value="{{$pound->name}}" class="dropdown-item" >{{__("global.$pound->name")}}</option>
                                 @endforeach
                             </div>
                         </div>
@@ -42,28 +42,28 @@
 
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
-                                <label style="font-size: large" for="payed" >{{__("global.payed",[],session("lang"))}}</label>
+                                <label style="font-size: large" for="payed" >{{__("global.payed")}}</label>
                                 <input form="f" type="number" min="0" class="form-control" id="payed" name="payed" >
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                    <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
                             </div>
                         </div>
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
-                                <label style="font-size: large" for="received" >{{__("global.received",[],session("lang"))}}</label>
+                                <label style="font-size: large" for="received" >{{__("global.received")}}</label>
                                 <input form="f" type="number" min="0" class="form-control" id="received" name="received" >
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                    <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-12">
                             <div class="form-group">
-                                <label style="font-size: large" for="second_part_name" >{{__("global.second_part",[],session("lang"))}}</label>
+                                <label style="font-size: large" for="second_part_name" >{{__("global.second_part")}}</label>
                                 <input form="f" id="second_part_name" name="second_part_name"  type="text" placeholder="" class="form-control dropdown-toggle" form="form" id="second_part_name" name="second_part_name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{__("messages.value_not_found",[],session("lang"))}}</strong>
+                                    <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
                                 <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="second_part_name">
                                     @foreach(App\Models\Account::get() as $account)
@@ -75,7 +75,7 @@
 
                         <div class="col-md-5 col-sm-12">
                             <div class="form-group">
-                                <label style="font-size: large" for="notes" >{{__("global.notes",[],session("lang"))}}</label>
+                                <label style="font-size: large" for="notes" >{{__("global.notes")}}</label>
                                 <input form="f" id="notes" name="notes" type="text" class="form-control">
                             </div>
                         </div>
@@ -84,8 +84,8 @@
                     <div class="col-md-5 col-sm-12">
 
                         <div>
-                            <button form="aa" id="btn_add_item_to_invoice" class="btn btn-outline-success">{{__("global.add",[],session("lang"))}}</button>
-                            <input form="f" id="btn_reset" class="btn btn-outline-danger" type="reset" value="{{__("global.reset",[],session("lang"))}}">
+                            <button form="aa" id="btn_add_item_to_invoice" class="btn btn-outline-success">{{__("global.add")}}</button>
+                            <input form="f" id="btn_reset" class="btn btn-outline-danger" type="reset" value="{{__("global.reset")}}">
                         </div>
                     </div>
                 </div>
@@ -104,11 +104,11 @@
                 <table class="table table-bordered table-striped" id="dataTable1" width="100%" cellspacing="0">
                     <thead>
                     <tr>
-                        <th>{{__("global.id",[],session("lang"))}}</th>
-                        <th>{{__("global.second_part",[],session("lang"))}}</th>
-                        <th>{{__("global.received",[],session("lang"))}}</th>
-                        <th>{{__("global.payed",[],session("lang"))}}</th>
-                        <th>{{__("global.notes",[],session("lang"))}}</th>
+                        <th>{{__("global.id")}}</th>
+                        <th>{{__("global.second_part")}}</th>
+                        <th>{{__("global.received")}}</th>
+                        <th>{{__("global.payed")}}</th>
+                        <th>{{__("global.notes")}}</th>
                         <th id="td_delete_restore"@yield("hidden")></th>
                     </tr>
                     </thead>
@@ -124,10 +124,10 @@
         </div>
 
         <div class="card-footer">
-            <button id="btn_close_invoice" title="{{__("global.close_invoice",[],session("lang"))}}" class="btn btn-success" data-toggle="modal" data-target="#closingDateModal" @yield("hide")>{{__("global.close_invoice",[],session("lang"))}}</button>
-            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received",[],session("lang"))}} : <span id="total_received" style="font-style: italic; color:darkblue">@yield("total_received",0)</span>  <span id="invoice_pound">@yield("pound_type")</span></label>
-            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed",[],session("lang"))}} : <span id="total_payed" style="font-style: italic; color:darkblue">@yield("total_payed",0)</span>  <span id="invoice_pound">@yield("pound_type")</span></label>
+            <button id="btn_close_invoice" title="{{__("global.close_invoice")}}" class="btn btn-success" data-toggle="modal" data-target="#closingDateModal" @yield("hide")>{{__("global.close_invoice")}}</button>
+            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received")}} : <span id="total_received" style="font-style: italic; color:darkblue">@yield("total_received",0)</span>  <span id="invoice_pound">@yield("pound_type")</span></label>
+            <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed")}} : <span id="total_payed" style="font-style: italic; color:darkblue">@yield("total_payed",0)</span>  <span id="invoice_pound">@yield("pound_type")</span></label>
         </div>
 
     </div>
-</dev>
+</div>

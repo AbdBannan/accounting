@@ -1,14 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
+    @isset($_GET["lang"])
+        @php
+            app()->setLocale($_GET["lang"])
+        @endphp
+    @endisset
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Confirm Password') }}</div>
+                <div class="card-header">{{ __('global.confirm_password') }}</div>
 
                 <div class="card-body">
-                    {{ __('Please confirm your password before continuing.') }}
+                    {{ __('global.please_confirm_your_password_before_continuing') }}
 
                     <form method="POST" action="{{ route('password.confirm') }}">
                         @csrf
@@ -30,12 +35,12 @@
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Confirm Password') }}
+                                    {{ __('global.confirm_password') }}
                                 </button>
 
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
+                                        {{ __('global.forgot_your_password') }}
                                     </a>
                                 @endif
                             </div>

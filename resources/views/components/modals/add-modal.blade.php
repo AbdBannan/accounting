@@ -4,7 +4,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{__("global.add",[],session("lang"))}}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{{__("global.add")}}</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -33,8 +33,8 @@
             </div>
             <div class="modal-footer">
                 <div class="form-group">
-                    <input id="btn_id" form="form_add" class="btn btn-primary" type="submit" value="{{__("global.add",[],session("lang"))}}">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">{{__("global.cancel",[],session("lang"))}}</button>
+                    <input id="btn_id" form="form_add" class="btn btn-primary" type="submit" value="{{__("global.add")}}">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">{{__("global.cancel")}}</button>
                 </div>
             </div>
         </div>
@@ -51,12 +51,12 @@
 
 {{--                        @if($field["type"] == 'text')--}}
 {{--                            <div class="form-group">--}}
-{{--                                <label for="{{$field["label"]}}">{{__("global.".$field['label'],[],session("lang"))}}</label>--}}
+{{--                                <label for="{{$field["label"]}}">{{__("global.".$field['label'])}}</label>--}}
 {{--                                <input id="{{$field["label"]}}" name="{{$field["label"]}}" type="text" value="asldfjlsk" class="form-control" {{$field["extra"]}}>--}}
 {{--                            </div>--}}
 {{--                        @elseif($field["type"] == 'email')--}}
 {{--                            <div class="form-group">--}}
-{{--                                <label for="{{$field["label"]}}">{{__("global.".$field['label'],[],session("lang"))}}</label>--}}
+{{--                                <label for="{{$field["label"]}}">{{__("global.".$field['label'])}}</label>--}}
 {{--                                <input id="{{$field["label"]}}" name="{{$field["label"]}}" type="email" class="form-control" {{$field["extra"]}}>--}}
 {{--                            </div>--}}
 {{--                        @elseif($field["type"] == 'file')--}}
@@ -65,25 +65,25 @@
 {{--                            </div>--}}
 {{--                        @elseif($field["type"] == 'textarea')--}}
 {{--                            <div class="form-group">--}}
-{{--                                <label for="{{$field["label"]}}">{{__("global.".$field['label'],[],session("lang"))}}</label>--}}
+{{--                                <label for="{{$field["label"]}}">{{__("global.".$field['label'])}}</label>--}}
 {{--                                <textarea id="{{$field["label"]}}" name="{{$field["label"]}}" class="form-control" cols="50" rows="5" {{$field["extra"]}}></textarea>--}}
 {{--                            </div>--}}
 {{--                        @elseif($field["type"] == 'select')--}}
 {{--                            <div class="form-group">--}}
 {{--                                <select id="{{$field["label"]}}" name="{{$field["label"]}}" class="form-control" {{$field["extra"]}}>--}}
 {{--                                    @foreach($field["options"] as $option)--}}
-{{--                                        <option>{{__("global.".$option,[],session("lang"))}}</option>--}}
+{{--                                        <option>{{__("global.".$option)}}</option>--}}
 {{--                                    @endforeach--}}
 {{--                                </select>--}}
 {{--                            </div>--}}
 {{--                        @elseif($field["type"] == 'number')--}}
 {{--                            <div class="form-group">--}}
-{{--                                <label for="{{$field["label"]}}">{{__("global.".$field['label'],[],session("lang"))}}</label>--}}
+{{--                                <label for="{{$field["label"]}}">{{__("global.".$field['label'])}}</label>--}}
 {{--                                <input id="{{$field["label"]}}" name="{{$field["label"]}}" type="number" class="form-control" {{$field["extra"]}}>--}}
 {{--                            </div>--}}
 {{--                        @elseif($field["type"] == 'range')--}}
 {{--                            <div class="form-group">--}}
-{{--                                <label for="{{$field["label"]}}">{{__("global.".$field['label'],[],session("lang"))}}</label>--}}
+{{--                                <label for="{{$field["label"]}}">{{__("global.".$field['label'])}}</label>--}}
 {{--                                <input id="{{$field["label"]}}" name="{{$field["label"]}}" type="range" class="form-control-range" {{$field["extra"]}}>--}}
 {{--                            </div>--}}
 {{--                        @elseif($field["type"] == 'checkbox')--}}
@@ -92,7 +92,7 @@
 {{--                                    <div class="form-check">--}}
 {{--                                        <label class="form-check-label">--}}
 {{--                                            <input id="{{$label}}" name="{{$label}}" type="checkbox" value="{{$label}}" class="form-check-input">--}}
-{{--                                            {{__("global.".$label,[],session("lang"))}}--}}
+{{--                                            {{__("global.".$label)}}--}}
 {{--                                        </label>--}}
 {{--                                    </div>--}}
 {{--                                @endforeach--}}
@@ -104,7 +104,7 @@
 {{--                                        <div class="form-check">--}}
 {{--                                            <label class="form-check-label">--}}
 {{--                                                <input id="{{$field["label"]}}" name="{{$field["label"]}}" type="radio" class="form-check-input" value="{{$label}}" ="aaa" checked="">--}}
-{{--                                                {{__("global.".$label,[],session("lang"))}}--}}
+{{--                                                {{__("global.".$label)}}--}}
 {{--                                            </label>--}}
 {{--                                        </div>--}}
 {{--                                    @endforeach--}}
@@ -117,8 +117,8 @@
 {{--                            </div>--}}
 {{--                        @elseif($field["type"] == 'submit')--}}
 {{--                            <div class="form-group">--}}
-{{--                                <input class="btn btn-primary" type="{{$field["type"]}}" value="{{$field["label"]}}" {{__("global.".$field["extra"],[],session("lang"))}}>--}}
-{{--                                <button class="btn btn-secondary" type="button" data-dismiss="modal">{{__("global.cancel",[],session("lang"))}}</button>--}}
+{{--                                <input class="btn btn-primary" type="{{$field["type"]}}" value="{{$field["label"]}}" {{__("global.".$field["extra"])}}>--}}
+{{--                                <button class="btn btn-secondary" type="button" data-dismiss="modal">{{__("global.cancel")}}</button>--}}
 {{--                            </div>--}}
 {{--                        @endif--}}
 {{--                    @endforeach--}}

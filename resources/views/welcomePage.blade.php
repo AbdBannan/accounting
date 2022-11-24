@@ -15,7 +15,7 @@
     @endsection
     @section("content")
 {{--        <div class="container" style="background: transparent">--}}
-{{--            <h1 style="text-align: center" class="text-blue">{{__("global.Welcome",[],session("lang"))}}</h1>--}}
+{{--            <h1 style="text-align: center" class="text-blue">{{__("global.Welcome")}}</h1>--}}
 {{--        </div>--}}
     @show
     @section("script")
