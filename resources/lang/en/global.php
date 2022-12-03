@@ -14,8 +14,32 @@ return [
     */
 
     //    -------- account section --------    //
+    'manufacturing' => 'manufacturing',
+    'manufacturing_actions' => 'manufacturing actions',
+    'new_manufacturing_action' => 'new manufacturing action',
+    'make_manufacturing' => 'make manufacturing action',
+    'view_all_manufacturing_actions' => 'view all manufacturing actions',
+    'search_edit_delete_manufacturing_actions' => 'search edit delete manufacturing actions',
 
 
+
+
+    'short_cuts' => 'short cuts',
+    'view_all_accounts' => 'view all accounts',
+    'welcome_page' => 'welcome page',
+    'refresh_page' => 'refresh the page',
+    'open_recyclebin' => 'recyclebin page',
+    'search_invoice' => 'search invoice',
+    'press_f1_to_view_all_accounts' => 'press F1 , after page is loaded press F1 again to move into \'view all accounts\' page',
+    'press_f2_to_save_the_invoice' => 'press F2 to save the current invoice',
+    'press_f3_to_search_invoice' => 'press F3 to search an invoice or cash action',
+    'press_f4_to_view_welcome_page' => 'press F4 to view the welcome page',
+    'press_f5_to_refresh_the_page' => 'press F5 to refresh the current page',
+    'press_f6_to_view_recyclebin_page' => 'press F6 to view the recyclebin page',
+
+    'help' => 'Help',
+    'qr' => 'QR Code',
+    'image' => 'Choose an image',
     'verify_your_email_address' => 'Verify Your Email Address',
     'a_fresh_verification_link_has_been_sent_to_your_email_address.' => 'A fresh verification link has been sent to your email address.',
     'before_proceeding_please_check_your_email_for_a_verification_link' => 'Before proceeding, please check your email for a verification link.',
@@ -26,6 +50,7 @@ return [
     'confirm_password' => 'Confirm Password',
     'please_confirm_your_password_before_continuing' => 'Please confirm your password before continuing.',
     'send_password_reset_link' => 'Send Password Reset Link',
+    'toggle_navigation' => 'Toggle navigation',
 
 
 
@@ -209,7 +234,7 @@ return [
     'total_invoice_price' => 'total invoice price',
     'search' => 'search',
     'closing_date' => 'closing date',
-    'close_invoice' => 'close invoice',
+    'close_invoice' => 'save invoice',
     'payed' => 'payed',
     'received' => 'received',
     'new_cash_invoice' => 'new cash invoice',

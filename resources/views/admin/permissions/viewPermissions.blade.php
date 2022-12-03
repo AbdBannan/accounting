@@ -70,10 +70,10 @@
 
                                             <td class="row m-0">
                                                 <a id="btn_update" title="{{__("global.update")}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$permission}}" data-route="{{route("permission.updatePermission",$permission->id)}}">
-                                                    <input class="grid-button grid-edit-button" type="button" title="Update">
+                                                    <i class="fas fa-edit text-green"></i>
                                                 </a>
                                                 <a id="btn_delete" title="{{__("global.delete")}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("permission.softDeletePermission",$permission->id)}}"  @else data-route="{{route("permission.deletePermission",$permission->id)}}"  @endif>
-                                                    <input class="grid-button grid-delete-button" type="button" title="Delete">
+                                                    <i class="fas fa-trash text-red"></i>
                                                 </a>
                                             </td>
                                         </tr>

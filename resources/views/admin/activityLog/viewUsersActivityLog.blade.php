@@ -39,7 +39,7 @@
 
                                         <td style="width: 20px">
                                             <a id="btn_delete" title="{{__("global.delete")}}" class="dropdown-item m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("activityLog.softDeleteActivityLog",$user->id)}}">
-                                                <input class="grid-button grid-delete-button" type="button" title="Delete">
+                                                <i class="fas fa-trash text-red"></i>
                                             </a>
                                         </td>
 

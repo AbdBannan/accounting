@@ -15,16 +15,23 @@
     @section('content')
         <div class="container">
             <x-invoices.cash-body></x-invoices.cash-body>
-            <x-modals.close-invoice-modal></x-modals.close-invoice-modal>
         </div>
+    @endsection
+    @section("modals")
+        <x-modals.close-invoice-modal></x-modals.close-invoice-modal>
+        <x-modals.ajax-update-modal :modelName="$modelName = 'pound'"></x-modals.ajax-update-modal>
     @endsection
     @section("script")
         <script>
             let ids = [];
             let isNewLineMode = true;
             let isLineInEditing = false;
-            $("input#first_part_name").focus();
-            $("input#first_part_name").change();
+            setTimeout(
+                function (){
+                    $("input#first_part_name").focus();
+                    $("input#first_part_name").change();
+                },100
+            );
 
 
             function validateDropDownBox(dropDownBox){
@@ -134,7 +141,7 @@
                 });
                 $("#payed").attr("disabled",false);
                 $("#received").attr("disabled",false);
-                $("#payed").focus();
+                $("#received").focus();
                 isLineInEditing = false;
                 isNewLineMode = false;
             });

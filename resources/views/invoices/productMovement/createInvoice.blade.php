@@ -17,17 +17,20 @@
         </div>
     @endsection
     @section("modals")
-        <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
         <x-modals.close-invoice-modal></x-modals.close-invoice-modal>
-    @endsection
+        <x-modals.ajax-update-modal :modelName="$modelName = 'pound'"></x-modals.ajax-update-modal>
+        @endsection
     @section("script")
             <script>
                 let ids = [];
                 let isNewLineMode = true;
                 let isLineInEditing = false;
-                $("input#moved_product_name").focus();
-                $("input#moved_product_name").change();
-
+                setTimeout(
+                    function (){
+                        $("input#moved_product_name").focus();
+                        $("input#moved_product_name").change();
+                    },100
+                );
 
                 function validateDropDownBox(dropDownBox){
                     let error="";

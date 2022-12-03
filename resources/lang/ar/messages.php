@@ -54,6 +54,9 @@ return [
     'not_found_error' => 'غير موجود',
     'second_greater_than_first' => 'تاريخ البداية أكبر من تاريخ النهاية',
     'invalid_reference' => 'حساب مرجعي خاطئ',
-    //   -------- end account section --------    //
-
+    'account_is_not_zero' => 'لا يمكن حذف الحساب , إن رصيد الحساب ليس صفر',
+    'field_invalid'=>'أحد الحقول غير صحيح.',
+    'can_not_update_invoice_contains_deleted_account'=>'لا يمكن تعديل فاتورة تحوي على حساب محذوف. ',
+    'can_not_update_invoice_contains_deleted_product'=>'لا يمكن تعديل فاتورة تحوي على منتج محذوف. ',
 ];
+

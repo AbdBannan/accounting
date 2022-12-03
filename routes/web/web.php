@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Mail;
 
 
 use Illuminate\Support\Facades\Route;
+use Ricadesign\Contact\Mail\MessageSent;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,9 @@ Route::middleware(["auth","saveCurrentRequest","localization"])->group(function 
     Route::get('/',function (){
        return redirect("/welcome");
     });
-//    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get("/help/viewHelp",function (){
+        return view("help");
+    })->name("help.viewHelp");
 });
 
 Route::middleware(["auth","cleanRecyclebinCheck","localization"])->group(function (){
@@ -41,15 +44,12 @@ Route::middleware(["auth","role:admin","saveCurrentRequest","localization"])->gr
 Auth::routes();
 
 
-//Route::post("/t",function (){
-//    return "sdfgdgrd";
-//    if ($file = request()->file("image")){
-////        $file->move("images","new.jpg");
-//        return "good";
-//    } else {
-//        return "not good";
-//    }
-//});
+Route::get("/t",function (){
+    $name = "Abdulmoty";
+    $email = "bannan51a@gmail.com";
+    $message = "hay i am abdulmoty";
+    $phone =  "0947276369";
+    Mail::to(config('contact.email'))
+        ->send(new MessageSent($name, $email, $message, $phone));
+});
 
-
-//169.254.141.42/accounting/public/t

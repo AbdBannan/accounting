@@ -24,10 +24,10 @@
                     @section("edit_delete")
                           <div class="row">
                               <a id="btn_update_invoice" title="{{__("global.update")}}" class="col-4">
-                                  <input class="grid-button grid-edit-button" type="button" title="Update">
+                                  <i class="fas fa-edit"></i>
                               </a>
                               <a id="btn_delete" title="{{__("global.delete")}}" class="col-4" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("invoice.softDeleteProductMovementInvoice",$invoiceLines[0]->invoice_id)}}" @else data-route="{{route("invoice.deleteProductMovementInvoice",$invoiceLines[0]->invoice_id)}}" @endif>
-                                  <input class="grid-button grid-delete-button" type="button" title="Delete">
+                                  <i class="fas fa-trash text-red"></i>
                               </a>
                           </div>
                     @endsection
@@ -84,6 +84,7 @@
     @section("modals")
         <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
         <x-modals.close-invoice-modal></x-modals.close-invoice-modal>
+        <x-modals.ajax-update-modal :modelName="$modelName = 'pound'"></x-modals.ajax-update-modal>
     @endsection
     @section("script")
         <script>
@@ -93,6 +94,8 @@
             let isLineInEditing = false;
             @if(count($invoiceLines)!=0)
                 $(".row input[type='text'],.row input[type='number'],.row select,.row input[type='file']").prop("disabled",true);
+                $("#toggle_image,#toggle_qr").addClass("disable-pointer");
+                $("a#btn_update_pound").addClass("disable-pointer");
             @endif
             function validateDropDownBox(dropDownBox){
                 let error="";
@@ -217,6 +220,8 @@
                 $("#btn_close_invoice").attr("hidden",false);
                 $(".row input[type='text'],.row input[type='number'],.row select,.row input[type='file']").prop("disabled",false);
                 $("#total_price").prop("disabled",true);
+                $("a#btn_update_pound").removeClass("disable-pointer");
+                $("#toggle_image,#toggle_qr").removeClass("disable-pointer");
                 $("input#moved_product_name").focus();
                 editingMode = true;
             });

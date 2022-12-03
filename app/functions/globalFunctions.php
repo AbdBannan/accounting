@@ -53,15 +53,17 @@ class globalFunctions
             }
         }
         if ($actionType == "updated") {
-             if ("".$result == "no_item_error") {
+            if ("".$result == "no_item_error") {
                 session()->flash("error",__("messages.no_item",["attribute"=>__("global.$name")]));
-            } elseif ($result!=null) {
+            } elseif ($result!=null and $result != false) {
                 session()->flash("success",__("messages." . $actionType . "_successfully",["attribute"=>__("global." . $name)]));
             } else {
                 session()->flash("success",__("messages.nothing_to_be_updated"));
             }
         } else {
-             if ("".$result == "no_item_error") {
+             if ("".$result == "account_is_not_zero") {
+                 session()->flash("error", __("messages.account_is_not_zero"));
+             }elseif ("".$result == "no_item_error") {
                 session()->flash("error",__("messages.no_item",["attribute"=>__("global.$name")]));
             } elseif ($result != null or $result == true) {
                 session()->flash("success", __("messages." . $actionType . "_successfully", ["attribute" => __("global.$name")]));
@@ -112,13 +114,15 @@ class globalFunctions
 
     public static function getEquivalentPoundValue($pound)
     {
-        $translate = [
-            'ل.س'=>'syrian',
-            'دولار'=>'dollar',
-            'syrian'=>'syrian',
-            'dollar'=>'dollar'
-        ];
-        return Pound::where("name",$translate[$pound])->first()->value;
+//        $translate = [
+//            'ل.س'=>'syrian',
+//            'دولار'=>'dollar',
+//            'syrian'=>'syrian',
+//            'dollar'=>'dollar'
+//        ];
+//        dd($translate[$pound]   );
+//        return Pound::where("name",$translate[$pound])->first()->value;
+        return Pound::where("name",$pound)->first()->value;
     }
 
     public static function initialUserConfig(User $user){
@@ -177,16 +181,21 @@ class globalFunctions
         }
         return $config->id;
     }
-
     public static function fixTranslation($message){
         $splited = explode("#",$message);
-        if (count($splited)>1){
-            $splited[1] = str_replace(" ","_",$splited[1]);
-            return $splited[0] . "('" . __("global.".$splited[1]) . "')" . $splited[2];
-        }
-        else
+        if (count($splited) <= 1) {
             return $message;
+        }
+        if (Str::contains($splited[1],"second part name ") || Str::contains($splited[1],"first part name ")) {
+            return __("messages.can_not_update_invoice_contains_deleted_account");
+        }
+        if (Str::contains($splited[1],"product name ")) {
+            return __("messages.can_not_update_invoice_contains_deleted_product");
+        }
+        $splited[1] = str_replace(" ","_",$splited[1]);
+        return $splited[0] . "('" . __("global.".$splited[1]) . "')" . $splited[2];
     }
+
 }
 
 

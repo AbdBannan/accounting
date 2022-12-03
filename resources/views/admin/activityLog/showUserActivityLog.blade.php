@@ -40,10 +40,10 @@
 
                                     {{--                                        <td class="row m-0">--}}
                                     {{--                                            <a id="btn_update" title="{{__("global.update")}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$pound}}" data-route="{{route("pound.updatePound",$pound->id)}}">--}}
-                                    {{--                                                <input class="grid-button grid-edit-button" type="button" title="Update">--}}
+                                    {{--                                                <i class="fas fa-edit text-green"></i>--}}
                                     {{--                                            </a>--}}
                                     {{--                                            <a id="btn_delete" title="{{__("global.delete")}}" class="dropdown-item col-5 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" data-route="{{route("pound.softDeletePound",$pound->id)}}">--}}
-                                    {{--                                                <input class="grid-button grid-delete-button" type="button" title="Delete">--}}
+                                    {{--                                                <i class="fas fa-trash text-red"></i>--}}
                                     {{--                                            </a>--}}
                                     {{--                                        </td>--}}
 

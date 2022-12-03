@@ -7,14 +7,16 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-{{--    @if(app()->getLocale() === null)--}}
-{{--        {{session(["lang"=>"ar"])}}--}}
-{{--    @endif--}}
-    @isset($_GET["lang"])
+    @if (isset($_GET["lang"]))
         @php
-            app()->setLocale($_GET["lang"])
+            app()->setLocale($_GET["lang"]);
         @endphp
-    @endisset
+    @else
+        @php
+            $_GET["lang"] = app()->getLocale();
+        @endphp
+    @endif
+
     <title>{{ __("global.".config('app.name', 'accounting')) }}</title>
 
     <!-- Scripts -->
@@ -56,7 +58,7 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ __("global.".config('app.name', 'accounting')) }}
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('global.toggle_navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">

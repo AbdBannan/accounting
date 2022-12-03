@@ -75,8 +75,10 @@
                                             <td>{{$action->product_name}}</td>
                                             @if($action->equivalent === 1)
                                             <td>{{$action->notes . " (" . __("global.check_point") . ")"}}</td>
+                                            @elseif ($action->num_for_pound > 1)
+                                            <td>{{$action->notes . " (" . $action->num_for_pound . $action->pound_type . ")"}}</td>
                                             @else
-                                            <td>{{$action->notes }}</td>
+                                                <td>{{$action->notes  }}</td>
                                             @endif
                                             <td>{{__("global.$action->invoice_type")}}</td>
                                         </tr>

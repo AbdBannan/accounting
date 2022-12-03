@@ -1,11 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-    @isset($_GET["lang"])
+    @if (isset($_GET["lang"]))
         @php
-            app()->setLocale($_GET["lang"])
+            app()->setLocale($_GET["lang"]);
         @endphp
-    @endisset
+    @else
+        @php
+            $_GET["lang"] = app()->getLocale();
+        @endphp
+    @endif
+
     <div class="container">
 
         <!-- Outer Row -->

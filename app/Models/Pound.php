@@ -15,4 +15,16 @@ class Pound extends Model
     use softDeletes;
     protected $guarded = [];
 
+//    protected function getNameAttribute($value){
+//        $trans = [
+//            "Syrian"=>"ل.س",
+//            "Dollar"=>"دولار",
+//            "ل.س"=>"Syrian",
+//            "دولار"=>"Dollar",
+//        ];
+//        if ($value == "Syrian" or $value == "Dollar") {
+//            return $trans[$value];
+//        }
+//        return $value;
+//    }
 }

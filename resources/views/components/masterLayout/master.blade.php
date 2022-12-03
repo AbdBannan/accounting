@@ -142,7 +142,7 @@
                     <a id="btn_welcome" href="{{route("welcomePage")}}" class="nav-link">{{__("global.home")}}</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">{{__("global.contact")}}</a>
+                    <a href="{{route("contact")}}" class="nav-link">{{__("global.contact")}}</a>
                 </li>
             </ul>
 
@@ -286,6 +286,10 @@
                         <a class="dropdown-item" href="{{route("config.viewUserConfig")}}">
                             <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                             {{__("global.settings")}}
+                        </a>
+                        <a class="dropdown-item" href="{{route("help.viewHelp")}}">
+                            <i class="fas fa-question fa-sm fa-fw mr-2 text-gray-400"></i>
+                            {{__("global.help")}}
                         </a>
                         @if(auth()->user()->hasRole("admin"))
                             <a class="dropdown-item" href="{{route("activityLog.viewUsersActivityLog")}}">
@@ -640,6 +644,49 @@
                             </ul>
                         </li>
 
+
+                        <li class="nav-header">{{__("global.manufacturing")}}</li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                    {{__("global.manufacturing")}}
+                                    <i class="fas fa-angle-left @if(app()->getLocale() == "ar") left @else right @endif"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                {{--new manufacturing action--}}
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.createManufacturingInvoice")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.make_manufacturing")}}</p>
+                                    </a>
+                                </li>
+                                {{--view manufacturing actions--}}
+                                <li class="nav-item">
+                                    <a href="{{route("invoice.viewManufacturingInvoices")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.view_all_manufacturing_actions")}}</p>
+                                    </a>
+                                </li>
+                                {{--search edit delete manufacturing actions --}}
+                                <li class="nav-item">
+                                    <a id="btn_search_edit_delete_product_movement" href="{{route("invoice.showSearchManufacturingInvoice")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.search_edit_delete_manufacturing_actions")}}</p>
+                                    </a>
+                                </li>
+                                {{--recyclebin manufacturing actions --}}
+                                <li class="nav-item">
+                                    <a id="btn_product_movement_recycle_bin" href="{{route("invoice.viewManufacturingRecyclebin")}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{__("global.recyclebin")}}</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -684,14 +731,8 @@
             <div class="float-right d-none d-sm-inline-block">
                 <b>{{__("global.version")}} 1.0.0</b>
             </div>
-            <strong>Copyright &copy; 2022-2023 <a href="">Abdulmoty Bannan</a>.</strong>
+            <strong>Copyright &copy; 2022-2023 <a href="{{route("contact")}}">Abdulmoty Bannan</a>.</strong>
         </footer>
-
-{{--        <!-- Control Sidebar -->--}}
-{{--        <aside class="control-sidebar control-sidebar-dark">--}}
-{{--            <!-- Control sidebar content goes here -->--}}
-{{--        </aside>--}}
-{{--        <!-- /.control-sidebar -->--}}
 
     </div>
 <!-- ./wrapper -->
@@ -710,10 +751,7 @@
 <script>
     $.widget.bridge('uibutton', $.ui.button)
 </script>
-{{--@if(auth()->user()->getConfig("language") == "arabic")--}}
-    <!-- Bootstrap 4 rtl -->
-{{--    <script src="https://cdn.rtlcss.com/bootstrap/v4.2.1/js/bootstrap.min.js"></script>--}}
-{{--@endif--}}
+
 <!-- Bootstrap 4 -->
 <script src="{{asset("js/plugins/bootstrap/js/bootstrap.bundle.min.js")}}"></script>
 <!-- overlayScrollbars -->
@@ -749,36 +787,27 @@
 
 {{--    <!-- Page level custom scripts -->--}}
 {{--    <script src="{{asset("js/demo/datatables-demo.js?var=415".rand(1,100))}}"></script>--}}
-@yield("script")
+
+
+
+    {{--    <script type="text/javascript" src={{asset("js/jqu/ery-3.2.1.min.js")}}></script>--}}
+    <script type="text/javascript" src={{asset("js/savy.min.js")}}></script>
+
     <script>
         $(function () {
-            {{--$("a.page-link").each(function (){--}}
-            {{--   if($(this).text() == "Next" ){--}}
-            {{--       $(this).text("{{__("global.Next")}}");--}}
-            {{--   } else if ($(this).text() == "Previous"){--}}
-            {{--       $(this).text("{{__("global.Previous")}}");--}}
-            {{--   }--}}
-            {{--});--}}
-            {{--$("#dataTable_filter").children("label").each(function (){--}}
-            {{--    let value = this.innerHTML;--}}
-            {{--    value = value.replace("Search","{{__("global.Search")}}");--}}
-            {{--    this.innerHTML = value;--}}
-            {{--});--}}
-            {{--$("#dataTable_length").children("label").each(function (){--}}
-            {{--    let value = this.innerHTML;--}}
-            {{--    value = value.replace("Show","{{__("global.Show")}}");--}}
-            {{--    value = value.replace("entries","{{__("global.entries")}}");--}}
-            {{--    this.innerHTML = value;--}}
-            {{--});--}}
-            {{--$("#dataTable_info").each(function (){--}}
-            {{--    let value = this.innerHTML;--}}
-            {{--    value = value.replace("Showing","{{__("global.Showing")}}");--}}
-            {{--    value = value.replace("to","{{__("global.to")}}");--}}
-            {{--    value = value.replace("of","{{__("global.of")}}");--}}
-            {{--    value = value.replace("entries","{{__("global.entries")}}");--}}
-            {{--    this.innerHTML = value;--}}
-            {{--});--}}
 
+            //$('.auto-save').savy('load') --> can be used without callback
+            $('.auto-save').savy('load',function(){
+                // console.log("All data from savy are loaded");
+            });
+
+            function dstry(){
+            //$('.auto-save').savy('destroy') --> can be used without callback
+            $('.auto-save').savy('destroy',function(){
+                // console.log("All data from savy are Destroyed");
+                window.location.reload();
+            });
+        }
 
             // Call the dataTables jQuery plugin
 
@@ -863,6 +892,7 @@
         // moment().format();
         // alert(moment().format(''));
     </script>
+    @yield("script")
 
 </body>
 </html>

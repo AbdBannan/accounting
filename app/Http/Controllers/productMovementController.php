@@ -8,6 +8,7 @@ use App\Models\Journal;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -35,7 +36,8 @@ class productMovementController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function create()
-    {;
+    {
+        File::cleanDirectory("temp_images");
         return view("invoices.productMovement.createInvoice");
     }
 
@@ -48,7 +50,7 @@ class productMovementController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            "invoice_id" => "required",
+            "invoice_id" => ["required"],
             "pound_type" => "required",
             'file' => ['image','mimes:jpg,png,jpeg,gif,svg']
         ]);
@@ -60,8 +62,15 @@ class productMovementController extends Controller
             $path = $splitedDate[0]."/".$splitedDate[1]."/".$splitedDate[2];
             $file_name = $request["invoice_id"] . "." . $file->getClientOriginalExtension();
             $file->move($path,"images/productMovementInvoices/".$file_name);
+        } elseif ($uploaded_file = glob(public_path("images/temp_images/productMovement_$request[invoice_id].*"))) {
+            $splitedDate = explode("-", $request["closing_date"]);
+            $path = $splitedDate[0] . "/" . $splitedDate[1] . "/" . $splitedDate[2];
+            $extention = File::extension($uploaded_file[0]);
+            $file_name = $request["invoice_id"] . "." . $extention;
+            File::ensureDirectoryExists("images/productMovementInvoices/$path");
+            File::move(public_path("images/temp_images/productMovement_$request[invoice_id].$extention"),public_path("images/productMovementInvoices/" . $path . "/" . $file_name));
         }
-        else{
+        else {
             $file_name = "default_invoice_img.png";
             $path = "";
         }
@@ -114,6 +123,7 @@ class productMovementController extends Controller
                     $record1["product_name"] = $data["moved_product_name_".$ctr];
                     $record1["price"] = $data["price_".$ctr];
                     $record1["quantity"] = $data["quantity_".$ctr];
+                    $record1["sum_of_balance"] = $record1["credit"] - $record1["debit"];
                     $record1["in_quantity"] = 0;
                     $record1["out_quantity"] = $data["quantity_".$ctr];
                     $record1["pound_type"] = $data["pound_type"];
@@ -123,7 +133,6 @@ class productMovementController extends Controller
                     $record1["detail"] = 0;
                     $record1["image"] = $file_name;
                     $record1["closing_date"] = $data["closing_date"];
-//sub of balance
                     $result1 =  $record1->save();
 
                     $record2 = new Journal();
@@ -137,6 +146,7 @@ class productMovementController extends Controller
                     $record2["product_name"] = $data["moved_to_product_name_".$ctr];
                     $record2["price"] = $data["price_".$ctr];
                     $record2["quantity"] = $data["quantity_".$ctr];
+                    $record2["sum_of_balance"] = $record2["credit"] - $record2["debit"];
                     $record2["in_quantity"] = $data["quantity_".$ctr];
                     $record2["out_quantity"] = 0;
                     $record2["pound_type"] = $data["pound_type"];
@@ -227,8 +237,21 @@ class productMovementController extends Controller
             $file_name = $request["invoice_id"] . "." . $file->getClientOriginalExtension();
             $file->move("images/productMovementInvoices/".$path,$file_name);
             $path_and_file_name = Str::replace("/","#", $path . "/" . $file_name);
-        }
-        else{
+        } elseif ($uploaded_file = glob(public_path("images/temp_images/productMovement_$request[invoice_id].*"))) {
+            if (file_exists(public_path($oldPath)) and $oldPath != "images/systemImages/default_invoice_img.png")
+                unlink(public_path($oldPath));
+            $splitedPath = explode("/", $oldPath);
+            if (count($splitedPath) == 6) {
+                $path = $splitedPath[2] . "/" . $splitedPath[3] . "/" . $splitedPath[4];
+            } else {
+                $date = Journal::where("invoice_id", $request["invoice_id"])->whereIn("invoice_type", [0, 1, 2, 3, 4])->first()->closing_date;
+                $path = $date->year . "/" . $date->month . "/" . $date->day;
+            }
+            $extention = File::extension($uploaded_file[0]);
+            $file_name = $request["invoice_id"] . "." . $extention;
+            File::ensureDirectoryExists("images/productMovementInvoices/$path");
+            File::move(public_path("images/temp_images/productMovement_$request[invoice_id].$extention"),public_path("images/productMovementInvoices/" . $path . "/" . $file_name));
+        } else {
             $oldPath = Str::replace("images/","",$oldPath);
             $oldPath = Str::replace("productMovementInvoices/","",$oldPath);
             $oldPath = Str::replace("systemImages/","",$oldPath);
@@ -249,7 +272,7 @@ class productMovementController extends Controller
                 $new_invoice = Journal::where("invoice_id", $invoice_id)->whereIn("invoice_type", [11, 12]);
                 if ($num_for_pound_temp > 1 && $new_invoice->first()->num_for_pound > 1) {
                     foreach ($new_invoice->get() as $invoice) {
-                        $invoice->num_for_pound_temp = $num_for_pound_temp;
+                        $invoice->num_for_pound = $num_for_pound_temp;
                         $invoice->save();
                     }
                 }

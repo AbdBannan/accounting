@@ -12,7 +12,7 @@
         <label style="font-size: x-large" for="default_pound" class="font-weight-bolder col-3">{{__("global.default_pound")}}</label>
         <select id="default_pound" name="default_pound" class="form-control col-3">
             @foreach(App\Models\Pound::all() as $pound)
-                <option value="{{$pound->name}}" class="dropdown-item" @if(isset($config["default_pound"]) and $config["default_pound"] == $pound->name) selected @endif>{{__("global.$pound->name")}}</option>
+                <option value="{{$pound->name}}" class="dropdown-item" @if(isset($config["default_pound"]) and $config["default_pound"] == $pound->name) selected @endif>{{$pound->name}}</option>
             @endforeach
         </select>
     </div>

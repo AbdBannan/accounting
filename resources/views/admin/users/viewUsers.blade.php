@@ -76,11 +76,11 @@
                                     </td>
                                     <td class="row m-0">
                                         <a id="btn_update" title="{{__("global.update")}}" class="dropdown-item col-4 m-0 p-0" href="{{route("user.showUser",$user->id)}}">
-                                            <input class="grid-button grid-edit-button" type="button" title="Update">
+                                            <i class="fas fa-edit text-green"></i>
                                         </a>
                                         @if(!$user->hasRole("admin"))
                                             <a id="btn_delete" title="{{__("global.delete")}}" class="dropdown-item col-3 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("user.softDeleteUser",$user->id)}}" @else data-route="{{route("user.deleteUser",$user->id)}}" @endif >
-                                                <input class="grid-button grid-delete-button" type="button" title="Delete">
+                                                <i class="fas fa-trash text-red"></i>
                                             </a>
                                         @else
                                             <div class="col-6"></div>

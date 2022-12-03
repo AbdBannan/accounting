@@ -9,6 +9,7 @@ use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -34,6 +35,7 @@ class cashController extends Controller
      */
     public function create()
     {
+        File::cleanDirectory("temp_images");
         return view("invoices.cashes.createInvoice");
     }
 
@@ -46,7 +48,7 @@ class cashController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            "invoice_id" => "required",
+            "invoice_id" => ["required"],
             "pound_type" => "required",
             "first_part_name" => ["required",Rule::exists("accounts","name")],
             "product_name" => [Rule::exists("products","name")],
@@ -60,8 +62,16 @@ class cashController extends Controller
             $path = $splitedDate[0]."/".$splitedDate[1]."/".$splitedDate[2];
             $file_name = $request["invoice_id"] . "." . $file->getClientOriginalExtension();
             $file->move("images/cashInvoices/".$path,$file_name);
+        } elseif ($uploaded_file = glob(public_path("images/temp_images/cash_$request[invoice_id].*"))) {
+            $splitedDate = explode("-", $request["closing_date"]);
+            $path = $splitedDate[0] . "/" . $splitedDate[1] . "/" . $splitedDate[2];
+//            dd($path);
+            $extention = File::extension($uploaded_file[0]);
+            $file_name = $request["invoice_id"] . "." . $extention;
+            File::ensureDirectoryExists("images/cashInvoices/$path");
+            File::move(public_path("images/temp_images/cash_$request[invoice_id].$extention"),public_path("images/cashInvoices/" . $path . "/" . $file_name));
         }
-        else{
+        else {
             $file_name = "default_invoice_img.png";
             $path = "";
         }
@@ -107,6 +117,7 @@ class cashController extends Controller
                 $record1["first_part_name"] = $data["first_part_name"];
                 $record1["second_part_id"] = Account::where("name",$data["second_part_name_".$ctr])->first()->id;
                 $record1["second_part_name"] = $data["second_part_name_".$ctr];
+                $record1["sum_of_balance"] = $record1["credit"] - $record1["debit"];
                 $record1["pound_type"] = $data["pound_type"];
                 $record1["num_for_pound"] = globalFunctions::getEquivalentPoundValue($data["pound_type"]);
                 $record1["notes"] = $data["notes_".$ctr];
@@ -114,7 +125,6 @@ class cashController extends Controller
                 $record1["detail"] = 1;
                 $record1["image"] = $file_name;
                 $record1["closing_date"] = $data["closing_date"];
-//sub of balance
                 $result1 =  $record1->save();
 
                 $record2 = new Journal();
@@ -126,6 +136,7 @@ class cashController extends Controller
                 $record2["first_part_name"] = $data["second_part_name_".$ctr];
                 $record2["second_part_id"] = Account::where("name",$data["first_part_name"])->first()->id;
                 $record2["second_part_name"] = $data["first_part_name"];
+                $record2["sum_of_balance"] = $record2["credit"] - $record2["debit"];
                 $record2["pound_type"] = $data["pound_type"];
                 $record2["num_for_pound"] = globalFunctions::getEquivalentPoundValue($data["pound_type"]);
                 $record2["notes"] = $data["notes_".$ctr];
@@ -189,10 +200,6 @@ class cashController extends Controller
             'file' => ['image','mimes:jpg,png,jpeg,gif,svg']
         ]);
 
-//        if (count($request->all())<=7) {
-//            globalFunctions::flashMessage("update","no_item_error","cash_invoice");
-//            return back();
-//        }
         $file_name  = null;
         $path = null;
         $path_and_file_name = null;
@@ -210,27 +217,43 @@ class cashController extends Controller
             $file_name = $request["invoice_id"] . "." . $file->getClientOriginalExtension();
             $file->move("images/cashInvoices/".$path,$file_name);
             $path_and_file_name = Str::replace("/","#", $path . "/" . $file_name);
-        }
-        else{
+        } elseif ($uploaded_file = glob(public_path("images/temp_images/cash_$request[invoice_id].*"))) {
+            if (file_exists(public_path($oldPath)) and $oldPath != "images/systemImages/default_invoice_img.png")
+                unlink(public_path($oldPath));
+            $splitedPath = explode("/", $oldPath);
+            if (count($splitedPath) == 6) {
+                $path = $splitedPath[2] . "/" . $splitedPath[3] . "/" . $splitedPath[4];
+            } else {
+                $date = Journal::where("invoice_id", $request["invoice_id"])->whereIn("invoice_type", [0, 1, 2, 3, 4])->first()->closing_date;
+                $path = $date->year . "/" . $date->month . "/" . $date->day;
+            }
+            $extention = File::extension($uploaded_file[0]);
+            $file_name = $request["invoice_id"] . "." . $extention;
+            File::ensureDirectoryExists("images/cashInvoices/$path");
+            File::move(public_path("images/temp_images/cash_$request[invoice_id].$extention"),public_path("images/cashInvoices/" . $path . "/" . $file_name));
+        } else {
             $oldPath = Str::replace("images/","",$oldPath);
             $oldPath = Str::replace("cashInvoices/","",$oldPath);
             $oldPath = Str::replace("systemImages/","",$oldPath);
             $path_and_file_name = Str::replace("/","#",$oldPath);
         }
+
         try {
             DB::beginTransaction();
             $num_for_pound_temp = Journal::where("detail",1)->whereIn("invoice_type",[5,6,7])->where("invoice_id",$invoice_id)->first()->num_for_pound;
 
             Journal::where("detail",1)->whereIn("invoice_type",[5,6,7])->where("invoice_id",$invoice_id)->forceDelete();
             $result = $this->saveJournal($request,$path_and_file_name);
+//            dd($result);
             if ($result == "no_item_error"){
                 globalFunctions::flashMessage("update","no_item_error","cash_invoice");
                 DB::rollBack();
             } else {
+//                dd($result);
                 $new_invoice = Journal::where("detail",1)->whereIn("invoice_type",[5,6,7])->where("invoice_id",$invoice_id);
                 if ($num_for_pound_temp > 1 && $new_invoice->first()->num_for_pound > 1) {
                     foreach ($new_invoice->get() as $invoice) {
-                        $invoice->num_for_pound_temp = $num_for_pound_temp;
+                        $invoice->num_for_pound = $num_for_pound_temp;
                         $invoice->save();
                     }
                 }

@@ -42,7 +42,6 @@ Route::middleware(["auth","saveCurrentRequest"])->group(function (){
     Route::post("/invoice/storeProductMovementInvoice","productMovementController@store")->name("invoice.storeProductMovementInvoice");
     Route::get("/invoice/viewProductMovementInvoices","productMovementController@index")->name("invoice.viewProductMovementInvoices");
     Route::get("/invoice/showProductMovementInvoice/{invoice_id}","productMovementController@show")->name("invoice.showProductMovementInvoice");
-//    Route::post("/invoice/editProductMovementInvoice/{invoice_id}","productMovementController@edit")->name("invoice.editProductMovementInvoice");
     Route::put("/invoice/updateProductMovementInvoice/{invoice_id}","productMovementController@update")->name("invoice.updateProductMovementInvoice");
     Route::delete("/invoice/deleteProductMovementInvoice/{invoice_id}","productMovementController@destroy")->name("invoice.deleteProductMovementInvoice");
     Route::delete("/invoice/softDeleteProductMovementInvoice/{invoice_id}","productMovementController@softDelete")->name("invoice.softDeleteProductMovementInvoice");
@@ -50,5 +49,20 @@ Route::middleware(["auth","saveCurrentRequest"])->group(function (){
     Route::get("/invoice/viewProductMovementRecyclebin","productMovementController@viewRecyclebin")->name("invoice.viewProductMovementRecyclebin");
     Route::get("/invoice/searchProductMovementInvoice","productMovementController@search")->name("invoice.searchProductMovementInvoice");
     Route::get("/invoice/showSearchProductMovementInvoice","productMovementController@showSearchInvoice")->name("invoice.showSearchProductMovementInvoice");
+
+
+
+
+    Route::get("/invoice/createManufacturingInvoice","ManufacturingController@create")->name("invoice.createManufacturingInvoice");
+    Route::post("/invoice/storeManufacturingInvoice","ManufacturingController@store")->name("invoice.storeManufacturingInvoice");
+    Route::get("/invoice/viewManufacturingInvoices","ManufacturingController@index")->name("invoice.viewManufacturingInvoices");
+    Route::get("/invoice/showManufacturingInvoice/{invoice_id}","ManufacturingController@show")->name("invoice.showManufacturingInvoice");
+    Route::put("/invoice/updateManufacturingInvoice/{invoice_id}","ManufacturingController@update")->name("invoice.updateManufacturingInvoice");
+    Route::delete("/invoice/deleteManufacturingInvoice/{invoice_id}","ManufacturingController@destroy")->name("invoice.deleteManufacturingInvoice");
+    Route::delete("/invoice/softDeleteManufacturingInvoice/{invoice_id}","ManufacturingController@softDelete")->name("invoice.softDeleteManufacturingInvoice");
+    Route::get("/invoice/restoreManufacturingInvoice/{invoice_id}","ManufacturingController@restore")->name("invoice.restoreManufacturingInvoice");
+    Route::get("/invoice/viewManufacturingRecyclebin","ManufacturingController@viewRecyclebin")->name("invoice.viewManufacturingRecyclebin");
+    Route::get("/invoice/searchManufacturingInvoice","ManufacturingController@search")->name("invoice.searchManufacturingInvoice");
+    Route::get("/invoice/showSearchManufacturingInvoice","ManufacturingController@showSearchInvoice")->name("invoice.showSearchManufacturingInvoice");
 
 });

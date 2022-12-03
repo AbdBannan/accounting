@@ -14,7 +14,7 @@
         $(this).siblings().filter("#image").attr("src",url);
     });
 
-    //this is click the next anchor when image is dbClicked
+    //this is click the next anchor when image is dbClicked so , it opens the image in new tap
     $("img#image").on("dblclick",function(event){
         $(this).siblings("a").get(0).click();
     });
@@ -34,16 +34,15 @@
         $("#form_restore").attr("action",route);
     });
 
-    // this is to make checkbox in table rows belongs to form whose button is pressed
+    // this is to make checkboxes in table rows belongs to form whose button is pressed (btn_multi_delete or btn_multi_restore)
     $("a#btn_multi_delete").on("click",function(){
        $("input[name='multi_ids[]']").attr("form","form_delete");
     });
 
-    // this is to make checkbox in table rows belongs to form whose button is pressed
+    // this is to make checkboxes in table rows belongs to form whose button is pressed (btn_multi_delete or btn_multi_restore)
     $("a#btn_multi_restore").on("click",function(){
         $("input[name='multi_ids[]']").attr("form","form_restore");
     });
-
 
     // to populate the update form
     $("a#btn_update").on("click",function(){
@@ -71,7 +70,7 @@
         $("#form_add").attr("action",route);
     });
 
-    // to toggle the  btn_activate ,btn_attach and btn_track_activity buttons
+    // to activate_user,attach_role,attach_permission,track_user_activity
     let element = null;
     let siblingElement = null;
     $("a#btn_activate_user,a#btn_attach_role,a#btn_attach_permission,#btn_track_user_activity").on("click", function (message){
@@ -97,7 +96,7 @@
         );
     });
 
-    // to toggle the  btn_activate ,btn_attach and btn_track_activity buttons
+    // to deactivate_user,detach_role,detach_permission,no_track_user_activity and toggle btn_activate ,btn_attach and btn_track_activity buttons
     $("a#btn_deactivate_user,a#btn_detach_role,a#btn_detach_permission,#btn_no_track_user_activity").on("click",function(){
         let route = $(this).attr("route-attr");
         element = $(this);
@@ -121,6 +120,41 @@
         );
     });
 
+    // to update pound using ajax
+    $("input#btn_update").on("click",function(){
+        var form = $("#form_update");
+        let edit_element = null;
+        $("a#btn_update").each(function (){
+        if ($(this).data("fields")["name"] == form.children("div").children("#name").val())
+            edit_element = this;
+        })
+        var route = form.attr('action');
+        $.ajax({
+                url:route,
+                method:"POST",
+                data: form.serialize(),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success:function (){
+                    $(edit_element).data("fields")["value"] = form.children("div").children("#value").val();
+                    $(".modal-header .close").click();
+                    $("#correct_message").attr("hidden",false);
+                    setTimeout(function (){
+                        $("#correct_message").attr("hidden",true);
+                    },2000);
+                },
+                error:function (e){
+                    $("#field_invalid_message").attr("hidden",false);
+                    setTimeout(function (){
+                        $("#field_invalid_message").attr("hidden",true);
+                    },2000);
+                }
+            }
+        );
+    });
+
+
     // auto calc the total price when quantity or price is changed
     $("#price,#quantity").on("change",function (){
         let total_price = parseFloat($("#quantity").val()) * parseFloat($("#price").val())
@@ -131,13 +165,15 @@
     $("input[class~='dropdown-toggle']").on("keyup", filter);
     $("input[class~='dropdown-toggle']").on("focus", filter);
     function filter(e) {
-        const ENTER = 13;
-        e.preventDefault();
-        if (e.which == ENTER){
+        const MOBILE_ENTER = 13;
+        const PC_ENTER = 13;
+        // TODO : see the ascci code for enter in mobile keyboard
+        if (e.which == PC_ENTER || e.which == MOBILE_ENTER){
+            e.preventDefault();
 
             let options = $(this).siblings().filter("div#dropdown_menu.dropdown-menu").children("option");
             for (const option in options) {
-                if (!Number(options[option]) && options[option].style.display != "none") {
+                if (!Number(options[option]) && options[option] != undefined && options[option].style.display != "none") {
                     $(options[option]).click();
                     return;
                 }
@@ -154,7 +190,8 @@
     // to copy the option value into its input
     $("div option").on("click",function (){
         $(this).parent().siblings().filter("input").val($(this).text()).data("correct",true);
-        $(this).parent().filter("div#dropdown_menu.dropdown-menu").removeClass("show")
+        $(this).parent().filter("div#dropdown_menu.dropdown-menu").removeClass("show");
+        // alert();
     });
 
     // to add the class show into the menu when focus
@@ -184,10 +221,13 @@
     }
 
     // to move into the next input by pressing enter
-    $("input,select,textarea,button#btn_add_item_to_invoice").on("keypress",function (e){//to prevent submitting and focus on next input
-        if (e.keyCode == 13) {
-            // $(this).trigger("keydown", [9]);
+       $("input,select,textarea,button#btn_add_item_to_invoice").on("keypress",function (e){//to prevent submitting and focus on next input
+        const MOBILE_ENTER = 13;
+        const PC_ENTER = 13;
+        // TODO : see the ascci code for enter in mobile keyboard
+        if (e.which == PC_ENTER || e.which == MOBILE_ENTER){
             e.preventDefault();
+            // $(this).trigger("keydown", [9]);
             let inputs = $("input,select,textarea");
 
             for (let item in inputs){
@@ -197,33 +237,30 @@
                 if ($(inputs[item]).attr("id") === $(this).attr("id")){
                     setTimeout(
                         function (){
-                            if ($(inputs[item]).attr("id") == "notes" && $(inputs[item]).attr("type") != undefined) {
+                            if ($(inputs[item]).attr("id") == "notes" && (location.pathname.indexOf("Invoice"))) {
                                 $("#btn_add_item_to_invoice").click();
                                 return;
                             }
                             else if ($(inputs[item]).attr("type") == "submit") {
                                 $(inputs[item]).click();
                                 return;
-                            }
-                            else if ($(inputs[parseInt(item)+1]).attr("id") == "btn_reset" || $(inputs[parseInt(item)+1]).attr("id") == "total_price" || ($(inputs[item]).attr("id") == "payed" && Number($(inputs[item]).val()) )) {
+                            } else if ($(inputs[parseInt(item)+2]).attr("id") == "payed" && !Number($(inputs[parseInt(item)+2]).val())) {
+                                $(inputs[parseInt(item) + 1]).focus();
+                                return;
+                            } else if ($(inputs[parseInt(item)+1]).attr("id") == "total_price" ||
+                                ($(inputs[item]).attr("id") == "received" && Number($(inputs[item]).val())) ||
+                                ($(inputs[parseInt(item)+3]).attr("id") == "payed" && !Number($(inputs[parseInt(item)+3]).val())) ||
+                                ($(inputs[parseInt(item)+2]).attr("id") == "payed" && Number($(inputs[parseInt(item)+2]).val()))
+                            ) {
                                 $(inputs[parseInt(item) + 2]).focus();
                                 return;
                             }
-                            else if ($(inputs[parseInt(item)+1]).attr("id") == "pound_type" && $(inputs[parseInt(item)+2]).attr("id") =="total_price") {
+                            else if (($(inputs[parseInt(item)+1]).attr("id") == "pound_type" && $(inputs[parseInt(item)+2]).attr("id") =="total_price")||
+                                ($(inputs[parseInt(item)+3]).attr("id") == "payed" && Number($(inputs[parseInt(item)+3]).val()))
+                            ) {
                                 $(inputs[parseInt(item) + 3]).focus();
                                 return;
-                            } else if ($(inputs[parseInt(item)+1]).attr("id") == "pound_type" && $(inputs[parseInt(item)+4]).attr("id") =="total_price") {
-                                $(inputs[parseInt(item) + 5]).focus();
-                                return;
-                            }
-                            else if ($(inputs[parseInt(item)+1]).attr("id") == "pound_type" && $(inputs[parseInt(item)+2]).attr("id") =="payed") {
-                                $(inputs[parseInt(item) + 2]).focus();
-                                return;
-                            } else if ($(inputs[parseInt(item)+1]).attr("id") == "pound_type" && $(inputs[parseInt(item)+4]).attr("id") =="payed") {
-                                $(inputs[parseInt(item) + 4]).focus();
-                                return;
-                            }
-                            else{
+                            } else{
                                 $(inputs[parseInt(item)+1]).focus();
                                 return;
                             }
@@ -233,6 +270,8 @@
             }
         }
     });
+
+
 
     // to handel the function key
     $("body").on("keydown",function (e){
@@ -245,11 +284,12 @@
 
         if (e.which == F1 ) {
             e.preventDefault();
-            if ($("a#btn_show_discover_dashboard").get(0) != undefined){
+            if ($("a#btn_show_all_accounts_balances").get(0) != undefined) {
+                $("a#btn_show_all_accounts_balances").get(0).click();
+            } else if ($("a#btn_show_discover_dashboard").get(0) != undefined) {
                 $("a#btn_show_discover_dashboard").get(0).click();
             }
-        }
-        else if (e.which == F2 ) {
+        } else if (e.which == F2 ) {
             e.preventDefault();
             if ($("#btn_close_invoice").get(0) != undefined){
                 $("#btn_close_invoice").get(0).click();
@@ -427,11 +467,21 @@
 
     // this is to handle the "reload" back button and skip duplicated
     window.addEventListener("pageshow",function (event){
-        var historyTraversal = event.persisted;
+        // var historyTraversal = event.persisted;
+        var historyTraversal = event.persisted || (typeof window.performance != undefined && window.performance.navigation.type === 2);
         if (historyTraversal){
             sessionStorage.setItem("custom_back_button_pressed",false);
             location.reload();
         }
+    });
+
+
+    $("#toggle_qr,#toggle_image").on("click",function (){
+       $("#qr_code_container").fadeToggle(0);
+       $("#image_container").fadeToggle(0);
+       $("#toggle_image").fadeToggle(0);
+       $("#toggle_qr").fadeToggle(0);
+
     });
 
 })(jQuery); // End of use strict
@@ -456,3 +506,69 @@
 //     }
 // });
 
+
+
+
+
+
+
+
+// $("input,select,textarea,button#btn_add_item_to_invoice").on("keypress",function (e){//to prevent submitting and focus on next input
+//         const MOBILE_ENTER = 13;
+//         const PC_ENTER = 13;
+//         // TODO : see the ascci code for enter in mobile keyboard
+//         if (e.which == PC_ENTER || e.which == MOBILE_ENTER) {
+//             e.preventDefault();
+//             let sequence1 =
+//                 {
+//                     "second_part_name" : "quantity",
+//                     "first_part_name" : "product_name",
+//                     "quantity" : "price",
+//                     "price" : "first_part_name",
+//                     "product_name" : "notes",
+//                     "notes" : "btn_add_item_to_invoice",
+//                     "pound_type" : "quantity",
+//                 };
+//             let sequence =
+//                 {
+//                     "first_part_name" : "received",
+//                     "pound_type" : "received",
+//                     "second_part_name" : "notes",
+//                     "notes" : "btn_add_item_to_invoice",
+//                     "received" : "payed",
+//                     "payed" : "second_part_name",
+//                 };
+//             let sequence3 =
+//                 {
+//                     "moved_product_name" : "quantity",
+//                     "pound_type" : "quantity",
+//                     "quantity" : "price",
+//                     "price" : "moved_to_product_name",
+//                     "moved_to_product_name" : "notes",
+//                     "notes" : "btn_add_item_to_invoice",
+//                 };
+//             // if (location.pathname.indexOf("Cash"))
+//             if (this.type == "submit") {
+//                 $("#" + this.id).click();
+//             } else if (sequence[this.id] == "btn_add_item_to_invoice" && $("#" + sequence[this.id]).length != 0) {
+//                 $("#" + sequence[this.id]).click();
+//             } else if (sequence[this.id] != undefined) {
+//                 let temp = this;
+//                 setTimeout(function () {
+//                     $("#" + sequence[temp.id]).focus();
+//                 }, 140);
+//             } else {
+//                 let inputs = $("input,select,textarea");
+//                 for (let item in inputs) {
+//                     if (Number(inputs[item])) {
+//                         break;
+//                     }
+//                     if ($(inputs[item]).attr("id") === $(this).attr("id")) {
+//                         setTimeout(function () {
+//                             $(inputs[parseInt(item) + 1]).focus();
+//                         }, 140);
+//                     }
+//                 }
+//             }
+//         }
+//     });

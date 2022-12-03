@@ -55,6 +55,9 @@ return [
     'not_found_error' => 'not found error',
     'second_greater_than_first' => 'second greater than first',
     'invalid_reference' => 'invalid reference',
-    //   -------- end account section --------    //
+    'account_is_not_zero' => 'sorry you can\'t delete this account , account balance value is not zero',
+    'field_invalid'=>'one of fields is invalid',
+    'can_not_update_invoice_contains_deleted_account'=>'can not update invoice contains deleted account.',
+    'can_not_update_invoice_contains_deleted_product'=>'can not update invoice contains deleted product.',
 
 ];

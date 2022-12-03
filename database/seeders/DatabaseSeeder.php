@@ -50,14 +50,14 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\Pound::factory(1)->create(
             [
-                "name" => "Syrian",
+                "name" => "ل.س",
                 "value" => 1,
             ]
         );
 
         \App\Models\Pound::factory(1)->create(
             [
-                "name" => "Dollar",
+                "name" => "دولار",
                 "value" => 4500,
             ]
         );

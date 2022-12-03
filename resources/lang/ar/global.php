@@ -14,11 +14,23 @@ return [
     */
 
     //    -------- account section --------    //
+    'short_cuts' => 'إختصارات التطبيق',
+    'view_all_accounts' => 'إظهار جميع الحسابات',
+    'welcome_page' => 'الصفحة الرئيسية',
+    'refresh_page' => 'إعادة تحميل الصفحة',
+    'open_recyclebin' => 'سلة المهملات',
+    'search_invoice' => 'البحث عن فاتورة',
+    'press_f1_to_view_all_accounts' => 'إضغط F1 , بعد تحميل الصفحة إضغط F1 مرة أخرى لإظهار جميع أرصدة الحسابات ',
+    'press_f2_to_save_the_invoice' => 'إضغط F2  لإغلاق وحفظ الفاتورة الحالية ',
+    'press_f3_to_search_invoice' => 'إضغط F3 للبحث عن فاتورة أو قيد صندوق',
+    'press_f4_to_view_welcome_page' => 'إضغط F4 للإنتقال الى الصفحة الرئيسية',
+    'press_f5_to_refresh_the_page' => 'إضغط F5 لتحديث الصفحة الحالية',
+    'press_f6_to_view_recyclebin_page' => 'إضغط F6 للإنتقال الى صفحة سلة المحذوفات',
 
-    '' => '',
 
-
-
+    'help' => 'مساعدة',
+    'qr' => 'رمز الاسنجابة السريع',
+    'image' => 'إختيار صورة',
     'verify_your_email_address' => 'قم بتأكيد حسابك الإلكتروني.',
     'a_fresh_verification_link_has_been_sent_to_your_email_address.' => 'لقد قمنا بإرسال رابط التأكيد الى حسابك الإلكتروني.',
     'before_proceeding_please_check_your_email_for_a_verification_link' => 'قبل المتابعة, يرجى تأكيد الحساب من خلال الرابط الذي تم إرساله الى حسابك الإلكتروني.',
@@ -29,8 +41,7 @@ return [
     'confirm_password' => 'تأكيد كلمة السر',
     'please_confirm_your_password_before_continuing' => 'من فضلك , قم بتأكيد كلمة السر قبل المتابعة.',
     'send_password_reset_link' => 'أرسل رابط إعادة تعيين كلمة السر.',
-
-
+    'toggle_navigation' => 'تبديل الترويسة',
     'restore_selected' => 'استرجاع العناصر المختارة',
     'delete_selected' => 'حذف العناصر المختارة',
     'yes' => 'نعم',
@@ -166,9 +177,8 @@ return [
     'stores' => 'المخازن',
     'store' => 'المخزن',
     'location'=>'الموقع',
-
-    'first_part' => 'الحساب الأول',
-    'second_part' => 'الحساب الثاني',
+    'first_part' => 'الحساب الدائن',
+    'second_part' => 'الحساب المدين',
 
     'invoices' => 'الفواتير',
     'first_part_name' => 'اسم الحساب الأول',

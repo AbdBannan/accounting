@@ -7,7 +7,10 @@
                     <div class="row">
                         <div class="form-group col-md-3 col-sm-12">
                             <label class="" style="font-size: large" for="invoice_id" >{{__("global.invoice_id")}}</label>
-                            <input form="form" id="invoice_id" name="invoice_id" min="0" type="number" class="form-control" readonly value="@yield("invoice_id",App\Models\Journal::withTrashed()->where("detail",0)->whereIn("invoice_type",[11])->selectRaw("max(invoice_id) as mid")->get()[0]["mid"]+1)">
+                            @php
+                                $invoice_id = App\Models\Journal::withTrashed()->where("detail",0)->whereIn("invoice_type",[11])->selectRaw("max(invoice_id) as mid")->get()[0]["mid"]+1;
+                            @endphp
+                            <input form="form" id="invoice_id" name="invoice_id" min="0" type="number" class="form-control" readonly value="@yield("invoice_id",$invoice_id)">
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="moved_product_name" >{{__("global.moved_product_name")}}</label>
@@ -23,15 +26,25 @@
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="pound_type" >{{__("global.pound")}}</label>
-                            <input value="@yield('pound_type',__("global.".auth()->user()->getConfig("default_pound")))" form="form" id="pound_type" name="pound_type" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                            <input value="@yield('pound_type',auth()->user()->getConfig("default_pound"))" form="form" id="pound_type" name="pound_type" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{__("messages.value_not_found")}}</strong>
                             </span>
-                            <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="pound_type">
+                            <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu row" aria-labelledby="pound_type">
                                 @foreach(App\Models\Pound::all() as $pound)
-                                    <option value="{{$pound->name}}" class="dropdown-item" >{{__("global.$pound->name")}}</option>
+                                    <option value="{{$pound->name}}" class="dropdown-item" >{{$pound->name}}
+                                        <a id="btn_update" title="{{__("global.update")}}"  href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$pound}}" data-route="{{route("pound.updatePound",$pound->id)}}"><i class="fas fa-edit text-green" ></i></a>
+                                    </option>
                                 @endforeach
                             </div>
+                            <a id="btn_update_pound" class="position-absolute" style="top: 57%;left: 20px;" onclick="$('a#btn_update').each(function (){
+                                            if ($(this).data('fields')['name'].trim() == $('#pound_type').val().trim()){
+                                                $(this).click();
+                                            }
+                                        })">
+                                <i class="fas fa-edit text-green"></i>
+                            </a>
+                            <span class="position-absolute" style="top: 57%;left: -20px; " id="correct_message" hidden><i class="fas fa-check text-green"></i></span>
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
                             @yield("edit_delete")
@@ -99,11 +112,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group col-md-2 col-sm-12  ">
-                    <a target="_blank" href="@yield("image_path",asset("images/systemImages/default_invoice_img.png"))" hidden></a>
-                    <img id="image" src="@yield("image_path",asset("images/systemImages/default_invoice_img.png"))" style="width:100%;max-width:200px;margin:10px auto ;border-radius:50%">
-                    <input form="form" type="file" id="invoice_image" name="image" class="form-control-file">
+                <div class="form-group col-md-2 col-sm-12 text-center">
+                    <a id="toggle_qr">{{__("global.qr")}}</a>
+                    <a id="toggle_image" style="display: none">{{__("global.image")}}</a>
+                    <div id="qr_code_container" class="p-2" style="display: none">
+                        {!! QrCode::size(100)->generate(route("uploadImage")."#productMovement_$invoice_id") !!}
+                    </div>
+                    <div id="image_container" >
+                        <a target="_blank" href="@yield("image_path",asset("images/systemImages/default_invoice_img.png"))" hidden></a>
+                        <img id="image" src="@yield("image_path",asset("images/systemImages/default_invoice_img.png"))" style="padding:5px;width: 100%;border-radius:50%;max-width:200px;">
+                        {{--                        <img class="position-absolute" id="image" src="@yield("image_path",asset("images/systemImages/default_invoice_img.png"))" style="width:100%;max-width:200px;margin:10px auto ;border-radius:50%">--}}
+                        <input form="form" type="file" id="invoice_image" name="image" class="form-control-file">
+                    </div>
                 </div>
+
             </form>
 
         </div>

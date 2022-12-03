@@ -8,10 +8,12 @@ use App\Models\Journal;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Exists;
+use function PHPUnit\Framework\fileExists;
 use function PHPUnit\Framework\stringContains;
 
 class invoiceController extends Controller
@@ -37,6 +39,7 @@ class invoiceController extends Controller
      */
     public function create($invoice_type)
     {
+        File::cleanDirectory("temp_images");
         return view("invoices.products.createInvoice")->with("invoice_type", $invoice_type);
     }
 
@@ -49,11 +52,11 @@ class invoiceController extends Controller
     public function store(Request $request, $invoice_type)
     {
         $this->validate($request, [
-            "invoice_id" => "required",
+            "invoice_id" => ["required"],
             "pound_type" => "required",
             "second_part_name" => ["required",Rule::exists("accounts","name")],
             "product_name" => [Rule::exists("products","name")],
-            'file' => ['image','mimes:jpg,png,jpeg,gif,svg']
+            'file' => ['image','mimes:jpg,png,jpeg,gif,svg',"max"=>"2048mB"]
         ]);
         $file_name = null;
         $path = null;
@@ -63,7 +66,15 @@ class invoiceController extends Controller
             $path = $splitedDate[0] . "/" . $splitedDate[1] . "/" . $splitedDate[2];
             $file_name = $request["invoice_id"] . "." . $file->getClientOriginalExtension();
             $file->move("images/productInvoices/" . $path, $file_name);
-        } else {
+        } elseif ($uploaded_file = glob(public_path("images/temp_images/invoice_$request[invoice_id].*"))) {
+            $splitedDate = explode("-", $request["closing_date"]);
+            $path = $splitedDate[0] . "/" . $splitedDate[1] . "/" . $splitedDate[2];
+            $extention = File::extension($uploaded_file[0]);
+            $file_name = $request["invoice_id"] . "." . $extention;
+            File::ensureDirectoryExists("images/productInvoices/$path");
+            File::move(public_path("images/temp_images/invoice_$request[invoice_id].$extention"),public_path("images/productInvoices/" . $path . "/" . $file_name));
+        }
+        else {
             $file_name = "default_invoice_img.png";
             $path = "";
         }
@@ -108,8 +119,8 @@ class invoiceController extends Controller
                 $record1["product_name"] = $data["product_name_" . $ctr];
                 $record1["price"] = $data["price_" . $ctr];
                 $record1["quantity"] = $data["quantity_" . $ctr];
+                $record1["sum_of_balance"] = $record1["credit"] - $record1["debit"];
                 $record1[($invoice_type == "sale" || $invoice_type == "purchase_return") ? "out_quantity" : "in_quantity"] = $data["quantity_" . $ctr];
-//                $record1["posting"] = $data["posting".$ctr];
                 $record1["pound_type"] = $data["pound_type"];
                 $record1["num_for_pound"] = globalFunctions::getEquivalentPoundValue($data["pound_type"]);
                 $record1["notes"] = $data["notes_" . $ctr];
@@ -139,8 +150,7 @@ class invoiceController extends Controller
                 $record2["product_name"] = $data["product_name_" . $ctr];
                 $record2["price"] = $data["price_" . $ctr];
                 $record2["quantity"] = $data["quantity_" . $ctr];
-//                $record2["in_quantity"] = $data["quantity_".$ctr];
-//                $record2["posting"] = $data["posting_".$ctr];
+                $record2["sum_of_balance"] = $record2["credit"] - $record2["debit"];
                 $record2["pound_type"] = $data["pound_type"];
                 $record2["num_for_pound"] = globalFunctions::getEquivalentPoundValue($data["pound_type"]);
                 $record2["notes"] = $data["notes_" . $ctr];
@@ -150,23 +160,11 @@ class invoiceController extends Controller
                 $record2["closing_date"] = $data["closing_date"];
                 $result2 = $record2->save();
 
-//                $first_part = Account::find($record1["first_part_id"]);
-//                $second_part = Account::find($record2["first_part_id"]);
-//                $first_part->debit = $first_part->debit + $record1["debit"];
-//                $first_part->credit = $first_part->credit + $record1["credit"];
-//                $second_part->debit = $second_part->debit + $record2["debit"];
-//                $second_part->credit = $second_part->credit + $record2["credit"];
-//                $first_part->save();
-//                $second_part->save();
-
                 unset($data["first_part_name_" . $ctr]);
-//                unset($data["second_part_name_".$ctr]);
                 unset($data["product_name_" . $ctr]);
                 unset($data["quantity_" . $ctr]);
                 unset($data["price_" . $ctr]);
                 unset($data["total_price_" . $ctr]);
-//                unset($data["posting_".$ctr]);
-//                unset($data["pound_type_".$ctr]);
                 unset($data["notes_" . $ctr]);
             }
             $ctr += 1;
@@ -220,10 +218,6 @@ class invoiceController extends Controller
             'file' => ['image','mimes:jpg,png,jpeg,gif,svg'],
         ]);
 
-//        if (count($request->all()) <= 7) {
-//            globalFunctions::flashMessage("update", "no_item_error", $invoice_type . "_invoice");
-//            return back();
-//        }
         $file_name = null;
         $path = null;
         $path_and_file_name = null;
@@ -242,6 +236,20 @@ class invoiceController extends Controller
             $file_name = $request["invoice_id"] . "." . $file->getClientOriginalExtension();
             $file->move("images/productInvoices/" . $path, $file_name);
             $path_and_file_name = Str::replace("/", "#", $path . "/" . $file_name);
+        } elseif ($uploaded_file = glob(public_path("images/temp_images/invoice_$request[invoice_id].*"))) {
+           if (file_exists(public_path($oldPath)) and $oldPath != "images/systemImages/default_invoice_img.png")
+               unlink(public_path($oldPath));
+            $splitedPath = explode("/", $oldPath);
+            if (count($splitedPath) == 6) {
+                $path = $splitedPath[2] . "/" . $splitedPath[3] . "/" . $splitedPath[4];
+            } else {
+                $date = Journal::where("invoice_id", $request["invoice_id"])->whereIn("invoice_type", [0, 1, 2, 3, 4])->first()->closing_date;
+                $path = $date->year . "/" . $date->month . "/" . $date->day;
+            }
+            $extention = File::extension($uploaded_file[0]);
+            $file_name = $request["invoice_id"] . "." . $extention;
+            File::ensureDirectoryExists("images/productInvoices/$path");
+            File::move(public_path("images/temp_images/invoice_$request[invoice_id].$extention"),public_path("images/productInvoices/" . $path . "/" . $file_name));
         } else {
             $oldPath = Str::replace("images/","",$oldPath);
             $oldPath = Str::replace("productInvoices/","",$oldPath);
@@ -263,7 +271,7 @@ class invoiceController extends Controller
                 $new_invoice = Journal::where("detail", 0)->whereIn("invoice_type", [0, 1, 2, 3, 4])->where("invoice_id", $invoice_id);
                 if ($num_for_pound_temp > 1 && $new_invoice->first()->num_for_pound > 1) {
                     foreach ($new_invoice->get() as $invoice) {
-                        $invoice->num_for_pound_temp = $num_for_pound_temp;
+                        $invoice->num_for_pound = $num_for_pound_temp;
                         $invoice->save();
                     }
                 }
