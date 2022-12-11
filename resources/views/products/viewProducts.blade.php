@@ -25,7 +25,7 @@
                         <form action="{{route("product.storeProduct")}}" method="POST"  accept-charset="UTF-8" enctype="multipart/form-data" autocomplete="off">
                             @csrf
                             <x-forms.products-form></x-forms.products-form>
-                            <input id="btn_add" class="btn btn-primary btn-block" type="submit" value="{{__("global.create")}}">
+                            <input tabindex="9" id="btn_add" class="btn btn-primary btn-block" type="submit" value="{{__("global.create")}}">
                         </form>
                     </div>
 
@@ -74,7 +74,8 @@
                                                 <td><input form="form_delete" name="multi_ids[]" value="{{$product->id}}" type="checkbox" class="form-check"></td>
                                                 <td>{{$product->id}}</td>
                                                 <td>{{$product->name}}</td>
-                                                <td>{{$product->account_type}}</td>
+{{--                                                <td>{{$product->account_type}}</td>--}}
+                                                <td>{{$product->is_raw}}</td>
                                                 <td>{{$product->reference}}</td>
                                                 <td>{{$product->store->name}}</td>
                                                 <td class="row m-0">

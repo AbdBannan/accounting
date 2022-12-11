@@ -11,6 +11,14 @@ class Role extends Model
     use softDeletes;
     protected $guarded = [];
 
+    public function getNameAttribute($value){
+        if ($this->attributes["created_by"] == "developer") {
+            return __("global.$value");
+        } else {
+            return $value;
+        }
+    }
+
     public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany("App\Models\Users");

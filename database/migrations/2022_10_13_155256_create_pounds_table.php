@@ -18,6 +18,7 @@ class CreatePoundsTable extends Migration
             $table->string("name")->default("");
             $table->string("slug")->default("");
             $table->integer("value")->default(1);
+            $table->string("created_by")->default('admin');
             $table->softDeletes();
             $table->timestamps();
         });

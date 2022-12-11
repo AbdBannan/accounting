@@ -53,3 +53,15 @@ Route::get("/t",function (){
         ->send(new MessageSent($name, $email, $message, $phone));
 });
 
+Route::get("/ttt",function (){
+//    $template = new \App\Models\ManufacturingTemplate();
+//    $template->name = "lodalien";
+//    $template->quantity = 10;
+//    $template->price = 10;
+//
+//    \App\Models\Product::find(1)->productTemplate()->save($template);
+//    \App\Models\ManufacturingTemplate::find(1)->components()->attach(3,["quantity"=>7,"price"=>100]);
+//    dd(\App\Models\Product::find(1)->productTemplate->components);
+
+    dd(\Carbon\Carbon::now()->subtract("day",1));
+});

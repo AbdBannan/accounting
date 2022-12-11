@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStoresTable extends Migration
+class CreateManufacturingTemplatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,15 @@ class CreateStoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('stores', function (Blueprint $table) {
+        Schema::create('manufacturing_templates', function (Blueprint $table) {
             $table->id();
             $table->string("name")->default("");
-            $table->string("location")->default("")->nullable();
-            $table->string("created_by")->default('admin');
+            $table->foreignId("product_id")->default(0);
+            $table->double("quantity")->default(0);
+            $table->double("price")->default(0);
             $table->softDeletes();
             $table->timestamps();
+            $table->foreign("product_id")->references("id")->on("products")->onDelete("cascade");
         });
     }
 
@@ -30,6 +32,6 @@ class CreateStoresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stores');
+        Schema::dropIfExists('manufacturing_templates');
     }
 }

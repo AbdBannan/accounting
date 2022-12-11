@@ -53,16 +53,26 @@ Route::middleware(["auth","saveCurrentRequest"])->group(function (){
 
 
 
-    Route::get("/invoice/createManufacturingInvoice","ManufacturingController@create")->name("invoice.createManufacturingInvoice");
-    Route::post("/invoice/storeManufacturingInvoice","ManufacturingController@store")->name("invoice.storeManufacturingInvoice");
-    Route::get("/invoice/viewManufacturingInvoices","ManufacturingController@index")->name("invoice.viewManufacturingInvoices");
-    Route::get("/invoice/showManufacturingInvoice/{invoice_id}","ManufacturingController@show")->name("invoice.showManufacturingInvoice");
-    Route::put("/invoice/updateManufacturingInvoice/{invoice_id}","ManufacturingController@update")->name("invoice.updateManufacturingInvoice");
-    Route::delete("/invoice/deleteManufacturingInvoice/{invoice_id}","ManufacturingController@destroy")->name("invoice.deleteManufacturingInvoice");
-    Route::delete("/invoice/softDeleteManufacturingInvoice/{invoice_id}","ManufacturingController@softDelete")->name("invoice.softDeleteManufacturingInvoice");
-    Route::get("/invoice/restoreManufacturingInvoice/{invoice_id}","ManufacturingController@restore")->name("invoice.restoreManufacturingInvoice");
-    Route::get("/invoice/viewManufacturingRecyclebin","ManufacturingController@viewRecyclebin")->name("invoice.viewManufacturingRecyclebin");
-    Route::get("/invoice/searchManufacturingInvoice","ManufacturingController@search")->name("invoice.searchManufacturingInvoice");
-    Route::get("/invoice/showSearchManufacturingInvoice","ManufacturingController@showSearchInvoice")->name("invoice.showSearchManufacturingInvoice");
+    Route::get("/invoice/createManufacturingInvoice","manufacturingController@create")->name("invoice.createManufacturingInvoice");
+    Route::post("/invoice/storeManufacturingInvoice","manufacturingController@store")->name("invoice.storeManufacturingInvoice");
+    Route::get("/invoice/viewManufacturingInvoices","manufacturingController@index")->name("invoice.viewManufacturingInvoices");
+    Route::get("/invoice/showManufacturingInvoice/{invoice_id}","manufacturingController@show")->name("invoice.showManufacturingInvoice");
+    Route::put("/invoice/updateManufacturingInvoice/{invoice_id}","manufacturingController@update")->name("invoice.updateManufacturingInvoice");
+    Route::delete("/invoice/deleteManufacturingInvoice/{invoice_id}","manufacturingController@destroy")->name("invoice.deleteManufacturingInvoice");
+    Route::delete("/invoice/softDeleteManufacturingInvoice/{invoice_id}","manufacturingController@softDelete")->name("invoice.softDeleteManufacturingInvoice");
+    Route::get("/invoice/restoreManufacturingInvoice/{invoice_id}","MmanufacturingController@restore")->name("invoice.restoreManufacturingInvoice");
+    Route::get("/invoice/viewManufacturingRecyclebin","manufacturingController@viewRecyclebin")->name("invoice.viewManufacturingRecyclebin");
+    Route::get("/invoice/searchManufacturingInvoice","manufacturingController@search")->name("invoice.searchManufacturingInvoice");
+    Route::get("/invoice/showSearchManufacturingInvoice","manufacturingController@showSearchInvoice")->name("invoice.showSearchManufacturingInvoice");
+
+
+
+
+    Route::post("/manufacturingTemplate/storeManufacturingTemplate","manufacturingTemplateController@store")->name("manufacturingTemplate.storeManufacturingTemplate");
+//    Route::put("/manufacturingTemplate/updateManufacturingTemplate/{invoice_id}","manufacturingTemplateController@update")->name("manufacturingTemplate.updateManufacturingTemplate");
+    Route::delete("/invoice/deleteManufacturingTemplate/{invoice_id}","manufacturingTemplateController@destroy")->name("manufacturingTemplate.deleteManufacturingTemplate");
+    Route::delete("/invoice/softDeleteManufacturingTemplate/{invoice_id}","manufacturingTemplateController@softDelete")->name("manufacturingTemplate.softDeleteManufacturingTemplate");
+    Route::get("/invoice/restoreManufacturingTemplate/{invoice_id}","manufacturingTemplateController@restore")->name("manufacturingTemplate.restoreManufacturingTemplate");
+    Route::get("/invoice/viewManufacturingTemplatesRecyclebin","manufacturingTemplateController@viewRecyclebin")->name("manufacturingTemplate.viewManufacturingTemplatesRecyclebin");
 
 });

@@ -22,7 +22,7 @@
                         <form action="{{route("permission.storePermission")}}" method="POST" autocomplete="off">
                             @csrf
                             <x-forms.permissions-form></x-forms.permissions-form>
-                            <input id="btn_add_permission" class="btn btn-primary btn-block" type="submit" value="create">
+                            <input tabindex="9" id="btn_add_permission" class="btn btn-primary btn-block" type="submit" value="create">
                         </form>
                     </div>
 

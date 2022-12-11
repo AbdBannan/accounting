@@ -291,7 +291,7 @@
                             <i class="fas fa-question fa-sm fa-fw mr-2 text-gray-400"></i>
                             {{__("global.help")}}
                         </a>
-                        @if(auth()->user()->hasRole("admin"))
+                        @if(auth()->user()->isAdmin())
                             <a class="dropdown-item" href="{{route("activityLog.viewUsersActivityLog")}}">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                 {{__("global.activity_log")}}
@@ -362,7 +362,7 @@
                         flex-column" data-widget="treeview" role="menu" data-accordion="true">
                         <!-- Add icons to the links using the .nav-icon class
                              with font-awesome or any other icon font library -->
-                        @if(auth()->user()->hasRole("admin"))
+                        @if(auth()->user()->isAdmin())
                         {{--admin controle--}}
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -660,7 +660,7 @@
                                 <li class="nav-item">
                                     <a href="{{route("invoice.createManufacturingInvoice")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__("global.make_manufacturing")}}</p>
+                                        <p>{{__("global.add_new_manufacturing_action")}}</p>
                                     </a>
                                 </li>
                                 {{--view manufacturing actions--}}
@@ -672,7 +672,7 @@
                                 </li>
                                 {{--search edit delete manufacturing actions --}}
                                 <li class="nav-item">
-                                    <a id="btn_search_edit_delete_product_movement" href="{{route("invoice.showSearchManufacturingInvoice")}}" class="nav-link">
+                                    <a id="btn_search_edit_delete_manufacturing_action" href="{{route("invoice.showSearchManufacturingInvoice")}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>{{__("global.search_edit_delete_manufacturing_actions")}}</p>
                                     </a>
@@ -887,6 +887,27 @@
                 $(this).parent("li").parent("ul").siblings("a").removeClass("bg-gradient-secondary").addClass("active").parent("li").addClass("menu-open").addClass("menu-is-opening");
             }
         });
+
+
+
+        // $("body").on("click",function (){
+        //     var el = document.documentElement
+        //         , rfs = // for newer Webkit and Firefox
+        //         el.requestFullScreen
+        //         || el.webkitRequestFullScreen
+        //         || el.mozRequestFullScreen
+        //         || el.msRequestFullScreen
+        //     ;
+        //     if(typeof rfs!="undefined" && rfs){
+        //         rfs.call(el);
+        //     } else if(typeof window.ActiveXObject!="undefined"){
+        //         // for Internet Explorer
+        //         var wscript = new ActiveXObject("WScript.Shell");
+        //         if (wscript!=null) {
+        //             wscript.SendKeys("{F11}");
+        //         }
+        //     }
+        // });
 
         // var moment = require('moment'); // require
         // moment().format();

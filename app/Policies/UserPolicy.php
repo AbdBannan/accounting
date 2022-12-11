@@ -33,7 +33,7 @@ class UserPolicy
             return true;
         }
 
-        if (auth()->user()->hasRole("admin")){
+        if (auth()->user()->isAdmin()){
             return true;
         }
     }

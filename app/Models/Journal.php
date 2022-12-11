@@ -15,8 +15,6 @@ class Journal extends Model
     protected $dates = ['closing_date'];
     protected $table = "journal";
     protected $primaryKey = "invoice_id";
-
-
     public function getImageAttribute($value)
     {
         $prefixFolder = "";
@@ -36,7 +34,10 @@ class Journal extends Model
         {
             $prefixFolder = "images/productMovementInvoices/";
         }
-//        $prefixFolder = $this->attributes["detail"] == 0 ? "images/products":"images/cashes";
+        elseif (in_array($this->attributes["invoice_type"],[13,14]))
+        {
+            $prefixFolder = "images/manufacturingInvoices/";
+        }
         return $prefixFolder . Str::replace("#","/",$value);
     }
 
@@ -99,14 +100,13 @@ class Journal extends Model
             $value = "payment";
         elseif ($value == 7)
             $value = "receive";
-        elseif ($value == 11)
+        elseif ($value == 11 or $value == 12)
             $value = "product_movement";
-        elseif ($value == 12)
-            $value = "product_movement";
+        elseif (in_array($value,[13,14,15,16]))
+            $value = "manufacturing_action";
         elseif ($value == -1)
             $value = "checked";
 
-//        return ($value == 1)? "sale" : (($value == 2)? "purchase" : ( ($value == 3)? "sale_return" : ( ($value == 4)? "purchase_return" : ( ($value == 5)? "payment" : "receive"))));
         return $value;
     }
 
@@ -132,9 +132,10 @@ class Journal extends Model
             $value = 11;
         elseif ($value == "moved_to")
             $value = 12;
+//        elseif ($value == "manufacturing_action")
+//            $value = 13;
 
 
-//        $this->attributes['invoice_type'] = $value == "sale"? 1 : ($value == "purchase"? 2 : ( $value == "sale_return"? 3 : ( $value == "purchase_return"? 4 : ( $value == "payment"? 5 : 6))));
         $this->attributes['invoice_type'] = $value;
     }
 

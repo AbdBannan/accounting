@@ -27,7 +27,7 @@
                             @csrf
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input id="first_name" type="text" class="form-control form-control-user @error('first_name') is-invalid @enderror" placeholder="{{__("global.first_name")}}" name="first_name" value="{{ old('first_name') }}" autocomplete="first_name" autofocus>
+                                    <input tabindex="1" id="first_name" type="text" class="form-control form-control-user @error('first_name') is-invalid @enderror" placeholder="{{__("global.first_name")}}" name="first_name" value="{{ old('first_name') }}" autocomplete="first_name" autofocus>
                                     @error('first_name')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
@@ -35,7 +35,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-sm-6">
-                                    <input id="last_name" type="text" class="form-control form-control-user @error('last_name') is-invalid @enderror" placeholder="{{__("global.last_name")}}" name="last_name" value="{{ old('last_name') }}" autocomplete="last_name" autofocus>
+                                    <input tabindex="2" id="last_name" type="text" class="form-control form-control-user @error('last_name') is-invalid @enderror" placeholder="{{__("global.last_name")}}" name="last_name" value="{{ old('last_name') }}" autocomplete="last_name" autofocus>
                                     @error('last_name')
                                     <span class="invalid-feedback" role="alert">
                                             <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
@@ -45,7 +45,7 @@
                             </div>
 
                             <div class="form-group">
-                                <input id="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="{{__("global.enter_email_address")}}" autocomplete="email">
+                                <input tabindex="3" id="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="{{__("global.enter_email_address")}}" autocomplete="email">
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
@@ -56,7 +56,7 @@
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <div class="form-group">
-                                        <input id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password" placeholder="{{__("global.password")}}" autocomplete="new-password">
+                                        <input tabindex="4" id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password" placeholder="{{__("global.password")}}" autocomplete="new-password">
                                         @error('password')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
@@ -65,11 +65,11 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <input id="password-confirm" type="password" class="form-control form-control-user" name="password_confirmation" placeholder="{{__("global.confirm_your_password")}}" autocomplete="new-password">
+                                        <input tabindex="5" id="password-confirm" type="password" class="form-control form-control-user" name="password_confirmation" placeholder="{{__("global.confirm_your_password")}}" autocomplete="new-password">
                                     </div>
 
                                     <div class="form-group">
-                                        <input id="file" type="file" class=" form-control-file" name="file" placeholder="profile image">
+                                        <input tabindex="6" id="file" type="file" class=" form-control-file" name="file" placeholder="profile image">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -79,7 +79,7 @@
                                 </div>
                             </div>
 
-                            <input id="btn_register" type="submit" class="btn btn-primary btn-user btn-block" value="{{ __('global.register') }}">
+                            <input tabindex="7" id="btn_register" type="submit" class="btn btn-primary btn-user btn-block" value="{{ __('global.register') }}">
                             <hr>
 {{--                            <a href="#" class="btn btn-google btn-user btn-block">--}}
 {{--                                <i class="fab fa-google fa-fw"></i> Login with Google--}}

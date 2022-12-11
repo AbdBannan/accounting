@@ -42,7 +42,8 @@
                                         <td><input form="form_restore" name="multi_ids[]" value="{{$product->id}}" type="checkbox" class="form-check"></td>
                                         <td>{{$product->id}}</td>
                                         <td>{{$product->name}}</td>
-                                        <td>{{$product->account_type}}</td>
+{{--                                        <td>{{$product->account_type}}</td>--}}
+                                        <td>{{$product->is_raw}}</td>
                                         <td>{{$product->reference}}</td>
                                         <td>{{$product->store->name}}</td>
 

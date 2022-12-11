@@ -61,9 +61,6 @@
                     @endsection
                     @section("total_price"){{\App\Models\Journal::where("invoice_id",$invoiceLines[0]->invoice_id)->where("detail",0)->where("invoice_type","!=",0)->selectRaw("sum(price * quantity) as total_price")->get()[0]->total_price}}@endsection
                     @section("pound_type"){{$invoiceLines[0]->pound_type}}@endsection
-                    @section("hide")
-                        hidden="true"
-                    @endsection
                 </x-invoices.invoice-body>
             @else
                 <div class="container">
@@ -122,7 +119,7 @@
                     $(this).removeClass("is-invalid");
                 });
                 let error_found = false;
-                $("input[class~='dropdown-toggle").each(function () {
+                $("input[class~='dropdown-toggle']").each(function () {
                     let error = validateDropDownBox(this);
                     if (error !== "") {
                         error_found = true;

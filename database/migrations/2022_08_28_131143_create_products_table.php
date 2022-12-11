@@ -17,6 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string("name")->default("");
             $table->boolean("is_active")->default(true);
+            $table->boolean("is_raw")->default(false);
             $table->integer("account_type")->default(0);
             $table->foreignId("category_id")->default(0);
             $table->string("image")->default("default_product_img.png");
@@ -30,6 +31,8 @@ class CreateProductsTable extends Migration
             $table->integer("st")->default(0);
             $table->string("nu1")->default(0);
             $table->double("price",20,10)->default(0);
+//            $table->double("gainful_percentage",20,10)->default(0);
+            $table->double("gainful_value",20,10)->default(0);
             $table->softDeletes();
             $table->timestamps();
 

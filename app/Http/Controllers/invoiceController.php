@@ -54,31 +54,32 @@ class invoiceController extends Controller
         $this->validate($request, [
             "invoice_id" => ["required"],
             "pound_type" => "required",
-            "second_part_name" => ["required",Rule::exists("accounts","name")],
-            "product_name" => [Rule::exists("products","name")],
+            "second_part_name" => ["required",Rule::exists("accounts","name")->where("deleted_at",null)],
+            "product_name" => [Rule::exists("products","name")->where("deleted_at",null)],
             'file' => ['image','mimes:jpg,png,jpeg,gif,svg',"max"=>"2048mB"]
         ]);
         $file_name = null;
         $path = null;
         $path_and_file_name = null;
-        if ($file = $request->file("image")) {
+        if ($file = $request->file("image") and $request["upload_image_method"] == "image") {
             $splitedDate = explode("-", $request["closing_date"]);
             $path = $splitedDate[0] . "/" . $splitedDate[1] . "/" . $splitedDate[2];
             $file_name = $request["invoice_id"] . "." . $file->getClientOriginalExtension();
             $file->move("images/productInvoices/" . $path, $file_name);
-        } elseif ($uploaded_file = glob(public_path("images/temp_images/invoice_$request[invoice_id].*"))) {
+            $path_and_file_name = Str::replace("/", "#", $path . "/" . $file_name);
+        } elseif ($uploaded_file = glob(public_path("images/temp_images/invoice_$request[invoice_id].*")) and $request["upload_image_method"] == "qr") {
             $splitedDate = explode("-", $request["closing_date"]);
             $path = $splitedDate[0] . "/" . $splitedDate[1] . "/" . $splitedDate[2];
             $extention = File::extension($uploaded_file[0]);
             $file_name = $request["invoice_id"] . "." . $extention;
             File::ensureDirectoryExists("images/productInvoices/$path");
             File::move(public_path("images/temp_images/invoice_$request[invoice_id].$extention"),public_path("images/productInvoices/" . $path . "/" . $file_name));
+            $path_and_file_name = Str::replace("/", "#", $path . "/" . $file_name);
         }
         else {
             $file_name = "default_invoice_img.png";
-            $path = "";
+            $path_and_file_name = $file_name;
         }
-        $path_and_file_name = Str::replace("/", "#", $path . "/" . $file_name);
 
         try {
             DB::beginTransaction();
@@ -139,7 +140,7 @@ class invoiceController extends Controller
                 $this->validate(
                     $request,
                     [
-                        "first_part_name_$ctr"=>Rule::exists("accounts","name")
+                        "first_part_name_$ctr"=>Rule::exists("accounts","name")->where("deleted_at",null)
                     ]
                 );
                 $record2["first_part_id"] = Account::where("name", $data["second_part_name"])->first()->id;
@@ -213,8 +214,8 @@ class invoiceController extends Controller
         $this->validate($request, [
             "invoice_id" => "required",
             "pound_type" => "required",
-            "second_part_name" => ["required",Rule::exists("accounts","name")],
-            "product_name" => [Rule::exists("products","name")],
+            "second_part_name" => ["required",Rule::exists("accounts","name")->where("deleted_at",null)],
+            "product_name" => [Rule::exists("products","name")->where("deleted_at",null)],
             'file' => ['image','mimes:jpg,png,jpeg,gif,svg'],
         ]);
 
@@ -222,7 +223,7 @@ class invoiceController extends Controller
         $path = null;
         $path_and_file_name = null;
         $oldPath = Journal::where("detail", 0)->whereIn("invoice_type", [0, 1, 2, 3, 4])->find($invoice_id)->image;
-        if ($file = $request->file("image")) {
+        if ($file = $request->file("image") and $request["upload_image_method"] == "image") {
             if (file_exists(public_path($oldPath)) and $oldPath != "images/systemImages/default_invoice_img.png")
                 unlink(public_path($oldPath));
             $splitedPath = explode("/", $oldPath);
@@ -236,7 +237,7 @@ class invoiceController extends Controller
             $file_name = $request["invoice_id"] . "." . $file->getClientOriginalExtension();
             $file->move("images/productInvoices/" . $path, $file_name);
             $path_and_file_name = Str::replace("/", "#", $path . "/" . $file_name);
-        } elseif ($uploaded_file = glob(public_path("images/temp_images/invoice_$request[invoice_id].*"))) {
+        } elseif ($uploaded_file = glob(public_path("images/temp_images/invoice_$request[invoice_id].*")) and $request["upload_image_method"] == "qr") {
            if (file_exists(public_path($oldPath)) and $oldPath != "images/systemImages/default_invoice_img.png")
                unlink(public_path($oldPath));
             $splitedPath = explode("/", $oldPath);
@@ -250,6 +251,7 @@ class invoiceController extends Controller
             $file_name = $request["invoice_id"] . "." . $extention;
             File::ensureDirectoryExists("images/productInvoices/$path");
             File::move(public_path("images/temp_images/invoice_$request[invoice_id].$extention"),public_path("images/productInvoices/" . $path . "/" . $file_name));
+            $path_and_file_name = Str::replace("/", "#", $path . "/" . $file_name);
         } else {
             $oldPath = Str::replace("images/","",$oldPath);
             $oldPath = Str::replace("productInvoices/","",$oldPath);
@@ -301,7 +303,7 @@ class invoiceController extends Controller
     {
         $this->validate($request,
             [
-                "invoice_id"=>["required",Rule::exists('journal','invoice_id')->whereIn("invoice_type", [1, 2, 3, 4])]
+                "invoice_id"=>["required",Rule::exists('journal','invoice_id')->whereIn("invoice_type", [1, 2, 3, 4])->where("deleted_at",null)]
             ]
         );
 //        $invoiceLines = Journal::where("detail", 0)->where("invoice_id", $request["invoice_id"])->whereIn("invoice_type", [1, 2, 3, 4])->get();

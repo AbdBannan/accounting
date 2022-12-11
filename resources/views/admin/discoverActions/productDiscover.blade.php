@@ -116,7 +116,7 @@
                         <form  style="margin: auto" action="{{route("discover.productDiscoverUntilNow")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="product" >{{__("global.account")}}</label>
-                                <input id="product_1" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input tabindex="1" id="product_1" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -127,7 +127,7 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_product_until_now" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
+                            <input tabindex="2" id="btn_product_until_now" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                     <div id="productDiscoverUntilLastBalanceCollapse" class="collapse">
@@ -135,7 +135,7 @@
                         <form  style="margin: auto" action="{{route("discover.productDiscoverUntilLastBalance")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="product" >{{__("global.account")}}</label>
-                                <input id="product_2" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input tabindex="3" id="product_2" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -146,7 +146,7 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_product_after_last_checked_point" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
+                            <input tabindex="4" id="btn_product_after_last_checked_point" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                     <div id="productDiscoverWithAccountCollapse" class="collapse">
@@ -154,7 +154,7 @@
                         <form style="margin: auto" action="{{route("discover.productDiscoverWithAccount")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="product" >{{__("global.product")}}</label>
-                                <input id="product_3" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input tabindex="5" id="product_3" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -166,7 +166,7 @@
                             </div>
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account")}}</label>
-                                <input id="account" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input tabindex="6"id="account" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -177,7 +177,7 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_product_with_account" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
+                            <input tabindex="7" id="btn_product_with_account" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                     <div id="productDiscoverBetweenTowDatesCollapse" class="collapse" >
@@ -185,7 +185,7 @@
                         <form  style="margin: auto" action="{{route("discover.productDiscoverBetweenTowDates")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="product" >{{__("global.account")}}</label>
-                                <input id="product_4" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input tabindex="8" id="product_4" name="product" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -197,14 +197,14 @@
                             </div>
                             <div class="row">
                                 <label class="col-md-4 col-sm-12" style="font-size: x-large" for="product" >{{__("global.from")}}</label>
-                                <input id="from" name="from" class="col-md-8 col-sm-12 form-control" type="date">
+                                <input tabindex="9" id="from" name="from" class="col-md-8 col-sm-12 form-control" type="date">
                             </div>
                             <div class="row">
                                 <label class="col-md-4 col-sm-12" style="font-size: x-large" for="product" >{{__("global.to")}}</label>
-                                <input id="to" name="to" class="col-md-8 col-sm-12 form-control" type="date">
+                                <input tabindex="10" id="to" name="to" class="col-md-8 col-sm-12 form-control" type="date">
                             </div>
                             <hr>
-                            <input id="btn_product_between_tow_dates" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
+                            <input tabindex="11" id="btn_product_between_tow_dates" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                     <div id="productDiscoverByStoreCollapse" class="collapse" >
@@ -212,7 +212,7 @@
                         <form  style="margin: auto" action="{{route("discover.productDiscoverByStore")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="store" >{{__("global.store")}}</label>
-                                <input id="store" name="store" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input tabindex="12" id="store" name="store" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -227,18 +227,18 @@
 {{--                                <legend>What are you using this service for?</legend>--}}
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input id="radio_by_last_purchase_price" name="store_discover_type"  type="radio" class="form-check-input" value="last" >
+                                        <input tabindex="13" id="radio_by_last_purchase_price" name="store_discover_type"  type="radio" class="form-check-input" value="last" >
                                         {{__("global.by_last_purchase_price")}}
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input id="radio_by_mean_of_purchase_prices" name="store_discover_type" type="radio" class="form-check-input" value="mean" >
+                                        <input tabindex="14" id="radio_by_mean_of_purchase_prices" name="store_discover_type" type="radio" class="form-check-input" value="mean" >
                                         {{__("global.by_mean_of_purchase_prices")}}
                                     </label>
                                 </div>
                             </fieldset>
-                            <input id="btn_product_by_store" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
+                            <input tabindex="15" id="btn_product_by_store" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                 </div>

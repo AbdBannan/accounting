@@ -17,6 +17,10 @@
         </select>
     </div>
     <div class="form-group row">
+        <label style="font-size: x-large" for="gainful_percentage" class="font-weight-bolder col-3">{{__("global.gainful_percentage")}}</label>
+        <input type="number" min="0" id="gainful_percentage" name="gainful_percentage" class="form-control col-3" value="{{$config["gainful_percentage"]}}">
+    </div>
+    <div class="form-group row">
         <label style="font-size: x-large" for="add_method" class="font-weight-bolder col-3">{{__("global.add_method")}}</label>
         <select id="add_method" name="add_method" class="form-control col-3">
             <option value="modal" class="dropdown-item" @if(isset($config["add_method"]) and $config["add_method"] == "modal") selected @endif>{{__("global.modal")}}</option>

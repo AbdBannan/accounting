@@ -16,7 +16,7 @@ class RoleMiddleWare
      */
     public function handle(Request $request, Closure $next,$role)
     {
-        if (!$request->user()->hasRole($role)){
+        if (!$request->user()->isAdmin()){
             abort(403,"you are not allowed to access this page");
         }
         return $next($request);

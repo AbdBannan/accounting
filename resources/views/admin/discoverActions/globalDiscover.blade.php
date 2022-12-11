@@ -133,7 +133,7 @@
                         <form  style="margin: auto" action="{{route("discover.globalDiscoverUntilNow")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account")}}</label>
-                                <input id="account_1" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input tabindex="1" id="account_1" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -144,7 +144,7 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_submit_global_discover_until_now" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
+                            <input tabindex="2" id="btn_submit_global_discover_until_now" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                     <div id="globalDiscoverAfterLastCheckedPointCollapse" class="collapse">
@@ -152,7 +152,7 @@
                         <form  style="margin: auto" action="{{route("discover.globalDiscoverAfterLastCheckedPoint")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account")}}</label>
-                                <input id="account_2" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input tabindex="3" id="account_2" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -163,7 +163,7 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_submit_global_after_last_checked_point" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
+                            <input tabindex="4" id="btn_submit_global_after_last_checked_point" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                     <div id="globalDiscoverUntilLastBalanceCollapse" class="collapse">
@@ -171,7 +171,7 @@
                         <form  style="margin: auto" action="{{route("discover.globalDiscoverUntilLastBalance")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account")}}</label>
-                                <input id="account_3" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input tabindex="5" id="account_3" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -182,7 +182,7 @@
                                 </div>
                                 <hr>
                             </div>
-                            <input id="btn_submit_global_until_last_balance" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
+                            <input tabindex="6" id="btn_submit_global_until_last_balance" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                     <div id="globalDiscoverBetweenTowDatesCollapse" class="collapse" >
@@ -190,7 +190,7 @@
                         <form  style="margin: auto" action="{{route("discover.globalDiscoverBetweenTowDates")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account" >{{__("global.account")}}</label>
-                                <input id="account_4" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input tabindex="7" id="account_4" name="account" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -202,14 +202,14 @@
                             </div>
                             <div class="row">
                                 <label class="col-md-4 col-sm-12" style="font-size: x-large" for="account" >{{__("global.from")}}</label>
-                                <input id="from" name="from" class="col-md-8 col-sm-12 form-control" type="date">
+                                <input tabindex="8" id="from" name="from" class="col-md-8 col-sm-12 form-control" type="date">
                             </div>
                             <div class="row">
                                 <label class="col-md-4 col-sm-12" style="font-size: x-large" for="account" >{{__("global.to")}}</label>
-                                <input id="to" name="to" class="col-md-8 col-sm-12 form-control" type="date">
+                                <input tabindex="9" id="to" name="to" class="col-md-8 col-sm-12 form-control" type="date">
                             </div>
                             <hr>
-                            <input id="btn_submit_global_between_tow_dates" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
+                            <input tabindex="10" id="btn_submit_global_between_tow_dates" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
                     </div>
                     <div id="globalDiscoverByAccountCollapse" class="collapse" >
@@ -217,7 +217,7 @@
                         <form id="accounts_form" style="margin: auto" action="{{route("discover.globalDiscoverByAccount")}}" autocomplete="off">
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account_1" >{{__("global.account")}}</label>
-                                <input id="account_5" name="account_1" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input tabindex="11" id="account_5" name="account_1" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -229,7 +229,7 @@
                             </div>
                             <div class="position-relative form-group text-center">
                                 <label style="font-size: x-large" for="account_2" >{{__("global.account")}}</label>
-                                <input id="account_6" name="account_2" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input tabindex="12" id="account_6" name="account_2" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -240,7 +240,7 @@
                                 </div>
                             </div>
                             <hr>
-                            <input id="btn_submit_global_by_account" form="accounts_form" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
+                            <input tabindex="13" id="btn_submit_global_by_account" form="accounts_form" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.go")}}">
                         </form>
 
                     </div>

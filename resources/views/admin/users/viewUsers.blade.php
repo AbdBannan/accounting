@@ -41,7 +41,7 @@
                             <tbody>
                             @foreach ($users as $user)
                                 <tr>
-                                    @if(!$user->hasRole("admin"))
+                                    @if(!$user->isAdmin())
                                         <td><input form="form_delete" name="multi_ids[]" value="{{$user->id}}" type="checkbox" class="form-check"></td>
                                     @else
                                         <td></td>
@@ -50,7 +50,7 @@
                                     <td> {{$user->last_name}} </td>
                                     <td> {{$user->email}} </td>
 
-                                    @if(!$user->hasRole("admin"))
+                                    @if(!$user->isAdmin())
                                         <td class="text-center">
                                             @if(!$user->active)
                                                 <a id="btn_activate_user" route-attr="{{route("user.activateUser",$user)}}" class="btn btn-sm btn-danger">{{__("global.activate")}}</a>
@@ -78,7 +78,7 @@
                                         <a id="btn_update" title="{{__("global.update")}}" class="dropdown-item col-4 m-0 p-0" href="{{route("user.showUser",$user->id)}}">
                                             <i class="fas fa-edit text-green"></i>
                                         </a>
-                                        @if(!$user->hasRole("admin"))
+                                        @if(!$user->isAdmin())
                                             <a id="btn_delete" title="{{__("global.delete")}}" class="dropdown-item col-3 m-0 p-0" href="#" data-toggle="modal" data-target="#deleteConfirmModal" @if(auth()->user()->getConfig("use_recyclebin") == "true") data-route="{{route("user.softDeleteUser",$user->id)}}" @else data-route="{{route("user.deleteUser",$user->id)}}" @endif >
                                                 <i class="fas fa-trash text-red"></i>
                                             </a>

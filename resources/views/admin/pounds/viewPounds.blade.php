@@ -22,7 +22,7 @@
                         <form action="{{route("pound.storePound")}}" method="POST" autocomplete="off">
                             @csrf
                             <x-forms.pounds-form></x-forms.pounds-form>
-                            <input id="btn_add_pound" class="btn btn-primary btn-block" type="submit" value="create">
+                            <input tabindex="9" id="btn_add_pound" class="btn btn-primary btn-block" type="submit" value="create">
                         </form>
                     </div>
 

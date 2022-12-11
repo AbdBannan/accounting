@@ -54,7 +54,7 @@
                         $(this).removeClass("is-invalid");
                     });
                     let error_found = false;
-                    $("input[class~='dropdown-toggle").each(function () {
+                    $("input[class~='dropdown-toggle']").each(function () {
                         let error = validateDropDownBox(this);
                         if (error !== "") {
                             error_found = true;

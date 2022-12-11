@@ -409,7 +409,7 @@ class discoverActionsController extends Controller
             ]
         );
         $product_id = Product::where("name",$request["product"]);
-        $actions = Journal::where("product_name",$request["product"])->whereIn("invoice_type",[1,2,3,4,11,12])->orderBy("closing_date")->orderBy("invoice_id")->orderBy("row_id")->get();
+        $actions = Journal::where("product_name",$request["product"])->whereIn("invoice_type",[1,2,3,4,11,12,13,15])->orderBy("closing_date")->orderBy("invoice_id")->orderBy("row_id")->get();
 
         $in_quantity = 0;
         $out_quantity = 0;
@@ -445,7 +445,7 @@ class discoverActionsController extends Controller
         $end_date = $end_date->format("Y-m-d-");
 //        $end_date = $end_date->format("Y-m-d- h:m:s");
 
-        $actions = Journal::where("product_name",$request["product"])->whereIn("invoice_type",[1,2,3,4,11,12])->whereBetween("closing_date",[$start_date,$end_date])->orderBy("closing_date")->orderBy("invoice_id")->orderBy("row_id")->get();
+        $actions = Journal::where("product_name",$request["product"])->whereIn("invoice_type",[1,2,3,4,11,12,13,15])->whereBetween("closing_date",[$start_date,$end_date])->orderBy("closing_date")->orderBy("invoice_id")->orderBy("row_id")->get();
 
         $in_quantity = 0;
         $out_quantity = 0;
@@ -470,7 +470,7 @@ class discoverActionsController extends Controller
                 "product"=>"required"
             ]
         );
-        $actions = Journal::where("first_part_name",$request["account"])->where("product_name",$request["product"])->whereIn("invoice_type",[1,2,3,4,11,12])->orderBy("closing_date")->orderBy("invoice_id")->orderBy("row_id")->get();
+        $actions = Journal::where("first_part_name",$request["account"])->where("product_name",$request["product"])->whereIn("invoice_type",[1,2,3,4,11,12,13,15])->orderBy("closing_date")->orderBy("invoice_id")->orderBy("row_id")->get();
 
         $in_quantity = 0;
         $out_quantity = 0;
@@ -496,7 +496,7 @@ class discoverActionsController extends Controller
             ]
         );
 
-        $actions = Journal::where("product_name",$request["product"])->whereIn("invoice_type",[1,2,3,4,11,12])->orderBy("closing_date")->orderBy("invoice_id")->orderBy("row_id")->get();
+        $actions = Journal::where("product_name",$request["product"])->whereIn("invoice_type",[1,2,3,4,11,12,13,15])->orderBy("closing_date")->orderBy("invoice_id")->orderBy("row_id")->get();
 
         $in_quantity = 0;
         $out_quantity = 0;
@@ -610,8 +610,8 @@ class discoverActionsController extends Controller
 
     public function dailyDiscover()
     {
-        $actions = Journal::where("created_at",Carbon::now()->format("Y-m-d"))->whereIn("invoice_type",[0,1,2,3,4,5,6,7])->get();
-        $totals = Journal::where("created_at",Carbon::now()->format("Y-m-d"))->whereIn("invoice_type",[1,2,3,4,5])->selectRaw("sum(debit) as total_debit , sum(credit) as total_credit")->first();
+        $actions = Journal::whereBetween("created_at",[Carbon::now()->subtract("day",1),Carbon::now()])->whereIn("invoice_type",[0,1,2,3,4,5,6,7,11,12,13,14,15,16])->get();
+        $totals = Journal::whereBetween("created_at",[Carbon::now()->subtract("day",1),Carbon::now()])->whereIn("invoice_type",[1,2,3,4,5,11,13,15])->selectRaw("sum(debit) as total_debit , sum(credit) as total_credit")->first();
         globalFunctions::registerUserActivityLog("seen","daily_actions",null);
         return view("admin.discoverActions.dailyDiscover")->with(["actions"=>$actions,"total_debit"=>$totals->total_debit,"total_credit"=>$totals->total_credit,"total_balance"=>$totals->total_credit-$totals->total_debit]);
     }

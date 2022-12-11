@@ -14,17 +14,36 @@ return [
     */
 
     //    -------- account section --------    //
+
+    'manufacturing_template' => 'manufacturing template',
+    'is_raw_product' => 'is raw product',
+    'raw' => 'raw',
+    'save_template' => 'save template',
+    'see_manufacturing_templates' => 'see manufacturing templates',
+    'manufacturing_templates' => 'manufacturing templates',
+    'manufactured' => 'manufactured',
     'manufacturing' => 'manufacturing',
+    'manufactured_product' => 'manufactured product',
+    'search_in_manufacturing_actions' => 'search in manufacturing actions',
+    'manufacturing_action' => 'manufacturing action',
+    'enter_manufacturing_action_id' => 'enter manufacturing action id',
+
+    'produced_quantity' => 'produced quantity',
+    'pure_piece_price' => 'pure piece price',
+    'with_gainful_piece_price' => 'with gainful pure piece price',
     'manufacturing_actions' => 'manufacturing actions',
     'new_manufacturing_action' => 'new manufacturing action',
     'make_manufacturing' => 'make manufacturing action',
     'view_all_manufacturing_actions' => 'view all manufacturing actions',
     'search_edit_delete_manufacturing_actions' => 'search edit delete manufacturing actions',
+    'raw_product' => 'raw product',
+    'gainful_value' => 'gainful value',
+    'gainful_percentage' => '% gainful',
 
 
 
 
-    'short_cuts' => 'short cuts',
+
     'view_all_accounts' => 'view all accounts',
     'welcome_page' => 'welcome page',
     'refresh_page' => 'refresh the page',
@@ -36,7 +55,6 @@ return [
     'press_f4_to_view_welcome_page' => 'press F4 to view the welcome page',
     'press_f5_to_refresh_the_page' => 'press F5 to refresh the current page',
     'press_f6_to_view_recyclebin_page' => 'press F6 to view the recyclebin page',
-
     'help' => 'Help',
     'qr' => 'QR Code',
     'image' => 'Choose an image',

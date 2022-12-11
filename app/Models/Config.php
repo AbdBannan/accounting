@@ -13,7 +13,7 @@ class Config extends Model
     protected $guarded = [];
 
     public function users(){
-        return $this->belongsToMany("App\Models\User")->withPivot("value");;
+        return $this->belongsToMany("App\Models\User")->withPivot("value");
     }
 
 

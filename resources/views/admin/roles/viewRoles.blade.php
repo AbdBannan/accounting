@@ -22,7 +22,7 @@
                     <form action="{{route("role.storeRole")}}" method="POST" autocomplete="off">
                         @csrf
                         <x-forms.roles-form></x-forms.roles-form>
-                        <input class="btn btn-primary btn-block" type="submit" value="create">
+                        <input tabindex="9" id="btn_add" class="btn btn-primary btn-block" type="submit" value="create">
                     </form>
                 </div>
 
@@ -65,14 +65,16 @@
                                 @foreach ($roles as $role)
 
                                     <tr>
-                                        @if(strtolower($role->name) != "admin" )
+                                        {{$role->name}}
+{{--                                        @if(strtolower($role->name) != "admin" )--}}
+                                        @if(!in_array($role->name ,["admin","مدير"] ))
                                             <td><input form="form_delete" name="multi_ids[]" value="{{$role->id}}" type="checkbox" class="form-check"></td>
                                         @else
                                             <td></td>
                                         @endif
                                         <td>{{$role->id}}</td>
-                                        @if(strtolower($role->name) != "admin" )
-                                            <td><a id="btn_show_element" href="{{route("role.showRolePermission",$role)}}">{{$role->name}}</a></td>
+                                        <td><a id="btn_show_element" href="{{route("role.showRolePermission",$role)}}">{{$role->name}}</a></td>
+                                        @if(!in_array(strtolower($role->name) ,["admin","مدير"] ))
                                             <td class="row m-0">
                                                 <a id="btn_update" title="{{__("global.update")}}" class="dropdown-item col-7 m-0 p-0" href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$role}}" data-route="{{route("role.updateRole",$role->id)}}">
                                                     <i class="fas fa-edit text-green"></i>
@@ -82,7 +84,6 @@
                                                 </a>
                                             </td>
                                         @else
-                                            <td><a id="btn_show_element" href="{{route("role.showRolePermission",$role)}}">{{__("global.".$role->name)}}</a></td>
                                             <td></td>
                                         @endif
                                     </tr>

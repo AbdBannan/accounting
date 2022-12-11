@@ -61,10 +61,8 @@
                             </tr>
                         @endforeach
                     @endsection
-                    @section("hide")
-                        hidden="true"
-                    @endsection
-                        @section("total_price"){{\App\Models\Journal::where("invoice_id",$invoiceLines[0]->invoice_id)->where("detail",0)->whereIn("invoice_type",[11])->selectRaw("sum(price*quantity) as total_price")->groupBy("num_for_pound")->first()->total_price}}@endsection
+
+                    @section("total_price"){{\App\Models\Journal::where("invoice_id",$invoiceLines[0]->invoice_id)->where("detail",0)->whereIn("invoice_type",[11])->selectRaw("sum(price*quantity) as total_price")->groupBy("num_for_pound")->first()->total_price}}@endsection
                 </x-invoices.product-movement-body>
             @else
                 <div class="container">
@@ -121,7 +119,7 @@
                     $(this).removeClass("is-invalid");
                 });
                 let error_found
-                $("input[class~='dropdown-toggle").each(function () {
+                $("input[class~='dropdown-toggle']").each(function () {
                     let error = validateDropDownBox(this);
                     if (error !== "") {
                         error_found = true;

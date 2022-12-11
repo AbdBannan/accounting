@@ -33,7 +33,7 @@
             </div>
             <div class="modal-footer">
                 <div class="form-group">
-                    <input id="btn_id" form="form_add" class="btn btn-primary" type="submit" value="{{__("global.add")}}">
+                    <input tabindex="9" id="btn_add" form="form_add" class="btn btn-primary" type="submit" value="{{__("global.add")}}">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">{{__("global.cancel")}}</button>
                 </div>
             </div>

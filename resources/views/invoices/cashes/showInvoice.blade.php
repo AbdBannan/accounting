@@ -61,9 +61,6 @@
                     @section("total_payed"){{\App\Models\Journal::where("invoice_id",$invoiceLines[0]->invoice_id)->where("detail",1)->where("invoice_type",5)->selectRaw("(sum(credit) / num_for_pound) as total_payed")->groupBy("num_for_pound")->get()[0]->total_payed}}@endsection
                     @section("total_received"){{\App\Models\Journal::where("invoice_id",$invoiceLines[0]->invoice_id)->where("detail",1)->where("invoice_type",5)->selectRaw("(sum(debit) / num_for_pound) as total_received")->groupBy("num_for_pound")->get()[0]->total_received}}@endsection
                     @section("pound_type"){{$invoiceLines[0]->pound_type}}@endsection
-                    @section("hide")
-                        hidden="true"
-                    @endsection
                 </x-invoices.cash-body>
             @else
                 <div class="container">
@@ -123,7 +120,7 @@
                     $(this).removeClass("is-invalid");
                 });
                 let error_found = false;
-                $("input[class~='dropdown-toggle").each(function () {
+                $("input[class~='dropdown-toggle']").each(function () {
                     let error = validateDropDownBox(this);
                     if (error !== "") {
                         error_found = true;

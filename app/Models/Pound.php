@@ -15,6 +15,13 @@ class Pound extends Model
     use softDeletes;
     protected $guarded = [];
 
+    public function getNameAttribute($value){
+        if ($this->attributes["created_by"] == "developer") {
+            return __("global.$value");
+        } else {
+            return $value;
+        }
+    }
 //    protected function getNameAttribute($value){
 //        $trans = [
 //            "Syrian"=>"ل.س",

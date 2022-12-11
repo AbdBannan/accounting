@@ -28,7 +28,7 @@
                         @csrf
                         <x-forms.accounts-form>
                         </x-forms.accounts-form>
-                        <input id="btn_add" class="btn btn-primary btn-block" type="submit" value="{{__("global.create")}}">
+                        <input tabindex="9" id="btn_add" class="btn btn-primary btn-block" type="submit" value="{{__("global.create")}}">
                     </form>
                 </div>
 

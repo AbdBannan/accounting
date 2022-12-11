@@ -14,6 +14,34 @@ return [
     */
 
     //    -------- account section --------    //
+
+
+    'manufacturing_template' => 'قزالب عمليات التصنيع',
+    'is_raw_product' => 'مادة خام ؟',
+    'raw' => 'raw',
+    'save_template' => 'حفظ قالب التصنيع',
+    'see_manufacturing_templates' => 'جميع قوالب التصنيع',
+    'manufacturing_templates' => 'قوالب التصنيع',
+    'manufactured' => 'مصنعة',
+    'manufacturing' => 'تصنيع',
+    'manufactured_product' => 'مادة مصنعة',
+    'search_in_manufacturing_actions' => 'بحث في عمليات التصنيع',
+    'manufacturing_action' => 'عمليات التصنيع',
+    'enter_manufacturing_action_id' => 'أدخل رقم عملية التصنيع',
+
+    'produced_quantity' => 'الكمية المصنعة',
+    'pure_piece_price' => 'السعر الصافي للوحدة الواحدة',
+    'with_gainful_piece_price' => 'سعر الإجمالي للوحدة الواحدة',
+    'manufacturing_actions' => 'عمليات التصنيع',
+    'new_manufacturing_action' => 'عملية تصنيع جديدة',
+    'view_all_manufacturing_actions' => 'إظهار جميع عمليات التصنيع',
+    'search_edit_delete_manufacturing_actions' => 'بحث حذف تعديل',
+    'raw_product' => 'مادة أولية',
+    'gainful_value' => 'قيمة الربح',
+    'gainful_percentage' => 'النسبة المئوية للربح',
+    'add_new_manufacturing_action' => 'إضافة عملية تصنيع جديدة',
+
+
     'short_cuts' => 'إختصارات التطبيق',
     'view_all_accounts' => 'إظهار جميع الحسابات',
     'welcome_page' => 'الصفحة الرئيسية',

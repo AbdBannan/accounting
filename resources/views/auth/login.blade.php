@@ -33,7 +33,7 @@
                                         @csrf
 
                                         <div class="form-group">
-                                            <input id="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="{{__("global.enter_email_address")}}" autocomplete="email" autofocus>
+                                            <input tabindex="1" id="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="{{__("global.enter_email_address")}}" autocomplete="email" autofocus>
                                             @error('email')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ \App\functions\globalFunctions::fixTranslation($message) }}</strong>
@@ -42,7 +42,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <input id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password" placeholder="{{__("global.password")}}" autocomplete="current-password">
+                                            <input tabindex="2" id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password" placeholder="{{__("global.password")}}" autocomplete="current-password">
 
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
@@ -55,7 +55,7 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6 offset-md-4">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                                    <input tabindex="3" class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
                                                     <label class="form-check-label" for="remember">
                                                         {{ __('global.remember_me') }}
@@ -65,7 +65,7 @@
                                         </div>
 
 
-                                        <input id="btn_login" type="submit" class="btn btn-primary btn-user btn-block" value="{{ __('global.login') }}">
+                                        <input tabindex="4" id="btn_login" type="submit" class="btn btn-primary btn-user btn-block" value="{{ __('global.login') }}">
                                         <hr>
 {{--                                        <a href="#" class="btn btn-google btn-user btn-block">--}}
 {{--                                            <i class="fab fa-google fa-fw"></i> Login with Google--}}

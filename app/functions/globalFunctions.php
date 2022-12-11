@@ -114,23 +114,26 @@ class globalFunctions
 
     public static function getEquivalentPoundValue($pound)
     {
-//        $translate = [
-//            'ل.س'=>'syrian',
-//            'دولار'=>'dollar',
-//            'syrian'=>'syrian',
-//            'dollar'=>'dollar'
-//        ];
-//        dd($translate[$pound]   );
-//        return Pound::where("name",$translate[$pound])->first()->value;
+
+        $translate = [
+            'ل.س'=>'syrian',
+            'دولار'=>'dollar',
+            'syrian'=>'syrian',
+            'dollar'=>'dollar'
+        ];
+        if (key_exists($pound, $translate)){
+            $pound = $translate[$pound];
+        }
         return Pound::where("name",$pound)->first()->value;
     }
 
     public static function initialUserConfig(User $user){
         $config = [
-            ["name"=>"language","controlled_by"=>"user", "type" => "global", "default_value" => "arabic"],
+            ["name"=>"language","controlled_by"=>"user", "type" => "global", "default_value" => (app()->getLocale() == "ar")? "arabic":"english"],
             ["name"=>"add_method","controlled_by"=>"user", "type" => "global", "default_value" => "modal"],
             ["name"=>"user_activity_log","controlled_by"=>"admin", "type" => "admin_control", "default_value" => "true"],
-            ["name"=>"default_pound","controlled_by"=>"user", "type" => "global", "default_value" => "Syrian"],
+            ["name"=>"default_pound","controlled_by"=>"user", "type" => "global", "default_value" => (app()->getLocale() == "ar")?__("global.syrian"):__("global.dollar")],
+            ["name"=>"gainful_percentage","controlled_by"=>"user", "type" => "global", "default_value" => 0],
             ["name"=>"use_recyclebin","controlled_by"=>"user", "type" => "global", "default_value" => "true"],
             ["name"=>"clean_recyclebin_after","controlled_by"=>"user", "type" => "global", "default_value" => "5"],
             ["name"=>"dark_mode","controlled_by"=>"user", "type" => "look", "default_value" => "0"],

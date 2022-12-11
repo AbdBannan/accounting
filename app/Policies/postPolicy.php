@@ -53,7 +53,7 @@ class postPolicy
      */
     public function update(User $user, Post $post)
     {
-        if ($user->id == $post->user_id or $user->hasRole("admin")){
+        if ($user->id == $post->user_id or $user->isAdmin()){
             return true;
         }
         else{
@@ -70,7 +70,7 @@ class postPolicy
      */
     public function delete(User $user, Post $post)
     {
-        if ($user->id == $post->user_id or $user->hasRole("admin")){
+        if ($user->id == $post->user_id or $user->isAdmin()){
             return true;
         }
         else{

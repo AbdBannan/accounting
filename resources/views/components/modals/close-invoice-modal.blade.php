@@ -11,12 +11,12 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <input form="form" type="date" id="closing_date" name="closing_date"  class="form-control" value="{{Carbon\Carbon::now()->toDateString("mm/dd/yyyy")}}" autofocus>
+                    <input tabindex="11" form="form" type="date" id="closing_date" name="closing_date"  class="form-control" value="{{Carbon\Carbon::now()->toDateString("mm/dd/yyyy")}}" autofocus>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">{{__("global.cancel")}}</button>
-                <input id="btn-submit-invoice" form="form" class="btn btn-success" type="submit" value="{{__("global.save")}}">
+                <input tabindex="12" id="btn-submit-invoice" form="form" class="btn btn-success" type="submit" value="{{__("global.save")}}">
             </div>
         </div>
     </div>

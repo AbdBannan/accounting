@@ -50,8 +50,8 @@
         let fields = $(this).data("fields");
         for (let field in fields){
             if (field == "image"){
-                $("#form_update #"+field).attr("src","http://accounting.com/"+fields[field]);
-            } else if (field == "account_type" || field == "group" || field == "reference" || field == "store_id"){
+                $("#form_update #"+field).attr("src","http://"+location.hostname+"/"+fields[field]);
+            } else if (field == "account_type" || field == "group" || field == "reference" || field == "store_id" || field == "is_raw"){
                 $("#form_update #"+field).children("option").filter(function (){
                     if ($(this).text() == fields[field]){
                         $(this).attr("selected",true);
@@ -156,9 +156,11 @@
 
 
     // auto calc the total price when quantity or price is changed
-    $("#price,#quantity").on("change",function (){
-        let total_price = parseFloat($("#quantity").val()) * parseFloat($("#price").val())
-        $("#total_price").val(total_price);
+    $("#price,#quantity").on("keyup",function (){
+        if ($("#quantity").val() != "" && $("#price").val() != ""){
+            let total_price = parseFloat($("#quantity").val()) * parseFloat($("#price").val())
+            $("#total_price").val(total_price);
+        }
     });
 
     // to filter the menu and copy its value when enter key is pressed
@@ -171,9 +173,9 @@
         if (e.which == PC_ENTER || e.which == MOBILE_ENTER){
             e.preventDefault();
 
-            let options = $(this).siblings().filter("div#dropdown_menu.dropdown-menu").children("option");
+            let options = $(this).siblings("div#dropdown_menu.dropdown-menu").children("option");
             for (const option in options) {
-                if (!Number(options[option]) && options[option] != undefined && options[option].style.display != "none") {
+                if (!Number(options[option]) && options[option].style != undefined && options[option].style.display != "none") {
                     $(options[option]).click();
                     return;
                 }
@@ -189,7 +191,8 @@
 
     // to copy the option value into its input
     $("div option").on("click",function (){
-        $(this).parent().siblings().filter("input").val($(this).text()).data("correct",true);
+        // $(this).parent().siblings().filter("input").val($(this).text()).data("correct",true);
+        $(this).parent().siblings().filter("input").val($(this).text());
         $(this).parent().filter("div#dropdown_menu.dropdown-menu").removeClass("show");
         // alert();
     });
@@ -221,56 +224,83 @@
     }
 
     // to move into the next input by pressing enter
-       $("input,select,textarea,button#btn_add_item_to_invoice").on("keypress",function (e){//to prevent submitting and focus on next input
+    //  $("input,select,textarea,button#btn_add_item_to_invoice").on("keypress",function (e){//to prevent submitting and focus on next input
+    //     const MOBILE_ENTER = 13;
+    //     const PC_ENTER = 13;
+    //     // TODO : see the ascci code for enter in mobile keyboard
+    //     if (e.which == PC_ENTER || e.which == MOBILE_ENTER){
+    //         e.preventDefault();
+    //         // $(this).trigger("keydown", [9]);
+    //         let inputs = $("input,select,textarea");
+    //
+    //         for (let item in inputs){
+    //             if (Number(inputs[item])){
+    //                 break;
+    //             }
+    //             if ($(inputs[item]).attr("id") === $(this).attr("id")){
+    //                 setTimeout(
+    //                     function (){
+    //                         if ($(inputs[item]).attr("id") == "notes" && (location.pathname.indexOf("Invoice"))) {
+    //                             $("#btn_add_item_to_invoice").click();
+    //                             return;
+    //                         }
+    //                         else if ($(inputs[item]).attr("type") == "submit") {
+    //                             $(inputs[item]).click();
+    //                             return;
+    //                         } else if ($(inputs[parseInt(item)+2]).attr("id") == "payed" && !Number($(inputs[parseInt(item)+2]).val())) {
+    //                             $(inputs[parseInt(item) + 1]).focus();
+    //                             return;
+    //                         } else if ($(inputs[parseInt(item)+1]).attr("id") == "total_price" ||
+    //                             ($(inputs[item]).attr("id") == "received" && Number($(inputs[item]).val())) ||
+    //                             ($(inputs[parseInt(item)+3]).attr("id") == "payed" && !Number($(inputs[parseInt(item)+3]).val())) ||
+    //                             ($(inputs[parseInt(item)+2]).attr("id") == "payed" && Number($(inputs[parseInt(item)+2]).val()))
+    //                         ) {
+    //                             $(inputs[parseInt(item) + 2]).focus();
+    //                             return;
+    //                         }
+    //                         else if (($(inputs[parseInt(item)+1]).attr("id") == "pound_type" && $(inputs[parseInt(item)+2]).attr("id") =="total_price")||
+    //                             ($(inputs[parseInt(item)+3]).attr("id") == "payed" && Number($(inputs[parseInt(item)+3]).val()))
+    //                         ) {
+    //                             $(inputs[parseInt(item) + 3]).focus();
+    //                             return;
+    //                         } else{
+    //                             $(inputs[parseInt(item)+1]).focus();
+    //                             return;
+    //                         }
+    //                     },140
+    //                 );
+    //             }
+    //         }
+    //     }
+    // });
+    $("input,select,textarea,button#btn_add_item_to_invoice").on("keypress",function (e){
         const MOBILE_ENTER = 13;
         const PC_ENTER = 13;
         // TODO : see the ascci code for enter in mobile keyboard
         if (e.which == PC_ENTER || e.which == MOBILE_ENTER){
             e.preventDefault();
-            // $(this).trigger("keydown", [9]);
-            let inputs = $("input,select,textarea");
 
-            for (let item in inputs){
-                if (Number(inputs[item])){
-                    break;
+            let currentTabIndex = $(this).attr("tabindex");
+            let elem = $(this);
+            setTimeout(function(){
+                if (elem.attr("type") == "submit" ){
+                    elem.click();
+                } else if($("[tabindex="+(parseInt( currentTabIndex)+1)+"]").attr("id") == "btn_add_item_to_invoice"){
+                    $("[tabindex="+(parseInt( currentTabIndex)+1)+"]").click();
+                } else if ($("[tabindex="+(parseInt( currentTabIndex)+1)+"]").attr("disabled") != "disabled"&&
+                    $("[tabindex="+(parseInt( currentTabIndex)+1)+"]").attr("readonly") != "readonly") {
+                    $("[tabindex="+(parseInt( currentTabIndex)+1)+"]").focus();
+                } else if($("[tabindex="+(parseInt( currentTabIndex)+2)+"]").attr("disabled") != "disabled"&&
+                    $("[tabindex="+(parseInt( currentTabIndex)+2)+"]").attr("readonly") != "readonly") {
+                    $("[tabindex="+(parseInt( currentTabIndex)+2)+"]").focus();
+                } else if($("[tabindex="+(parseInt( currentTabIndex)+3)+"]").attr("disabled") != "disabled"&&
+                    $("[tabindex="+(parseInt( currentTabIndex)+3)+"]").attr("readonly") != "readonly") {
+                    $("[tabindex="+(parseInt( currentTabIndex)+3)+"]").focus();
                 }
-                if ($(inputs[item]).attr("id") === $(this).attr("id")){
-                    setTimeout(
-                        function (){
-                            if ($(inputs[item]).attr("id") == "notes" && (location.pathname.indexOf("Invoice"))) {
-                                $("#btn_add_item_to_invoice").click();
-                                return;
-                            }
-                            else if ($(inputs[item]).attr("type") == "submit") {
-                                $(inputs[item]).click();
-                                return;
-                            } else if ($(inputs[parseInt(item)+2]).attr("id") == "payed" && !Number($(inputs[parseInt(item)+2]).val())) {
-                                $(inputs[parseInt(item) + 1]).focus();
-                                return;
-                            } else if ($(inputs[parseInt(item)+1]).attr("id") == "total_price" ||
-                                ($(inputs[item]).attr("id") == "received" && Number($(inputs[item]).val())) ||
-                                ($(inputs[parseInt(item)+3]).attr("id") == "payed" && !Number($(inputs[parseInt(item)+3]).val())) ||
-                                ($(inputs[parseInt(item)+2]).attr("id") == "payed" && Number($(inputs[parseInt(item)+2]).val()))
-                            ) {
-                                $(inputs[parseInt(item) + 2]).focus();
-                                return;
-                            }
-                            else if (($(inputs[parseInt(item)+1]).attr("id") == "pound_type" && $(inputs[parseInt(item)+2]).attr("id") =="total_price")||
-                                ($(inputs[parseInt(item)+3]).attr("id") == "payed" && Number($(inputs[parseInt(item)+3]).val()))
-                            ) {
-                                $(inputs[parseInt(item) + 3]).focus();
-                                return;
-                            } else{
-                                $(inputs[parseInt(item)+1]).focus();
-                                return;
-                            }
-                        },140
-                    );
-                }
-            }
+            },200);
+
         }
     });
-
 
 
     // to handel the function key
@@ -301,6 +331,8 @@
                 $("#btn_search_edit_delete_cash").get(0).click();
             } else if (location.pathname.indexOf("Movement") > -1 && $("#btn_search_edit_delete_product_movement").get(0) != undefined) {
                 $("#btn_search_edit_delete_product_movement").get(0).click();
+            } else if (location.pathname.indexOf("Manufacturing") > -1 && $("#btn_search_edit_delete_manufacturing_action").get(0) != undefined) {
+                $("#btn_search_edit_delete_manufacturing_action").get(0).click();
             } else if (location.pathname.indexOf("Invoice") > -1 && $("#btn_search_edit_delete_invoice").get(0) != undefined) {
                 $("#btn_search_edit_delete_invoice").get(0).click();
             }
@@ -481,7 +513,13 @@
        $("#image_container").fadeToggle(0);
        $("#toggle_image").fadeToggle(0);
        $("#toggle_qr").fadeToggle(0);
-
+       if ($("#toggle_image").css("display") == "none"){
+           $("#toggle_image").children("input").attr("form","aa");
+           $("#toggle_qr").children("input").attr("form","form");
+       } else {
+           $("#toggle_image").children("input").attr("form","form");
+           $("#toggle_qr").children("input").attr("form","aa");
+       }
     });
 
 })(jQuery); // End of use strict

@@ -57,25 +57,26 @@ class productMovementController extends Controller
         $file_name = null;
         $path = null;
         $path_and_file_name = null;
-        if($file = $request->file("image")){
+        if($file = $request->file("image") and $request["upload_image_method"] == "image"){
             $splitedDate = explode("-",$request["closing_date"]);
             $path = $splitedDate[0]."/".$splitedDate[1]."/".$splitedDate[2];
             $file_name = $request["invoice_id"] . "." . $file->getClientOriginalExtension();
             $file->move($path,"images/productMovementInvoices/".$file_name);
-        } elseif ($uploaded_file = glob(public_path("images/temp_images/productMovement_$request[invoice_id].*"))) {
+            $path_and_file_name = Str::replace("/","#", $path . "/" . $file_name);
+        } elseif ($uploaded_file = glob(public_path("images/temp_images/productMovement_$request[invoice_id].*")) and $request["upload_image_method"] == "qr") {
             $splitedDate = explode("-", $request["closing_date"]);
             $path = $splitedDate[0] . "/" . $splitedDate[1] . "/" . $splitedDate[2];
             $extention = File::extension($uploaded_file[0]);
             $file_name = $request["invoice_id"] . "." . $extention;
             File::ensureDirectoryExists("images/productMovementInvoices/$path");
             File::move(public_path("images/temp_images/productMovement_$request[invoice_id].$extention"),public_path("images/productMovementInvoices/" . $path . "/" . $file_name));
+            $path_and_file_name = Str::replace("/","#", $path . "/" . $file_name);
         }
         else {
             $file_name = "default_invoice_img.png";
-            $path = "";
+            $path_and_file_name = $file_name;
         }
 
-        $path_and_file_name = Str::replace("/","#", $path . "/" . $file_name);
 
 
         try {
@@ -113,8 +114,8 @@ class productMovementController extends Controller
                     $this->validate(
                         $request,
                         [
-                            "moved_to_product_name_$ctr"=>Rule::exists("products","name"),
-                            "moved_product_name_$ctr"=>Rule::exists("products","name")
+                            "moved_to_product_name_$ctr"=>Rule::exists("products","name")->where("deleted_at",null),
+                            "moved_product_name_$ctr"=>Rule::exists("products","name")->where("deleted_at",null)
                         ]
                     );
                     $record1["second_part_id"] = Product::where("name",$data["moved_to_product_name_".$ctr])->first()->id;
@@ -224,7 +225,7 @@ class productMovementController extends Controller
         $path = null;
         $path_and_file_name = null;
         $oldPath = Journal::where("detail",0)->whereIn("invoice_type",[11,12])->find($invoice_id)->image;
-        if($file = $request->file("image")){
+        if($file = $request->file("image") and $request["upload_image_method"] == "image"){
             if (file_exists(public_path($oldPath)) and $oldPath != "images/systemImages/default_product_img.png")
                 unlink(public_path($oldPath));
             $splitedPath = explode("/",$oldPath);
@@ -237,7 +238,7 @@ class productMovementController extends Controller
             $file_name = $request["invoice_id"] . "." . $file->getClientOriginalExtension();
             $file->move("images/productMovementInvoices/".$path,$file_name);
             $path_and_file_name = Str::replace("/","#", $path . "/" . $file_name);
-        } elseif ($uploaded_file = glob(public_path("images/temp_images/productMovement_$request[invoice_id].*"))) {
+        } elseif ($uploaded_file = glob(public_path("images/temp_images/productMovement_$request[invoice_id].*")) and $request["upload_image_method"] == "qr") {
             if (file_exists(public_path($oldPath)) and $oldPath != "images/systemImages/default_invoice_img.png")
                 unlink(public_path($oldPath));
             $splitedPath = explode("/", $oldPath);
@@ -251,6 +252,7 @@ class productMovementController extends Controller
             $file_name = $request["invoice_id"] . "." . $extention;
             File::ensureDirectoryExists("images/productMovementInvoices/$path");
             File::move(public_path("images/temp_images/productMovement_$request[invoice_id].$extention"),public_path("images/productMovementInvoices/" . $path . "/" . $file_name));
+            $path_and_file_name = Str::replace("/","#", $path . "/" . $file_name);
         } else {
             $oldPath = Str::replace("images/","",$oldPath);
             $oldPath = Str::replace("productMovementInvoices/","",$oldPath);
@@ -294,7 +296,7 @@ class productMovementController extends Controller
     {
         $this->validate($request,
             [
-                "invoice_id"=>["required",Rule::exists('journal','invoice_id')->whereIn("invoice_type", [11])]
+                "invoice_id"=>["required",Rule::exists('journal','invoice_id')->whereIn("invoice_type", [11])->where("deleted_at",null)]
             ]
         );
         globalFunctions::registerUserActivityLog("searched","product_movement_invoice",$request["invoice_id"]);

@@ -1,5 +1,5 @@
 <x-masterLayout.master>
-    @if(Auth::user()->hasRole("admin"))
+    @if(Auth::user()->isAdmin())
         @section("title")
             {{__("global.dashboard")}}
         @endsection

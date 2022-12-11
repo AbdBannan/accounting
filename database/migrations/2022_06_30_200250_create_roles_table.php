@@ -19,6 +19,7 @@ class CreateRolesTable extends Migration
             $table->id();
             $table->string("name")->unique()->default("");
             $table->string("slug")->unique()->default("");
+            $table->string("created_by")->default('admin');
             $table->softDeletes();
             $table->timestamps();
         });

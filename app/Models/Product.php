@@ -36,6 +36,13 @@ class Product extends Model
         return $value;
     }
 
+    public function getIsRawAttribute($value){
+        if ($value == 1){
+            return __("global.raw");
+        } else {
+            return __("global.manufactured");
+        }
+    }
 
     public function category(){
         return $this->belongsTo("App\Models\Category");
@@ -43,5 +50,13 @@ class Product extends Model
 
     public function store(){
         return $this->belongsTo("App\Models\Store");
+    }
+
+    public function productTemplate(){
+        return $this->hasOne("App\Models\ManufacturingTemplate");
+    }
+
+    public function templates(){
+        return $this->belongsToMany("App\Models\ManufacturingTemplate","manufacturing_template_product","product_id","manufacturing_template_id")->withPivot(["price","quantity"]);
     }
 }

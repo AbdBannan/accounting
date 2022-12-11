@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
 //             $user->posts()->saveMany(\App\Models\Post::factory(5)->make());
 //         });
 
+        app()->setLocale("ar");
         \App\Models\User::factory(1)->create(
             [
                 "first_name" => "عبد القادر",
@@ -41,7 +42,8 @@ class DatabaseSeeder extends Seeder
                 \App\Models\Role::factory(1)->make(
                     [
                         "name" => "Admin",
-                        "slug" => "Admin"
+                        "slug" => "Admin",
+                        "created_by" => "developer"
                     ]
                 )
             );
@@ -50,22 +52,25 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\Pound::factory(1)->create(
             [
-                "name" => "ل.س",
+                "name" => "syrian",
                 "value" => 1,
+                "created_by" => "developer"
             ]
         );
 
         \App\Models\Pound::factory(1)->create(
             [
-                "name" => "دولار",
+                "name" => "dollar",
                 "value" => 4500,
+                "created_by" => "developer"
             ]
         );
 
 
         \App\Models\Store::factory(1)->create(
             [
-                "name" => "المخزن الإفتراضي"
+                "name" => "المخزن الإفتراضي",
+                "created_by" => "developer"
             ]
         );
 

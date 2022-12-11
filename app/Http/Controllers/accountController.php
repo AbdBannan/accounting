@@ -164,27 +164,22 @@ class accountController extends Controller
      */
     public function destroy(Request $request,$account_id)
     {
-        if ($account_id > 0) {
-            $balance = Journal::where("first_part_id",$account_id)->selectRaw("sum(debit) - sum(credit) as balance")->first()->balance;
-            // here whe check if the account balance is zero or not , so if it is zero delete it and update all invoices whose first_part_id = id and set first_part_id = 0 to allow adding new account with the same fo previous id
-             if ($balance != 0 and $balance != null) {
-                globalFunctions::flashMessage("softDelete","account_is_not_zero","account");
-                return back();
-            }
-            try {
-                DB::beginTransaction();
+        try {
+        DB::beginTransaction();
+            if ($account_id > 0) {
+                $balance = Journal::where("first_part_id",$account_id)->selectRaw("sum(debit) - sum(credit) as balance")->first()->balance;
+                // here whe check if the account balance is zero or not , so if it is zero delete it and update all invoices whose first_part_id = id and set first_part_id = 0 to allow adding new account with the same fo previous id
+                 if ($balance != 0 and $balance != null) {
+                    globalFunctions::flashMessage("softDelete","account_is_not_zero","account");
+                    return back();
+                }
+
                 $result = Account::withTrashed()->find($account_id)->forceDelete();
                 Journal::where("first_part_id",$account_id)->update(["first_part_id"=>0]);
                 globalFunctions::registerUserActivityLog("deleted","account",$account_id);
-                DB::commit();
-            }
-            catch (\PDOException $e){
-                DB::rollBack();
-                $result = null;
-            }
-        } else if (isset($request["multi_ids"])) {
-            try {
-                DB::beginTransaction();
+
+            } else if (isset($request["multi_ids"])) {
+
                 $ids = $request["multi_ids"];
                 $result = Account::withTrashed()->whereIn("id",$ids)->forceDelete();
                 Journal::whereIn("first_part_id",$ids)->update(["first_part_id"=>0]);
@@ -195,20 +190,18 @@ class accountController extends Controller
                         globalFunctions::flashMessage("softDelete", "account_is_not_zero", "account");
                         return back();
                     }
-                }
-                DB::commit();
-                foreach ($ids as $id){
                     globalFunctions::registerUserActivityLog("deleted","account",$id);
                 }
-            }
-            catch (\PDOException $e){
-                DB::rollBack();
+            } else {
                 $result = null;
+                DB::rollBack();
             }
-        } else {
+            DB::commit();
+        }
+        catch (\PDOException $e){
+            DB::rollBack();
             $result = null;
         }
-
         globalFunctions::flashMessage("delete",$result,"account");
 
         return back();
@@ -234,39 +227,37 @@ class accountController extends Controller
     public function softDelete(Request $request,$account_id)
     {
 
-        if ($account_id > 0) {
-            $balance = Journal::where("first_part_id",$account_id)->selectRaw("sum(debit) - sum(credit) as balance")->first()->balance;
-            if ($balance != 0 and $balance != null) {
-                globalFunctions::flashMessage("softDelete","account_is_not_zero","account");
-                return back();
-            }
-            $result = Account::find($account_id)->delete();
-            globalFunctions::registerUserActivityLog("recycled","account",$account_id);
-        } else if (isset($request["multi_ids"])) {
+        try {
             DB::beginTransaction();
-            $ids = $request["multi_ids"];
-            $result = Account::whereIn("id", $ids)->delete();
-            foreach ($ids as $id) {
-                $balance = Journal::where("first_part_id", $id)->selectRaw("sum(debit) - sum(credit) as balance")->first()->balance;
+            if ($account_id > 0) {
+                $balance = Journal::where("first_part_id",$account_id)->selectRaw("sum(debit) - sum(credit) as balance")->first()->balance;
                 if ($balance != 0 and $balance != null) {
+                    globalFunctions::flashMessage("softDelete","account_is_not_zero","account");
                     DB::rollBack();
-                    globalFunctions::flashMessage("softDelete", "account_is_not_zero", "account");
                     return back();
                 }
+                $result = Account::find($account_id)->delete();
+                globalFunctions::registerUserActivityLog("recycled","account",$account_id);
+            } else if (isset($request["multi_ids"])) {
+                $ids = $request["multi_ids"];
+                $result = Account::whereIn("id", $ids)->delete();
+                foreach ($ids as $id) {
+                    $balance = Journal::where("first_part_id", $id)->selectRaw("sum(debit) - sum(credit) as balance")->first()->balance;
+                    if ($balance != 0 and $balance != null) {
+                        DB::rollBack();
+                        globalFunctions::flashMessage("softDelete", "account_is_not_zero", "account");
+                        return back();
+                    }
+                    globalFunctions::registerUserActivityLog("recycled", "account", $id);
+                }
+            } else {
+                $result = null;
             }
             DB::commit();
-            foreach ($ids as $id) {
-                globalFunctions::registerUserActivityLog("recycled", "account", $id);
-            }
-        } else {
+        }catch (\PDOException $e) {
+            DB::rollBack();
             $result = null;
         }
-
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.recycled_successfully",["attribute"=>__("global.account")]));
-//        }else{
-//            session()->flash("success",__("messages.not_recycled_successfully",["attribute"=>__("global.account")]));
-//        }
         globalFunctions::flashMessage("softDelete",$result,"account");
 
         return back();

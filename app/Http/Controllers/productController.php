@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Journal;
 use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use function PHPUnit\Framework\fileExists;
 use App\functions\globalFunctions;
 class productController extends Controller
@@ -43,6 +45,7 @@ class productController extends Controller
                 "id"=>['required','unique:products'],
                 "name"=>"required",
                 "account_type"=>"required",
+                "is_raw"=>"required",
                 'product_image' => ['image','mimes:jpg,png,jpeg,gif,svg']
             ]);
 //        if ($request["account_type"] == 0){
@@ -116,6 +119,7 @@ class productController extends Controller
             [
                 "name"=>"required",
                 "account_type"=>"required",
+                "is_raw"=>"required",
                 'product_image' => ['image','mimes:jpg,png,jpeg,gif,svg']
             ]);
         if ($request["id"] != $product->id){
@@ -155,15 +159,12 @@ class productController extends Controller
         $product->reference = $oldProduct["reference"];
         $product->account_type = $oldProduct["account_type"];
         $product->store_id = $oldProduct["store_id"];
+        $product->is_raw = $oldProduct["is_raw"];
 
         $result = null;
-        if ($product->isDirty(["name","category_id","store_id","reference","image"])) {
-//            session()->flash("success",__("messages.updated_successfully",["attribute"=>__("global.product")]));
+        if ($product->isDirty(["name","category_id","store_id","reference","is_raw","image"])) {
             $result = $product->save();
         }
-//        else{
-//            session()->flash("success",__("messages.nothing_to_be_updated"));
-//        }
         globalFunctions::flashMessage("update",$result,"product");
         globalFunctions::registerUserActivityLog("updated","product",$product->id);
 
@@ -178,31 +179,55 @@ class productController extends Controller
      */
     public function destroy(Request $request,$product_id)
     {
-
-        if ($product_id > 0) {
-            $image = Product::withTrashed()->find($product_id)->image;
-            $result = Product::withTrashed()->find($product_id)->forceDelete();
-
-            if ($result!=null) {
-                if ($image != "images/systemImages/default_product_img.png"  and file_exists(public_path($image))) {
-                    unlink(public_path($image));
+        try {
+            DB::beginTransaction();
+            if ($product_id > 0) {
+                $balance = Journal::where("product_id",$product_id)->selectRaw("sum(in_quantity) - sum(out_quantity) as balance")->first()->balance;
+                // here whe check if the account balance is zero or not , so if it is zero delete it and update all invoices whose first_part_id = id and set first_part_id = 0 to allow adding new account with the same fo previous id
+                if ($balance != 0 and $balance != null) {
+                    globalFunctions::flashMessage("softDelete","account_is_not_zero","account");
+                    DB::rollBack();
+                    return back();
                 }
-            }
-            globalFunctions::registerUserActivityLog("deleted","product",$product_id);
-        } else if (isset($request["multi_ids"])) {
-            $ids = $request["multi_ids"];
-//            dd($ids);
-            foreach ($ids as $id){
-                $image = Product::withTrashed()->find($id)->image;
-                $result = Product::withTrashed()->find($id)->forceDelete();
+
+                $image = Product::withTrashed()->find($product_id)->image;
+                $result = Product::withTrashed()->find($product_id)->forceDelete();
+                Journal::where("product_id",$product_id)->update(["product_id"=>0]);
+
                 if ($result!=null) {
                     if ($image != "images/systemImages/default_product_img.png"  and file_exists(public_path($image))) {
                         unlink(public_path($image));
                     }
                 }
-                globalFunctions::registerUserActivityLog("deleted","product",$id);
+                globalFunctions::registerUserActivityLog("deleted","product",$product_id);
+            } else if (isset($request["multi_ids"])) {
+                $ids = $request["multi_ids"];
+                foreach ($ids as $id){
+                    $balance = Journal::where("product_id",$id)->selectRaw("sum(in_quantity) - sum(out_quantity) as balance")->first()->balance;
+                    if ($balance != 0 and $balance != null) {
+                        DB::rollBack();
+                        globalFunctions::flashMessage("softDelete", "account_is_not_zero", "account");
+                        return back();
+                    }
+                    $image = Product::withTrashed()->find($id)->image;
+                    $result = Product::withTrashed()->find($id)->forceDelete();
+                    Journal::whereIn("product_id",$id)->update(["product_id"=>0]);
+
+                    if ($result!=null) {
+                        if ($image != "images/systemImages/default_product_img.png"  and file_exists(public_path($image))) {
+                            unlink(public_path($image));
+                        }
+                    }
+                    globalFunctions::registerUserActivityLog("deleted","product",$id);
+                }
+            } else {
+                $result = null;
+                DB::rollBack();
             }
-        } else {
+            DB::commit();
+        }
+        catch (\PDOException $e){
+            DB::rollBack();
             $result = null;
         }
         globalFunctions::flashMessage("delete",$result,"product");
@@ -229,16 +254,37 @@ class productController extends Controller
      */
     public function softDelete(Request $request,$product_id)
     {
-        if ($product_id > 0) {
-            $result = Product::find($product_id)->delete();
-            globalFunctions::registerUserActivityLog("recycled","product",$product_id);
-        } else if (isset($request["multi_ids"])) {
-            $ids = $request["multi_ids"];
-            $result = Product::whereIn("id",$ids)->delete();
-            foreach ($ids as $id){
-                globalFunctions::registerUserActivityLog("recycled","product",$id);
+        try {
+            DB::beginTransaction();
+            if ($product_id > 0) {
+                $balance = Journal::where("product_id",$product_id)->selectRaw("sum(in_quantity) - sum(out_quantity) as balance")->first()->balance;
+                // here whe check if the account balance is zero or not , so if it is zero delete it and update all invoices whose first_part_id = id and set first_part_id = 0 to allow adding new account with the same fo previous id
+                if ($balance != 0 and $balance != null) {
+                    globalFunctions::flashMessage("softDelete","account_is_not_zero","account");
+                    DB::rollBack();
+                    return back();
+                }
+
+                $result = Product::find($product_id)->delete();
+                globalFunctions::registerUserActivityLog("recycled","product",$product_id);
+            } else if (isset($request["multi_ids"])) {
+                $ids = $request["multi_ids"];
+                $result = Product::whereIn("id",$ids)->delete();
+                foreach ($ids as $id){
+                    $balance = Journal::where("product_id",$id)->selectRaw("sum(in_quantity) - sum(out_quantity) as balance")->first()->balance;
+                    if ($balance != 0 and $balance != null) {
+                        DB::rollBack();
+                        globalFunctions::flashMessage("softDelete", "account_is_not_zero", "account");
+                        return back();
+                    }
+                    globalFunctions::registerUserActivityLog("deleted","product",$id);
+                }
+            } else {
+                $result = null;
             }
-        } else {
+            DB::commit();
+        } catch (\PDOException $e){
+            DB::rollBack();
             $result = null;
         }
 

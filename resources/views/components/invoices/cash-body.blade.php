@@ -14,7 +14,7 @@
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="first_part_name" >{{__("global.first_part")}}</label>
-                            <input form="form" id="first_part_name" name="first_part_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("second_part_name",181)" />
+                            <input tabindex="1" form="form" id="first_part_name" name="first_part_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("second_part_name",181)" />
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{__("messages.value_not_found")}}</strong>
                             </span>
@@ -26,7 +26,7 @@
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="pound_type" >{{__("global.pound")}}</label>
-                            <input value="@yield('pound_type',auth()->user()->getConfig("default_pound"))" form="form" id="pound_type" name="pound_type" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                            <input tabindex="1" value="@yield('pound_type',auth()->user()->getConfig("default_pound"))" form="form" id="pound_type" name="pound_type" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{__("messages.value_not_found")}}</strong>
                             </span>
@@ -56,7 +56,7 @@
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="received" >{{__("global.received")}}</label>
-                                <input form="f" type="number" min="0" class="form-control" id="received" name="received" >
+                                <input tabindex="2" form="f" type="number" min="0" class="form-control" id="received" name="received" >
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -65,7 +65,7 @@
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="payed" >{{__("global.payed")}}</label>
-                                <input form="f" type="number" min="0" class="form-control" id="payed" name="payed" >
+                                <input tabindex="3" form="f" type="number" min="0" class="form-control" id="payed" name="payed" >
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -74,7 +74,7 @@
                         <div class="col-md-3 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="second_part_name" >{{__("global.second_part")}}</label>
-                                <input form="f" id="second_part_name" name="second_part_name"  type="text" placeholder="" class="form-control dropdown-toggle" form="form" id="second_part_name" name="second_part_name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input tabindex="4" form="f" id="second_part_name" name="second_part_name"  type="text" placeholder="" class="form-control dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -89,22 +89,21 @@
                         <div class="col-md-5 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="notes" >{{__("global.notes")}}</label>
-                                <input form="f" id="notes" name="notes" type="text" class="form-control">
+                                <input tabindex="5" form="f" id="notes" name="notes" type="text" class="form-control">
                             </div>
                         </div>
 
                     </div>
                     <div class="col-md-5 col-sm-12">
-
                         <div>
-                            <button form="aa" id="btn_add_item_to_invoice" class="btn btn-outline-success">{{__("global.add")}}</button>
+                            <button tabindex="6" form="aa" id="btn_add_item_to_invoice" class="btn btn-outline-success">{{__("global.add")}}</button>
                             <input form="f" id="btn_reset" class="btn btn-outline-danger" type="reset" value="{{__("global.reset")}}">
                         </div>
                     </div>
                 </div>
                 <div class="form-group col-md-2 col-sm-12 text-center">
-                    <a id="toggle_qr">{{__("global.qr")}}</a>
-                    <a id="toggle_image" style="display: none">{{__("global.image")}}</a>
+                    <a id="toggle_qr">{{__("global.qr")}}<input type="hidden" value="image" name="upload_image_method" form="form"></a>
+                    <a id="toggle_image" style="display: none">{{__("global.image")}}<input type="hidden" value="qr" name="upload_image_method" form="aa"></a>
                     <div id="qr_code_container" class="p-2" style="display: none">
                         {!! QrCode::size(100)->generate(route("uploadImage")."#cash_$invoice_id") !!}
                     </div>
@@ -146,7 +145,7 @@
         </div>
 
         <div class="card-footer">
-            <button id="btn_close_invoice" title="{{__("global.close_invoice")}}" class="btn btn-success" data-toggle="modal" data-target="#closingDateModal" @yield("hide")>{{__("global.close_invoice")}}</button>
+            <button id="btn_close_invoice" title="{{__("global.close_invoice")}}" class="btn btn-success" data-toggle="modal" data-target="#closingDateModal" @yield("hidden")>{{__("global.close_invoice")}}</button>
             <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received")}} : <span id="total_received" style="font-style: italic; color:darkblue">@yield("total_received",0)</span>  <span id="invoice_pound">@yield("pound_type")</span></label>
             <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed")}} : <span id="total_payed" style="font-style: italic; color:darkblue">@yield("total_payed",0)</span>  <span id="invoice_pound">@yield("pound_type")</span></label>
         </div>
