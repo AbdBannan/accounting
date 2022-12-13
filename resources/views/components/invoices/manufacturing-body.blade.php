@@ -18,7 +18,7 @@
                             <input form="form" id="invoice_id" name="invoice_id" min="0" type="number" class="form-control" readonly value="@yield("invoice_id",$invoice_id)">
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
-                            <label style="font-size: large" for="first_part_name" >{{__("global.first_part")}}</label>
+                            <label style="font-size: large" for="first_part_name" >{{__("global.account_name")}}</label>
                             <input tabindex="1" form="form" id="first_part_name" name="first_part_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("first_part_name")" />
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{__("messages.value_not_found")}}</strong>
@@ -79,7 +79,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="col-md-2 col-sm-12">
+                        <div class="col-md-3 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="gainful_percentage" >{{__("global.gainful_percentage")}}</label>
                                 <input tabindex="4" value="{{auth()->user()->getConfig("gainful_percentage")}}" form="aa" type="number" min="0" class="form-control" id="gainful_percentage" name="gainful_percentage">

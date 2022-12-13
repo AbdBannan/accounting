@@ -13,7 +13,7 @@
                             <input form="form" id="invoice_id" name="invoice_id" min="0" type="number" class="form-control" readonly value="@yield("invoice_id",$invoice_id)">
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
-                            <label style="font-size: large" for="first_part_name" >{{__("global.first_part")}}</label>
+                            <label style="font-size: large" for="first_part_name" >{{__("global.first_part_name")}}</label>
                             <input tabindex="1" form="form" id="first_part_name" name="first_part_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("second_part_name",181)" />
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{__("messages.value_not_found")}}</strong>
@@ -73,7 +73,7 @@
                         </div>
                         <div class="col-md-3 col-sm-12">
                             <div class="form-group">
-                                <label style="font-size: large" for="second_part_name" >{{__("global.second_part")}}</label>
+                                <label style="font-size: large" for="second_part_name" >{{__("global.second_part_name")}}</label>
                                 <input tabindex="4" form="f" id="second_part_name" name="second_part_name"  type="text" placeholder="" class="form-control dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
