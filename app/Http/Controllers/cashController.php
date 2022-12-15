@@ -111,7 +111,13 @@ class cashController extends Controller
                 $this->validate(
                     $request,
                     [
-                        "second_part_name_$ctr"=>Rule::exists("accounts","name")->where("deleted_at",null)
+                        "second_part_name_$ctr"=>Rule::exists("accounts","name")->where("deleted_at",null),
+                        "product_name_$ctr"=>[function ($attribute,$value,$fail) use ($ctr,$data)  {
+                            $balance = Journal::where("product_name",$value)->selectRaw("sum(in_quantity) - sum(out_quantity) as balance")->first()->balance;
+                            if ($balance < $data["quantity_$ctr"]){
+                                $fail(__("messages.the_quantity_is_not_enough",["attribute"=>$data["product_name_$ctr"]]));
+                            }
+                        }],
                     ]
                 );
                 $record1["first_part_id"] = Account::where("name",$data["first_part_name"])->first()->id;

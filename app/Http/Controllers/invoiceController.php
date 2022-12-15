@@ -6,6 +6,7 @@ use App\functions\globalFunctions;
 use App\Models\Account;
 use App\Models\Journal;
 use App\Models\Product;
+use App\Rules\EnoughProductQuantityRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -58,6 +59,7 @@ class invoiceController extends Controller
             "product_name" => [Rule::exists("products","name")->where("deleted_at",null)],
             'file' => ['image','mimes:jpg,png,jpeg,gif,svg',"max"=>"2048mB"]
         ]);
+
         $file_name = null;
         $path = null;
         $path_and_file_name = null;
@@ -140,7 +142,13 @@ class invoiceController extends Controller
                 $this->validate(
                     $request,
                     [
-                        "first_part_name_$ctr"=>Rule::exists("accounts","name")->where("deleted_at",null)
+                        "first_part_name_$ctr"=>Rule::exists("accounts","name")->where("deleted_at",null),
+                        "product_name_$ctr"=>[function ($attribute,$value,$fail) use ($ctr,$data)  {
+                            $balance = Journal::where("product_name",$value)->selectRaw("sum(in_quantity) - sum(out_quantity) as balance")->first()->balance;
+                            if ($balance < $data["quantity_$ctr"]){
+                                $fail(__("messages.the_quantity_is_not_enough",["attribute"=>$data["product_name_$ctr"]]));
+                            }
+                        }],
                     ]
                 );
                 $record2["first_part_id"] = Account::where("name", $data["second_part_name"])->first()->id;

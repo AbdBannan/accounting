@@ -1,0 +1,15 @@
+<?php
+use Mailgun\Mailgun;
+use Illuminate\Support\Facades\Route;
+
+Route::middleware(["auth","saveCurrentRequest"])->group(function (){
+    Route::get("/notifications/viewNotifications",[\App\Http\Controllers\notificationController::class,"index"])->name("notifications.viewNotifications");
+    Route::post("/notifications/seenAllNotifications",[\App\Http\Controllers\notificationController::class,"seenAll"])->name("notifications.seenAllNotifications");
+//    Route::get("/category/showCategory/{category}","categoryController@show")->name("category.showCategory");
+//    Route::post("/category/storeCategory","categoryController@store")->name("category.storeCategory");
+//    Route::put("/category/updateCategory/{category}","categoryController@update")->name("category.updateCategory");
+//    Route::delete("/category/deleteCategory/{category_id}","categoryController@destroy")->name("category.deleteCategory");
+//    Route::delete("/category/softDeleteCategory/{category}","categoryController@softDelete")->name("category.softDeleteCategory");
+//    Route::get("/category/restoreCategory/{category_id}","categoryController@restore")->name("category.restoreCategory");
+//    Route::get("/category/viewRecyclebin","categoryController@viewRecyclebin")->name("category.viewRecyclebin");
+});

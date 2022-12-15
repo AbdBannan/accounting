@@ -104,6 +104,10 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/invoices.php'));
 
+           Route::middleware(['web','localization'])
+                ->namespace($this->namespace)
+                ->group(base_path('routes/web/notifications.php'));
+
         });
     }
 

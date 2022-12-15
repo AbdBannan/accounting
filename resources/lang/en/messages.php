@@ -59,5 +59,6 @@ return [
     'field_invalid'=>'one of fields is invalid',
     'can_not_update_invoice_contains_deleted_account'=>'can not update invoice contains deleted account.',
     'can_not_update_invoice_contains_deleted_product'=>'can not update invoice contains deleted product.',
+    'the_quantity_is_not_enough'=>'the available quantity of :attribute is not enough',
 
 ];

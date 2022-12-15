@@ -6,6 +6,7 @@
     <title>@yield("title")</title>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{csrf_token()}}">
+    <link rel="stylesheet" href="{{asset("css/datepicker.css")}}">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -230,29 +231,36 @@
                 </li>
                 <!-- Notifications Dropdown Menu -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
+                    <a id="btn_notifications" class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-bell"></i>
-                        <span class="badge badge-warning navbar-badge">15</span>
+                        @php
+                            $notification_count = auth()->user()->notifications()->where("has_seen",0)->count();
+                        @endphp
+                        @if($notification_count > 0)
+                            <span class="badge badge-warning navbar-badge">{{$notification_count}}</span>
+                        @endif
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">15 Notifications</span>
+                        <span class="dropdown-item dropdown-header">{{$notification_count . " " . __("global.notifications")}}</span>
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-envelope mr-2"></i> 4 new messages
-                            <span class="float-right text-muted text-sm">3 mins</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-users mr-2"></i> 8 friend requests
-                            <span class="float-right text-muted text-sm">12 hours</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-file mr-2"></i> 3 new reports
-                            <span class="float-right text-muted text-sm">2 days</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                        @foreach(auth()->user()->notifications()->where("has_seen",0)->get() as $notification)
+                            <div class="dropdown-item">
+                                @if ($notification->type == "product_quantity_is_not_enough")
+                                    <i class="fas  mr-2"></i>
+                                @elseif ($notification->type == "new_messages")
+                                    <i class="fas fa-envelope mr-2"></i>
+                                @elseif ($notification->type == "friend_requests")
+                                    <i class="fas fa-users mr-2"></i>
+                                @elseif ($notification->type == "new_reports")
+                                    <i class="fas fa-file mr-2"></i>
+                                @endif
+
+                                <span>{{$notification->name}}</span>
+                                <span class="float-end text-muted text-sm">{{$notification->created_at->diffForHumans()}}</span>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                        @endforeach
+                        <a href="{{route("notifications.viewNotifications")}}" class="dropdown-item dropdown-footer">{{__("global.see_all_notifications")}}</a>
                     </div>
                 </li>
 
@@ -719,6 +727,7 @@
                     </a>
                 </div>
                 <!-- End Back Button-->
+
                 @section("content")
 
                 @show
@@ -784,6 +793,7 @@
     <script src="{{asset("vendor/datatables/jquery.dataTables.js")}}"></script>
     <script src="{{asset("vendor/datatables/dataTables.bootstrap4.js")}}"></script>
     <script src="{{asset("js/moment.js")}}"></script>
+    <script src="{{asset("js/bootstrap-datepicker.js")}}"></script>
 
 {{--    <!-- Page level custom scripts -->--}}
 {{--    <script src="{{asset("js/demo/datatables-demo.js?var=415".rand(1,100))}}"></script>--}}
@@ -795,6 +805,10 @@
 
     <script>
         $(function () {
+
+
+            $('.datepicker').datepicker();
+
 
             //$('.auto-save').savy('load') --> can be used without callback
             $('.auto-save').savy('load',function(){
@@ -846,20 +860,6 @@
                     },
                     "scrollCollapse": true,
                 });
-            // console.log(datatable);
-            $("#dataTable_filter").children("label").children("input").on("keyup",function (){
-                if ($(this).val() == "") {
-                    // $('#dataTable').DataTable()._fnLoadState();
-                    // $('#dataTable').dataTable().stateLoad();
-                    // $.fn.dataTable.ext.fnFilterClear();
-
-                    // var api = new $.fn.dataTable.Api( "pageNumber" );
-                    // var state = api.state.loaded();
-                    // console.log(state);
-
-                    // datatable._fnLoadState();
-                }
-            });
 
             // $("#example1").DataTable({
             //     "responsive": true, "lengthChange": true, "autoWidth": true,
@@ -890,6 +890,27 @@
 
 
 
+        // to update pound using ajax
+        $("a#btn_notifications").on("click",function(e){
+            var route = "notifications/seenAllNotifications";
+            $.ajax({
+                    url:route,
+                    method:"POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success:function (e){
+                        $("a#btn_notifications").children("span").attr("hidden",true);
+                    },
+                    error:function (e){
+                      alert("error");
+                    }
+                }
+            );
+        });
+
+
+
         // $("body").on("click",function (){
         //     var el = document.documentElement
         //         , rfs = // for newer Webkit and Firefox
@@ -908,10 +929,6 @@
         //         }
         //     }
         // });
-
-        // var moment = require('moment'); // require
-        // moment().format();
-        // alert(moment().format(''));
     </script>
     @yield("script")
 

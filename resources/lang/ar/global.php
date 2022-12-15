@@ -15,7 +15,8 @@ return [
 
     //    -------- account section --------    //
 
-
+    'see_all_notifications' => 'رؤية جميع الإشعارت',
+    'notifications' => 'إشعارات',
     'manufacturing_template' => 'قزالب عمليات التصنيع',
     'is_raw_product' => 'مادة خام ؟',
     'raw' => 'raw',

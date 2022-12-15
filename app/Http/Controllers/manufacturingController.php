@@ -179,7 +179,15 @@ class manufacturingController extends Controller
                 $record1["second_part_name"] = __("global.manufacturing");
                 $this->validate($request,
                     [
-                        "name"=>Rule::exists("products")->where("deleted_at",null)
+                        "product_name_$ctr"=>[
+                            Rule::exists("products")->where("deleted_at",null),
+                            function ($attribute,$value,$fail) use ($ctr,$data)  {
+                                $balance = Journal::where("product_name",$value)->selectRaw("sum(in_quantity) - sum(out_quantity) as balance")->first()->balance;
+                                if ($balance < $data["quantity_$ctr"]){
+                                    $fail(__("messages.the_quantity_is_not_enough",["attribute"=>$data["product_name_$ctr"]]));
+                                }
+                            }
+                        ],
                     ]);
                 $record1["product_id"] = Product::where("name", $data["raw_product_name_" . $ctr])->first()->id;
                 $record1["product_name"] = $data["raw_product_name_" . $ctr];

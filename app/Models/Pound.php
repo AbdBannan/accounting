@@ -22,6 +22,14 @@ class Pound extends Model
             return $value;
         }
     }
+
+    public function setNameAttribute($value){
+        if (isset($this->attributes["created_by"]) and $this->attributes["created_by"] == "developer") {
+            // do not allow to modify the name of the pound created by developer
+        } else {
+            $this->attributes["name"] =  $value;
+        }
+    }
 //    protected function getNameAttribute($value){
 //        $trans = [
 //            "Syrian"=>"ل.س",

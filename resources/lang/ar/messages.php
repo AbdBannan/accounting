@@ -58,5 +58,6 @@ return [
     'field_invalid'=>'أحد الحقول غير صحيح.',
     'can_not_update_invoice_contains_deleted_account'=>'لا يمكن تعديل فاتورة تحوي على حساب محذوف. ',
     'can_not_update_invoice_contains_deleted_product'=>'لا يمكن تعديل فاتورة تحوي على منتج محذوف. ',
+    'the_quantity_is_not_enough'=>'الكمية المطلوبة من :attribute غير كافية.',
 ];
 

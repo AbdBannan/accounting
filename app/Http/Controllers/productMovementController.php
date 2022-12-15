@@ -114,8 +114,20 @@ class productMovementController extends Controller
                     $this->validate(
                         $request,
                         [
-                            "moved_to_product_name_$ctr"=>Rule::exists("products","name")->where("deleted_at",null),
-                            "moved_product_name_$ctr"=>Rule::exists("products","name")->where("deleted_at",null)
+                            "moved_to_product_name_$ctr"=>
+                                [
+                                    Rule::exists("products","name")->where("deleted_at",null),
+                                ],
+                            "moved_product_name_$ctr"=>
+                                [
+                                    Rule::exists("products","name")->where("deleted_at",null),
+                                    function ($attribute,$value,$fail) use ($ctr,$data)  {
+                                        $balance = Journal::where("product_name",$value)->selectRaw("sum(in_quantity) - sum(out_quantity) as balance")->first()->balance;
+                                        if ($balance < $data["quantity_$ctr"]){
+                                            $fail(__("messages.the_quantity_is_not_enough",["attribute"=>$data["product_name_$ctr"]]));
+                                        }
+                                    }
+                                ]
                         ]
                     );
                     $record1["second_part_id"] = Product::where("name",$data["moved_to_product_name_".$ctr])->first()->id;

@@ -15,6 +15,8 @@ return [
 
     //    -------- account section --------    //
 
+    'see_all_notifications' => 'see all notifications',
+    'notifications' => 'notifications',
     'manufacturing_template' => 'manufacturing template',
     'is_raw_product' => 'is raw product',
     'raw' => 'raw',

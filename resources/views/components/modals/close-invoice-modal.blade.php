@@ -11,6 +11,10 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
+{{--                    <div class="input-append date" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">--}}
+{{--                        <input class="datepicker" size="16" type="text" value="20-12-2012">--}}
+{{--                        <span class="add-on"><i class="icon-th"></i></span>--}}
+{{--                    </div>--}}
                     <input tabindex="11" form="form" type="date" id="closing_date" name="closing_date"  class="form-control" value="{{Carbon\Carbon::now()->toDateString("mm/dd/yyyy")}}" autofocus>
                 </div>
             </div>

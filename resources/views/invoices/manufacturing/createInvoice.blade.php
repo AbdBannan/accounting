@@ -252,59 +252,6 @@
                 });
 
 
-                // // to update pound using ajax
-                // $("button#btn_save_template").on("click",function(e){
-                //
-                //     e.preventDefault();
-                //     $(".is-invalid").each(function () {
-                //         $(this).removeClass("is-invalid");
-                //     });
-                //     let error_found = false;
-                //
-                //     let error = validateDropDownBox($("input#product_name"));
-                //     if (error !== "") {
-                //         error_found = true;
-                //         $("#" + error).addClass("is-invalid");
-                //     }
-                //
-                //
-                //     let produced_quantity = $("#produced_quantity").val();
-                //
-                //     if (produced_quantity == "") {
-                //         $("#produced_quantity").addClass("is-invalid");
-                //         error_found = true;
-                //     }
-                //
-                //     if (error_found) {
-                //         return;
-                //     }
-                //     var form = $("#form");
-                //     let edit_element = null;
-                //     var route = "/manufacturingTemplate/storeManufacturingTemplate";
-                //     $.ajax({
-                //             url:route,
-                //             method:"POST",
-                //             data: form.serialize(),
-                //             headers: {
-                //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                //             },
-                //             success:function (e){
-                //                 $("#template_saved_successfully").attr("hidden",false);
-                //                 setTimeout(function (){
-                //                     $("#template_saved_successfully").attr("hidden",true);
-                //                 },2000);
-                //             },
-                //             error:function (e){
-                //                 $("#template_not_saved_successfully").attr("hidden",false);
-                //                 setTimeout(function (){
-                //                     $("#template_not_saved_successfully").attr("hidden",true);
-                //                 },2000);
-                //             }
-                //         }
-                //     );
-                // });
-
-
                 $("#btn_fill_manufacturing_template").on("click",fill_manufacturing_template);
                 $("#btn_update_template").on("click",function (){
                     $(this).parent().parent("tr").addClass("selected");

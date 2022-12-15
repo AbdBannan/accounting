@@ -40,9 +40,9 @@ class User extends Authenticatable
         return $this->belongsToMany("App\Models\Permission");
     }
 
-    public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function notifications(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany("App\Models\Post");
+        return $this->hasMany("App\Models\Notification");
     }
 
     public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
