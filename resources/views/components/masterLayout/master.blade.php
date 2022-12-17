@@ -241,7 +241,7 @@
                         @endif
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">{{$notification_count . " " . __("global.notifications")}}</span>
+                        <span class="dropdown-item dropdown-header">{{$notification_count . " " . __("global.new_notifications")}}</span>
                         <div class="dropdown-divider"></div>
                         @foreach(auth()->user()->notifications()->where("has_seen",0)->get() as $notification)
                             <div class="dropdown-item">
@@ -254,8 +254,7 @@
                                 @elseif ($notification->type == "new_reports")
                                     <i class="fas fa-file mr-2"></i>
                                 @endif
-
-                                <span>{{$notification->name}}</span>
+                                <span>{{__("global.product_quantity_running_out",["attribute"=>$notification->name])}}</span>
                                 <span class="float-end text-muted text-sm">{{$notification->created_at->diffForHumans()}}</span>
                             </div>
                             <div class="dropdown-divider"></div>
@@ -718,7 +717,7 @@
                     {{--                                </i>--}}
                     {{--                            </form>--}}
                     {{--                        @endif--}}
-                    <a id="back_arrow" style="margin: 80px" href="#">
+                    <a id="back_arrdfow" style="margin: 80px" href="{{route("back")}}">
                         @if(auth()->user()->getConfig("language") == "arabic")
                             <i class="fas fa-arrow-right"></i>
                         @else
@@ -834,7 +833,7 @@
             let next = "{{__("global.Next")}}";
             let previous = "{{__("global.Previous")}}";
             let infoFiltered = " - {{__("global.filtered_from")}} _MAX_ {{__("global.entries")}}";
-
+            let pageLength = {{auth()->user()->getConfig("row_count_in_table")}};
             let datatable = $('#dataTable').DataTable(
                 {
                     "ordering":true,
@@ -859,6 +858,8 @@
                         // alert();
                     },
                     "scrollCollapse": true,
+                    "lengthMenu": [[5,10, 25, 50, -1], [5,10, 25, 50, "All"]],
+                    "pageLength": pageLength,
                 });
 
             // $("#example1").DataTable({
@@ -892,7 +893,7 @@
 
         // to update pound using ajax
         $("a#btn_notifications").on("click",function(e){
-            var route = "notifications/seenAllNotifications";
+            var route = "/notifications/seenAllNotifications";
             $.ajax({
                     url:route,
                     method:"POST",

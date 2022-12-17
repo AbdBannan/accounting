@@ -2,7 +2,7 @@
 use Mailgun\Mailgun;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(["auth","saveCurrentRequest"])->group(function (){
+Route::middleware(["auth"])->group(function (){
     Route::get("/category/viewCategories","categoryController@index")->name("category.viewCategories");
     Route::get("/category/showCategory/{category}","categoryController@show")->name("category.showCategory");
     Route::post("/category/storeCategory","categoryController@store")->name("category.storeCategory");

@@ -4,8 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
-class SaveCurrentRequest
+class LocalizationMiddleWare
 {
     /**
      * Handle an incoming request.
@@ -16,13 +17,8 @@ class SaveCurrentRequest
      */
     public function handle(Request $request, Closure $next)
     {
-
-//        session(["last_method"=>session("current_method")]);
-//        session(["last_params"=>session("current_params")]);
-//
-//        session(["current_method"=>$request->method()]);
-//        session(["current_params"=>$request->all()]);
-
+        $lang = (auth()->user()->getConfig("language") == "english")? "en": "ar" ;
+        App::setLocale($lang);
         return $next($request);
     }
 }

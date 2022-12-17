@@ -17,4 +17,5 @@ class notificationController extends Controller
         return true;
     }
 
+
 }

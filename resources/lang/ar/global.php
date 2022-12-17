@@ -15,11 +15,14 @@ return [
 
     //    -------- account section --------    //
 
+    'product_quantity_running_out' => 'المادة ":attribute" قيد النفاد',
+    'level_of_product_quantity_for_notification' => 'الحد الأدنى من كمية المادة لإعطاء إشعار بنقصان المادة',
+    'row_count_in_table' => 'عدد الأسطر في الصفحة من الجدول',
     'see_all_notifications' => 'رؤية جميع الإشعارت',
-    'notifications' => 'إشعارات',
+    'new_notifications' => 'من الإشعارات الجديدة',
     'manufacturing_template' => 'قزالب عمليات التصنيع',
-    'is_raw_product' => 'مادة خام ؟',
-    'raw' => 'raw',
+    'is_raw_product' => 'مادة أولية ؟',
+    'raw' => 'أولية',
     'save_template' => 'حفظ قالب التصنيع',
     'see_manufacturing_templates' => 'جميع قوالب التصنيع',
     'manufacturing_templates' => 'قوالب التصنيع',

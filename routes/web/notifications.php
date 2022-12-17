@@ -1,8 +1,7 @@
 <?php
-use Mailgun\Mailgun;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(["auth","saveCurrentRequest"])->group(function (){
+Route::middleware(["auth"])->group(function (){
     Route::get("/notifications/viewNotifications",[\App\Http\Controllers\notificationController::class,"index"])->name("notifications.viewNotifications");
     Route::post("/notifications/seenAllNotifications",[\App\Http\Controllers\notificationController::class,"seenAll"])->name("notifications.seenAllNotifications");
 //    Route::get("/category/showCategory/{category}","categoryController@show")->name("category.showCategory");

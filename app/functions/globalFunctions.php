@@ -134,6 +134,8 @@ class globalFunctions
             ["name"=>"user_activity_log","controlled_by"=>"admin", "type" => "admin_control", "default_value" => "true"],
             ["name"=>"default_pound","controlled_by"=>"user", "type" => "global", "default_value" => (app()->getLocale() == "ar")?__("global.syrian"):__("global.dollar")],
             ["name"=>"gainful_percentage","controlled_by"=>"user", "type" => "global", "default_value" => 5],
+            ["name"=>"level_of_product_quantity_for_notification","controlled_by"=>"user", "type" => "global", "default_value" => 100],
+            ["name"=>"row_count_in_table","controlled_by"=>"user", "type" => "global", "default_value" => 10],
             ["name"=>"use_recyclebin","controlled_by"=>"user", "type" => "global", "default_value" => "true"],
             ["name"=>"clean_recyclebin_after","controlled_by"=>"user", "type" => "global", "default_value" => "5"],
             ["name"=>"dark_mode","controlled_by"=>"user", "type" => "look", "default_value" => "0"],

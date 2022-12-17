@@ -2,7 +2,7 @@
 use Mailgun\Mailgun;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(["auth","role:admin","saveCurrentRequest"])->group(function (){
+Route::middleware(["auth","role:admin"])->group(function (){
 
     Route::get("/pound/viewPounds","poundController@index")->name("pound.viewPounds");
     Route::post("/pound/storePound","poundController@store")->name("pound.storePound");

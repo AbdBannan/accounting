@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 use Mailgun\Mailgun;
 use Illuminate\Support\Facades\Mail;
 
@@ -19,7 +20,10 @@ use Ricadesign\Contact\Mail\MessageSent;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware(["auth","saveCurrentRequest","localization"])->group(function (){
+
+
+
+Route::middleware(["auth","saveRequestHistory","localization"])->group(function (){
     Route::get('/',function (){
        return redirect("/welcome");
     });
@@ -28,13 +32,13 @@ Route::middleware(["auth","saveCurrentRequest","localization"])->group(function 
     })->name("help.viewHelp");
 });
 
-Route::middleware(["auth","cleanRecyclebinCheck","localization"])->group(function (){
+Route::middleware(["auth","onWelcomePageLoadMiddleware","saveRequestHistory","localization"])->group(function (){
     Route::get('/welcome',function () {
         return view('welcomePage');
     })->name("welcomePage");
 });
 
-Route::middleware(["auth","role:admin","saveCurrentRequest","localization"])->group(function (){
+Route::middleware(["auth","role:admin","saveRequestHistory","localization"])->group(function (){
     Route::get("/dashboard",function(){
         return view("admin.dashboard");
     })->name("dashboard");
@@ -52,12 +56,27 @@ Route::get("/t",function (){
     Mail::to(config('contact.email'))
         ->send(new MessageSent($name, $email, $message, $phone));
 });
-
-Route::get("/ttt",function (){
-//    dd(\auth()->user()->notifications);
-
-    foreach(\auth()->user()->notifications as $notification){
-        echo $notification->name;
-    }
+Route::middleware(["auth"])->group(function (){
+    Route::get("/back",function (){
+        if(session("request_history")){
+            $routes = session("request_history");
+            $route = $routes[count($routes)-2];
+            unset($routes[count($routes)-1]);
+            session(["request_history"=>$routes]);
+            return redirect($route);
+        }
+    })->name("back");
 
 });
+
+Route::get("/ttt",function (){
+
+    $array = [];
+    $array[] = "aa";
+    $array[] = "aa";
+    $array[] = "aa";
+    $array[0] = "baa";
+    dd($array);
+
+});
+

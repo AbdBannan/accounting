@@ -2,7 +2,7 @@
 use Mailgun\Mailgun;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(["auth","saveCurrentRequest"])->group(function (){
+Route::middleware(["auth"])->group(function (){
     Route::get("/store/viewStores","storeController@index")->name("store.viewStores");
     Route::get("/store/showStore/{store}","storeController@show")->name("store.showStore");
     Route::post("/store/storeStore","storeController@store")->name("store.storeStore");

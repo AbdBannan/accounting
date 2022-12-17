@@ -18,7 +18,7 @@
                         <i class="fas fa-file mr-2"></i>
                     @endif
 
-                    <span>{{$notification->name}}</span>
+                    <span>{{__("global.product_quantity_running_out",["attribute"=>$notification->name])}}</span>
                     <span class="float-end text-muted text-sm">{{$notification->created_at->diffForHumans()}}</span>
                 </a>
                 <div class="dropdown-divider"></div>

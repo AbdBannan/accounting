@@ -4,7 +4,7 @@ use App\Http\Controllers\invoiceController;
 use Mailgun\Mailgun;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(["auth","saveCurrentRequest"])->group(function (){
+Route::middleware(["auth"])->group(function (){
 
     Route::get("/invoice/createInvoice/{invoice_type}","invoiceController@create")->name("invoice.createInvoice");
     Route::post("/invoice/storeInvoice/{invoice_type}","invoiceController@store")->name("invoice.storeInvoice");

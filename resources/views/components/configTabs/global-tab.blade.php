@@ -28,6 +28,14 @@
         </select>
     </div>
     <div class="form-group row">
+        <label style="font-size: x-large" for="level_of_product_quantity_for_notification" class="font-weight-bolder col-3">{{__("global.level_of_product_quantity_for_notification")}}</label>
+        <input type="number" min="0" id="level_of_product_quantity_for_notification" name="level_of_product_quantity_for_notification" class="form-control col-3" value="{{$config["level_of_product_quantity_for_notification"]}}">
+    </div>
+    <div class="form-group row">
+        <label style="font-size: x-large" for="row_count_in_table" class="font-weight-bolder col-3">{{__("global.row_count_in_table")}}</label>
+        <input type="number" min="0" id="row_count_in_table" name="row_count_in_table" class="form-control col-3" value="{{$config["row_count_in_table"]}}">
+    </div>
+    <div class="form-group row">
         <label style="font-size: x-large" for="use_recyclebin" class="font-weight-bolder col-3">{{__("global.use_recyclebin")}}</label>
         <select id="use_recyclebin" name="use_recyclebin" class="form-control col-3">
             <option value="true" class="dropdown-item" @if(isset($config["use_recyclebin"]) and $config["use_recyclebin"] == "true") selected @endif>{{__("global.yes")}}</option>

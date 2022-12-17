@@ -15,8 +15,11 @@ return [
 
     //    -------- account section --------    //
 
+    'product_quantity_running_out' => 'the product ":attribute" quantity is running out',
+    'level_of_product_quantity_for_notification' => 'level of product quantity for shortage notification',
+    'row_count_in_table' => 'row count in table page',
     'see_all_notifications' => 'see all notifications',
-    'notifications' => 'notifications',
+    'new_notifications' => 'of new notifications',
     'manufacturing_template' => 'manufacturing template',
     'is_raw_product' => 'is raw product',
     'raw' => 'raw',

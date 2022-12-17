@@ -426,12 +426,11 @@
 
     });
 
-    // this is to handel the back action in the custom back button
-    $("#back_arrow").on("click",function (){
-        sessionStorage.setItem("custom_back_button_pressed",true);
-        history.back();
-        // location = document.referrer;
-    });
+    // // this is to handel the back action in the custom back button
+    // $("#back_arrow").on("click",function (){
+    //     history.back();
+    //     // location = document.referrer;
+    // });
 
     // this is to check all checkbox in dataTable rows
     $("input#check_all").on("click",function (){
@@ -497,15 +496,15 @@
     //     }
     // });
 
-    // this is to handle the "reload" back button and skip duplicated
-    window.addEventListener("pageshow",function (event){
-        // var historyTraversal = event.persisted;
-        var historyTraversal = event.persisted || (typeof window.performance != undefined && window.performance.navigation.type === 2);
-        if (historyTraversal){
-            sessionStorage.setItem("custom_back_button_pressed",false);
-            location.reload();
-        }
-    });
+    // // this is to handle the "reload" back button and skip duplicated
+    // window.addEventListener("pageshow",function (event){
+    //     // var historyTraversal = event.persisted;
+    //     var historyTraversal = event.persisted || (typeof window.performance != undefined && window.performance.navigation.type === 2);
+    //     if (historyTraversal){
+    //         sessionStorage.setItem("custom_back_button_pressed",false);
+    //         location.reload();
+    //     }
+    // });
 
 
     $("#toggle_qr,#toggle_image").on("click",function (){
@@ -523,90 +522,3 @@
     });
 
 })(jQuery); // End of use strict
-
-
-
-
-
-
-// window.addEventListener("pageshow",function (event){
-//     // var historyTraversal = event.persisted || (typeof window.performance != undefined && window.performance.navigation.type === 2);
-//     var historyTraversal = event.persisted;
-//
-//     if (document.referrer == location.href && sessionStorage.getItem("custom_back_button_pressed") == "true"){
-//         history.back();
-//     }
-//     else if (historyTraversal){
-//         sessionStorage.setItem("custom_back_button_pressed",false);
-//         location.reload();
-//     } else {
-//         // sessionStorage.setItem("reload_by_code",false);
-//     }
-// });
-
-
-
-
-
-
-
-
-// $("input,select,textarea,button#btn_add_item_to_invoice").on("keypress",function (e){//to prevent submitting and focus on next input
-//         const MOBILE_ENTER = 13;
-//         const PC_ENTER = 13;
-//         // TODO : see the ascci code for enter in mobile keyboard
-//         if (e.which == PC_ENTER || e.which == MOBILE_ENTER) {
-//             e.preventDefault();
-//             let sequence1 =
-//                 {
-//                     "second_part_name" : "quantity",
-//                     "first_part_name" : "product_name",
-//                     "quantity" : "price",
-//                     "price" : "first_part_name",
-//                     "product_name" : "notes",
-//                     "notes" : "btn_add_item_to_invoice",
-//                     "pound_type" : "quantity",
-//                 };
-//             let sequence =
-//                 {
-//                     "first_part_name" : "received",
-//                     "pound_type" : "received",
-//                     "second_part_name" : "notes",
-//                     "notes" : "btn_add_item_to_invoice",
-//                     "received" : "payed",
-//                     "payed" : "second_part_name",
-//                 };
-//             let sequence3 =
-//                 {
-//                     "moved_product_name" : "quantity",
-//                     "pound_type" : "quantity",
-//                     "quantity" : "price",
-//                     "price" : "moved_to_product_name",
-//                     "moved_to_product_name" : "notes",
-//                     "notes" : "btn_add_item_to_invoice",
-//                 };
-//             // if (location.pathname.indexOf("Cash"))
-//             if (this.type == "submit") {
-//                 $("#" + this.id).click();
-//             } else if (sequence[this.id] == "btn_add_item_to_invoice" && $("#" + sequence[this.id]).length != 0) {
-//                 $("#" + sequence[this.id]).click();
-//             } else if (sequence[this.id] != undefined) {
-//                 let temp = this;
-//                 setTimeout(function () {
-//                     $("#" + sequence[temp.id]).focus();
-//                 }, 140);
-//             } else {
-//                 let inputs = $("input,select,textarea");
-//                 for (let item in inputs) {
-//                     if (Number(inputs[item])) {
-//                         break;
-//                     }
-//                     if ($(inputs[item]).attr("id") === $(this).attr("id")) {
-//                         setTimeout(function () {
-//                             $(inputs[parseInt(item) + 1]).focus();
-//                         }, 140);
-//                     }
-//                 }
-//             }
-//         }
-//     });

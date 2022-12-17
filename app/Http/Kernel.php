@@ -67,8 +67,8 @@ class Kernel extends HttpKernel
         "isAdmin" => \App\Http\Middleware\IsAdmin::class,
         "role" => \App\Http\Middleware\RoleMiddleWare::class,
         "activated" => \App\Http\Middleware\ActivatedMiddleWare::class,
-        "saveCurrentRequest" => \App\Http\Middleware\SaveCurrentRequest::class,
-        "cleanRecyclebinCheck" => \App\Http\Middleware\CleanRecyclebinMiddleware::class,
-        "localization" => \App\Http\Middleware\localizationMiddleWare::class,
+        "saveRequestHistory" => \App\Http\Middleware\SaveRequestHistory::class,
+        "onWelcomePageLoadMiddleware" => \App\Http\Middleware\OnWelcomePageLoadMiddleware::class,
+        "localization" => \App\Http\Middleware\LocalizationMiddleWare::class,
     ];
 }
