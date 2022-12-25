@@ -252,6 +252,10 @@
     // to remove the class show from the menu when blur
     $("input[class~='dropdown-toggle").on("blur", function(e) {
         let thisItem = $(this);
+        let error = validateDropDownBox(this);
+        if (error != ""){
+            $(this).val("");
+        }
         setTimeout(function (){
             thisItem.siblings().filter("div#dropdown_menu.dropdown-menu").removeClass("show")
         },200);
