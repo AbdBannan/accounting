@@ -47,67 +47,66 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/web.php'));
 
-            Route::middleware(['web','localization','saveRequestHistory'])
+            Route::middleware(['web','localization','saveRequestHistory','role:admin','auth'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/admin/accounts.php'));
 
-            Route::middleware(['web','localization','saveRequestHistory'])
+            Route::middleware(['web','localization','saveRequestHistory','checkProductsQuantity','auth'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/products.php'));
 
-            Route::middleware(['web','localization','saveRequestHistory'])
+            Route::middleware(['web','localization','saveRequestHistory','auth'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/admin/users.php'));
 
-            Route::middleware(['web','localization','saveRequestHistory'])
+            Route::middleware(['web','localization','saveRequestHistory','role:admin','auth'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/admin/roles.php'));
 
-            Route::middleware(['web','localization','saveRequestHistory'])
+            Route::middleware(['web','localization','saveRequestHistory','role:admin','auth'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/admin/permissions.php'));
 
 
-            Route::middleware(['web','localization','saveRequestHistory'])
+            Route::middleware(['web','localization','saveRequestHistory','role:admin','auth'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/admin/discoverActions.php'));
 
-            Route::middleware(['web','localization','saveRequestHistory'])
+            Route::middleware(['web','localization','saveRequestHistory','role:admin','auth'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/admin/archiveBalances.php'));
 
-            Route::middleware(['web','localization','saveRequestHistory'])
+            Route::middleware(['web','localization','saveRequestHistory','role:admin','auth'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/admin/pounds.php'));
 
-            Route::middleware(['web','localization','saveRequestHistory'])
+            Route::middleware(['web','localization','saveRequestHistory','role:admin','auth'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/admin/activityLog.php'));
 
-            Route::middleware(['web','localization','saveRequestHistory'])
+            Route::middleware(['web','localization',"role:admin",'auth'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/admin/backups.php'));
 
-            Route::middleware(['web','localization','saveRequestHistory'])
+            Route::middleware(['web','localization','saveRequestHistory','auth'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/config.php'));
 
-            Route::middleware(['web','localization','saveRequestHistory'])
+            Route::middleware(['web','localization','saveRequestHistory','auth'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/categories.php'));
 
-            Route::middleware(['web','localization','saveRequestHistory'])
+            Route::middleware(['web','localization','saveRequestHistory','auth'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/stores.php'));
 
-            Route::middleware(['web','localization','saveRequestHistory'])
+            Route::middleware(['web','localization','saveRequestHistory','checkProductsQuantity','auth'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/invoices.php'));
 
-           Route::middleware(['web','localization','saveRequestHistory'])
+           Route::middleware(['web','localization','auth'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web/notifications.php'));
-
         });
     }
 

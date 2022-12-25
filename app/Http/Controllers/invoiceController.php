@@ -109,6 +109,18 @@ class invoiceController extends Controller
         while (count($data) > 7) {
             $result1 = $result2 = null;
             if (isset($data["first_part_name_" . $ctr])) {
+                $this->validate(
+                    $request,
+                    [
+                        "first_part_name_$ctr"=>Rule::exists("accounts","name")->where("deleted_at",null),
+                        "product_name_$ctr"=>[function ($attribute,$value,$fail) use ($ctr,$data,$invoice_type)  {
+                            $balance = Journal::where("product_name",$value)->selectRaw("sum(in_quantity) - sum(out_quantity) as balance")->first()->balance;
+                            if ($balance < $data["quantity_$ctr"] and in_array($invoice_type,["sale","purchase_return"])){
+                                $fail(__("messages.the_quantity_is_not_enough",["attribute"=>$data["product_name_$ctr"]]));
+                            }
+                        }],
+                    ]
+                );
                 $record1 = new Journal();
                 $record1["invoice_id"] = $data["invoice_id"];
                 $record1["line"] = $ctr;
@@ -131,7 +143,6 @@ class invoiceController extends Controller
                 $record1["detail"] = 0;
                 $record1["image"] = $file_name;
                 $record1["closing_date"] = $data["closing_date"];
-//sub of balance
                 $result1 = $record1->save();
 
                 $record2 = new Journal();
@@ -139,18 +150,6 @@ class invoiceController extends Controller
                 $record2["line"] = $ctr;
                 $record2["debit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? $data["total_price_" . $ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]): 0;
                 $record2["credit"] = ($invoice_type == "sale" || $invoice_type == "purchase_return") ? 0 : $data["total_price_" . $ctr] * globalFunctions::getEquivalentPoundValue($data["pound_type"]);
-                $this->validate(
-                    $request,
-                    [
-                        "first_part_name_$ctr"=>Rule::exists("accounts","name")->where("deleted_at",null),
-                        "product_name_$ctr"=>[function ($attribute,$value,$fail) use ($ctr,$data)  {
-                            $balance = Journal::where("product_name",$value)->selectRaw("sum(in_quantity) - sum(out_quantity) as balance")->first()->balance;
-                            if ($balance < $data["quantity_$ctr"]){
-                                $fail(__("messages.the_quantity_is_not_enough",["attribute"=>$data["product_name_$ctr"]]));
-                            }
-                        }],
-                    ]
-                );
                 $record2["first_part_id"] = Account::where("name", $data["second_part_name"])->first()->id;
                 $record2["first_part_name"] = $data["second_part_name"];
                 $record2["second_part_id"] = Account::where("name", $data["first_part_name_" . $ctr])->first()->id;

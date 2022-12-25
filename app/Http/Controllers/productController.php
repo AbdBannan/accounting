@@ -80,6 +80,7 @@ class productController extends Controller
         globalFunctions::flashMessage("create",$result,"product");
         globalFunctions::registerUserActivityLog("added","product",$result->id);
 
+        return session("success");
         return back();
     }
 

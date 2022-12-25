@@ -13,19 +13,19 @@
                 <form id="form_update" action="" method="POST" accept-charset="UTF-8" enctype="multipart/form-data" autocomplete="off">
                     @csrf
                     <input type="hidden" name="_method" value="PUT">
-                    @if($modelName == "account")
+                    @if($modalName == "account")
                         <x-forms.accounts-form></x-forms.accounts-form>
-                    @elseif($modelName == "product")
+                    @elseif($modalName == "product")
                         <x-forms.products-form></x-forms.products-form>
-                    @elseif($modelName == "category")
+                    @elseif($modalName == "category")
                         <x-forms.categories-form></x-forms.categories-form>
-                    @elseif($modelName == "store")
+                    @elseif($modalName == "store")
                         <x-forms.stores-form></x-forms.stores-form>
-                    @elseif($modelName == "role")
+                    @elseif($modalName == "role")
                         <x-forms.roles-form></x-forms.roles-form>
-                    @elseif($modelName == "permission")
+                    @elseif($modalName == "permission")
                         <x-forms.permissions-form></x-forms.permissions-form>
-                    @elseif($modelName == "pound")
+                    @elseif($modalName == "pound")
                         <x-forms.pounds-form></x-forms.pounds-form>
 
                     @endif

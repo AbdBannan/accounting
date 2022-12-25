@@ -93,6 +93,7 @@ class manufacturingController extends Controller
             DB::commit();
         } catch (\PDOException $e)
         {
+            dd($e);
             DB::rollBack();
             globalFunctions::flashMessage("create",false,"manufacturing_action");
         }
@@ -101,11 +102,14 @@ class manufacturingController extends Controller
 
     private function saveJournal(Request $request, $file_name)
     {
-//        dd($request->all());
         $ctr = 1;
         $data = $request->all();
         $template = null;
-
+        $this->validate($request,[
+            "product_name"=>[
+                Rule::exists("products","name")->where("deleted_at",null),
+            ],
+        ]);
         $record1 = new Journal();
         $record1["invoice_id"] = $data["invoice_id"];
         $record1["line"] = 1;
@@ -155,7 +159,6 @@ class manufacturingController extends Controller
         $gainful_value = (isset($data["gainful_value"]))? $data["gainful_value"] : 0;
         Product::where("name",$data["product_name"])->update(["price"=>$data["pure_piece_price"],"gainful_value"=>$gainful_value]);
 
-//        dd(ManufacturingTemplate::where("name",$data["product_name"])->get()->count());
         if (ManufacturingTemplate::where("name",$data["product_name"])->get()->count() == 0){
             $template = new ManufacturingTemplate();
             $template->name = $data["product_name"];
@@ -168,6 +171,19 @@ class manufacturingController extends Controller
         while (count($data) > 11) {
             $result1 = $result2 = null;
             if (isset($data["raw_product_name_" . $ctr])) {
+                $this->validate($request,
+                    [
+                        "raw_product_name_$ctr"=>[
+                            Rule::exists("products","name")->where("deleted_at",null),
+                            function ($attribute,$value,$fail) use ($ctr,$data)  {
+                                $balance = Journal::where("product_name",$value)->selectRaw("sum(in_quantity) - sum(out_quantity) as balance")->first()->balance;
+                                if ($balance < $data["quantity_$ctr"]){
+                                    $fail(__("messages.the_quantity_is_not_enough",["attribute"=>$data["raw_product_name_$ctr"]]));
+                                }
+                            }
+                        ]
+                    ]
+                );
                 $record1 = new Journal();
                 $record1["invoice_id"] = $data["invoice_id"];
                 $record1["line"] = $ctr;
@@ -177,18 +193,6 @@ class manufacturingController extends Controller
                 $record1["first_part_name"] = $data["first_part_name"];
                 $record1["second_part_id"] = -1;
                 $record1["second_part_name"] = __("global.manufacturing");
-                $this->validate($request,
-                    [
-                        "product_name_$ctr"=>[
-                            Rule::exists("products")->where("deleted_at",null),
-                            function ($attribute,$value,$fail) use ($ctr,$data)  {
-                                $balance = Journal::where("product_name",$value)->selectRaw("sum(in_quantity) - sum(out_quantity) as balance")->first()->balance;
-                                if ($balance < $data["quantity_$ctr"]){
-                                    $fail(__("messages.the_quantity_is_not_enough",["attribute"=>$data["product_name_$ctr"]]));
-                                }
-                            }
-                        ],
-                    ]);
                 $record1["product_id"] = Product::where("name", $data["raw_product_name_" . $ctr])->first()->id;
                 $record1["product_name"] = $data["raw_product_name_" . $ctr];
                 $record1["price"] = $data["price_" . $ctr];

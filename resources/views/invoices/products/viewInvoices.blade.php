@@ -83,7 +83,7 @@
     @endsection
     @section("modals")
         <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
-        <x-modals.update-modal :modelName="$modelName = 'saleInvoice'"></x-modals.update-modal>
+        <x-modals.update-modal :modalName="$modalName = 'saleInvoice'"></x-modals.update-modal>
 
     @endsection
     @section("script")

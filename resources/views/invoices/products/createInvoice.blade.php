@@ -31,11 +31,14 @@
         </div>
     @endsection
     @section("modals")
+        <x-modals.ajax-add-modal :modalName="$modalName = 'account'" :modalId="$modalId='addAccountModal'"></x-modals.ajax-add-modal>
+        <x-modals.ajax-add-modal :modalName="$modalName = 'product'" :modalId="$modalId='addProductModal'"></x-modals.ajax-add-modal>
         <x-modals.close-invoice-modal></x-modals.close-invoice-modal>
-        <x-modals.ajax-update-modal :modelName="$modelName = 'pound'"></x-modals.ajax-update-modal>
+        <x-modals.ajax-update-modal :modalName="$modalName = 'pound'"></x-modals.ajax-update-modal>
     @endsection
     @section("script")
             <script>
+
                 let ids = [];
                 let isNewLineMode = true;
                 let isLineInEditing = false;
@@ -43,6 +46,7 @@
                     function (){
                         $("input#second_part_name").focus();
                         $("input#second_part_name").change();
+                        $("form#form_update .form-group #name").attr("readonly","readonly");
                     },100
                 )
 

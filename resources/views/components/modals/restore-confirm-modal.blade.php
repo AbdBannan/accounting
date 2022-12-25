@@ -11,7 +11,7 @@
             </div>
             <div class="modal-body">{{__("messages.restore_confirm")}}</div>
             <div class="modal-footer">
-                <form id="form_restore" action="" method="get">
+                <form id="form_restore" action="" method="post">
                     @csrf
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">{{__("global.cancel")}}</button>
                     <input type="submit" class="btn btn-primary" value="{{__("global.restore")}}">

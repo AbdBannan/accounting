@@ -33,7 +33,7 @@
             <div>
                 <div>
                     <div class="form-group">
-                        <a id="btn_add" title="{{__("global.add")}}" class="btn btn-sm btn-info  disable-pointer" href="#" data-toggle="modal" data-target="#addModal" data-route="{{route("role.storeRole")}}">
+                        <a id="btn_add" title="{{__("global.add")}}" class="btn btn-sm btn-info" href="#" data-toggle="modal" data-target="#addModal" data-route="{{route("role.storeRole")}}">
                             <i class="fas fa-plus"></i>
                             {{__("global.add")}}
                         </a>
@@ -65,8 +65,6 @@
                                 @foreach ($roles as $role)
 
                                     <tr>
-                                        {{$role->name}}
-{{--                                        @if(strtolower($role->name) != "admin" )--}}
                                         @if(!in_array($role->name ,["admin","مدير"] ))
                                             <td><input form="form_delete" name="multi_ids[]" value="{{$role->id}}" type="checkbox" class="form-check"></td>
                                         @else
@@ -100,9 +98,9 @@
     @section("modals")
         <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
         @if(auth()->user()->getConfig("add_method") == "modal")
-            <x-modals.add-modal :modelName="$modelName = 'role'"></x-modals.add-modal>
+            <x-modals.add-modal :modalName="$modalName = 'role'"></x-modals.add-modal>
         @endif
-        <x-modals.update-modal :modelName="$modelName = 'role'"></x-modals.update-modal>
+        <x-modals.update-modal :modalName="$modalName = 'role'"></x-modals.update-modal>
         @endsection
     @section("script")
 

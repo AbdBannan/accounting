@@ -1,5 +1,5 @@
 <!-- add Modal-->
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="@if(isset($modalId)){{$modalId}}@else{{"addModal"}}@endif" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -12,19 +12,19 @@
             <div class="modal-body">
                 <form id="form_add" action="" method="POST" accept-charset="UTF-8" enctype="multipart/form-data" autocomplete="off">
                     @csrf
-                    @if($modelName == "account")
+                    @if($modalName == "account")
                         <x-forms.accounts-form></x-forms.accounts-form>
-                    @elseif($modelName == "product")
+                    @elseif($modalName == "product")
                         <x-forms.products-form></x-forms.products-form>
-                    @elseif($modelName == "category")
+                    @elseif($modalName == "category")
                         <x-forms.categories-form></x-forms.categories-form>
-                    @elseif($modelName == "store")
+                    @elseif($modalName == "store")
                         <x-forms.stores-form></x-forms.stores-form>
-                    @elseif($modelName == "role")
+                    @elseif($modalName == "role")
                         <x-forms.roles-form></x-forms.roles-form>
-                    @elseif($modelName == "permission")
+                    @elseif($modalName == "permission")
                         <x-forms.permissions-form></x-forms.permissions-form>
-                    @elseif($modelName == "pound")
+                    @elseif($modalName == "pound")
                         <x-forms.pounds-form></x-forms.pounds-form>
 
                     @endif

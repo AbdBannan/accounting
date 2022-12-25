@@ -45,12 +45,7 @@ class roleController extends Controller
             "name"=>Str::ucfirst($input["name"]),
             "slug"=>Str::of(Str::ucfirst($input["name"]))->slug("-")
         ]);
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.role")]));
-//        }else{
-//            session()->flash("success",__("messages.not_created_successfully",["attribute"=>__("global.role")]));
-//        }
-
+//
         globalFunctions::flashMessage("create",$result,"role");
         globalFunctions::registerUserActivityLog("added","role",$result->id);
 

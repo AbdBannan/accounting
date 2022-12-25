@@ -32,7 +32,7 @@ Route::middleware(["auth","saveRequestHistory","localization"])->group(function 
     })->name("help.viewHelp");
 });
 
-Route::middleware(["auth","onWelcomePageLoadMiddleware","saveRequestHistory","localization"])->group(function (){
+Route::middleware(["auth","checkToClearRecyclebin","saveRequestHistory","localization"])->group(function (){
     Route::get('/welcome',function () {
         return view('welcomePage');
     })->name("welcomePage");

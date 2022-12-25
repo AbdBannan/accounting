@@ -13,9 +13,12 @@
     <link rel="stylesheet" href="{{asset("css/plugins/fontawesome-free/css/all.min.css")}}">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="{{asset("css/plugins/overlayScrollbars/css/OverlayScrollbars.min.css")}}">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="{{asset("css/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css")}}">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{asset("css/plugins/toastr/toastr.min.css")}}">
 
     @if(auth()->user()->getConfig("language") == "arabic")
 {{--        <!-- Bootstrap 4 RTL -->--}}
@@ -43,37 +46,38 @@
     <link rel="stylesheet" href="{{asset("css/plugins/datatables-responsive/css/responsive.bootstrap4.min.css")}}">
     <link rel="stylesheet" href="{{asset("css/plugins/datatables-buttons/css/buttons.bootstrap4.min.css")}}">
 
-    <style>
-    /*input[type="date"]::-webkit-datetime-edit, input[type="date"]::-webkit-inner-spin-button, input[type="date"]::-webkit-clear-button {*/
-    /*!*    color: #fff;*!*/
-    /*    position: relative;*/
-    /*}*/
+{{--    <style>--}}
+{{--    input[type="date"]::-webkit-datetime-edit, input[type="date"]::-webkit-inner-spin-button, input[type="date"]::-webkit-clear-button {--}}
+{{--    /*    color: #fff;*/--}}
+{{--    /*    position: relative;*/--}}
+{{--    }--}}
 
-    /*input[type="date"]::-webkit-datetime-edit-year-field{*/
-    /*    position: absolute !important;*/
-    /*    border-left:1px solid #8c8c8c;*/
-    /*    padding: 2px;*/
-    /*!*    color:#000;*!*/
-    /*    left: 56px;*/
-    /*}*/
+{{--    input[type="date"]::-webkit-datetime-edit-year-field{--}}
+{{--        /*position: static !important;*/--}}
+{{--        /*border-left:1px solid #8c8c8c;*/--}}
+{{--        /*padding: 2px;*/--}}
+{{--    /*    color:#000;*/--}}
+{{--    /*    left: -56px;*/--}}
+{{--    }--}}
 
-    /*input[type="date"]::-webkit-datetime-edit-month-field{*/
-    /*    position: absolute !important;*/
-    /*    border-left:1px solid #8c8c8c;*/
-    /*    padding: 2px;*/
-    /*!*    color:#000;*!*/
-    /*    left: 26px;*/
-    /*}*/
+{{--    input[type="date"]::-webkit-datetime-edit-month-field{--}}
+{{--        position: relative !important;--}}
+{{--        /*border-left:1px solid #8c8c8c;*/--}}
+{{--        /*padding: 2px;*/--}}
+{{--    /*    color:#000;*/--}}
+{{--        left: 26px;--}}
+{{--    }--}}
 
 
-    /*input[type="date"]::-webkit-datetime-edit-day-field{*/
-    /*    position: absolute !important;*/
-    /*!*    color:#000;*!*/
-    /*    padding: 2px;*/
-    /*    left: 4px;*/
+{{--    input[type="date"]::-webkit-datetime-edit-day-field{--}}
+{{--        position: relative !important;--}}
+{{--    /*    color:#000;*/--}}
+{{--    /*    padding: 2px;*/--}}
+{{--        left: -26px;--}}
+{{--        user-focus: true;--}}
 
-    /*}*/
-</style>
+{{--    }--}}
+{{--</style>--}}
     @yield("style")
 </head>
 
@@ -110,6 +114,7 @@
 
 
     ">
+
     <div class="wrapper">
         <h5 style="display: inline-block;position: absolute" id="test_size_label"></h5>
         <!-- Preloader -->
@@ -230,7 +235,8 @@
                     </div>
                 </li>
                 <!-- Notifications Dropdown Menu -->
-                <li class="nav-item dropdown">
+                @if(!str_contains(strtolower(\Illuminate\Support\Facades\URL::current()),"notification"))
+                    <li class="nav-item dropdown">
                     <a id="btn_notifications" class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-bell"></i>
                         @php
@@ -240,13 +246,14 @@
                             <span class="badge badge-warning navbar-badge">{{$notification_count}}</span>
                         @endif
                     </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="max-height:200px;overflow-y: scroll">
                         <span class="dropdown-item dropdown-header">{{$notification_count . " " . __("global.new_notifications")}}</span>
                         <div class="dropdown-divider"></div>
                         @foreach(auth()->user()->notifications()->where("has_seen",0)->get() as $notification)
-                            <div class="dropdown-item">
+                            <a href="{{route("notifications.viewNotifications")."#".$notification->name}}" class="dropdown-item" style="white-space: unset;">
+                                <div>
                                 @if ($notification->type == "product_quantity_is_not_enough")
-                                    <i class="fas  mr-2"></i>
+                                    <i class="fas fa-bell  mr-2"></i>
                                 @elseif ($notification->type == "new_messages")
                                     <i class="fas fa-envelope mr-2"></i>
                                 @elseif ($notification->type == "friend_requests")
@@ -254,15 +261,17 @@
                                 @elseif ($notification->type == "new_reports")
                                     <i class="fas fa-file mr-2"></i>
                                 @endif
-                                <span>{{__("global.product_quantity_running_out",["attribute"=>$notification->name])}}</span>
-                                <span class="float-end text-muted text-sm">{{$notification->created_at->diffForHumans()}}</span>
-                            </div>
+                                {{__("global.product_quantity_running_out",["attribute"=>$notification->name])}}</div>
+                                <div class="d-flex justify-content-end justify-content-start ">
+                                    <span class="text-blue text-muted text-sm">{{$notification->created_at->diffForHumans()}}</span>
+                                </div>
+                            </a>
                             <div class="dropdown-divider"></div>
                         @endforeach
                         <a href="{{route("notifications.viewNotifications")}}" class="dropdown-item dropdown-footer">{{__("global.see_all_notifications")}}</a>
                     </div>
                 </li>
-
+                @endif
                 <li class="nav-item">
                     <a id="btn_fullscreen" class="nav-link" data-widget="fullscreen" href="#" role="button">
                         <i class="fas fa-expand-arrows-alt"></i>
@@ -707,16 +716,6 @@
                 @include("inc.messages")
                 <!-- Back Button-->
                 <div style="height: 46px">
-                    {{--                        @if(session("last_method"))--}}
-                    {{--                            <form action="{{\Illuminate\Support\Facades\URL::previous()}}" method="{{session("last_method")}}">--}}
-                    {{--                                @foreach(session("last_params") as $name=>$value)--}}
-                    {{--                                    <input type="hidden" name="{{$name}}" value="{{$value}}">--}}
-                    {{--                                @endforeach--}}
-                    {{--                                <i id="back_arrow" class="fas fa-arrow-left">--}}
-                    {{--                                    <input id="back_submit" hidden type="submit" class="fas fa-arrow-left">--}}
-                    {{--                                </i>--}}
-                    {{--                            </form>--}}
-                    {{--                        @endif--}}
                     <a id="back_arrdfow" style="margin: 80px" href="{{route("back")}}">
                         @if(auth()->user()->getConfig("language") == "arabic")
                             <i class="fas fa-arrow-right"></i>
@@ -726,6 +725,7 @@
                     </a>
                 </div>
                 <!-- End Back Button-->
+{{--                    <input tabindex="12" class="datepicker form-group m-5" size="16" type="text" value="20-12-2012">--}}
 
                 @section("content")
 
@@ -768,8 +768,10 @@
 <script src="{{asset("js/dist/js/adminlte.js")."?var=".rand()}}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset("js/dist/js/demo.js")}}"></script>
-
-
+<!-- SweetAlert2 -->
+<script src="{{asset("js/plugins/sweetalert2/sweetalert2.min.js")}}"></script>
+<!-- Toastr -->
+<script src="{{asset("js/plugins/toastr/toastr.min.js")}}"></script>
 
 <!-- Custom scripts for all pages-->
 <script src="{{asset("js/sb-admin-2.js?var=".rand())}}"></script>
@@ -930,6 +932,9 @@
         //         }
         //     }
         // });
+        // let elem1 = $("input[type='date']::-webkit-datetime-edit-year-field");
+        // console.log(elem1);
+        // $("input[type='date']::-webkit-datetime-edit-year-field").focus();
     </script>
     @yield("script")
 

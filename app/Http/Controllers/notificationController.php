@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Notification;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class notificationController extends Controller
 {
     public function index(){
-        return view("notifications.viewNotifications")->with(["notifications"=>auth()->user()->notifications]);
+        $aa = auth()->user()->notifications;
+        $aa = $aa->sortBy(["created_at"]);
+        $aa = $aa->reverse();
+        return view("notifications.viewNotifications")->with(["notifications"=>$aa]);
     }
 
     public function seenAll(){

@@ -1,7 +1,12 @@
 (function($) {
     "use strict"; // Start of use strict
 
-
+    var Toast = Swal.mixin({
+        toast: true,
+        position: 'bottom-start',
+        showConfirmButton: false,
+        timer: 4000
+    });
     //this is to fill the image from file input
     $("input#file").on("change",function(event){
         let url = URL.createObjectURL(event.target.files[0])
@@ -70,6 +75,13 @@
         $("#form_add").attr("action",route);
     });
 
+    // to populate the add form
+    $("a#btn_add_product,a#btn_add_account").on("click",function(){
+        let route = $(this).data("route");
+        let id = $(this).data("target");
+        $(id+" .modal-dialog .modal-content .modal-body #form_add").attr("action",route);
+    });
+
     // to activate_user,attach_role,attach_permission,track_user_activity
     let element = null;
     let siblingElement = null;
@@ -136,19 +148,48 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success:function (){
+                success:function (e){
                     $(edit_element).data("fields")["value"] = form.children("div").children("#value").val();
                     $(".modal-header .close").click();
-                    $("#correct_message").attr("hidden",false);
-                    setTimeout(function (){
-                        $("#correct_message").attr("hidden",true);
-                    },2000);
+                    Toast.fire({
+                        icon: 'success',
+                        title: e
+                    });
                 },
                 error:function (e){
-                    $("#field_invalid_message").attr("hidden",false);
-                    setTimeout(function (){
-                        $("#field_invalid_message").attr("hidden",true);
-                    },2000);
+                    console.log(e);
+                    Toast.fire({
+                        icon: 'error',
+                        title: e.responseJSON.message
+                    });
+                }
+            }
+        );
+    });
+
+    // to add product or account using ajax
+    $("input#btn_add").on("click",function(){
+        let form = $(this).parent(".form-group").parent(".modal-footer").siblings(".modal-body").children("form");
+        var route = form.attr('action');
+        $.ajax({
+                url:route,
+                method:"POST",
+                data: form.serialize(),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success:function (e){
+                    $(".modal-header .close").click();
+                    Toast.fire({
+                        icon: 'success',
+                        title: e
+                    });
+                },
+                error:function (e){
+                    Toast.fire({
+                        icon: 'error',
+                        title: e.responseJSON.message
+                    });
                 }
             }
         );
@@ -284,7 +325,6 @@
             let elem = $(this);
             setTimeout(function(){
                 if (elem.attr("type") == "submit" ){
-                    elem.click();
                 } else if($("[tabindex="+(parseInt( currentTabIndex)+1)+"]").attr("id") == "btn_add_item_to_invoice"){
                     $("[tabindex="+(parseInt( currentTabIndex)+1)+"]").click();
                 } else if ($("[tabindex="+(parseInt( currentTabIndex)+1)+"]").attr("disabled") != "disabled"&&

@@ -23,9 +23,6 @@ class DatabaseSeeder extends Seeder
          DB::table("config")->truncate();
          DB::table("config_user")->truncate();
          DB::table("role_user")->truncate();
-//        \App\Models\User::factory(4)->create()->each(function ($user){
-//             $user->posts()->saveMany(\App\Models\Post::factory(5)->make());
-//         });
 
         app()->setLocale("ar");
         \App\Models\User::factory(1)->create(

@@ -12,15 +12,15 @@
             <div class="modal-body">
                 <div class="form-group">
 {{--                    <div class="input-append date" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">--}}
-{{--                        <input class="datepicker" size="16" type="text" value="20-12-2012">--}}
+{{--                        <input tabindex="12" class="datepicker form-group" size="16" type="text" value="20-12-2012">--}}
 {{--                        <span class="add-on"><i class="icon-th"></i></span>--}}
 {{--                    </div>--}}
-                    <input tabindex="11" form="form" type="date" id="closing_date" name="closing_date"  class="form-control" value="{{Carbon\Carbon::now()->toDateString("mm/dd/yyyy")}}" autofocus>
+                    <input tabindex="11" form="form" type="date" id="closing_date" name="closing_date"  class="form-control" value="{{Carbon\Carbon::now()->toDateString("mm/dd/yyyy")}}">
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">{{__("global.cancel")}}</button>
-                <input tabindex="12" id="btn-submit-invoice" form="form" class="btn btn-success" type="submit" value="{{__("global.save")}}">
+                <input tabindex="13" id="btn-submit-invoice" form="form" class="btn btn-success" type="submit" value="{{__("global.save")}}">
             </div>
         </div>
     </div>

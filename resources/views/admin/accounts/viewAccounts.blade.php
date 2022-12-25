@@ -11,7 +11,6 @@
 
     @section('content')
 
-        @section("id"){{\App\Models\Account::withTrashed()->selectRaw("max(id) as id")->first()->id + 1}}@endsection
 
         <div class="container">
 
@@ -108,9 +107,9 @@
     @section("modals")
         <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
         @if(auth()->user()->getConfig("add_method") == "modal")
-            <x-modals.add-modal :modelName="$modelName = 'account'"></x-modals.add-modal>
+            <x-modals.add-modal :modalName="$modalName = 'account'"></x-modals.add-modal>
         @endif
-        <x-modals.update-modal :modelName="$modelName = 'account'"></x-modals.update-modal>
+        <x-modals.update-modal :modalName="$modalName = 'account'"></x-modals.update-modal>
     @endsection
     @section("script")
 

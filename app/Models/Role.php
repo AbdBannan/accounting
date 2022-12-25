@@ -12,7 +12,11 @@ class Role extends Model
     protected $guarded = [];
 
     public function getNameAttribute($value){
-        if ($this->attributes["created_by"] == "developer") {
+//        dd($this->attributes);
+//        if (isset($this->attributes["created_by"])){
+//            dd($this->attributes["created_by"]);
+//        }
+        if (isset($this->attributes["created_by"]) and $this->attributes["created_by"] == "developer") {
             return __("global.$value");
         } else {
             return $value;

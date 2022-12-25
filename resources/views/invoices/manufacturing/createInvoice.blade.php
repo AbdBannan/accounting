@@ -25,7 +25,7 @@
         <x-modals.close-invoice-modal></x-modals.close-invoice-modal>
         <x-modals.manufacturing-templates-modal></x-modals.manufacturing-templates-modal>
         <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
-        <x-modals.ajax-update-modal :modelName="$modelName = 'pound'"></x-modals.ajax-update-modal>
+        <x-modals.ajax-update-modal :modalName="$modalName = 'pound'"></x-modals.ajax-update-modal>
     @endsection
     @section("script")
             <script>

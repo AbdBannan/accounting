@@ -1,7 +1,7 @@
 <div class="row">
     <div class="form-group col-6">
         <label style="font-size: x-large" for="id" class="font-weight-bolder">{{__("global.id")}}</label>
-        <input tabindex="1" class="form-control" type="number" name="id" id="id" value="@yield("id")">
+        <input tabindex="1" class="form-control" type="number" name="id" id="id" value="@yield("id",\App\Models\Product::withTrashed()->selectRaw("max(id) as id")->first()->id + 1)">
     </div>
     <div class="form-group col-6">
         <label style="font-size: x-large" for="store_id" class="font-weight-bolder">{{__("global.store")}}</label>

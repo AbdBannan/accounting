@@ -68,7 +68,8 @@ class Kernel extends HttpKernel
         "role" => \App\Http\Middleware\RoleMiddleWare::class,
         "activated" => \App\Http\Middleware\ActivatedMiddleWare::class,
         "saveRequestHistory" => \App\Http\Middleware\SaveRequestHistory::class,
-        "onWelcomePageLoadMiddleware" => \App\Http\Middleware\OnWelcomePageLoadMiddleware::class,
+        "checkToClearRecyclebin"=> \App\Http\Middleware\CheckToClearRecyclebinMiddleware::class,
         "localization" => \App\Http\Middleware\LocalizationMiddleWare::class,
+        "checkProductsQuantity" => \App\Http\Middleware\CheckProductsQuantityMiddleware::class,
     ];
 }

@@ -92,9 +92,9 @@
     @section("modals")
         <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
         @if(auth()->user()->getConfig("add_method") == "modal")
-            <x-modals.add-modal :modelName="$modelName = 'permission'"></x-modals.add-modal>
+            <x-modals.add-modal :modalName="$modalName = 'permission'"></x-modals.add-modal>
         @endif
-        <x-modals.update-modal :modelName="$modelName = 'permission'"></x-modals.update-modal>
+        <x-modals.update-modal :modalName="$modalName = 'permission'"></x-modals.update-modal>
         @endsection
     @section("script")
 

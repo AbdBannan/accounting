@@ -31,25 +31,33 @@
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="pound_type" >{{__("global.pound")}}</label>
-                            <input tabindex="1" value="@yield('pound_type',auth()->user()->getConfig("default_pound"))" form="form" id="pound_type" name="pound_type" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{__("messages.value_not_found")}}</strong>
-                            </span>
-                            <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu row" aria-labelledby="pound_type">
-                                @foreach(App\Models\Pound::all() as $pound)
-                                    <option value="{{$pound->name}}" class="dropdown-item" >{{$pound->name}}
-                                        <a id="btn_update" title="{{__("global.update")}}"  href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$pound}}" data-route="{{route("pound.updatePound",$pound->id)}}"><i class="fas fa-edit text-green" ></i></a>
-                                    </option>
-                                @endforeach
+
+                            <div class="input-group mb-3">
+                                <input tabindex="1" value="@yield('pound_type',auth()->user()->getConfig("default_pound"))" form="form" id="pound_type" name="pound_type" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                          <a id="btn_update_pound" onclick="$('a#btn_update').each(function (){
+                                                          if ($(this).data('fields')['name'].trim() == $('#pound_type').val().trim()){
+                                                              $(this).click();
+                                                          }
+                                                      })">
+                                              <i class="fas fa-edit text-green"></i>
+                                          </a>
+                                          <span class="ml-1 mr-1" id="correct_message" hidden><i class="fas fa-check text-green"></i></span>
+                                    </span>
+                                </div>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found")}}</strong>
+                                </span>
+                                <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu row" aria-labelledby="pound_type">
+                                    @foreach(App\Models\Pound::all() as $pound)
+                                        <option value="{{$pound->name}}" class="dropdown-item" >{{$pound->name}}
+                                            <a id="btn_update" title="{{__("global.update")}}"  href="#" data-toggle="modal" data-target="#updateModal" data-fields="{{$pound}}" data-route="{{route("pound.updatePound",$pound->id)}}"><i class="fas fa-edit text-green" ></i></a>
+                                        </option>
+                                    @endforeach
+                                </div>
                             </div>
-                            <a id="btn_update_pound" class="position-absolute" style="top: 57%;left: 20px;" onclick="$('a#btn_update').each(function (){
-                                            if ($(this).data('fields')['name'].trim() == $('#pound_type').val().trim()){
-                                                $(this).click();
-                                            }
-                                        })">
-                                <i class="fas fa-edit text-green"></i>
-                            </a>
-                            <span class="position-absolute" style="top: 57%;left: -20px; " id="correct_message" hidden><i class="fas fa-check text-green"></i></span>
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
                             @yield("edit_delete")

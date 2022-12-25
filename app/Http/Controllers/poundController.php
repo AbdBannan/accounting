@@ -29,12 +29,6 @@ class poundController extends Controller
             "slug"=>Str::of(Str::ucfirst($input["name"]))->slug("-"),
             "value"=>$input["value"]
         ]);
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.role")]));
-//        }else{
-//            session()->flash("success",__("messages.not_created_successfully",["attribute"=>__("global.role")]));
-//        }
-
         globalFunctions::flashMessage("create",$result,"pound");
         globalFunctions::registerUserActivityLog("added","pound",$result->id);
 
@@ -56,16 +50,13 @@ class poundController extends Controller
 
         $result = null;
         if ($pound->isDirty(["name","value"])) {
-//            session()->flash("success",__("messages.updated_successfully",["attribute"=>__("global.role")]));
             $result = $pound->save();
         }
-//        else{
-//            session()->flash("success",__("messages.nothing_to_be_updated"));
-//        }
+
         globalFunctions::flashMessage("update",$result,"pound");
         globalFunctions::registerUserActivityLog("updated","pound",$pound->id);
-
-        return back();
+        return session("success");
+//        return back();
     }
 
     public function viewRecyclebin()
