@@ -69,14 +69,8 @@ Route::middleware(["auth"])->group(function (){
 
 });
 
-Route::get("/ttt",function (){
-
-    $array = [];
-    $array[] = "aa";
-    $array[] = "aa";
-    $array[] = "aa";
-    $array[0] = "baa";
-    dd($array);
-
+Route::middleware(["auth"])->group(function (){
+    Route::get("/translate/{word}",function ($word){
+        return __("global.$word");
+    })->name("translate");
 });
-

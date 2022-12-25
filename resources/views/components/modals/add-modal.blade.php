@@ -9,9 +9,9 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form id="form_add" action="" method="POST" accept-charset="UTF-8" enctype="multipart/form-data" autocomplete="off">
-                    @csrf
+            <form id="form_add" action="" method="POST" accept-charset="UTF-8" enctype="multipart/form-data" autocomplete="off">
+                @csrf
+                <div class="modal-body">
                     @if($modalName == "account")
                         <x-forms.accounts-form></x-forms.accounts-form>
                     @elseif($modalName == "product")
@@ -29,14 +29,15 @@
 
                     @endif
 
-                </form>
-            </div>
-            <div class="modal-footer">
-                <div class="form-group">
-                    <input tabindex="9" id="btn_add" form="form_add" class="btn btn-primary" type="submit" value="{{__("global.add")}}">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">{{__("global.cancel")}}</button>
                 </div>
-            </div>
+
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <input tabindex="100" id="btn_add" class="btn btn-primary" type="submit" value="{{__("global.add")}}">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">{{__("global.cancel")}}</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -14,14 +14,23 @@
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="first_part_name" >{{__("global.first_part_name")}}</label>
-                            <input tabindex="1" form="form" id="first_part_name" name="first_part_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("second_part_name",181)" />
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{__("messages.value_not_found")}}</strong>
-                            </span>
-                            <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="first_part_name">
-                                @foreach(App\Models\Account::get() as $account)
-                                    <option class="dropdown-item"  value="{{$account->id}}">{{$account->name}}</option>
-                                @endforeach
+                            <div class="input-group mb-3">
+                                <input tabindex="1" form="form" id="first_part_name" name="first_part_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("second_part_name",181)" />
+                                <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                      <a id="btn_add_account" data-toggle="modal" data-target="#addAccountModal" data-route="{{route("account.storeAccount")}}">
+                                            <i class="fas fa-plus text-green"></i>
+                                      </a>
+                                </span>
+                                </div>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found")}}</strong>
+                                </span>
+                                <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="first_part_name">
+                                    @foreach(App\Models\Account::get() as $account)
+                                        <option class="dropdown-item"  value="{{$account->id}}">{{$account->name}}</option>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
@@ -30,7 +39,7 @@
                                 <input tabindex="1" value="@yield('pound_type',auth()->user()->getConfig("default_pound"))" form="form" id="pound_type" name="pound_type" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">
-                                                       <a id="btn_update_pound" onclick="$('a#btn_update').each(function (){
+                                        <a id="btn_update_pound" onclick="$('a#btn_update').each(function (){
                                                         if ($(this).data('fields')['name'].trim() == $('#pound_type').val().trim()){
                                                             $(this).click();
                                                         }

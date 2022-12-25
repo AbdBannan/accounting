@@ -14,14 +14,23 @@
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="moved_product_name" >{{__("global.moved_product_name")}}</label>
-                            <input tabindex="1" id="moved_product_name" name="moved_product_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("moved_to_product_name")"/>
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{__("messages.value_not_found")}}</strong>
-                            </span>
-                            <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="second_part_name">
-                                @foreach(App\Models\Product::get() as $product)
-                                    <option class="dropdown-item"  value="{{$product->id}}">{{$product->name}}</option>
-                                @endforeach
+                            <div class="input-group mb-3">
+                                <input tabindex="1" id="moved_product_name" name="moved_product_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("moved_to_product_name")"/>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                          <a id="btn_add_product" data-toggle="modal" data-target="#addProductModal" data-route="{{route("product.storeProduct")}}">
+                                                <i class="fas fa-plus text-green"></i>
+                                          </a>
+                                    </span>
+                                </div>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found")}}</strong>
+                                </span>
+                                <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="second_part_name">
+                                    @foreach(App\Models\Product::get() as $product)
+                                        <option class="dropdown-item"  value="{{$product->id}}">{{$product->name}}</option>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                         <div class="form-group col-md-3 col-sm-12">

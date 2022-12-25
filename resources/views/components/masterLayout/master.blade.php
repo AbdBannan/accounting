@@ -713,7 +713,7 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <div style="padding-top:2%" class="container-fluid">
-                @include("inc.messages")
+{{--                @include("inc.messages")--}}
                 <!-- Back Button-->
                 <div style="height: 46px">
                     <a id="back_arrdfow" style="margin: 80px" href="{{route("back")}}">
@@ -768,10 +768,12 @@
 <script src="{{asset("js/dist/js/adminlte.js")."?var=".rand()}}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset("js/dist/js/demo.js")}}"></script>
-<!-- SweetAlert2 -->
+<!-- SweetAlert2 -->`
 <script src="{{asset("js/plugins/sweetalert2/sweetalert2.min.js")}}"></script>
 <!-- Toastr -->
 <script src="{{asset("js/plugins/toastr/toastr.min.js")}}"></script>
+{{--    <script type="text/javascript" src={{asset("js/jqu/ery-3.2.1.min.js")}}></script>--}}
+<script type="text/javascript" src={{asset("js/savy.min.js")}}></script>
 
 <!-- Custom scripts for all pages-->
 <script src="{{asset("js/sb-admin-2.js?var=".rand())}}"></script>
@@ -801,10 +803,25 @@
 
 
 
-    {{--    <script type="text/javascript" src={{asset("js/jqu/ery-3.2.1.min.js")}}></script>--}}
-    <script type="text/javascript" src={{asset("js/savy.min.js")}}></script>
 
     <script>
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": @if(app()->getLocale() == "ar") "toast-bottom-left" @else "toast-bottom-right" @endif,
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
         $(function () {
 
 
@@ -935,8 +952,9 @@
         // let elem1 = $("input[type='date']::-webkit-datetime-edit-year-field");
         // console.log(elem1);
         // $("input[type='date']::-webkit-datetime-edit-year-field").focus();
-    </script>
-    @yield("script")
 
+    </script>
+    @include("inc.messages")
+    @yield("script")
 </body>
 </html>

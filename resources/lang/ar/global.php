@@ -15,6 +15,9 @@ return [
 
     //    -------- account section --------    //
 
+    'pound_has_been_updated_succesfully' => 'تم تعديل العملة بنجاح.',
+    'pound_has_not_been_updated_succesfully' => 'لم يتم تعديل العملة بنجاح.',
+    'is_raw' => 'مادة أولية ؟',
     'product_quantity_running_out' => 'المادة ":attribute" قيد النفاد',
     'level_of_product_quantity_for_notification' => 'الحد الأدنى من كمية المادة لإعطاء إشعار بنقصان المادة',
     'row_count_in_table' => 'عدد الأسطر في الصفحة من الجدول',

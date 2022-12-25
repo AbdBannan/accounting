@@ -19,15 +19,25 @@
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="first_part_name" >{{__("global.account_name")}}</label>
-                            <input tabindex="1" form="form" id="first_part_name" name="first_part_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("first_part_name")" />
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{__("messages.value_not_found")}}</strong>
-                            </span>
-                            <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="first_part_name">
-                                @foreach(App\Models\Account::get() as $account)
-                                    <option class="dropdown-item"  value="{{$account->id}}">{{$account->name}}</option>
-                                @endforeach
+                            <div class="input-group mb-3">
+                                <input tabindex="1" form="form" id="first_part_name" name="first_part_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("first_part_name")" />
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                          <a id="btn_add_account" data-toggle="modal" data-target="#addAccountModal" data-route="{{route("account.storeAccount")}}">
+                                                <i class="fas fa-plus text-green"></i>
+                                          </a>
+                                    </span>
+                                </div>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found")}}</strong>
+                                </span>
+                                <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="first_part_name">
+                                    @foreach(App\Models\Account::get() as $account)
+                                        <option class="dropdown-item"  value="{{$account->id}}">{{$account->name}}</option>
+                                    @endforeach
+                                </div>
                             </div>
+
                         </div>
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="pound_type" >{{__("global.pound")}}</label>
@@ -67,14 +77,35 @@
                     <div class="row">
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="product_name" >{{__("global.product")}}</label>
-                            <input tabindex="2" value="@yield("product_name")" form="form" id="product_name" name="product_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{__("messages.value_not_found")}}</strong>
-                            </span>
-                            <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="product_name">
-                                @foreach(App\Models\Product::where("is_raw",0)->get() as $product)
-                                    <option class="dropdown-item"  value="{{$product->id}}">{{$product->name}}</option>
-                                @endforeach
+                            <div class="input-group mb-3">
+                                <input tabindex="2" value="@yield("product_name")" form="form" id="product_name" name="product_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                          <a id="btn_add_product" data-toggle="modal" data-target="#addProductModal" data-route="{{route("product.storeProduct")}}" onclick="
+                                                $('#addProductModal .modal-dialog .modal-content #form_add .modal-body .form-group #is_raw option').each(function(){
+                                                    if ($(this).val() == 0){
+                                                        $(this).attr('selected','selected');
+                                                    }
+                                                })
+                                                $('#addProductModal .modal-dialog .modal-content #form_add .modal-body .form-group #is_raw').attr('readonly','readonly');
+                                                let route = $(this).data('route');
+                                                $('#addProductModal .modal-dialog .modal-content #form_add').attr('action',route);
+                                                setTimeout(function (){
+                                                    $('#addProductModal .modal-dialog .modal-content #form_add .modal-body .form-group #id').focus();
+                                                },500);
+                                          ">
+                                                <i class="fas fa-plus text-green"></i>
+                                          </a>
+                                    </span>
+                                </div>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found")}}</strong>
+                                </span>
+                                <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="product_name">
+                                    @foreach(App\Models\Product::where("is_raw",0)->get() as $product)
+                                        <option class="dropdown-item"  value="{{$product->id}}">{{$product->name}}</option>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
 
@@ -131,14 +162,35 @@
                     <div class="row" >
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="raw_product_name" >{{__("global.raw_product")}}</label>
-                            <input tabindex="6" form="f" id="raw_product_name" name="raw_product_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("raw_product_name")" />
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{__("messages.value_not_found")}}</strong>
-                            </span>
-                            <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="product_name">
-                                @foreach(App\Models\Product::where("is_raw",1)->get() as $product)
-                                    <option class="dropdown-item"  value="{{$product->id}}">{{$product->name}}</option>
-                                @endforeach
+                            <div class="input-group mb-3">
+                                <input tabindex="6" form="f" id="raw_product_name" name="raw_product_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("raw_product_name")" />
+                                <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                      <a id="btn_add_product" data-toggle="modal" data-target="#addProductModal" data-route="{{route("product.storeProduct")}}" onclick="
+                                                $('#addProductModal .modal-dialog .modal-content #form_add .modal-body .form-group #is_raw option').each(function(){
+                                                    if ($(this).val() == 1){
+                                                        $(this).attr('selected','selected');
+                                                    }
+                                                })
+                                                $('#addProductModal .modal-dialog .modal-content #form_add .modal-body .form-group #is_raw').attr('readonly','readonly');
+                                                let route = $(this).data('route');
+                                                $('#addProductModal .modal-dialog .modal-content #form_add').attr('action',route);
+                                                setTimeout(function (){
+                                                    $('#addProductModal .modal-dialog .modal-content #form_add .modal-body .form-group #id').focus();
+                                                },500);
+                                      ">
+                                            <i class="fas fa-plus text-green"></i>
+                                      </a>
+                                </span>
+                                </div>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{__("messages.value_not_found")}}</strong>
+                                </span>
+                                <div style="max-height:200px;overflow-y: scroll" id="dropdown_menu" class="dropdown-menu" aria-labelledby="product_name">
+                                    @foreach(App\Models\Product::where("is_raw",1)->get() as $product)
+                                        <option class="dropdown-item"  value="{{$product->id}}">{{$product->name}}</option>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
 

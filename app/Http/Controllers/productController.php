@@ -72,15 +72,9 @@ class productController extends Controller
         }
 
         $result = Product::create($request->except("product_image"));
-//        if ($result!=null) {
-//            session()->flash("success",__("messages.created_successfully",["attribute"=>__("global.product")]));
-//        }else{
-//            session()->flash("success",__("messages.not_created_successfully",["attribute"=>__("global.product")]));
-//        }
+
         globalFunctions::flashMessage("create",$result,"product");
         globalFunctions::registerUserActivityLog("added","product",$result->id);
-
-        return session("success");
         return back();
     }
 

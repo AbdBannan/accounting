@@ -15,6 +15,8 @@ return [
 
     //    -------- account section --------    //
 
+
+    'is_raw' => 'is raw product',
     'product_quantity_running_out' => 'the product ":attribute" quantity is running out',
     'level_of_product_quantity_for_notification' => 'level of product quantity for shortage notification',
     'row_count_in_table' => 'row count in table page',

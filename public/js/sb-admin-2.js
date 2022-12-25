@@ -1,12 +1,12 @@
 (function($) {
     "use strict"; // Start of use strict
 
-    var Toast = Swal.mixin({
-        toast: true,
-        position: 'bottom-start',
-        showConfirmButton: false,
-        timer: 4000
-    });
+    // var Toast = Swal.mixin({
+    //     toast: true,
+    //     position: 'bottom-start',
+    //     showConfirmButton: false,
+    //     timer: 4000
+    // });
     //this is to fill the image from file input
     $("input#file").on("change",function(event){
         let url = URL.createObjectURL(event.target.files[0])
@@ -75,11 +75,14 @@
         $("#form_add").attr("action",route);
     });
 
-    // to populate the add form
+    // to populate the fast add form
     $("a#btn_add_product,a#btn_add_account").on("click",function(){
         let route = $(this).data("route");
         let id = $(this).data("target");
-        $(id+" .modal-dialog .modal-content .modal-body #form_add").attr("action",route);
+        $(id+" .modal-dialog .modal-content #form_add").attr("action",route);
+        setTimeout(function (){
+            $(id+" .modal-dialog .modal-content #form_add .modal-body .form-group #id").focus();
+        },500);
     });
 
     // to activate_user,attach_role,attach_permission,track_user_activity
@@ -151,49 +154,52 @@
                 success:function (e){
                     $(edit_element).data("fields")["value"] = form.children("div").children("#value").val();
                     $(".modal-header .close").click();
-                    Toast.fire({
-                        icon: 'success',
-                        title: e
+                    $.ajax({
+                        url: "http://"+location.host+"/translate/pound_has_been_updated_succesfully",
+                        success:function (e) {
+                            toastr.success(e);
+                        },
                     });
                 },
                 error:function (e){
-                    console.log(e);
-                    Toast.fire({
-                        icon: 'error',
-                        title: e.responseJSON.message
+                    $.ajax({
+                        url: "http://"+location.host+"/translate/pound_has_not_been_updated_succesfully",
+                        success:function (e) {
+                            toastr.error(e);
+                        },
                     });
-                }
+                },
             }
         );
     });
 
     // to add product or account using ajax
-    $("input#btn_add").on("click",function(){
-        let form = $(this).parent(".form-group").parent(".modal-footer").siblings(".modal-body").children("form");
-        var route = form.attr('action');
-        $.ajax({
-                url:route,
-                method:"POST",
-                data: form.serialize(),
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success:function (e){
-                    $(".modal-header .close").click();
-                    Toast.fire({
-                        icon: 'success',
-                        title: e
-                    });
-                },
-                error:function (e){
-                    Toast.fire({
-                        icon: 'error',
-                        title: e.responseJSON.message
-                    });
-                }
-            }
-        );
-    });
+    // $("input#btn_add").on("click",function(){
+    //     let form = $(this).parent(".form-group").parent(".modal-footer").siblings(".modal-body").children("form");
+    //     var route = form.attr('action');
+    //     $.ajax({
+    //             url:route,
+    //             method:"POST",
+    //             data: form.serialize(),
+    //             headers: {
+    //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //             },
+    //             success:function (e){
+    //                 $(".modal-header .close").click();
+    //                 Toast.fire({
+    //                     icon: 'success',
+    //                     title: e
+    //                 });
+    //             },
+    //             error:function (e){
+    //                 Toast.fire({
+    //                     icon: 'error',
+    //                     title: e.responseJSON.message
+    //                 });
+    //             }
+    //         }
+    //     );
+    // });
 
 
     // auto calc the total price when quantity or price is changed
@@ -361,7 +367,7 @@
             }
         } else if (e.which == F2 ) {
             e.preventDefault();
-            if ($("#btn_close_invoice").get(0) != undefined){
+            if ($("#btn_close_invoice").get(0) != undefined && $("#btn_close_invoice").attr("hidden") != "hidden"){
                 $("#btn_close_invoice").get(0).click();
             }
         }
@@ -465,6 +471,7 @@
         },500);
 
     });
+
 
     // // this is to handel the back action in the custom back button
     // $("#back_arrow").on("click",function (){

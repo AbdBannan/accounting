@@ -70,8 +70,8 @@
                         <form id="search_form" style="margin: auto" action="{{route("invoice.searchProductMovementInvoice")}}">
                             <div class="form-group text-center">
                                 <label style="font-size: x-large" for="invoice_id" >{{__("global.enter_invoice_id")}}</label>
-                                <input type="number" name="invoice_id" id="invoice_id" class="form-control" autofocus>
-                                <input id="btn_search" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.search")}}">
+                                <input tabindex="1" type="number" name="invoice_id" id="invoice_id" class="form-control" autofocus>
+                                <input tabindex="2" id="btn_search" type="submit" class="btn btn-outline-primary form-control" value="{{__("global.search")}}">
                             </div>
                         </form>
                     </div>
@@ -83,7 +83,8 @@
         <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
         <x-modals.close-invoice-modal></x-modals.close-invoice-modal>
         <x-modals.ajax-update-modal :modalName="$modalName = 'pound'"></x-modals.ajax-update-modal>
-    @endsection
+        <x-modals.add-modal :modalName="$modalName = 'product'" :modalId="$modalId='addProductModal'"></x-modals.add-modal>
+        @endsection
     @section("script")
         <script>
             let ids = [];
@@ -94,6 +95,7 @@
                 $(".row input[type='text'],.row input[type='number'],.row select,.row input[type='file']").prop("disabled",true);
                 $("#toggle_image,#toggle_qr").addClass("disable-pointer");
                 $("a#btn_update_pound").addClass("disable-pointer");
+                $("a#btn_add_product").addClass("disable-pointer");
             @endif
             function validateDropDownBox(dropDownBox){
                 let error="";
@@ -219,6 +221,7 @@
                 $(".row input[type='text'],.row input[type='number'],.row select,.row input[type='file']").prop("disabled",false);
                 $("#total_price").prop("disabled",true);
                 $("a#btn_update_pound").removeClass("disable-pointer");
+                $("a#btn_add_product").removeClass("disable-pointer");
                 $("#toggle_image,#toggle_qr").removeClass("disable-pointer");
                 $("input#moved_product_name").focus();
                 editingMode = true;

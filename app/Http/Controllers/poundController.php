@@ -55,8 +55,7 @@ class poundController extends Controller
 
         globalFunctions::flashMessage("update",$result,"pound");
         globalFunctions::registerUserActivityLog("updated","pound",$pound->id);
-        return session("success");
-//        return back();
+        return back();
     }
 
     public function viewRecyclebin()

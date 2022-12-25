@@ -20,7 +20,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">{{__("global.cancel")}}</button>
-                <input tabindex="13" id="btn-submit-invoice" form="form" class="btn btn-success" type="submit" value="{{__("global.save")}}">
+                <input tabindex="12" id="btn-submit-invoice" form="form" class="btn btn-success" type="submit" value="{{__("global.save")}}">
             </div>
         </div>
     </div>

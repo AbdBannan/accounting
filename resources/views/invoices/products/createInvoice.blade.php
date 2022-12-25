@@ -31,8 +31,8 @@
         </div>
     @endsection
     @section("modals")
-        <x-modals.ajax-add-modal :modalName="$modalName = 'account'" :modalId="$modalId='addAccountModal'"></x-modals.ajax-add-modal>
-        <x-modals.ajax-add-modal :modalName="$modalName = 'product'" :modalId="$modalId='addProductModal'"></x-modals.ajax-add-modal>
+        <x-modals.add-modal :modalName="$modalName = 'account'" :modalId="$modalId='addAccountModal'"></x-modals.add-modal>
+        <x-modals.add-modal :modalName="$modalName = 'product'" :modalId="$modalId='addProductModal'"></x-modals.add-modal>
         <x-modals.close-invoice-modal></x-modals.close-invoice-modal>
         <x-modals.ajax-update-modal :modalName="$modalName = 'pound'"></x-modals.ajax-update-modal>
     @endsection

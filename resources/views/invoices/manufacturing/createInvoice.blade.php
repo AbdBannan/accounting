@@ -22,10 +22,13 @@
         </div>
     @endsection
     @section("modals")
+        <x-modals.add-modal :modalName="$modalName = 'account'" :modalId="$modalId='addAccountModal'"></x-modals.add-modal>
+        <x-modals.add-modal :modalName="$modalName = 'product'" :modalId="$modalId='addProductModal'"></x-modals.add-modal>
         <x-modals.close-invoice-modal></x-modals.close-invoice-modal>
         <x-modals.manufacturing-templates-modal></x-modals.manufacturing-templates-modal>
         <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
         <x-modals.ajax-update-modal :modalName="$modalName = 'pound'"></x-modals.ajax-update-modal>
+
     @endsection
     @section("script")
             <script>
