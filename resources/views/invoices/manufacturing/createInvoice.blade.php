@@ -27,7 +27,7 @@
         <x-modals.close-invoice-modal></x-modals.close-invoice-modal>
         <x-modals.manufacturing-templates-modal></x-modals.manufacturing-templates-modal>
         <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
-        <x-modals.ajax-update-modal :modalName="$modalName = 'pound'"></x-modals.ajax-update-modal>
+        <x-modals.update-modal :modalName="$modalName = 'pound'"></x-modals.update-modal>
 
     @endsection
     @section("script")
@@ -40,6 +40,7 @@
                     function (){
                         $("input#first_part_name").focus();
                         $("input#first_part_name").change();
+                        $("form#form_update .form-group #name").attr("readonly","readonly");
                     },100
                 );
 

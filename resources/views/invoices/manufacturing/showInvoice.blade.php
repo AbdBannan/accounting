@@ -92,7 +92,7 @@
         <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
         <x-modals.close-invoice-modal></x-modals.close-invoice-modal>
         <x-modals.manufacturing-templates-modal></x-modals.manufacturing-templates-modal>
-        <x-modals.ajax-update-modal :modalName="$modalName = 'pound'"></x-modals.ajax-update-modal>
+        <x-modals.update-modal :modalName="$modalName = 'pound'"></x-modals.update-modal>
         <x-modals.add-modal :modalName="$modalName = 'account'" :modalId="$modalId='addAccountModal'"></x-modals.add-modal>
         <x-modals.add-modal :modalName="$modalName = 'product'" :modalId="$modalId='addProductModal'"></x-modals.add-modal>
     @endsection
@@ -103,11 +103,12 @@
             let tr = null;
             let isLineInEditing = false;
             @if(count($invoiceLines)!=0)
-            $(".row input[type='text'],.row input[type='number'],.row select,.row input[type='file']").prop("disabled",true);
-            $("#toggle_image,#toggle_qr").addClass("disable-pointer");
-            $("a#btn_update_pound").addClass("disable-pointer");
-            $("a#btn_add_account").addClass("disable-pointer");
-            $("a#btn_add_product").addClass("disable-pointer");
+                $(".row input[type='text'],.row input[type='number'],.row select,.row input[type='file']").prop("disabled",true);
+                $("#toggle_image,#toggle_qr").addClass("disable-pointer");
+                $("a#btn_update_pound").addClass("disable-pointer");
+                $("a#btn_add_account").addClass("disable-pointer");
+                $("a#btn_add_product").addClass("disable-pointer");
+                $("form#form_update .form-group #name").attr("readonly","readonly");
             @endif
             // $("#invoice_id").prop("disabled",false);
             // $("#second_part_name").prop("disabled",false);

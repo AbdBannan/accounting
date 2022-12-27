@@ -34,7 +34,7 @@
         <x-modals.add-modal :modalName="$modalName = 'account'" :modalId="$modalId='addAccountModal'"></x-modals.add-modal>
         <x-modals.add-modal :modalName="$modalName = 'product'" :modalId="$modalId='addProductModal'"></x-modals.add-modal>
         <x-modals.close-invoice-modal></x-modals.close-invoice-modal>
-        <x-modals.ajax-update-modal :modalName="$modalName = 'pound'"></x-modals.ajax-update-modal>
+        <x-modals.update-modal :modalName="$modalName = 'pound'"></x-modals.update-modal>
     @endsection
     @section("script")
             <script>
@@ -58,8 +58,8 @@
                         saved_rows = JSON.parse(saved_rows);
                         let entries = "";
                         saved_rows.forEach(function (row){
-                            entries +=
-                                `<tr>
+                        entries +=
+                            `<tr>
                             <td ondblclick="putLineInEdit(this)" id="td">`+ctr+`</td>
                             <td ondblclick="putLineInEdit(this)" id="td"><input class="auto-save" form="form" name="first_part_name_`+ctr+`" type="text" value="`+row.first_part_name+`" style="outline: none; border: none;background-color: transparent" readonly></td>
                             <td ondblclick="putLineInEdit(this)" id="td"><input class="auto-save" form="form" name="product_name_`+ctr+`" type="text" value="`+row.product_name+`" style="outline: none;border: none;background-color: transparent" readonly></td>

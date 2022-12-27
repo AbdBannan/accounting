@@ -136,42 +136,42 @@
     });
 
     // to update pound using ajax
-    $("input#btn_update").on("click",function(){
-        var form = $("#form_update");
-        let edit_element = null;
-        $("a#btn_update").each(function (){
-        if ($(this).data("fields")["name"] == form.children("div").children("#name").val())
-            edit_element = this;
-        })
-        var route = form.attr('action');
-        $.ajax({
-                url:route,
-                method:"POST",
-                data: form.serialize(),
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success:function (e){
-                    $(edit_element).data("fields")["value"] = form.children("div").children("#value").val();
-                    $(".modal-header .close").click();
-                    $.ajax({
-                        url: "http://"+location.host+"/translate/pound_has_been_updated_succesfully",
-                        success:function (e) {
-                            toastr.success(e);
-                        },
-                    });
-                },
-                error:function (e){
-                    $.ajax({
-                        url: "http://"+location.host+"/translate/pound_has_not_been_updated_succesfully",
-                        success:function (e) {
-                            toastr.error(e);
-                        },
-                    });
-                },
-            }
-        );
-    });
+    // $("input#btn_update").on("click",function(){
+    //     var form = $("#form_update");
+    //     let edit_element = null;
+    //     $("a#btn_update").each(function (){
+    //     if ($(this).data("fields")["name"] == form.children("div").children("#name").val())
+    //         edit_element = this;
+    //     })
+    //     var route = form.attr('action');
+    //     $.ajax({
+    //             url:route,
+    //             method:"POST",
+    //             data: form.serialize(),
+    //             headers: {
+    //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //             },
+    //             success:function (e){
+    //                 $(edit_element).data("fields")["value"] = form.children("div").children("#value").val();
+    //                 $(".modal-header .close").click();
+    //                 $.ajax({
+    //                     url: "http://"+location.host+"/translate/pound_has_been_updated_succesfully",
+    //                     success:function (e) {
+    //                         toastr.success(e);
+    //                     },
+    //                 });
+    //             },
+    //             error:function (e){
+    //                 $.ajax({
+    //                     url: "http://"+location.host+"/translate/pound_has_not_been_updated_succesfully",
+    //                     success:function (e) {
+    //                         toastr.error(e);
+    //                     },
+    //                 });
+    //             },
+    //         }
+    //     );
+    // });
 
     // to add product or account using ajax
     // $("input#btn_add").on("click",function(){

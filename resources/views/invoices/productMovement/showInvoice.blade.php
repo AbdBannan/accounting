@@ -82,7 +82,7 @@
     @section("modals")
         <x-modals.delete-confirm-modal></x-modals.delete-confirm-modal>
         <x-modals.close-invoice-modal></x-modals.close-invoice-modal>
-        <x-modals.ajax-update-modal :modalName="$modalName = 'pound'"></x-modals.ajax-update-modal>
+        <x-modals.update-modal :modalName="$modalName = 'pound'"></x-modals.update-modal>
         <x-modals.add-modal :modalName="$modalName = 'product'" :modalId="$modalId='addProductModal'"></x-modals.add-modal>
         @endsection
     @section("script")
@@ -96,6 +96,7 @@
                 $("#toggle_image,#toggle_qr").addClass("disable-pointer");
                 $("a#btn_update_pound").addClass("disable-pointer");
                 $("a#btn_add_product").addClass("disable-pointer");
+                $("form#form_update .form-group #name").attr("readonly","readonly");
             @endif
             function validateDropDownBox(dropDownBox){
                 let error="";
