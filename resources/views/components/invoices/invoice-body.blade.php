@@ -71,13 +71,13 @@
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="total_price" >{{__("global.total_price")}}</label>
-                                <input form="f" type="number" min="0" class="form-control" id="total_price" name="total_price" disabled>
+                                <input form="f" type="number" min="0" class="form-control auto-save" id="total_price" name="total_price" disabled>
                             </div>
                         </div>
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="quantity" >{{__("global.quantity")}}</label>
-                                <input tabindex="2" form="f" type="number" min="0" class="form-control" id="quantity" name="quantity" >
+                                <input tabindex="2" form="f" type="number" min="0" class="form-control auto-save" id="quantity" name="quantity" >
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.should_not_be_empty")}}</strong>
                                 </span>
@@ -86,7 +86,7 @@
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="price" >{{__("global.price")}}</label>
-                                <input tabindex="3" form="f" type="number" min="0" class="form-control" id="price" name="price" >
+                                <input tabindex="3" form="f" type="number" min="0" class="form-control auto-save" id="price" name="price" >
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.should_not_be_empty")}}</strong>
                                 </span>
@@ -96,7 +96,7 @@
                         <div class="col-md-3 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="first_part_name" >{{__("global.first_part")}}</label>
-                                <input tabindex="4" form="f" id="first_part_name" name="first_part_name"  type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input tabindex="4" form="f" id="first_part_name" name="first_part_name"  type="text" placeholder="" class="form-control dropdown-toggle auto-save" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -112,7 +112,7 @@
                             <div class="form-group">
                                 <label style="font-size: large" for="product_name" >{{__("global.product")}}</label>
                                 <div class="input-group mb-3">
-                                    <input tabindex="5" form="f" id="product_name" name="product_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                    <input tabindex="5" form="f" id="product_name" name="product_name" type="text" placeholder="" class="form-control dropdown-toggle auto-save" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                     <div class="input-group-prepend">
                                     <span class="input-group-text">
                                           <a id="btn_add_product" data-toggle="modal" data-target="#addProductModal" data-route="{{route("product.storeProduct")}}">
@@ -137,7 +137,7 @@
 
                         <div class="form-group">
                             <label style="font-size: large" for="notes" >{{__("global.notes")}}</label>
-                            <input tabindex="6" form="f" id="notes" name="notes" type="text" class="form-control">
+                            <input tabindex="6" form="f" id="notes" name="notes" type="text" class="form-control auto-save">
                         </div>
 
                         <div>

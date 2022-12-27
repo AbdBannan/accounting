@@ -74,3 +74,8 @@ Route::middleware(["auth"])->group(function (){
         return __("global.$word");
     })->name("translate");
 });
+
+
+Route::get("/tt",function (){
+    return view("test");
+});

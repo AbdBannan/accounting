@@ -20,7 +20,7 @@
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="first_part_name" >{{__("global.account_name")}}</label>
                             <div class="input-group mb-3">
-                                <input tabindex="1" form="form" id="first_part_name" name="first_part_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("first_part_name")" />
+                                <input tabindex="1" form="form" id="first_part_name" name="first_part_name" type="text" placeholder="" class="form-control dropdown-toggle auto-save" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("first_part_name")" />
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">
                                           <a id="btn_add_account" data-toggle="modal" data-target="#addAccountModal" data-route="{{route("account.storeAccount")}}">
@@ -78,7 +78,7 @@
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="product_name" >{{__("global.product")}}</label>
                             <div class="input-group mb-3">
-                                <input tabindex="2" value="@yield("product_name")" form="form" id="product_name" name="product_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input tabindex="2" value="@yield("product_name")" form="form" id="product_name" name="product_name" type="text" placeholder="" class="form-control dropdown-toggle auto-save" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">
                                           <a id="btn_add_product" data-toggle="modal" data-target="#addProductModal" data-route="{{route("product.storeProduct")}}" onclick="
@@ -112,7 +112,7 @@
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="produced_quantity" >{{__("global.produced_quantity")}}</label>
-                                <input tabindex="3" value="@yield("produced_quantity")" form="form" type="number" min="0" class="form-control" id="produced_quantity" name="produced_quantity" >
+                                <input tabindex="3" value="@yield("produced_quantity")" form="form" type="number" min="0" class="form-control auto-save" id="produced_quantity" name="produced_quantity" >
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.should_not_be_empty")}}</strong>
                                 </span>
@@ -131,7 +131,7 @@
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="gainful_value" >{{__("global.gainful_value")}}</label>
-                                <input tabindex="5" value="@yield("gainful_value")" form="form" type="number" min="0" class="form-control" id="gainful_value" name="gainful_value" >
+                                <input tabindex="5" value="@yield("gainful_value")" form="form" type="number" min="0" class="form-control auto-save" id="gainful_value" name="gainful_value" >
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.should_not_be_empty")}}</strong>
                                 </span>
@@ -142,7 +142,7 @@
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="pure_piece_price" >{{__("global.pure_piece_price")}}</label>
-                                <input value="@yield("pure_piece_price",0)" form="form" type="number" min="0" class="form-control" id="pure_piece_price" name="pure_piece_price" readonly>
+                                <input value="@yield("pure_piece_price",0)" form="form" type="number" min="0" class="form-control auto-save" id="pure_piece_price" name="pure_piece_price" readonly>
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.should_not_be_empty")}}</strong>
                                 </span>
@@ -151,7 +151,7 @@
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="with_gainful_piece_price" >{{__("global.with_gainful_piece_price")}}</label>
-                                <input value="@yield("with_gainful_piece_price",0)" form="aa" type="number" min="0" class="form-control" id="with_gainful_piece_price" name="with_gainful_piece_price" readonly>
+                                <input value="@yield("with_gainful_piece_price",0)" form="aa" type="number" min="0" class="form-control auto-save" id="with_gainful_piece_price" name="with_gainful_piece_price" readonly>
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.should_not_be_empty")}}</strong>
                                 </span>
@@ -163,7 +163,7 @@
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="raw_product_name" >{{__("global.raw_product")}}</label>
                             <div class="input-group mb-3">
-                                <input tabindex="6" form="f" id="raw_product_name" name="raw_product_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("raw_product_name")" />
+                                <input tabindex="6" form="f" id="raw_product_name" name="raw_product_name" type="text" placeholder="" class="form-control dropdown-toggle auto-save" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("raw_product_name")" />
                                 <div class="input-group-prepend">
                                 <span class="input-group-text">
                                       <a id="btn_add_product" data-toggle="modal" data-target="#addProductModal" data-route="{{route("product.storeProduct")}}" onclick="
@@ -197,7 +197,7 @@
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="quantity" >{{__("global.quantity")}}</label>
-                                <input tabindex="7" form="f" type="number" min="0" class="form-control" id="quantity" name="quantity" >
+                                <input tabindex="7" form="f" type="number" min="0" class="form-control auto-save" id="quantity" name="quantity" >
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.should_not_be_empty")}}</strong>
                                 </span>
@@ -206,7 +206,7 @@
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="price" >{{__("global.price")}}</label>
-                                <input tabindex="8" form="f" type="number" min="0" class="form-control" id="price" name="price" >
+                                <input tabindex="8" form="f" type="number" min="0" class="form-control auto-save" id="price" name="price" >
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.should_not_be_empty")}}</strong>
                                 </span>
@@ -222,7 +222,7 @@
                         <div class="col-md-5 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="notes" >{{__("global.notes")}}</label>
-                                <input tabindex="9" form="f" id="notes" name="notes" type="text" class="form-control">
+                                <input tabindex="9" form="f" id="notes" name="notes" type="text" class="form-control auto-save">
                             </div>
                         </div>
 
@@ -244,7 +244,6 @@
                     <div id="image_container" >
                         <a target="_blank" href="@yield("image_path",asset("images/systemImages/default_invoice_img.png"))" hidden></a>
                         <img id="image" src="@yield("image_path",asset("images/systemImages/default_invoice_img.png"))" style="padding:5px;width: 100%;border-radius:50%;max-width:200px;">
-                        {{--                        <img class="position-absolute" id="image" src="@yield("image_path",asset("images/systemImages/default_invoice_img.png"))" style="width:100%;max-width:200px;margin:10px auto ;border-radius:50%">--}}
                         <input form="form" type="file" id="invoice_image" name="image" class="form-control-file">
                     </div>
                 </div>

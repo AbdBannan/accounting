@@ -33,7 +33,13 @@
     </div>
     <div class="form-group row">
         <label style="font-size: x-large" for="row_count_in_table" class="font-weight-bolder col-3">{{__("global.row_count_in_table")}}</label>
-        <input type="number" min="0" id="row_count_in_table" name="row_count_in_table" class="form-control col-3" value="{{$config["row_count_in_table"]}}">
+        <select id="row_count_in_table" name="row_count_in_table" class="form-control col-3">
+            <option value="5" class="dropdown-item" @if(isset($config["row_count_in_table"]) and $config["row_count_in_table"] == "5") selected @endif>5</option>
+            <option value="10" class="dropdown-item" @if(isset($config["row_count_in_table"]) and $config["row_count_in_table"] == "10") selected @endif>10</option>
+            <option value="25" class="dropdown-item" @if(isset($config["row_count_in_table"]) and $config["row_count_in_table"] == "25") selected @endif>25</option>
+            <option value="50" class="dropdown-item" @if(isset($config["row_count_in_table"]) and $config["row_count_in_table"] == "50") selected @endif>50</option>
+            <option value="-1" class="dropdown-item" @if(isset($config["row_count_in_table"]) and $config["row_count_in_table"] == "-1") selected @endif>{{__("global.all")}}</option>
+        </select>
     </div>
     <div class="form-group row">
         <label style="font-size: x-large" for="use_recyclebin" class="font-weight-bolder col-3">{{__("global.use_recyclebin")}}</label>

@@ -1,6 +1,6 @@
 (function($) {
   $.fn.savy = function(order,fn) {
-    const sv = "savy-";
+    const sv = "savy-"+location.pathname+"-";
     if (order == "load") {
       $(this).each(function() {
         if ($(this).is(":radio")) {
@@ -29,7 +29,7 @@
             var intervalDuration = 500,
                 interval = setInterval( () => {
                   localStorage.setItem(sv+this.id, this.value);
-                  if(!$(this).is(":focus")) clearInterval(interval);  
+                  if(!$(this).is(":focus")) clearInterval(interval);
                 }, intervalDuration );
           } );
         }else if($(this).is("select")) {

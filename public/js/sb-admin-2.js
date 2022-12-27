@@ -418,6 +418,19 @@
         },500);
     });
 
+    $("#btn_save_invoice").on("click",function (){
+        $('.auto-save').savy('destroy');
+        let keys = [
+            "custom-savy-"+location.pathname+"-rows",
+            "custom-savy-"+location.pathname+"-delete_row_button_status",
+        ];
+        keys.forEach(function (key){
+            if(localStorage.getItem(key)!=null){
+                localStorage.removeItem(key)
+            }
+        });
+    });
+
     // this is for copying the pound_type into the bottom of invoice
     $("#pound_type").on("keyup",function (){
         $("#invoice_pound").text($(this).val());
@@ -557,7 +570,7 @@
     //     }
     // });
 
-
+    // to switch between choose_image and scan_qr
     $("#toggle_qr,#toggle_image").on("click",function (){
        $("#qr_code_container").fadeToggle(0);
        $("#image_container").fadeToggle(0);

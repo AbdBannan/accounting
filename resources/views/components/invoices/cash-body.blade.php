@@ -15,7 +15,7 @@
                         <div class="form-group col-md-3 col-sm-12">
                             <label style="font-size: large" for="first_part_name" >{{__("global.first_part_name")}}</label>
                             <div class="input-group mb-3">
-                                <input tabindex="1" form="form" id="first_part_name" name="first_part_name" type="text" placeholder="" class="form-control dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("second_part_name",181)" />
+                                <input tabindex="1" form="form" id="first_part_name" name="first_part_name" type="text" placeholder="" class="form-control dropdown-toggle auto-save" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="@yield("second_part_name",181)" />
                                 <div class="input-group-prepend">
                                 <span class="input-group-text">
                                       <a id="btn_add_account" data-toggle="modal" data-target="#addAccountModal" data-route="{{route("account.storeAccount")}}">
@@ -72,7 +72,7 @@
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="received" >{{__("global.received")}}</label>
-                                <input tabindex="2" form="f" type="number" min="0" class="form-control" id="received" name="received" >
+                                <input tabindex="2" form="f" type="number" min="0" class="form-control auto-save" id="received" name="received" >
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -81,7 +81,7 @@
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="payed" >{{__("global.payed")}}</label>
-                                <input tabindex="3" form="f" type="number" min="0" class="form-control" id="payed" name="payed" >
+                                <input tabindex="3" form="f" type="number" min="0" class="form-control auto-save" id="payed" name="payed" >
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -90,7 +90,7 @@
                         <div class="col-md-3 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="second_part_name" >{{__("global.second_part_name")}}</label>
-                                <input tabindex="4" form="f" id="second_part_name" name="second_part_name"  type="text" placeholder="" class="form-control dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                                <input tabindex="4" form="f" id="second_part_name" name="second_part_name"  type="text" placeholder="" class="form-control dropdown-toggle auto-save"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{__("messages.value_not_found")}}</strong>
                                 </span>
@@ -105,7 +105,7 @@
                         <div class="col-md-5 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="notes" >{{__("global.notes")}}</label>
-                                <input tabindex="5" form="f" id="notes" name="notes" type="text" class="form-control">
+                                <input tabindex="5" form="f" id="notes" name="notes" type="text" class="form-control auto-save">
                             </div>
                         </div>
 

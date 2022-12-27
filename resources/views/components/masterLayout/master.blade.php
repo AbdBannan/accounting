@@ -772,8 +772,8 @@
 <script src="{{asset("js/plugins/sweetalert2/sweetalert2.min.js")}}"></script>
 <!-- Toastr -->
 <script src="{{asset("js/plugins/toastr/toastr.min.js")}}"></script>
-{{--    <script type="text/javascript" src={{asset("js/jqu/ery-3.2.1.min.js")}}></script>--}}
-<script type="text/javascript" src={{asset("js/savy.min.js")}}></script>
+<!-- Savy -->
+<script type="text/javascript" src={{asset("js/savy.js")}}></script>
 
 <!-- Custom scripts for all pages-->
 <script src="{{asset("js/sb-admin-2.js?var=".rand())}}"></script>
@@ -828,18 +828,7 @@
             $('.datepicker').datepicker();
 
 
-            //$('.auto-save').savy('load') --> can be used without callback
-            $('.auto-save').savy('load',function(){
-                // console.log("All data from savy are loaded");
-            });
-
-            function dstry(){
-            //$('.auto-save').savy('destroy') --> can be used without callback
-            $('.auto-save').savy('destroy',function(){
-                // console.log("All data from savy are Destroyed");
-                window.location.reload();
-            });
-        }
+            $('.auto-save').savy('load');
 
             // Call the dataTables jQuery plugin
 
@@ -853,7 +842,7 @@
             let previous = "{{__("global.Previous")}}";
             let infoFiltered = " - {{__("global.filtered_from")}} _MAX_ {{__("global.entries")}}";
             let pageLength = {{auth()->user()->getConfig("row_count_in_table")}};
-            let datatable = $('#dataTable').DataTable(
+            $('#dataTable').DataTable(
                 {
                     "ordering":true,
                     "autoWidth": false,
@@ -879,6 +868,13 @@
                     "scrollCollapse": true,
                     "lengthMenu": [[5,10, 25, 50, -1], [5,10, 25, 50, "All"]],
                     "pageLength": pageLength,
+                    drawCallback: function(){
+                        $('.paginate_button', this.api().table().container())
+                            .on('click', function(){
+                                $("td input[type='checkbox']").get(0).click();
+                                $("td input[type='checkbox']").get(0).click();
+                            });
+                    }
                 });
 
             // $("#example1").DataTable({
@@ -897,10 +893,11 @@
         });
 
 
-
+        // for template initialization
         $("li.nav-item a").each(function (){
             $(this).parent("li").parent("ul").siblings("a").addClass("bg-gradient-secondary");
         });
+        // for template initialization
         $("li.nav-item a").each(function (){
             if (this.href == location.href) {
                 $(this).addClass("active");
@@ -910,7 +907,7 @@
 
 
 
-        // to update pound using ajax
+        // to set the notificatin mark "has_seen=1"
         $("a#btn_notifications").on("click",function(e){
             var route = "/notifications/seenAllNotifications";
             $.ajax({
