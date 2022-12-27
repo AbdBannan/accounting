@@ -275,55 +275,6 @@
     }
 
     // to move into the next input by pressing enter
-    //  $("input,select,textarea,button#btn_add_item_to_invoice").on("keypress",function (e){//to prevent submitting and focus on next input
-    //     const MOBILE_ENTER = 13;
-    //     const PC_ENTER = 13;
-    //     // TODO : see the ascci code for enter in mobile keyboard
-    //     if (e.which == PC_ENTER || e.which == MOBILE_ENTER){
-    //         e.preventDefault();
-    //         // $(this).trigger("keydown", [9]);
-    //         let inputs = $("input,select,textarea");
-    //
-    //         for (let item in inputs){
-    //             if (Number(inputs[item])){
-    //                 break;
-    //             }
-    //             if ($(inputs[item]).attr("id") === $(this).attr("id")){
-    //                 setTimeout(
-    //                     function (){
-    //                         if ($(inputs[item]).attr("id") == "notes" && (location.pathname.indexOf("Invoice"))) {
-    //                             $("#btn_add_item_to_invoice").click();
-    //                             return;
-    //                         }
-    //                         else if ($(inputs[item]).attr("type") == "submit") {
-    //                             $(inputs[item]).click();
-    //                             return;
-    //                         } else if ($(inputs[parseInt(item)+2]).attr("id") == "payed" && !Number($(inputs[parseInt(item)+2]).val())) {
-    //                             $(inputs[parseInt(item) + 1]).focus();
-    //                             return;
-    //                         } else if ($(inputs[parseInt(item)+1]).attr("id") == "total_price" ||
-    //                             ($(inputs[item]).attr("id") == "received" && Number($(inputs[item]).val())) ||
-    //                             ($(inputs[parseInt(item)+3]).attr("id") == "payed" && !Number($(inputs[parseInt(item)+3]).val())) ||
-    //                             ($(inputs[parseInt(item)+2]).attr("id") == "payed" && Number($(inputs[parseInt(item)+2]).val()))
-    //                         ) {
-    //                             $(inputs[parseInt(item) + 2]).focus();
-    //                             return;
-    //                         }
-    //                         else if (($(inputs[parseInt(item)+1]).attr("id") == "pound_type" && $(inputs[parseInt(item)+2]).attr("id") =="total_price")||
-    //                             ($(inputs[parseInt(item)+3]).attr("id") == "payed" && Number($(inputs[parseInt(item)+3]).val()))
-    //                         ) {
-    //                             $(inputs[parseInt(item) + 3]).focus();
-    //                             return;
-    //                         } else{
-    //                             $(inputs[parseInt(item)+1]).focus();
-    //                             return;
-    //                         }
-    //                     },140
-    //                 );
-    //             }
-    //         }
-    //     }
-    // });
     $("input,select,textarea,button#btn_add_item_to_invoice").on("keypress",function (e){
         const MOBILE_ENTER = 13;
         const PC_ENTER = 13;
@@ -481,9 +432,9 @@
         let model_id = $(this).data("target");
         setTimeout(function (){
             if (model_id == "#updateModal") {
-                $(model_id+" .modal-body form input").get(2).focus();
+                $(model_id+" .modal-dialog .modal-content form .modal-body input").get(1).focus();
             } else if (model_id == "#addModal") {
-                $(model_id+" .modal-body form input").get(1).focus();
+                $(model_id+" .modal-dialog .modal-content form .modal-body input").get(0).focus();
             }
         },500);
 

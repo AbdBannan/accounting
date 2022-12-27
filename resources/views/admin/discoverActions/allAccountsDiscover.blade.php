@@ -12,7 +12,7 @@
                     <div class="card-body">
 
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered table-striped" id="dataTable1" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
                                     <th>{{__("global.account_id")}}</th>
@@ -72,57 +72,97 @@
     @endsection
     @section("script")
         <script>
+            // to navigate into the discover for the clicked account
             $("tr#discover_rows").on("dblclick",function (){
                 let first_part_name = $(this).children("td#first_part_name").text();
                 $("form#go_to_global_discover_form input#account").val(first_part_name);
                 $("form#go_to_global_discover_form input[type='submit']").click();
             });
+            let debit_credit_show_status = true;
+            // this is to switch the show debit_credit column on or off
             $("#show_debit_credit").on("dblclick",function (){
-                if ($(this).text() == "0") {
+                if (debit_credit_show_status) {
                     $(".fade1").fadeIn();
                     $(this).text("");
+                    debit_credit_show_status = false;
                 }
                 else {
                     $(".fade1").fadeOut();
                     $(this).text(0);
+                    debit_credit_show_status = true;
                 }
             });
-            setTimeout(columnShowHide,200);
-            function columnShowHide(){// this is to assign function to pagination
-                pagenationChangingShowHide();
-                $(".custom-select").on("change",function (){
-                    if ($("#show_debit_credit").text() == "") {
-                        $(".fade1").show();
-                    }
-                    else{
-                        $(".fade1").hide();
-                    }
-                    pagenationChangingShowHide();//when pagination anchor is clicked it will be replaced so reassign the function again
-                });
-                $("#dataTable_filter label input").on("keyup",function (){
-                    if ($("#show_debit_credit").text() == "") {
-                        $(".fade1").show();
-                    }
-                    else{
-                        $(".fade1").hide();
-                    }
-                    pagenationChangingShowHide();//when pagination anchor is clicked it will be replaced so reassign the function again
-                });
+            // update the debit_credit column status
+            function columnShowHide(){
+                if (!debit_credit_show_status) {
+                    $(".fade1").fadeIn();
+                    $("#show_debit_credit").text("");
+                    debit_credit_show_status = false;
+                }
+                else {
+                    $(".fade1").fadeOut();
+                    $("#show_debit_credit").text(0);
+                    debit_credit_show_status = true;
+                }
             }
 
-            function pagenationChangingShowHide(){
 
-                $("ul.pagination li,.sorting").on("click",function (){
-                    if ($("#show_debit_credit").text() == "") {
-                        $(".fade1").show();
+
+
+            // Call the dataTables jQuery plugin
+
+            let info = "{{__("global.Showing")}} _START_ {{__("global.to")}} _END_ {{__("global.of")}} _TOTAL_ {{__("global.entries")}}";
+            let emptyTable = "{{__("global.no_data_available_in_table")}}";
+            let infoEmpty = "{{__("global.Showing")}} 0 {{__("global.to")}} 0 {{__("global.of")}} 0 {{__("global.entries")}}";
+            let lengthMenu = "{{__("global.Show")}} _MENU_ {{__("global.entries")}}";
+            let loadingRecords = "{{__("global.please_wait_loading")}}";
+            let search = "{{__("global.Search")}}:";
+            let next = "{{__("global.Next")}}";
+            let previous = "{{__("global.Previous")}}";
+            let infoFiltered = " - {{__("global.filtered_from")}} _MAX_ {{__("global.entries")}}";
+            let pageLength = {{auth()->user()->getConfig("row_count_in_table")}};
+            $('#dataTable1').DataTable(
+                {
+                    "buttons": ["colvis"],
+                    "ordering":true,
+                    "autoWidth": false,
+                    "language": {
+                        // "info": "Showing page _PAGE_ of _PAGES_",
+                        "info": info,
+                        "infoEmpty": infoEmpty,
+                        "emptyTable": emptyTable,
+                        "lengthMenu": lengthMenu,
+                        "loadingRecords": loadingRecords,
+                        "search": search,
+                        "paginate": {
+                            "next": next,
+                            "previous": previous,
+                        },
+                        "infoFiltered": infoFiltered,
+                    },
+                    "processing": true,
+                    "stateSave": true,
+                    "createdRow": function( row, data, dataIndex ) {
+                        // alert();
+                    },
+                    "scrollCollapse": true,
+                    "lengthMenu": [[5,10, 25, 50, -1], [5,10, 25, 50, "All"]],
+                    "pageLength": pageLength,
+                    drawCallback: function(){
+                        $('.paginate_button', this.api().table().container())
+                            .on('click', function(){
+                                columnShowHide();
+                            });
+                        $('.custom-select', this.api().table().container())
+                            .on('change', function(){
+                                columnShowHide();
+                            });
+                        $('#dataTable_filter label input', this.api().table().container())
+                            .on('keyup', function(){
+                                columnShowHide();
+                            });
                     }
-                    else {
-                        $(".fade1").hide();
-                    }
-                    pagenationChangingShowHide();//when pagination anchor is clicked it will be replaced so reassign the function again
                 });
-            }
-
         </script>
 
     @endsection
