@@ -27,14 +27,14 @@
                                     @foreach ($info as $inf)
                                         <tr id="discover_rows">
                                             <td>{{$inf["account_name"]}}</td>
-                                            <td>{{$inf["balance"]}}</td>
+                                            <td>{{round($inf["balance"],2)}}</td>
                                             @if($inf["date"] != null)
                                                 <td>{{$inf["date"]->format("Y-m-d")}}</td>
                                             @else
                                                 <td></td>
                                             @endif
-                                            <td>{{$inf["last_cash_action"]}}</td>
-                                            <td>{{$inf["percentage"] . "%"}}</td>
+                                            <td>{{round($inf["last_cash_action"],2)}}</td>
+                                            <td>{{round($inf["percentage"],2) . "%"}}</td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -45,15 +45,15 @@
                     <div class="card-footer">
                         @if($info!=null)
                             <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received")}} :
-                            <span id="total_received" style="font-style: italic; color:darkblue">{{$total_debit}}</span>
+                            <span id="total_received" style="font-style: italic; color:darkblue">{{round($total_debit,2)}}</span>
 {{--                                <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}
                             </label>
                             <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed")}} :
-                                <span id="total_payed" style="font-style: italic; color:darkblue">{{$total_credit}}</span>
+                                <span id="total_payed" style="font-style: italic; color:darkblue">{{round($total_credit,2)}}</span>
 {{--                                 <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}{{--should be syrian pound--}}
                             </label>
                             <label  class="ml-md-5 ml-sm-3" style="font-size: large">{{__("global.balance")}} :
-                                <span id="total_payed" style="font-style: italic; color:darkblue">{{$total_credit - $total_debit}}</span>
+                                <span id="total_payed" style="font-style: italic; color:darkblue">{{round($total_credit - $total_debit,2)}}</span>
                             </label>
                         @endif
                     </div>
@@ -127,6 +127,6 @@
             });
 
         </script>
-      
+
     @endsection
 </x-masterLayout.master>

@@ -295,7 +295,10 @@
                 $("#pure_piece_price").change();
             }
 
-            reCalcInvoiceTotalPrice();
+
+            setTimeout(function (){
+                reCalcInvoiceTotalPrice();
+            },200);
             function resize(){
                 $("td input").each(function(){
                     $("#test_size_label").text($(this).val());

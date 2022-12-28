@@ -36,15 +36,16 @@
                                                         <a id="btn_show_owner_invoice" href="{{route("invoice.showInvoice",[$action->invoice_id,$action->invoice_type])}}" hidden></a>
                                                     @elseif(in_array($action->invoice_type,["payment","receive"]))
                                                         <a id="btn_show_owner_invoice" href="{{route("invoice.showCashInvoice",$action->invoice_id)}}" hidden></a>
-{{--                                                    @elseif(in_array($action->invoice_type,["product_movement"]))--}}
-{{--                                                            @elseif(in_array($action->invoice_type,["product_movement"]))--}}
-{{--                                                        <a id="btn_show_owner_invoice" href="{{route("invoice.showProductMovementInvoice",$action->invoice_id)}}" hidden></a>--}}
+                                                    @elseif(in_array($action->invoice_type,["product_movement"]))
+                                                        <a id="btn_show_owner_invoice" href="{{route("invoice.showProductMovementInvoice",$action->invoice_id)}}" hidden></a>
+                                                    @elseif(in_array($action->invoice_type,["manufacturing_action"]))
+                                                        <a id="btn_show_owner_invoice" href="{{route("invoice.showManufacturingInvoice",$action->invoice_id)}}" hidden></a>
                                                     @endif
                                                 @endif
                                             </td>
-                                            <td>{{$action->debit}}</td>
-                                            <td>{{$action->credit}}</td>
-                                            <td>{{$action->quantity}}</td>
+                                            <td>{{round($action->debit,2)}}</td>
+                                            <td>{{round($action->credit,2)}}</td>
+                                            <td>{{round($action->quantity,2)}}</td>
                                             <td>{{$action->price}}</td>
                                             <td>{{$action->first_part_name}}</td>
                                             <td>{{$action->product_name}}</td>
@@ -60,11 +61,11 @@
                     <div class="card-footer">
                         @if($actions!=null)
                             <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received")}} :
-                                <span id="total_received" style="font-style: italic; color:darkblue">{{$total_debit}}</span>
+                                <span id="total_received" style="font-style: italic; color:darkblue">{{round($total_debit,2)}}</span>
                                 {{--                <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}
                             </label>
                             <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed")}} :
-                                <span id="total_payed" style="font-style: italic; color:darkblue">{{$total_credit}}</span>
+                                <span id="total_payed" style="font-style: italic; color:darkblue">{{round($total_credit,2)}}</span>
                                 {{--                <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}{{--should be syrian pound--}}
                             </label>
                         @endif

@@ -73,6 +73,9 @@
                     }
 
                 }
+                setTimeout(function (){
+                    reCalcInvoiceTotalPrice();
+                },100);
             }
             restore_last_saved_invoice_rows();
 
@@ -245,8 +248,8 @@
                         received+= parseFloat($(this).parent("td").siblings().children("input[name^='received_']").val());
                     }
                 });
-                $("#total_payed").text(payed);
-                $("#total_received").text(received);
+                $("#total_payed").text($.fn.custom_round(payed,2));
+                $("#total_received").text($.fn.custom_round(received,2));
             }
 
             $("#payed").on("keyup",function (){

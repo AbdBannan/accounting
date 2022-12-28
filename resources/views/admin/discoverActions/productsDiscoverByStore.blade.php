@@ -28,7 +28,7 @@
                                         <tr id="discover_rows">
                                             <td>{{$action["product_id"]}}</td>
                                             <td id="product_name">{{$action["product_name"]}}</td>
-                                            <td>{{$action["balance"]}}</td>
+                                            <td>{{round($action["balance"],2)}}</td>
                                             <td>{{$action["price"]}}</td>
                                             <td>{{$action["balance"] * $action["price"]}}</td>
                                         </tr>
@@ -38,7 +38,7 @@
                                 <tfoot>
                                 <tr>
                                     <th colspan="4"></th>
-                                    <th>{{$accumulated_total_price}}</th>
+                                    <th>{{round($accumulated_total_price,2)}}</th>
                                 </tr>
                                 </tfoot>
                             </table>
@@ -52,15 +52,15 @@
                     <div class="card-footer">
                         @if($actions!=null)
                             <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_in_quantity")}} :
-                                <span id="total_received" style="font-style: italic; color:darkblue">{{$total_in_quantity}}</span>
+                                <span id="total_received" style="font-style: italic; color:darkblue">{{round($total_in_quantity,2)}}</span>
                                 {{--                                <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}
                             </label>
                             <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_out_quantity")}} :
-                                <span id="total_payed" style="font-style: italic; color:darkblue">{{$total_out_quantity}}</span>
+                                <span id="total_payed" style="font-style: italic; color:darkblue">{{round($total_out_quantity,2)}}</span>
                                 {{--                                 <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}{{--should be syrian pound--}}
                             </label>
                             <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.balance")}} :
-                                <span id="total_payed" style="font-style: italic; color:darkblue">{{$total_balance}}</span>
+                                <span id="total_payed" style="font-style: italic; color:darkblue">{{round($total_balance,2)}}</span>
                                 {{--                                 <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}{{--should be syrian pound--}}
                             </label>
                         @endif

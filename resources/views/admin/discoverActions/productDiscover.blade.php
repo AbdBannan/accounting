@@ -49,6 +49,8 @@
                                                         <a id="btn_show_owner_invoice" href="{{route("invoice.showCashInvoice",$action->invoice_id)}}" hidden></a>
                                                     @elseif($action->detail == 0 and in_array($action->invoice_type,["product_movement"]))
                                                         <a id="btn_show_owner_invoice" href="{{route("invoice.showProductMovementInvoice",$action->invoice_id)}}" hidden></a>
+                                                    @elseif(in_array($action->invoice_type,["manufacturing_action"]))
+                                                        <a id="btn_show_owner_invoice" href="{{route("invoice.showManufacturingInvoice",$action->invoice_id)}}" hidden></a>
                                                     @endif
                                                 @endif
                                             </td>
@@ -56,9 +58,9 @@
                                             @php
                                                 $sum_of_quantity += $action->in_quantity - $action->out_quantity
                                             @endphp
-                                            <td>{{$sum_of_quantity}}</td>
-                                            <td>{{$action->in_quantity}}</td>
-                                            <td>{{$action->out_quantity}}</td>
+                                            <td>{{round($sum_of_quantity,2)}}</td>
+                                            <td>{{round($action->in_quantity,2)}}</td>
+                                            <td>{{round($action->out_quantity,2)}}</td>
                                             <td>{{$action->price}}</td>
                                             <td>{{$action->price * $action->quantity}}</td>
                                             @if($action->closing_date != null)
@@ -79,22 +81,22 @@
                     <div class="card-footer">
                         @if($actions!=null)
                             <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.in_quantity")}} :
-                                <span id="total_received" style="font-style: italic; color:darkblue">{{$in_quantity}}</span>
+                                <span id="total_received" style="font-style: italic; color:darkblue">{{round($in_quantity,2)}}</span>
                             </label>
                             <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.out_quantity")}} :
-                                <span id="total_payed" style="font-style: italic; color:darkblue">{{$out_quantity}}</span>
+                                <span id="total_payed" style="font-style: italic; color:darkblue">{{round($out_quantity,2)}}</span>
                             </label>
                             <label  class="ml-md-5 ml-sm-3" style="font-size: large">
                                 @if(($in_quantity - $out_quantity)>0)
-                                    {{__("global.store_has") . " : ". abs($in_quantity - $out_quantity)}}
+                                    {{__("global.store_has") . " : ". round(abs($in_quantity - $out_quantity),2)}}
                                 @elseif(($in_quantity - $out_quantity)==0)
-                                    {{__("global.store_not_has_product") . " : ". abs($in_quantity - $out_quantity)}}
+                                    {{__("global.store_not_has_product") . " : ". round(abs($in_quantity - $out_quantity),2)}}
                                 @elseif(($in_quantity - $out_quantity)<0)
-                                    {{__("global.store_is_down_by") . " : ". abs($in_quantity - $out_quantity)}}
+                                    {{__("global.store_is_down_by") . " : ". round(abs($in_quantity - $out_quantity),2)}}
                                 @endif
                                     {{__("global.piece")}}
 {{--                                    <sapn> \ {{abs($total_price) . $actions->first()->pound_type}}</sapn>--}}
-                                    <sapn> \ {{abs($total_price)}}</sapn>
+                                    <sapn> \ {{round(abs($total_price),2)}}</sapn>
                             </label>
                         @endif
                     </div>

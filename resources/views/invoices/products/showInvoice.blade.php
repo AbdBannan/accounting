@@ -275,12 +275,15 @@
                         total_price+= parseFloat($(this).val());
                     }
                 });
-                $("#total_invoice_price").text(total_price);
+                $("#total_invoice_price").text($.fn.custom_round(total_price,2));
             }
+            setTimeout(function (){
+                reCalcInvoiceTotalPrice();
+            },100);
             $("#btn_close_invoice").on("click",function (){
                 setTimeout(function (){
                     $("#closing_date").get(0).focus();
-                },40);
+                },100);
             });
 
 

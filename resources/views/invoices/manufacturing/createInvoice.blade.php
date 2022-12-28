@@ -83,6 +83,9 @@
                         }
 
                     }
+                    setTimeout(function (){
+                        reCalcInvoiceTotalPrice();
+                    },100);
                 }
                 restore_last_saved_invoice_rows();
 
@@ -261,7 +264,7 @@
                     });
                     let produced_quantity = $("#produced_quantity").val()
                     if (produced_quantity != "") {
-                        $("#pure_piece_price").val((total_price / produced_quantity).toFixed(3));
+                        $("#pure_piece_price").val($.fn.custom_round(total_price / produced_quantity,2));
                         if ($("#gainful_value").attr("readonly") == true) {
                             calcGainfulPercentage();
                         } else {
@@ -296,7 +299,7 @@
                 function calcGainfulPercentage(){
                     if ($("#gainful_value").val() != "" ) {
                         if ($("#pure_piece_price").val() != "" && $("#pure_piece_price").val() != 0){
-                            $("#gainful_percentage").val(($("#gainful_value").val() / $("#pure_piece_price").val() * 100).toFixed(3));
+                            $("#gainful_percentage").val($.fn.custom_round($("#gainful_value").val() / $("#pure_piece_price").val() * 100,2));
                         } else {
                             $("#gainful_percentage").val(0);
                         }
@@ -315,7 +318,7 @@
                 function calcGainfulValue(){
                     if ($("#gainful_percentage").val() != "" ) {
                         if ($("#pure_piece_price").val() != "" && $("#pure_piece_price").val() != 0 && $("#pure_piece_price").val() != 0.00) {
-                            $("#gainful_value").val(($("#gainful_percentage").val() * $("#pure_piece_price").val() / 100).toFixed(3));
+                            $("#gainful_value").val($.fn.custom_round($("#gainful_percentage").val() * $("#pure_piece_price").val() / 100,2));
                         } else {
                             $("#gainful_value").val(0);
                         }
@@ -329,7 +332,7 @@
                 $("#pure_piece_price").on("change",function (){
                     let gainful_value = $("#gainful_value").val();
                     if (gainful_value != ""){
-                        $("#with_gainful_piece_price").val((parseFloat($(this).val()) + parseFloat(gainful_value)).toFixed(3));
+                        $("#with_gainful_piece_price").val($.fn.custom_round(parseFloat($(this).val()) + parseFloat(gainful_value),2));
                     }
                 });
 

@@ -29,9 +29,9 @@
                                             <td id="first_part_name">{{$action->name}}</td>
                                             @if($action->credit - $action->debit > 0)
                                                 <td class="fade1" style="display: none"></td>
-                                                <td class="fade1" style="display: none">{{abs($action->credit - $action->debit)}}</td>
+                                                <td class="fade1" style="display: none">{{round(abs($action->credit - $action->debit),2)}}</td>
                                             @else
-                                                <td class="fade1" style="display: none">{{abs($action->credit - $action->debit)}}</td>
+                                                <td class="fade1" style="display: none">{{round(abs($action->credit - $action->debit),2)}}</td>
                                                 <td class="fade1" style="display: none"></td>
                                             @endif
                                         </tr>
@@ -41,8 +41,8 @@
                                 <tfoot>
                                     <tr>
                                         <th colspan="2" id="show_debit_credit">0</th>
-                                        <th class="fade1" style="display:none;">{{$total_debit}}</th>
-                                        <th class="fade1" style="display:none;">{{$total_credit}}</th>
+                                        <th class="fade1" style="display:none;">{{round($total_debit,2)}}</th>
+                                        <th class="fade1" style="display:none;">{{round($total_credit,2)}}</th>
                                     </tr>
                                 </tfoot>
                             </table>

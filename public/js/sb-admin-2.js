@@ -206,7 +206,8 @@
     $("#price,#quantity").on("keyup",function (){
         if ($("#quantity").val() != "" && $("#price").val() != ""){
             let total_price = parseFloat($("#quantity").val()) * parseFloat($("#price").val())
-            $("#total_price").val(total_price);
+            $("#total_price").val($.fn.custom_round(total_price,2));
+            localStorage.setItem("savy-"+location.pathname+"-total_price",total_price);
         }
     });
 

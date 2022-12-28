@@ -610,8 +610,8 @@ class discoverActionsController extends Controller
 
     public function dailyDiscover()
     {
-        $actions = Journal::whereBetween("created_at",[Carbon::now()->subtract("day",1),Carbon::now()])->whereIn("invoice_type",[0,1,2,3,4,5,6,7,11,12,13,14,15,16])->get();
-        $totals = Journal::whereBetween("created_at",[Carbon::now()->subtract("day",1),Carbon::now()])->whereIn("invoice_type",[1,2,3,4,5,11,13,15])->selectRaw("sum(debit) as total_debit , sum(credit) as total_credit")->first();
+        $actions = Journal::where("created_at",">=",Carbon::today())->whereIn("invoice_type",[0,1,2,3,4,5,6,7,11,12,13,14,15,16])->get();
+        $totals = Journal::where("created_at",">=",Carbon::today())->whereIn("invoice_type",[1,2,3,4,5,11,13,15])->selectRaw("sum(debit) as total_debit , sum(credit) as total_credit")->first();
         globalFunctions::registerUserActivityLog("seen","daily_actions",null);
         return view("admin.discoverActions.dailyDiscover")->with(["actions"=>$actions,"total_debit"=>$totals->total_debit,"total_credit"=>$totals->total_credit,"total_balance"=>$totals->total_credit-$totals->total_debit]);
     }

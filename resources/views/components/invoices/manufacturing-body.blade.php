@@ -215,7 +215,7 @@
                         <div class="col-md-2 col-sm-12">
                             <div class="form-group">
                                 <label style="font-size: large" for="total_price" >{{__("global.total_price")}}</label>
-                                <input form="f" type="number" min="0" class="form-control" id="total_price" name="total_price" disabled>
+                                <input form="f" type="number" min="0" class="form-control auto-save" id="total_price" name="total_price" disabled>
                             </div>
                         </div>
 

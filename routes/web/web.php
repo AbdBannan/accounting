@@ -1,7 +1,9 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\URL;
 use Mailgun\Mailgun;
 use Illuminate\Support\Facades\Mail;
@@ -77,5 +79,6 @@ Route::middleware(["auth"])->group(function (){
 
 
 Route::get("/tt",function (){
-    return view("test");
+//    return view("test");
+    dd(Carbon::today());
 });

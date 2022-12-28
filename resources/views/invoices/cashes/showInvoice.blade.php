@@ -265,11 +265,13 @@
                         received+= parseFloat($(this).parent("td").siblings().children("input[name^='received_']").val());
                     }
                 });
-                $("#total_payed").text(payed);
-                $("#total_received").text(received);
+                $("#total_payed").text($.fn.custom_round(payed,2));
+                $("#total_received").text($.fn.custom_round(received,2));
             }
 
-
+            setTimeout(function (){
+                reCalcInvoiceTotalPrice();
+            },200);
             $("#payed").on("keyup",function (){
                 if ($(this).val() !=""){
                     $("#received").attr("disabled",true);

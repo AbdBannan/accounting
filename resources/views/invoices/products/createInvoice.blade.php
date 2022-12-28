@@ -38,7 +38,6 @@
     @endsection
     @section("script")
             <script>
-
                 let ids = [];
                 let isNewLineMode = true;
                 let isLineInEditing = false;
@@ -90,6 +89,9 @@
                         }
 
                     }
+                    setTimeout(function (){
+                        reCalcInvoiceTotalPrice();
+                    },100);
                 }
                 restore_last_saved_rows();
 
@@ -264,7 +266,7 @@
                             total_price+= parseFloat($(this).val());
                         }
                     });
-                    $("#total_invoice_price").text(total_price);
+                    $("#total_invoice_price").text($.fn.custom_round(total_price,2));
                 }
 
                 function resize(){
@@ -275,7 +277,6 @@
                         $(this).css("min-width", width);
                     });
                 }
-
 
             </script>
     @endsection

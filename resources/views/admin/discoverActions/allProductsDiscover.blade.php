@@ -28,9 +28,9 @@
                                         <tr id="discover_rows">
                                             <td>{{$action->id}}</td>
                                             <td id="product_name">{{$action->name}}</td>
-                                            <td>{{abs($action->in_quantity)}}</td>
-                                            <td>{{abs($action->out_quantity)}}</td>
-                                            <td>{{$action->balance}}</td>
+                                            <td>{{round(abs($action->in_quantity),2)}}</td>
+                                            <td>{{round(abs($action->out_quantity),2)}}</td>
+                                            <td>{{round($action->balance,2)}}</td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -38,9 +38,9 @@
                                 <tfoot>
                                 <tr>
                                     <th colspan="2" id="show_debit_credit"></th>
-                                    <th>{{$total_in_quantity}}</th>
-                                    <th>{{$total_out_quantity}}</th>
-                                    <th>{{$total_balance}}</th>
+                                    <th>{{round($total_in_quantity,2)}}</th>
+                                    <th>{{round($total_out_quantity,2)}}</th>
+                                    <th>{{round($total_balance,2)}}</th>
                                 </tr>
                                 </tfoot>
                             </table>

@@ -61,9 +61,9 @@
                                                 @php
                                                     $sum_of_balance += $action->credit/$action->num_for_pound - $action->debit/$action->num_for_pound
                                                 @endphp
-                                                <td>{{$sum_of_balance}}</td>
-                                                <td>{{$action->debit/$action->num_for_pound}}</td>
-                                                <td>{{$action->credit/$action->num_for_pound}}</td>
+                                                <td>{{round($sum_of_balance,2)}}</td>
+                                                <td>{{round($action->debit/$action->num_for_pound,2)}}</td>
+                                                <td>{{round($action->credit/$action->num_for_pound,2)}}</td>
                                             @else
                                                 <td>{{0}}</td>
                                                 <td>{{0}}</td>
@@ -95,20 +95,20 @@
                     <div class="card-footer">
                         @if($actions!=null)
                             <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_received")}} :
-                                <span id="total_received" style="font-style: italic; color:darkblue">{{$total_debit}}</span>
+                                <span id="total_received" style="font-style: italic; color:darkblue">{{round($total_debit,2)}}</span>
                                 {{--                <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}
                             </label>
                             <label class="ml-md-5 ml-sm-3" style="font-size: large" >{{__("global.total_payed")}} :
-                                <span id="total_payed" style="font-style: italic; color:darkblue">{{$total_credit}}</span>
+                                <span id="total_payed" style="font-style: italic; color:darkblue">{{round($total_credit,2)}}</span>
                                 {{--                <span id="invoice_pound">{{$actions->first()->pound_type}}</span>--}}{{--should be syrian pound--}}
                             </label>
                             <label  class="ml-md-5 ml-sm-3" style="font-size: large">
                                 @if(($total_credit - $total_debit)>0)
-                                    {{__("global.you_have") . " : ". abs($total_credit - $total_debit)}}
+                                    {{__("global.you_have") . " : ". round(abs($total_credit - $total_debit),2)}}
                                 @elseif(($total_credit - $total_debit)==0)
-                                    {{__("global.balance_is_zero") . " : ". abs($total_credit - $total_debit)}}
+                                    {{__("global.balance_is_zero") . " : ". round($total_credit - $total_debit,2)}}
                                 @elseif(($total_credit - $total_debit)<0)
-                                    {{__("global.we_have") . " : ". abs($total_credit - $total_debit)}}
+                                    {{__("global.we_have") . " : ". round(abs($total_credit - $total_debit),2)}}
                                 @endif
                             </label>
                         @endif
@@ -203,7 +203,8 @@
     @endsection
     @section("script")
         <script>
-            $("#buttons button").on("click",function (){// for collapse all and expand just onw
+            // for collapse all and expand just onw
+            $("#buttons button").on("click",function (){
                 $(this).parent().slideUp();
                 $("#accordion").children().filter(function (){
                     $(this).slideUp();
