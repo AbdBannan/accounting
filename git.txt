@@ -1,0 +1,30 @@
+git init => initialize
+git config user.user = user
+git config user.email = email
+git config user.password = password
+git remote add origin <URL to the github repo> // to connect your local repo to remote github repo
+push --set-upstream origin temp_branch // to push in first time to a specified branch
+tauch file_name => create file
+git status
+git add .
+git commit -m "message"
+git log => list of commits
+git reset --hard point_of_time_id => you can get the point of time from git log , and the --hard flag is for erasing all thing after that point event the commits
+git reset --hard point_of_time_id => soft reset keeps the commits after that point of time
+ls -ls => returns all file in this directory that is not hidden
+ls -la => returns all file in this directory that is hidden
+rm -rf file_name => rf delete the direcoties and the file in them
+rm -rf => delete all
+rm file_n jame => for deleting just files
+git branch branch_name => add a new branch
+git branch t the current branch
+git checkout branch_name => switch the current branch into the branch_name
+git checkout -b branch_name => create and switch the branchgit
+git branch -d branch_name => deletes the branch
+git merg branch_name => merg changes of current and branch_name branches
+git config --global user.name = user_name => for configuration user name
+git config --global user.email = user_email => for configuration user email
+git push origin master => pushes all commits into the online repository on github
+git pull => it updates your current local repository from the online repository merging it with your
+
+------------ end of file ------------
