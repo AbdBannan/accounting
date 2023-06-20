@@ -1,7 +1,6 @@
 <x-masterLayout.master>
     @section("title")
         {{ __("global.recycle_bin",["attribute"=>__("global.manufacturing_actions")]) }}
-
     @endsection
 
     @section('content')

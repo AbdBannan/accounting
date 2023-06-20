@@ -28,8 +28,11 @@ class configController extends Controller
           "arabic" => "ar",
           "english" => "en",
         ];
-        $lang = $language[$request["language"]];
-        app()->setLocale($lang);
+        $lang = app()->getLocale();
+        if (isset($request["language"]))
+            $lang = $language[$request["language"]];
+            app()->setLocale($lang);
+
         $config_type = $request->config_type;
         if (in_array($request["default_pound"],["syrian","dollar","ل.س","دولار"])){
             if (app()->getLocale() == "ar"){
@@ -60,6 +63,7 @@ class configController extends Controller
                 "type" => $config_type
             ]);
         }
+
         foreach (auth()->user()->config->where("type",$config_type) as $config){
             auth()->user()->config()->detach($config->id);
         }
@@ -69,7 +73,7 @@ class configController extends Controller
         session()->flash("success",__("messages.saved_successfully",["attribute"=>__("global.config")]));
 //        globalFunctions::flashMessage("save",true,"config");
         globalFunctions::registerUserActivityLog("updated","config",auth()->user()->id);
-
+//
         return back();
     }
 

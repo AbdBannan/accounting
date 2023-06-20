@@ -8,11 +8,11 @@
     @section("recycle_bin")
         <a class="dropdown-item" href="{{route("invoice.viewManufacturingRecyclebin")}}">
             <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-400"></i>
-            {{__("global.recycle_bin",["attribute"=>__("global.manufacturing")])}}
+            {{__("global.recycle_bin",["attribute"=>__("global.manufacturing_actions")])}}
         </a>
         <a class="dropdown-item" href="{{route("manufacturingTemplate.viewManufacturingTemplatesRecyclebin")}}">
             <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-400"></i>
-            {{__("global.recycle_bin",["attribute"=>__("global.templates")])}}
+            {{__("global.recycle_bin",["attribute"=>__("global.manufacturing_templates")])}}
         </a>
     @endsection
 
